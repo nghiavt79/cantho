@@ -1,0 +1,6 @@
+@TechExchange.LocalSigner_HostAddress = http://localhost:5277
+
+GET {{TechExchange.LocalSigner_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

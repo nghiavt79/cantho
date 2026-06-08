@@ -1,0 +1,86 @@
+﻿@model IEnumerable<TechExchangeApp.Entities.SanPhamCNTB>
+@using Microsoft.Extensions.Options
+@inject IOptions<TechExchangeApp.Helpers.AppSettings> AppSettings
+
+<div id="carouselTechCombined"
+     class="carousel slide TechCarousel"
+     data-bs-ride="carousel"
+     data-bs-interval="4000">
+
+    <div class="carousel-inner">
+
+        @{
+            int perSlide = 3;
+            var list = Model != null
+                ? Model.Take(9).ToList()
+                : new List<TechExchangeApp.Entities.SanPhamCNTB>();
+            int slideIndex = 0;
+            var mainDomain = AppSettings.Value.MainDomain;
+        }
+
+        @if (list.Any())
+        {
+            for (int i = 0; i < list.Count; i += perSlide)
+            {
+                slideIndex++;
+                var group = list.Skip(i).Take(perSlide);
+
+                <div class="carousel-item @(slideIndex == 1 ? "active" : "")">
+                    <div class="row g-4">
+                        @foreach (var item in group)
+                        {
+                            string imgUrl = TechExchangeApp.Controllers.ProductController
+                                .CookedImageURL("254-170", item.QuyTrinhHinhAnh, mainDomain);
+
+                            string url = $"{mainDomain}2-cong-nghe-thiet-bi/{item.ProductType}/" +
+                                         $"{item.QueryString}-{item.ID}.html";
+
+                            <div class="col-lg-4 col-md-6 col-12">
+                                <a href="@url" class="text-decoration-none text-dark d-block h-100">
+                                    <div class="tech-card">
+                                        <div class="tech-card-img-wrap">
+                                            <img src="@imgUrl"
+                                                 class="tech-card-img"
+                                                 alt="@item.Name"
+                                                 onerror="this.src='/image/default-tech.jpg'">
+                                        </div>
+                                        <div class="tech-card-body">
+                                            <div class="tech-card-title">@item.Name</div>
+                                            @if (!string.IsNullOrEmpty(item.MoTaNgan))
+                                            {
+                                                <div class="tech-card-desc">@Html.Raw(item.MoTaNgan)</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="carousel-item active">
+                <div class="text-center py-5 text-muted">
+                    <i class="bi bi-hourglass-split fs-2 d-block mb-2"></i>
+                    Đang cập nhật công nghệ...
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <button class="carousel-control-prev" type="button"
+            data-bs-target="#carouselTechCombined" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button"
+            data-bs-target="#carouselTechCombined" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+<div class="tech-section-more">
+    <a href="cong-nghe.html" class="btn-tech-more">Xem thêm »</a>
+</div>

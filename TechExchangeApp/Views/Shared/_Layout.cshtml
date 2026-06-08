@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        @ViewData["Title"] - Sàn Giao dịch Công nghệ TP. Hồ Chí Minh
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home-redesign.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/auth-modals.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/partner-network.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+
+
+    <link rel="stylesheet" href="~/TechExchangeApp.styles.css" asp-append-version="true" />
+    @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+    <meta name="__RequestVerificationToken" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken" />
+
+    <!-- GA4 - G-BM80DM112X -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BM80DM112X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-BM80DM112X');
+    </script>
+
+    <!-- GA4 - G-P3LZNQKLM1 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P3LZNQKLM1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-P3LZNQKLM1');
+    </script>
+
+    <script type="text/javascript">
+        var _govaq = window._govaq || [];
+        _govaq.push(['trackPageView']);
+        _govaq.push(['enableLinkTracking']);
+        (function () {
+            _govaq.push(['setTrackerUrl', 'https://f-emc.ngsp.gov.vn/tracking']);
+            _govaq.push(['setSiteId', '271']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript'; g.async = true; g.defer = true;
+            g.src = 'https://f-emc.ngsp.gov.vn/embed/gov-tracking.min.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <ul class="navbar-nav flex-grow-1" style="display: none;">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </li>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <li class="nav-item">
+                <span class="nav-link text-dark">Hello, @User.Identity.Name!</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="TechTransfer" asp-action="Create">1. Yêu cầu chuyển giao</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="NDA" asp-action="Create">2. Thỏa thuận bảo mật</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="RFQ" asp-action="Create">3. Yêu cầu báo giá</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Proposal" asp-action="Create">4. Nộp hồ sơ đề xuất</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Negotiation" asp-action="Create">5. Thương thảo giá</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="EContract" asp-action="Create">6. Ký hợp đồng điện tử</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="AdvancePayment" asp-action="Create">7. Xác nhận tạm ứng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="ImplementationLog" asp-action="Create">8. Nhật ký triển khai</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Handover" asp-action="Create">9. Biên bản bàn giao</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Acceptance" asp-action="Create">10. Biên bản nghiệm thu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Liquidation" asp-action="Create">11. Biên bản thanh lý</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Secure" asp-action="Index">Secure Page</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-route="register_page">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-route="login_page">Login</a>
+            </li>
+        }
+    </ul>
+
+    <div class="app-layout">
+        @await Html.PartialAsync("_Header")
+        <div class="">
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+        @await Html.PartialAsync("_Footer")
+        <!-- Side Buttons -->
+        @await Html.PartialAsync("_SideButtons")
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/jquery.scrollbox.js"></script>
+    <script src="~/js/jquery.realperson.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Select2 for searchable dropdowns -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="~/js/auth-modals.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobileMenu");
+            menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+        }
+
+        function toggleMobileCategory() {
+            const cat = document.getElementById("mobileCategory");
+            cat.style.display = cat.style.display === "block" ? "none" : "block";
+        }
+    </script>
+
+    @RenderSection("script", required: false)
+
+    @* Auth Modals *@
+    @await Html.PartialAsync("_LoginModal")
+    @await Html.PartialAsync("_RegisterModal")
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <!-- SignalR -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+
+        <script>
+        (function () {
+            const userId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
+            if (!userId) return;
+
+            const badge    = document.getElementById('tpBadge');
+            const badgeMob = document.getElementById('tpBadgeMobile');
+            const list     = document.getElementById('tpList');
+            const listMob  = document.getElementById('tpListMobile');
+
+            function setBadge(n) {
+                [badge, badgeMob].forEach(b => {
+                    if (!b) return;
+                    if (n > 0) { b.textContent = n > 99 ? '99+' : n; b.classList.remove('d-none'); }
+                    else       { b.textContent = '0'; b.classList.add('d-none'); }
+                });
+            }
+
+            function buildItem(n) {
+                const time = new Date(n.createdDate).toLocaleString('vi-VN', { hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit' });
+                return `<div class="tp-item ${n.isRead ? '' : 'unread'}" data-id="${n.id}" data-project="${n.projectId || ''}" onclick="tpClickItem(this)">
+                    <div class="tp-item-title">${n.title || 'Thông báo'}</div>
+                    <div class="tp-item-body text-muted small">${(n.content || '').substring(0, 80)}${(n.content||'').length > 80 ? '…' : ''}</div>
+                    <div class="tp-item-time" style="font-size:11px;color:#aaa">${time}</div>
+                </div>`;
+            }
+
+            function prependItem(n) {
+                [list, listMob].forEach(l => {
+                    if (!l) return;
+                    const empty = l.querySelector('.tp-empty');
+                    if (empty) empty.remove();
+                    l.insertAdjacentHTML('afterbegin', buildItem(n));
+                });
+            }
+
+            // Load initial state
+            fetch('/api/notifications/unread-count').then(r => r.json()).then(d => setBadge(d.count)).catch(() => {});
+            fetch('/api/notifications/latest?take=10').then(r => r.json()).then(items => {
+                [list, listMob].forEach(l => { if (l) l.innerHTML = ''; });
+                if (!items.length) {
+                    [list, listMob].forEach(l => { if (l) l.innerHTML = '<div class="tp-empty text-center text-muted py-3 small">Không có thông báo</div>'; });
+                    return;
+                }
+                items.forEach(n => { [list, listMob].forEach(l => { if (l) l.insertAdjacentHTML('beforeend', buildItem(n)); }); });
+            }).catch(() => {});
+
+            // SignalR
+            const conn = new signalR.HubConnectionBuilder()
+                .withUrl('/notificationHub')
+                .withAutomaticReconnect()
+                .build();
+
+            conn.on('ReceiveNotification', function (n) {
+                const cur = parseInt(badge?.textContent || '0') || 0;
+                setBadge(cur + 1);
+                prependItem({ ...n, isRead: false });
+            });
+
+            conn.start().then(() => conn.invoke('JoinUserGroup', userId)).catch(e => console.warn('[SignalR]', e));
+
+            // ── Polling fallback (30s) — catches DB-inserted or external notifications ──
+            let lastKnownCount = 0;
+
+            function reloadList() {
+                fetch('/api/notifications/latest?take=10').then(r => r.json()).then(items => {
+                    [list, listMob].forEach(l => { if (l) l.innerHTML = ''; });
+                    if (!items.length) {
+                        [list, listMob].forEach(l => { if (l) l.innerHTML = '<div class="tp-empty text-center text-muted py-3 small">Không có thông báo</div>'; });
+                        return;
+                    }
+                    items.forEach(n => { [list, listMob].forEach(l => { if (l) l.insertAdjacentHTML('beforeend', buildItem(n)); }); });
+                }).catch(() => {});
+            }
+
+            function pollUnread() {
+                fetch('/api/notifications/unread-count').then(r => r.json()).then(d => {
+                    if (d.count !== lastKnownCount) {
+                        lastKnownCount = d.count;
+                        setBadge(d.count);
+                        reloadList(); // refresh list when count changes
+                    }
+                }).catch(() => {});
+            }
+
+            // Init lastKnownCount after first load
+            fetch('/api/notifications/unread-count').then(r => r.json()).then(d => {
+                lastKnownCount = d.count;
+            }).catch(() => {});
+
+            setInterval(pollUnread, 30000); // poll every 30s
+
+            // Click item → mark read + redirect
+            window.tpClickItem = function(el) {
+                const id = el.dataset.id, project = el.dataset.project;
+                el.classList.remove('unread');
+                const token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
+                fetch(`/api/notifications/mark-read/${id}`, { method: 'POST', headers: { 'RequestVerificationToken': token } })
+                    .then(() => { const c = parseInt(badge?.textContent||'0')||0; setBadge(Math.max(0,c-1)); });
+                if (project) window.location.href = `/Project/Details/${project}`;
+            };
+
+            // Mark all read
+            window.tpMarkAllRead = function() {
+                const token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
+                fetch('/api/notifications/mark-all-read', { method: 'POST', headers: { 'RequestVerificationToken': token } })
+                    .then(() => { setBadge(0); document.querySelectorAll('.tp-item.unread').forEach(el => el.classList.remove('unread')); });
+            };
+        })();
+        </script>
+    }
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+@model TechExchangeApp.Entities.ProposalSubmission
+
+@{
+    ViewData["Title"] = "CẬP NHẬT HỒ SƠ ĐỀ XUẤT";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h2 class="h4 mb-0"><i class="fas fa-edit me-2"></i>@ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ProjectId" />
+                <input type="hidden" asp-for="StatusId" />
+                <input type="hidden" asp-for="NguoiTao" />
+                <input type="hidden" asp-for="NgayTao" />
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="BaoGiaSoBo" class="form-label">Báo giá sơ bộ (VNĐ)</label>
+                        <input asp-for="BaoGiaSoBo" class="form-control" type="number" placeholder="Nhập số tiền..." />
+                        <span asp-validation-for="BaoGiaSoBo" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ThoiGianTrienKhai" class="form-label">Thời gian triển khai dự kiến <span class="text-danger">*</span></label>
+                        <input asp-for="ThoiGianTrienKhai" class="form-control" placeholder="Ví dụ: 3 tháng, 6 tuần..." />
+                        <span asp-validation-for="ThoiGianTrienKhai" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                         <label class="form-label">Giải pháp kỹ thuật (File mới)</label>
+                        <input type="file" name="GiaiPhapFile" class="form-control" accept=".pdf,.doc,.docx" />
+                        <div class="form-text">Để trống nếu không thay đổi file cũ: <a href="@Model.GiaiPhapKyThuat" target="_blank">Xem file hiện tại</a></div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Hồ sơ năng lực đính kèm (File mới)</label>
+                        <input type="file" name="HoSoFile" class="form-control" accept=".pdf,.doc,.docx,.zip,.rar" />
+                         <div class="form-text">Để trống nếu không thay đổi file cũ: <a href="@Model.HoSoNangLucDinhKem" target="_blank">Xem file hiện tại</a></div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a asp-action="Index" asp-route-duAnId="@Model.ProjectId" class="btn btn-secondary me-md-2">Hủy bỏ</a>
+                    <button type="submit" class="btn btn-warning"><i class="fas fa-save me-2"></i>Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

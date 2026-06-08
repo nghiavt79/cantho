@@ -3,7 +3,7 @@
 -- Update uspMappingDataIndex for SearchIndexContents
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 -- =============================================

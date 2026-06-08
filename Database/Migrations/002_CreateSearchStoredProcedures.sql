@@ -3,7 +3,7 @@
 -- Stored Procedures
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 -- =============================================

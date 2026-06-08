@@ -2,7 +2,7 @@
 -- Ultra Quick Populate - 200 Products Only
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 SET NOCOUNT ON;

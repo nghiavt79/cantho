@@ -1,0 +1,127 @@
+﻿@model List<TechExchangeApp.ViewModel.TinSuKienTabVm>
+
+@{
+    const int GIAI_PHAP_MENU_ID = 83;
+    var tabs = Model.Where(x => x.MenuId != GIAI_PHAP_MENU_ID).ToList();
+}
+
+<section class="hp-section">
+    <div class="container">
+
+        <h2 class="hp-section-title text-center">
+            Sự kiện & Hội thảo
+        </h2>
+
+        <!-- TAB HEADER -->
+        <ul class="nav tech-tabs" role="tablist">
+            @for (int i = 0; i < tabs.Count; i++)
+            {
+                var tab = tabs[i];
+                <li class="nav-item">
+                    <button class="nav-link @(i == 0 ? "active" : "")"
+                            data-bs-toggle="tab"
+                            data-bs-target="#content-@tab.MenuId"
+                            type="button">
+                        @tab.Title
+                    </button>
+                </li>
+            }
+        </ul>
+
+        <!-- TAB CONTENT -->
+        <div class="tab-content">
+
+            @{
+                var tabLinks = new[] {
+                    "tin-su-kien-44.html",
+                    "bao-cao-phan-tich-xu-huong-cong-nghe-46.html",
+                    "giai-phap-cong-nghe-72.html"
+                };
+            }
+            @for (int i = 0; i < tabs.Count; i++)
+            {
+                var tab = tabs[i];
+                var firstLink = i < tabLinks.Length ? tabLinks[i] : "#";
+
+                <div class="tab-pane fade @(i == 0 ? "show active" : "")"
+                     id="content-@tab.MenuId">
+
+                    <div class="row g-4">
+
+                        @{
+                            var mainItem = tab.Items.FirstOrDefault();
+                            var sideItems = tab.Items.Skip(1).Take(4);
+                        }
+
+                        <!-- MAIN EVENT -->
+                        <div class="col-lg-6">
+                            @if (mainItem != null)
+                            {
+                                <div class="hp-event-main">
+                                    <a href="@mainItem.Link" class="text-decoration-none text-white">
+
+                                        <img src="@mainItem.ImageUrl"
+                                             alt="@mainItem.Title"
+                                             class="img-fluid"
+                                             onerror="this.src='https://placehold.co/600x400?text=Event';">
+
+                                        <div class="hp-event-overlay">
+                                            <h5>@mainItem.Title</h5>
+                                            @if (!string.IsNullOrEmpty(mainItem.Description))
+                                            {
+                                                <p class="mb-0 text-truncate">
+                                                    @mainItem.Description
+                                                </p>
+                                            }
+                                        </div>
+
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- SIDE EVENTS -->
+                        <div class="col-lg-6">
+                            <div class="hp-event-list">
+
+                                @foreach (var item in sideItems)
+                                {
+                                    <div class="hp-event-item">
+                                        <img src="@item.ImageUrl"
+                                             class="hp-event-thumb"
+                                             alt="@item.Title"
+                                             onerror="this.src='https://placehold.co/120x80?text=Event'">
+
+                                        <div>
+                                            <h6 class="mb-1">
+                                                <a href="@item.Link"
+                                                   class="text-decoration-none text-dark fw-bold">
+                                                    @item.Title
+                                                </a>
+                                            </h6>
+
+                                            @if (!string.IsNullOrEmpty(item.Description))
+                                            {
+                                                <small class="text-muted text-limit d-block">
+                                                    @item.Description
+                                                </small>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tech-section-more">
+                        <a href="@firstLink" class="btn-tech-more">Xem thêm »</a>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    </div>
+</section>

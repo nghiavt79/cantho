@@ -4,7 +4,7 @@
 -- Description: Create StepPermissions and ProjectConsultants tables
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 -- =============================================

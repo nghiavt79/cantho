@@ -3,7 +3,7 @@
 -- Use fnRemoveVietnameseAccents function
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 PRINT 'Updating RemovedUnicode for TOP 1000 newest records...';

@@ -1,0 +1,287 @@
+﻿@model TechExchangeApp.ViewModel.ChiTietNhaCungUngVm
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.FullName;
+}
+
+<div class="columns-container">
+    <div class="container" id="columns">
+        <div class="row">
+
+            <!-- CENTER -->
+            <div class="center_column col-xs-12 col-sm-9" id="center_column">
+                <div id="product">
+
+                    <!-- ══════════ HEADER ══════════ -->
+                    <div class="detail-header row mb-4 g-4">
+                        <!-- Image -->
+                        <div class="col-md-5">
+                            <div class="mb-2">
+                                <img src="@Model.ImageUrl"
+                                     class="img-fluid rounded shadow-sm w-100"
+                                     alt="@Model.FullName"
+                                     style="max-height:350px; object-fit:cover;" />
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                            {
+                                <div class="text-center mt-2">
+                                    <img src="@Model.LogoUrl" alt="Logo" style="max-height:60px;" class="rounded" />
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Info -->
+                        <div class="col-md-7">
+                            <h1 class="fw-bold fs-4 mb-1">@Model.FullName</h1>
+
+                            @if (!string.IsNullOrEmpty(Model.TenVietTat))
+                            {
+                                <p class="text-muted mb-2" style="font-size:14px;">@Model.TenVietTat</p>
+                            }
+
+                            <!-- Meta line -->
+                            <div class="tp-meta-line" id="headerMetaLine"
+                                 data-entity-type="NhaCungUng" data-entity-id="@Model.Id">
+                                <span class="tp-rating">
+                                    <i class="fa fa-star"></i>
+                                    <strong id="headerRatingAvg">@(Model.Rating > 0 ? Model.Rating.ToString("0.0") : "—")</strong>
+                                    <span class="tp-muted">(<span id="headerRatingCount">@Model.LuotDanhGia</span> đánh giá)</span>
+                                </span>
+                                <span class="tp-dot">·</span>
+                                <span class="tp-view">
+                                    <i class="fa fa-eye"></i>
+                                    <span id="headerViewCount">@Model.LuotXem.ToString("N0")</span> lượt xem
+                                </span>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.LoaiHinhToChucText))
+                            {
+                                <p class="mb-2">
+                                    <i class="fa fa-tag me-1 text-secondary"></i>
+                                    <strong>Loại hình:</strong> @Model.LoaiHinhToChucText
+                                </p>
+                            }
+
+                            <table class="table table-sm table-borderless mb-3" style="font-size:14px;">
+                                @if (!string.IsNullOrEmpty(Model.DiaChi))
+                                {
+                                    <tr><td style="width:120px;"><i class="fa fa-map-marker-alt me-1 text-secondary"></i><strong>Địa chỉ</strong></td><td>@Model.DiaChi</td></tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Phone))
+                                {
+                                    <tr><td><i class="fa fa-phone me-1 text-secondary"></i><strong>Điện thoại</strong></td><td>@Model.Phone</td></tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Email))
+                                {
+                                    <tr><td><i class="fa fa-envelope me-1 text-secondary"></i><strong>Email</strong></td><td><a href="mailto:@Model.Email">@Model.Email</a></td></tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Website))
+                                {
+                                    <tr><td><i class="fa fa-globe me-1 text-secondary"></i><strong>Website</strong></td><td><a href="@Model.Website" target="_blank" rel="noopener">@Model.Website</a></td></tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.MaSoThue))
+                                {
+                                    <tr><td><i class="fa fa-file-alt me-1 text-secondary"></i><strong>Mã số thuế</strong></td><td>@Model.MaSoThue</td></tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Fax))
+                                {
+                                    <tr><td><i class="fa fa-fax me-1 text-secondary"></i><strong>Fax</strong></td><td>@Model.Fax</td></tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.NguoiDaiDien))
+                                {
+                                    <tr><td><i class="fa fa-user me-1 text-secondary"></i><strong>Đại diện</strong></td><td>@Model.NguoiDaiDien @(!string.IsNullOrEmpty(Model.ChucVu) ? $"— {Model.ChucVu}" : "")</td></tr>
+                                }
+                            </table>
+
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a class="btn btn-primary btn-sm" href="#"><i class="fa fa-check me-1"></i>Chọn nhà cung ứng</a>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="window.print()"><i class="fa fa-print me-1"></i>In trang</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══════════ TABS ══════════ -->
+                    <ul class="nav nav-tabs mb-0" role="tablist">
+                        @if (!string.IsNullOrEmpty(Model.LinhVucText))
+                        {
+                            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tabLinhVuc">Lĩnh vực</a></li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.ChucNang))
+                        {
+                            <li class="nav-item"><a class="nav-link @(string.IsNullOrEmpty(Model.LinhVucText) ? "active" : "")" data-bs-toggle="tab" href="#tabChucNang">Chức năng</a></li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.DichVuText))
+                        {
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabDichVu">Dịch vụ</a></li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.SanPham))
+                        {
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabSanPham">Sản phẩm</a></li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.VideoUrl) || !string.IsNullOrEmpty(Model.ChungNhan))
+                        {
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tabHoSo">Hồ sơ năng lực</a></li>
+                        }
+                    </ul>
+
+                    <div class="tab-content border border-top-0 rounded-bottom p-3 mb-4">
+                        @if (!string.IsNullOrEmpty(Model.LinhVucText))
+                        {
+                            <div class="tab-pane fade show active" id="tabLinhVuc">
+                                @Html.Raw(Model.LinhVucText)
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.ChucNang))
+                        {
+                            <div class="tab-pane fade @(string.IsNullOrEmpty(Model.LinhVucText) ? "show active" : "")" id="tabChucNang">
+                                @Html.Raw(Model.ChucNang)
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.DichVuText))
+                        {
+                            <div class="tab-pane fade" id="tabDichVu">
+                                @Html.Raw(Model.DichVuText)
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.SanPham))
+                        {
+                            <div class="tab-pane fade" id="tabSanPham">
+                                @Html.Raw(Model.SanPham)
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.VideoUrl) || !string.IsNullOrEmpty(Model.ChungNhan))
+                        {
+                            <div class="tab-pane fade" id="tabHoSo">
+                                @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                                {
+                                    // Extract YouTube ID
+                                    var videoId = "";
+                                    if (Model.VideoUrl.Contains("watch?v="))
+                                    {
+                                        videoId = Model.VideoUrl.Split("watch?v=").Last().Split('&').First();
+                                    }
+                                    else if (Model.VideoUrl.Contains("youtu.be/"))
+                                    {
+                                        videoId = Model.VideoUrl.Split("youtu.be/").Last().Split('?').First();
+                                    }
+
+                                    if (!string.IsNullOrEmpty(videoId))
+                                    {
+                                        <h6 class="fw-semibold mb-2"><i class="fab fa-youtube text-danger me-1"></i>Video giới thiệu</h6>
+                                        <div class="ratio ratio-16x9 mb-3" style="max-width:560px;">
+                                            <iframe src="https://www.youtube.com/embed/@videoId" allowfullscreen></iframe>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <p><a href="@Model.VideoUrl" target="_blank" rel="noopener"><i class="fa fa-video me-1"></i>Xem video giới thiệu</a></p>
+                                    }
+                                }
+                                @if (!string.IsNullOrEmpty(Model.ChungNhan))
+                                {
+                                    <h6 class="fw-semibold mb-2"><i class="fa fa-certificate text-warning me-1"></i>Chứng nhận năng lực</h6>
+                                    @Html.Raw(Model.ChungNhan)
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <!-- ══════════ RATING + VIEW WIDGET ══════════ -->
+                    <div class="mt-4">
+                        @await Html.PartialAsync("_EntityRating", null, new ViewDataDictionary(ViewData) {
+                            { "EntityType", "NhaCungUng" },
+                            { "EntityId", Model.Id }
+                        })
+                    </div>
+
+                    <!-- ══════════ NHÀ CUNG ỨNG KHÁC ══════════ -->
+                    @if (Model.NhaCungUngKhac?.Any() == true)
+                    {
+                        <div class="page-product-box mt-4">
+                            <h2 class="brand-showcase-title">NHÀ CUNG ỨNG KHÁC</h2>
+                            <ul class="product-list owl-carousel"
+                                data-dots="false"
+                                data-loop="true"
+                                data-nav="true"
+                                data-margin="30"
+                                data-autoplaytimeout="1000"
+                                data-autoplayhoverpause="true"
+                                data-responsive='{"0":{"items":2},"600":{"items":4},"1000":{"items":4}}'>
+                                @foreach (var n in Model.NhaCungUngKhac)
+                                {
+                                    <li class="GioHang">
+                                        <div class="product-container">
+                                            <h2 class="entry_title">@n.FullName</h2>
+                                            <img src="@n.ImageUrl" class="img-responsive" />
+                                            <div>📍 @n.DiaChi</div>
+                                            <div>📞 @n.Phone</div>
+
+                                            @{
+                                                var rating = Math.Clamp(n.Rating, 0, 5);
+                                            }
+
+                                            <div style="color:gold">
+                                                @Html.Raw(new string('★', rating) + new string('☆', 5 - rating))
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    }
+
+
+                    @await Component.InvokeAsync("ProductPortletIOSanpham")
+                </div>
+            </div>
+
+            <!-- LEFT -->
+            <div class="column col-xs-12 col-sm-3" id="left_column">
+                <div class="block left-module">
+                    <p class="title_block">DANH MỤC</p>
+                    <div class="block_content">
+                        <ul class="tree-menu">
+                            @foreach (var c in Model.Categories)
+                            {
+                                <li>
+                                    <a href="@c.Url">@c.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $(".GioHang").hover(
+                function () { $(this).find(".button-group").show(); },
+                function () { $(this).find(".button-group").hide(); }
+            );
+
+            $(".owl-carousel").owlCarousel({
+                items: 4,
+                loop: true,
+                nav: true,
+                dots: false,
+                margin: 30,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                responsive: {
+                    0: { items: 2 },
+                    600: { items: 4 },
+                    1000: { items: 4 }
+                }
+            });
+
+        });
+    </script>
+}

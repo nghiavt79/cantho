@@ -4,7 +4,7 @@
 -- Description: Add SelectedSellerId to Projects and StatusId to ProposalSubmissions
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 -- =============================================

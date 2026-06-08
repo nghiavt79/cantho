@@ -3,7 +3,7 @@
 -- FullText Catalog & Index Setup
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 -- =============================================

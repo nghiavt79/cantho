@@ -2,7 +2,7 @@
 -- Quick Test: Search for "ozone"
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 PRINT 'Testing search for "ozone"...';

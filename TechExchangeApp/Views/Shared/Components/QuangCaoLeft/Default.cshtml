@@ -1,0 +1,23 @@
+@model TechExchangeApp.ViewModel.QuangCaoLeftVm
+
+<div class="adv-banner left-module">
+
+    @* ===== Repeater động ===== *@
+    @if (Model.Items.Any())
+    {
+        foreach (var row in Model.Items)
+        {
+            <div class="box-adv">
+                <a href="@row.URL"
+                   target="_blank"
+                   title="@row.Title">
+
+                    <img src="@Html.CookedImageURL("254-170", row.SRC)"
+                         alt="@row.Title"
+                         title="@row.Title" />
+                </a>
+            </div>
+        }
+    }
+
+</div>

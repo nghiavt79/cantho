@@ -1,0 +1,80 @@
+﻿@using TechExchangeApp.Web.Helpers
+@{
+    var MainDomain = Html.MainDomain();
+}
+
+<footer class="hp-footer">
+    <div class="container">
+        <div class="row">
+            <!-- Column 1: Info & Logo -->
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="hp-footer-logo-row">
+                    <img src="~/images/logo.png" alt="Techport" class="hp-footer-logo" onerror="this.src='/images/logo.png'">
+                    <div class="hp-footer-copyright-text">
+                        BẢN QUYỀN CỦA TRUNG TÂM THÔNG TIN THỐNG KÊ<br>
+                        VÀ ỨNG DỤNG TIẾN BỘ KHOA HỌC VÀ CÔNG NGHỆ TP.HCM
+                    </div>
+                </div>
+
+                <h6 class="text-white mt-4 mb-3">CƠ QUAN CHỦ QUẢN: SỞ KHOA HỌC VÀ CÔNG NGHỆ TP.HCM</h6>
+                
+                <div class="hp-footer-info-row">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>79 Trương Định, Phường Bến Thành, TP. Hồ Chí Minh</span>
+                </div>
+                <div class="hp-footer-info-row">
+                    <i class="bi bi-telephone"></i>
+                    <span>84-028-38221635 | Fax: 84-028-38291957</span>
+                </div>
+                <div class="hp-footer-info-row">
+                    <i class="bi bi-envelope"></i>
+                    <span>info@techport.vn</span>
+                </div>
+            </div>
+
+            <!-- Column 2: Menu -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <h6>Menu</h6>
+                <ul class="hp-footer-menu-list">
+                    <li><a href="@($"{MainDomain}gioi-thieu-chung-3.html")">Giới thiệu</a></li>
+                    <li><a href="@($"{MainDomain}video.html")">Tech Event</a></li>
+                    <li><a href="@($"{MainDomain}tin-su-kien-44.html")">Tin KH&amp;CN</a></li>
+                    <li><a href="@($"{MainDomain}thao-luan.html")">Thảo luận</a></li>
+                    <li><a href="@($"{MainDomain}lien-he-74.html")">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Connect -->
+            <div class="col-lg-3 col-md-6">
+                <h6>Kết nối với chúng tôi</h6>
+                <div class="hp-footer-social-icons">
+                     <a href="https://www.youtube.com/channel/UCVfkzkHQ3U7xF9oQnWxWgiA" class="hp-footer-social-btn youtube"><i class="bi bi-youtube"></i></a>
+                     <a href="https://www.facebook.com/SanGiaoDichCongNgheTPHCM#" class="hp-footer-social-btn facebook"><i class="bi bi-facebook"></i></a>
+                </div>
+
+                <h6 class="mt-4">Đã đăng ký bộ công thương</h6>
+                <img src="~/image/bocongthuong.png" alt="Bo Cong Thuong" class="hp-footer-bct" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Preserving Side Buttons and Analytics -->
+@await Html.PartialAsync("_SideButtons")
+
+@section Scripts {
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BM80DM112X"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-BM80DM112X');
+    </script>
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P3LZNQKLM1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-P3LZNQKLM1');
+    </script>
+}

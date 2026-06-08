@@ -3,7 +3,7 @@
 -- Fast script to populate SearchIndexContents with Products
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 SET NOCOUNT ON;

@@ -3,7 +3,7 @@
 -- Set Id column as IDENTITY (auto-increment)
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 PRINT 'Fixing SearchIndexContents table...';

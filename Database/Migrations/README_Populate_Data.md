@@ -2,7 +2,7 @@
 
 ## 📁 File Location
 ```
-d:\2026\Techport\TPApp\Database\Migrations\MANUAL_Populate_200Products.sql
+d:\2026\Techport\TechExchangeApp\Database\Migrations\MANUAL_Populate_200Products.sql
 ```
 
 ## 🚀 Cách Chạy
@@ -16,8 +16,8 @@ d:\2026\Techport\TPApp\Database\Migrations\MANUAL_Populate_200Products.sql
 
 ### Option 2: Command Line (nếu SSMS không available)
 ```powershell
-cd d:\2026\Techport\TPApp
-sqlcmd -S localhost -d TechMartNew -U sa -P 111111 -i Database\Migrations\MANUAL_Populate_200Products.sql
+cd d:\2026\Techport\TechExchangeApp
+sqlcmd -S localhost -d TechExchangeNew -U sa -P 111111 -i Database\Migrations\MANUAL_Populate_200Products.sql
 ```
 
 ## ✅ Script Sẽ Làm Gì

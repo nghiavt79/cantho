@@ -7,7 +7,7 @@ $ErrorActionPreference = "Stop"
 
 # Database connection string
 $serverName = "localhost"
-$databaseName = "TechMartNew"
+$databaseName = "TechExchangeNew"
 $username = "sa"
 $password = "111111"
 

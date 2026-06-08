@@ -4,7 +4,7 @@
 -- Search theo tiếng Việt có dấu
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 SET NOCOUNT ON;

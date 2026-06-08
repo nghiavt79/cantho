@@ -1,0 +1,136 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TechExchangeApp.Entities
+{
+    [Table("SanPhamCNTB")]
+    public class SanPhamCNTB
+    {
+        [Key]
+        public int ID { get; set; }
+
+        public string? Code { get; set; }
+        public string? Name { get; set; }
+        public string? QueryString { get; set; }
+        public string? QuyTrinhHinhAnh { get; set; }
+        public string? URL { get; set; }
+
+        public bool? IsYoutube { get; set; }
+
+        public int? XuatXuId { get; set; }
+        public int? MucDoId { get; set; }
+
+        public string? CategoryId { get; set; }
+
+        public string? MoTa { get; set; }
+        public string? ThongSo { get; set; }
+        public string? UuDiem { get; set; }
+
+        public double? OriginalPrice { get; set; }
+        public double? SellPrice { get; set; }
+
+        public string? Currency { get; set; }
+
+        public string? GiaiThuong { get; set; }
+
+        /// <summary>1 = Đơn vị (NhaCungUng), 2 = Cá nhân</summary>
+        public int? OwnerType { get; set; }
+        public string? OwnerEmail { get; set; }
+
+        public int? NCUId { get; set; }
+
+        public string? Khachhang { get; set; }
+
+        public int? StoreId { get; set; }
+
+        public bool? IsSellOff { get; set; }
+        public bool? IsHot { get; set; }
+
+        public int? StatusId { get; set; }
+
+        public DateTime? PublishedDate { get; set; }
+
+        public int? DaBan { get; set; }
+        public int? TinhTrangHang { get; set; }
+        public int? TongSo { get; set; }
+
+        public string? XuatXu { get; set; }
+
+        public int? TinhTP { get; set; }
+
+        public string? DiaChi { get; set; }
+        public string? Phone { get; set; }
+        public string? PhoneOther { get; set; }
+        public string? HoTen { get; set; }
+
+        public string? YahooId { get; set; }
+        public string? SkypeId { get; set; }
+        public string? WebUrl { get; set; }
+
+        public int LanguageId { get; set; }
+
+        public DateTime? Modified { get; set; }
+        public string? Modifier { get; set; }
+
+        public DateTime? bEffectiveDate { get; set; }
+        public DateTime? eEffectiveDate { get; set; }
+
+        public DateTime? Created { get; set; }
+        public string? Creator { get; set; }
+
+        public int? TypeId { get; set; }
+
+        public string? SoBang { get; set; }
+        public DateTime? NgayCapBang { get; set; }
+        public DateTime? ThoiHan { get; set; }
+
+        public string? CoQuanChuTri { get; set; }
+        public string? CoQuanChuQuan { get; set; }
+
+        public int? LoaiDeTai { get; set; }
+        public string? LoaiDeTaiKhac { get; set; }
+        public int? Rating { get; set; }
+
+        public int? ParentId { get; set; }
+
+        public string? MoTaNgan { get; set; }
+
+        public int? Viewed { get; set; }
+
+        public string? Keywords { get; set; }
+
+        public int? SiteId { get; set; }
+
+        public int? TRLLevel { get; set; }
+        public string? TransferMethod { get; set; }
+        public string? TransferMethodKhac { get; set; }
+        public string? TargetCustomer { get; set; }
+        public string? ApplicationNumber { get; set; }
+        public DateTime? AcceptedDate { get; set; }
+        public int? ClaimsCount { get; set; }
+        public string? DevelopmentStage { get; set; }
+        public string? CooperationGoal { get; set; }
+        public string? CooperationType { get; set; }
+
+        // ── Tab 6: Chuyển giao (CKEditor) ──
+        public string? GiaBanDuKien { get; set; }
+        public string? ChiPhiPhatSinh { get; set; }
+        public string? BaoHanhHoTro { get; set; }
+
+        // ── Tab 7: Chứng nhận & Tài liệu số ──
+        public string? BrochureUrl { get; set; }
+        public bool? ChungNhanISO { get; set; }
+        public bool? ChungNhanQuatest { get; set; }
+        public bool? ChungNhanKhac { get; set; }
+        public string? ChungNhanKhacText { get; set; }
+
+        // ── SanPhamTriTue dedicated fields ──
+        public int? DevelopmentStageValue { get; set; }
+        public string? InvestmentGoal { get; set; }
+        public string? InvestmentGoalKhac { get; set; }
+
+        /// <summary>1 = CongNghe, 2 = ThietBi, 3 = SanPhamTriTue</summary>
+        public int ProductType { get; set; } = 1;
+    }
+}

@@ -3,7 +3,7 @@
 -- Debug why search is not returning results
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 SET NOCOUNT ON;

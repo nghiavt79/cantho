@@ -3,7 +3,7 @@
 -- Populate SearchIndexContents with 200 Products
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 -- Step 1: Check if function exists, if not create it

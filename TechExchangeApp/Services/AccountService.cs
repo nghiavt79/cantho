@@ -1,0 +1,196 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using TechExchangeApp.Data;
+using TechExchangeApp.Entities;
+using TechExchangeApp.Helpers;
+using TechExchangeApp.Interfaces;
+using TechExchangeApp.ViewModel;
+
+namespace TechExchangeApp.Services
+{
+    public class AccountService : IAccountService
+    {
+        private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IProjectService _projectService;
+
+        public AccountService(
+            AppDbContext context,
+            UserManager<ApplicationUser> userManager,
+            IPasswordHasher<ApplicationUser> passwordHasher,
+            IWebHostEnvironment environment,
+            IProjectService projectService)
+        {
+            _context = context;
+            _userManager = userManager;
+            _passwordHasher = passwordHasher;
+            _environment = environment;
+            _projectService = projectService;
+        }
+
+        public async Task<ProfileVm?> GetProfileAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return null;
+
+            var docs = await _context.UserVerificationDocs
+                .Where(d => d.UserId == userId)
+                .OrderBy(d => d.DocType)
+                .Select(d => new VerifyDocVm
+                {
+                    Id           = d.Id,
+                    DocType      = d.DocType,
+                    FileName     = d.FileName,
+                    FilePath     = d.FilePath,
+                    UploadedAt   = d.UploadedAt,
+                    ReviewStatus = d.ReviewStatus
+                }).ToListAsync();
+
+            return new ProfileVm
+            {
+                UserName          = user.UserName ?? "",
+                FullName          = user.FullName,
+                Email             = user.Email ?? "",
+                PhoneNumber       = user.PhoneNumber,
+                AvatarUrl         = string.IsNullOrEmpty(user.Img) ? "/images/default-avatar.png" : user.Img,
+                LastLogin         = user.LastLogin,
+                Created           = user.Created,
+                AccountTypeId     = user.AccountTypeId,
+                PhoneVerified     = user.PhoneVerified,
+                EmailVerified     = user.EmailVerified,
+                VerificationLevel = user.VerificationLevel,
+                Docs              = docs
+            };
+        }
+
+        public async Task<bool> UpdateProfileAsync(int userId, ProfileVm model)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return false;
+
+            user.FullName        = model.FullName;
+            user.Email           = model.Email;
+            user.NormalizedEmail = model.Email.ToUpperInvariant();
+            user.AccountTypeId   = model.AccountTypeId;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<string?> UploadAvatarAsync(int userId, IFormFile file)
+        {
+            // Validate image
+            if (!ImageHelper.ValidateImage(file, out string errorMessage))
+            {
+                throw new InvalidOperationException(errorMessage);
+            }
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return null;
+
+            // Delete old avatar
+            ImageHelper.DeleteOldAvatar(user.Img, _environment);
+
+            // Create upload directory
+            var uploadDir = Path.Combine(_environment.WebRootPath, "uploads", "avatars");
+            if (!Directory.Exists(uploadDir))
+            {
+                Directory.CreateDirectory(uploadDir);
+            }
+
+            // Generate unique filename
+            var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var filePath = Path.Combine(uploadDir, fileName);
+
+            // Resize and save
+            await ImageHelper.ResizeAndSaveImageAsync(file, filePath, 300, 300);
+
+            // Update user record
+            var relativePath = $"/uploads/avatars/{fileName}";
+            user.Img = relativePath;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return relativePath;
+        }
+
+        public async Task<bool> ChangePasswordAsync(int userId, ChangePasswordVm model)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return false;
+
+            // Verify current password
+            var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash ?? "", model.CurrentPassword);
+            if (verificationResult == PasswordVerificationResult.Failed)
+            {
+                throw new InvalidOperationException("Mật khẩu hiện tại không đúng");
+            }
+
+            // Hash new password
+            user.PasswordHash = _passwordHasher.HashPassword(user, model.NewPassword);
+            
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> SetPasswordAsync(int userId, string newPassword)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return false;
+
+            // Reuse the same hasher as ChangePasswordAsync
+            user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public Task SetPasswordHashBeforeInsert(ApplicationUser user, string password)
+        {
+            user.PasswordHash = _passwordHasher.HashPassword(user, password);
+            return Task.CompletedTask;
+        }
+
+        public async Task<AccountSidebarVm?> GetSidebarDataAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return null;
+
+            var projectCount = await _projectService.GetProjectCountAsync(userId);
+
+            // Check if user is a seller
+            var isSeller = await _context.NhaCungUngs.AnyAsync(n => n.UserId == userId);
+
+            // Count pending invitations for sellers
+            var invitationCount = 0;
+            if (isSeller)
+            {
+                invitationCount = await _context.RFQInvitations
+                    .Where(i => i.SellerId == userId && 
+                               i.IsActive && 
+                               i.StatusId != 4 && // Not Declined
+                               i.StatusId != 5)   // Not Expired
+                    .CountAsync();
+            }
+
+            return new AccountSidebarVm
+            {
+                FullName = user.FullName ?? user.UserName ?? "User",
+                Email = user.Email ?? "",
+                AvatarUrl = string.IsNullOrEmpty(user.Img) ? "/images/default-avatar.png" : user.Img,
+                ProjectCount = projectCount,
+                InvitationCount = invitationCount,
+                IsSeller = isSeller
+            };
+        }
+    }
+}

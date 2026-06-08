@@ -3,7 +3,7 @@
 -- Search Analytics Tables & Procedures
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 -- =============================================

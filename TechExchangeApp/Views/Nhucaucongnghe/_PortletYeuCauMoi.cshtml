@@ -1,0 +1,30 @@
+﻿@model TechExchangeApp.ViewModel.PortletYeuCauMoiViewModel
+
+@section Scripts {
+    <script>
+        $(function () {
+            $(".ContentYCM").each(function () {
+                $(this).html($(this).text());
+            });
+
+            $('#demo1').scrollbox();
+
+            $('#DangYCCN').click(function () {
+                $('#DangYCCNRegion').slideToggle("slow");
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                return false;
+            });
+        });
+    </script>
+}
+<div class="box-adv NhuCauCN" style="height:52px;padding:13px 0 0 10px;text-align:center">
+    <a href="#" id="DangYCCN">
+        <span class="TitleNhuCauCN">Đăng yêu cầu công nghệ</span>
+    </a>
+</div>
+
+
+
+    @await Component.InvokeAsync("QuangCaoLeft")
+
+

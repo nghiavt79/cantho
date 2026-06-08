@@ -2,7 +2,7 @@
 -- Check SearchIndexContents Data
 -- =============================================
 
-USE TechMartNew;
+USE TechExchangeNew;
 GO
 
 PRINT 'Checking SearchIndexContents table...';
