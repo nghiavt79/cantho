@@ -67,17 +67,21 @@
         </div>
     </section>
 
-    <section class="container home-v2-stats" aria-label="Thống kê">
-        @foreach (var stat in Model.Stats)
-        {
-            <div class="home-v2-stat">
-                <i class="bi @stat.Icon"></i>
-                <div>
-                    <strong>@stat.Value</strong>
-                    <span>@stat.Label</span>
-                </div>
+    <section class="home-v2-stats-wrap" aria-label="Thống kê">
+        <div class="container">
+            <div class="home-v2-stats">
+                @foreach (var stat in Model.Stats)
+                {
+                    <div class="home-v2-stat">
+                        <i class="bi @stat.Icon"></i>
+                        <div>
+                            <strong>@stat.Value</strong>
+                            <span>@stat.Label</span>
+                        </div>
+                    </div>
+                }
             </div>
-        }
+        </div>
     </section>
 
     <section class="container home-v2-band">
