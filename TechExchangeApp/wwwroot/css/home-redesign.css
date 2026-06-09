@@ -288,7 +288,7 @@
 .home-v2-hero__bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.78) 36%, rgba(255,255,255,0.14) 62%, rgba(255,255,255,0) 100%);
+    background: none;
     opacity: 1;
     pointer-events: none;
 }
