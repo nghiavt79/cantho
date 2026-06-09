@@ -1,80 +1,62 @@
-﻿@using TechExchangeApp.Web.Helpers
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
-    var MainDomain = Html.MainDomain();
+    var shortName = Configuration["SiteBranding:ShortName"] ?? "TechExchange";
+    var organizationName = Configuration["SiteBranding:OrganizationName"] ?? "TechExchange";
+    var tagline = Configuration["SiteBranding:Tagline"] ?? "";
+    var phone = Configuration["SiteBranding:Phone"] ?? "";
+    var email = Configuration["SiteBranding:Email"] ?? "";
+    var address = Configuration["SiteBranding:Address"] ?? "";
 }
 
-<footer class="hp-footer">
+<footer class="site-footer-v2">
     <div class="container">
-        <div class="row">
-            <!-- Column 1: Info & Logo -->
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="hp-footer-logo-row">
-                    <img src="~/images/logo.png" alt="Techport" class="hp-footer-logo" onerror="this.src='/images/logo.png'">
-                    <div class="hp-footer-copyright-text">
-                        BẢN QUYỀN CỦA TRUNG TÂM THÔNG TIN THỐNG KÊ<br>
-                        VÀ ỨNG DỤNG TIẾN BỘ KHOA HỌC VÀ CÔNG NGHỆ TP.HCM
-                    </div>
+        <div class="site-footer-v2__grid">
+            <div>
+                <div class="site-footer-v2__brand">
+                    <img src="/images/logo.png" alt="@shortName" onerror="this.style.display='none'">
+                    <strong>@shortName</strong>
                 </div>
-
-                <h6 class="text-white mt-4 mb-3">CƠ QUAN CHỦ QUẢN: SỞ KHOA HỌC VÀ CÔNG NGHỆ TP.HCM</h6>
-                
-                <div class="hp-footer-info-row">
-                    <i class="bi bi-geo-alt"></i>
-                    <span>79 Trương Định, Phường Bến Thành, TP. Hồ Chí Minh</span>
-                </div>
-                <div class="hp-footer-info-row">
-                    <i class="bi bi-telephone"></i>
-                    <span>84-028-38221635 | Fax: 84-028-38291957</span>
-                </div>
-                <div class="hp-footer-info-row">
-                    <i class="bi bi-envelope"></i>
-                    <span>info@techport.vn</span>
+                <p>@organizationName là đơn vị sự nghiệp khoa học và công nghệ, hỗ trợ kết nối nghiên cứu, ứng dụng và chuyển giao công nghệ.</p>
+                <div class="site-footer-v2__social">
+                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    <a href="#" aria-label="Zalo"><i class="bi bi-chat-dots"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                 </div>
             </div>
 
-            <!-- Column 2: Menu -->
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <h6>Menu</h6>
-                <ul class="hp-footer-menu-list">
-                    <li><a href="@($"{MainDomain}gioi-thieu-chung-3.html")">Giới thiệu</a></li>
-                    <li><a href="@($"{MainDomain}video.html")">Tech Event</a></li>
-                    <li><a href="@($"{MainDomain}tin-su-kien-44.html")">Tin KH&amp;CN</a></li>
-                    <li><a href="@($"{MainDomain}thao-luan.html")">Thảo luận</a></li>
-                    <li><a href="@($"{MainDomain}lien-he-74.html")">Liên hệ</a></li>
-                </ul>
+            <div>
+                <h3>Liên kết nhanh</h3>
+                <a href="/">Trang chủ</a>
+                <a href="/gioi-thieu-chung-3.html">Giới thiệu</a>
+                <a href="/dich-vu-tu-van-8.html">Dịch vụ & Giải pháp</a>
+                <a href="/tin-su-kien-44.html">Tin tức - Sự kiện</a>
+                <a href="/lien-he-74.html">Liên hệ</a>
             </div>
 
-            <!-- Column 3: Connect -->
-            <div class="col-lg-3 col-md-6">
-                <h6>Kết nối với chúng tôi</h6>
-                <div class="hp-footer-social-icons">
-                     <a href="https://www.youtube.com/channel/UCVfkzkHQ3U7xF9oQnWxWgiA" class="hp-footer-social-btn youtube"><i class="bi bi-youtube"></i></a>
-                     <a href="https://www.facebook.com/SanGiaoDichCongNgheTPHCM#" class="hp-footer-social-btn facebook"><i class="bi bi-facebook"></i></a>
-                </div>
-
-                <h6 class="mt-4">Đã đăng ký bộ công thương</h6>
-                <img src="~/image/bocongthuong.png" alt="Bo Cong Thuong" class="hp-footer-bct" onerror="this.style.display='none'">
+            <div>
+                <h3>Dịch vụ</h3>
+                <a href="/cong-nghe.html">Cung cấp công nghệ</a>
+                <a href="/dang-ky-tu-van.html">Tư vấn & chuyển giao công nghệ</a>
+                <a href="/dich-vu-tu-van-8.html">Thử nghiệm - Kiểm định</a>
+                <a href="/chuyen-gia.html">Mạng lưới chuyên gia</a>
             </div>
+
+            <div>
+                <h3>Liên hệ</h3>
+                <p><i class="bi bi-geo-alt"></i> @address</p>
+                <p><i class="bi bi-telephone"></i> @phone</p>
+                <p><i class="bi bi-envelope"></i> @email</p>
+                <form class="site-footer-v2__newsletter">
+                    <input type="email" placeholder="Nhập email của bạn" aria-label="Email nhận bản tin">
+                    <button type="submit" aria-label="Đăng ký nhận bản tin"><i class="bi bi-send"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="site-footer-v2__bottom">
+            <span>© @DateTime.Now.Year @shortName. All rights reserved.</span>
+            <span>@tagline</span>
         </div>
     </div>
 </footer>
-
-<!-- Preserving Side Buttons and Analytics -->
-@await Html.PartialAsync("_SideButtons")
-
-@section Scripts {
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BM80DM112X"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-BM80DM112X');
-    </script>
-     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P3LZNQKLM1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-P3LZNQKLM1');
-    </script>
-}

@@ -1,70 +1,261 @@
-@{
-    ViewData["Title"] = "Home Page";
-}
-
 @model TechExchangeApp.ViewModel.HomeViewModel
 
-<div class="home-page-container">
-    @await Html.PartialAsync("_TopBigBanner")
-    @await Html.PartialAsync("_MainIcon")
+@{
+    ViewData["Title"] = "Trang chủ";
+    var branding = Model.Branding;
+}
 
-    @* ── Enterprise Analytics Section ── *@
-    @await Html.PartialAsync("_AnalyticsSection")
-
-    <div class="container">
-        <h3 class="hp-section-title">Công nghệ nổi bật</h3>
-        <ul class="nav tech-tabs mb-0" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#cnmcn" type="button">
-                    Công nghệ mới cập nhật
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#vdcn" type="button">
-                    Video công nghệ
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#gpcn" type="button">
-                    Trên tay công nghệ
-                </button>
-            </li>
-        </ul>
-
-        <div class="tab-content pt-4">
-            <div class="tab-pane fade show active" id="cnmcn">
-                @await Html.PartialAsync(
-                "_CongNgheMoiCapNhat",
-                            (IEnumerable<TechExchangeApp.Entities.SanPhamCNTB>)ViewBag.NewTech
-                            )
-            </div>
-
-            <div class="tab-pane fade" id="vdcn">
-                @await Html.PartialAsync("_VideoCongNghe", Model.VideoCongNghe)
-            </div>
-
-            <div class="tab-pane fade" id="gpcn">
-                @await Html.PartialAsync("_GiaiPhapCongNghe", Model.TinSuKien)
+<div class="home-v2">
+    <section class="home-v2-hero">
+        <div class="home-v2-hero__bg"></div>
+        <div class="container">
+            <div class="home-v2-hero__grid">
+                <div class="home-v2-hero__content">
+                    <h1>Kết nối nghiên cứu, ứng dụng và chuyển giao công nghệ cho @branding.ProvinceName</h1>
+                    <p>
+                        @branding.ShortName là cầu nối giữa nhà khoa học, doanh nghiệp và cộng đồng,
+                        đưa tri thức và công nghệ vào đời sống, kiến tạo giá trị thực tiễn và thúc đẩy đổi mới sáng tạo.
+                    </p>
+                    <div class="home-v2-hero__actions">
+                        <a class="home-v2-btn home-v2-btn--primary" href="/dich-vu-tu-van-8.html">
+                            Khám phá dịch vụ <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a class="home-v2-btn home-v2-btn--light" href="/cong-nghe.html">
+                            Xem các công nghệ <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="home-v2-hero__visual" aria-hidden="true">
+                    <div class="home-v2-orbit home-v2-orbit--main">
+                        <img src="/images/research.jpg" alt="">
+                    </div>
+                    <div class="home-v2-orbit home-v2-orbit--small home-v2-orbit--a">
+                        <img src="/images/254-170_noImage.jpg" alt="">
+                    </div>
+                    <div class="home-v2-orbit home-v2-orbit--small home-v2-orbit--b">
+                        <img src="/images/NoImages.jpg" alt="">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <section class="home-v2-search-wrap">
+        <div class="container">
+            <div class="home-v2-search-panel">
+                <h2>Tìm kiếm công nghệ, thiết bị, chuyên gia và dịch vụ</h2>
+                <div class="home-v2-search-tabs" role="tablist" aria-label="Nhóm tìm kiếm">
+                    <button class="active" type="button" data-search-type="Technology">Công nghệ</button>
+                    <button type="button" data-search-type="Equipment">Thiết bị</button>
+                    <button type="button" data-search-type="Expert">Chuyên gia</button>
+                    <button type="button" data-search-type="Service">Dịch vụ</button>
+                    <button type="button" data-search-type="Demand">Nhu cầu công nghệ</button>
+                </div>
+                <form class="home-v2-search-form" action="/Search" method="get">
+                    <input type="hidden" name="type" value="Technology" id="homeSearchType">
+                    <input type="text" name="q" placeholder="Nhập từ khóa: công nghệ, thiết bị, chuyên gia, dịch vụ..." aria-label="Từ khóa tìm kiếm">
+                    <select name="field" aria-label="Lĩnh vực">
+                        <option value="">Tất cả lĩnh vực</option>
+                        <option value="nong-nghiep">Nông nghiệp</option>
+                        <option value="moi-truong">Môi trường</option>
+                        <option value="nang-luong">Năng lượng</option>
+                        <option value="sinh-hoc">Công nghệ sinh học</option>
+                    </select>
+                    <button type="submit">
+                        <i class="bi bi-search"></i> Tìm kiếm
+                    </button>
+                </form>
+                <div class="home-v2-tags">
+                    <span>Tìm kiếm phổ biến:</span>
+                    @foreach (var tag in Model.PopularTags)
+                    {
+                        <a href="/Search?q=@Uri.EscapeDataString(tag)&type=Technology">@tag</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section class="container home-v2-stats" aria-label="Thống kê">
+        @foreach (var stat in Model.Stats)
+        {
+            <div class="home-v2-stat">
+                <i class="bi @stat.Icon"></i>
+                <div>
+                    <strong>@stat.Value</strong>
+                    <span>@stat.Label</span>
+                </div>
+            </div>
+        }
+    </section>
 
-    @* YeuCauCongNghe *@
-    @await Html.PartialAsync("_YeuCauCongNghe", Model.YeuCauCongNghe)
+    <section class="container home-v2-band">
+        <div class="home-v2-grid home-v2-grid--intro">
+            <div class="home-v2-card home-v2-card--wide">
+                <h2>Chúng tôi làm gì?</h2>
+                <div class="home-v2-feature-grid">
+                    @foreach (var item in Model.WhatWeDo)
+                    {
+                        <a class="home-v2-feature" href="@item.Url">
+                            <i class="bi @item.Icon"></i>
+                            <span>@item.Title</span>
+                        </a>
+                    }
+                </div>
+            </div>
 
-    @* TinSuKien *@
-    @await Html.PartialAsync("_TinSuKien", Model.TinSuKien)
+            <div class="home-v2-card">
+                <h2>Dịch vụ nổi bật</h2>
+                <div class="home-v2-service-list">
+                    @foreach (var item in Model.Services)
+                    {
+                        <a class="home-v2-service" href="@item.Url">
+                            <i class="bi @item.Icon"></i>
+                            <span>
+                                <strong>@item.Title</strong>
+                                <small>@item.Description</small>
+                            </span>
+                        </a>
+                    }
+                </div>
+            </div>
 
-    @* Hệ thống sàn giao dịch công nghệ *@
-    @* Đối tác *@
-    @* Đơn vị tư vấn *@
-    @* → Gộp vào _ManLuoiDoiTac *@
-    @await Component.InvokeAsync("ManLuoiDoiTac")
+            <div class="home-v2-card">
+                <h2>Vì sao chọn @branding.ShortName?</h2>
+                <div class="home-v2-reason-list">
+                    @foreach (var item in Model.Reasons)
+                    {
+                        <div class="home-v2-reason">
+                            <i class="bi @item.Icon"></i>
+                            <span>@item.Title</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container home-v2-section">
+        <div class="home-v2-section-head">
+            <h2>Công nghệ / Dự án nổi bật</h2>
+            <a href="/cong-nghe.html">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="home-v2-tech-row">
+            @foreach (var item in Model.FeaturedTechnologies)
+            {
+                <a class="home-v2-tech-card" href="@item.Url">
+                    <div class="home-v2-tech-card__image">
+                        <img src="@item.ImageUrl" alt="@item.Title" onerror="this.src='/images/254-170_noImage.jpg'">
+                        <span>@item.Category</span>
+                    </div>
+                    <strong>@item.Title</strong>
+                    <p>@item.Description</p>
+                </a>
+            }
+        </div>
+    </section>
+
+    <section class="container home-v2-section">
+        <div class="home-v2-process">
+            <h2>Quy trình hỗ trợ</h2>
+            <div class="home-v2-process__row">
+                @foreach (var step in Model.ProcessSteps)
+                {
+                    <div class="home-v2-process-step">
+                        <div class="home-v2-process-step__icon">
+                            <span>@step.Number</span>
+                            <i class="bi @step.Icon"></i>
+                        </div>
+                        <strong>@step.Title</strong>
+                        <p>@step.Description</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="container home-v2-section">
+        <div class="home-v2-grid home-v2-grid--news">
+            <div class="home-v2-card">
+                <div class="home-v2-section-head home-v2-section-head--compact">
+                    <h2>Tin tức - Sự kiện</h2>
+                    <a href="/tin-su-kien-44.html">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="home-v2-news-list">
+                    @foreach (var item in Model.FeaturedNews)
+                    {
+                        <a class="home-v2-news-card" href="@item.Url">
+                            <img src="@item.ImageUrl" alt="@item.Title" onerror="this.src='/images/254-170_noImage.jpg'">
+                            <span>@(item.PublishedDate?.ToString("dd/MM/yyyy") ?? "Đang cập nhật")</span>
+                            <strong>@item.Title</strong>
+                            <p>@item.Description</p>
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="home-v2-card">
+                <div class="home-v2-section-head home-v2-section-head--compact">
+                    <h2>Chuyên gia của chúng tôi</h2>
+                    <a href="/chuyen-gia.html">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="home-v2-expert-list">
+                    @foreach (var item in Model.Experts)
+                    {
+                        <a class="home-v2-expert-card" href="@item.Url">
+                            <img src="@item.ImageUrl" alt="@item.Name" onerror="this.src='/images/NoImages.jpg'">
+                            <strong>@item.Name</strong>
+                            <span>@item.Title</span>
+                            <p>@item.Field</p>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container home-v2-section">
+        <div class="home-v2-partners">
+            <h2>Đối tác đồng hành</h2>
+            <div class="home-v2-partner-row">
+                @foreach (var partner in Model.Partners)
+                {
+                    <div class="home-v2-partner">
+                        @if (!string.IsNullOrEmpty(partner.LogoUrl))
+                        {
+                            <img src="@partner.LogoUrl" alt="@partner.Name">
+                        }
+                        else
+                        {
+                            <span>@partner.Name</span>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="container home-v2-cta">
+        <div>
+            <h2>Bạn cần tư vấn giải pháp công nghệ phù hợp?</h2>
+            <p>Đội ngũ chuyên gia của @branding.ShortName luôn sẵn sàng đồng hành cùng bạn.</p>
+        </div>
+        <a class="home-v2-btn home-v2-btn--light" href="/dang-ky-tu-van.html">
+            Đăng ký tư vấn ngay <i class="bi bi-arrow-right"></i>
+        </a>
+    </section>
 </div>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="~/js/home-analytics.js" asp-append-version="true"></script>
+    <script>
+        document.querySelectorAll('.home-v2-search-tabs button').forEach(function (button) {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('.home-v2-search-tabs button').forEach(function (item) {
+                    item.classList.remove('active');
+                });
+                button.classList.add('active');
+                document.getElementById('homeSearchType').value = button.dataset.searchType || 'Technology';
+            });
+        });
+    </script>
 }

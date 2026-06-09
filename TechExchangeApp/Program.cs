@@ -48,6 +48,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // --- Configuration ---
 builder.Services.Configure<TechExchangeApp.Helpers.AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.Configure<TechExchangeApp.Configuration.SiteBrandingOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.SiteBrandingOptions.SectionName));
 builder.Services.Configure<TechExchangeApp.Configuration.FeatureFlags>(builder.Configuration.GetSection("FeatureFlags"));
 builder.Services.Configure<TechExchangeApp.Configuration.DashboardJobOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.DashboardJobOptions.SectionName));
 builder.Services.Configure<TechExchangeApp.Configuration.OtpSettings>(builder.Configuration.GetSection(TechExchangeApp.Configuration.OtpSettings.SectionName));
