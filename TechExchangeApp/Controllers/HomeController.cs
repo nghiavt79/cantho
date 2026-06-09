@@ -152,7 +152,7 @@ namespace TechExchangeApp.Controllers
 
         private static List<HomePartnerVm> BuildPartners()
         {
-            var names = new[] { "Đại học Cần Thơ", "Đại học Nam Cần Thơ", "HIDS", "VNU-HCM", "VNPT", "Vietcombank", "BIDV", "Agribank" };
+            var names = new[] { "Đại học Cần Thơ", "Đại học Nam Cần Thơ", "HIDS", "VNU-CT", "VNPT", "Vietcombank", "BIDV", "Agribank" };
             return names.Select(x => new HomePartnerVm { Name = x }).ToList();
         }
 

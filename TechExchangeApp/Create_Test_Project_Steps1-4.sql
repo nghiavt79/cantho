@@ -55,7 +55,7 @@ VALUES (
     N'Nguyễn Văn Test',
     N'Giám đốc Công nghệ',
     N'Công ty TNHH Công nghệ ABC',
-    N'123 Đường Lê Lợi, Quận 1, TP.HCM',
+    N'123 Đường Lê Lợi, Quận 1, Thành Phố Cần Thơ',
     N'0901234567',
     N'test@abc.com.vn',
     N'Hệ thống AI Phân tích Dữ liệu Lớn',

@@ -11,7 +11,7 @@
 -- ══════════════════════════════════════════════════
 INSERT INTO [ImagesAdver] ([Title], [SRC], [URL], [Subject], [StatusID], [Sort], [LanguageID], [Domain], [SiteId], [Created], [Creator])
 VALUES
-(N'SGDCN TP.HCM',
+(N'SGDCN Thành Phố Cần Thơ',
  N'/uploads/logo/Logo-SGDCN/San-giao-dich-cong-nghe-TP-HCM.jpg',
  N'https://techport.vn/index.html',
  2, 3, 1, 1, N'techport.vn', 1, GETDATE(), N'admin'),
@@ -42,12 +42,12 @@ VALUES
 -- ══════════════════════════════════════════════════
 INSERT INTO [ImagesAdver] ([Title], [SRC], [URL], [Subject], [StatusID], [Sort], [LanguageID], [Domain], [SiteId], [Created], [Creator])
 VALUES
-(N'Viettel TP.HCM',
+(N'Viettel Thành Phố Cần Thơ',
  N'/uploads/logo/Logo-don-vi-tu-van/Viettel.png',
  N'https://www.viettel.com.vn',
  3, 3, 1, 1, N'techport.vn', 1, GETDATE(), N'admin'),
 
-(N'VNPT TP.HCM',
+(N'VNPT Thành Phố Cần Thơ',
  N'/uploads/logo/Logo-don-vi-tu-van/VNPT.jpg',
  N'https://www.vnpt.vn',
  3, 3, 2, 1, N'techport.vn', 1, GETDATE(), N'admin'),
@@ -128,7 +128,7 @@ VALUES
  N'https://www.hoisangche.org.vn',
  5, 3, 11, 1, N'techport.vn', 1, GETDATE(), N'admin'),
 
-(N'HCA TP.HCM',
+(N'HCA Thành Phố Cần Thơ',
  N'/uploads/logo/Logo-doi-tac/Hoi-tin-hoc-tphcm.jpg',
  N'https://www.hca.org.vn',
  5, 3, 12, 1, N'techport.vn', 1, GETDATE(), N'admin'),

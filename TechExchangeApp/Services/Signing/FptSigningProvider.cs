@@ -187,7 +187,7 @@ namespace TechExchangeApp.Services.Signing
                         requestRef     = stubRef,
                         callbackSecret = "",
                         certSerial     = "FPT-STUB-CERT-001",
-                        certSubject    = $"CN={signer.FullName}, O=Stub Corp, L=HCMC",
+                        certSubject    = $"CN={signer.FullName}, O=Stub Corp, L=Can Tho",
                         certIssuer     = "CN=FPT-CA SHA-256, O=FPT Information System"
                     };
                     var json    = JsonSerializer.Serialize(mockPayload);
