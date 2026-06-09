@@ -152,8 +152,17 @@ namespace TechExchangeApp.Controllers
 
         private static List<HomePartnerVm> BuildPartners()
         {
-            var names = new[] { "Đại học Cần Thơ", "Đại học Nam Cần Thơ", "HIDS", "VNU-CT", "VNPT", "Vietcombank", "BIDV", "Agribank" };
-            return names.Select(x => new HomePartnerVm { Name = x }).ToList();
+            return new List<HomePartnerVm>
+            {
+                new() { Name = "S.Light Ora", LogoUrl = "/image/logo-doi-tac/01-slight-ora.jpg" },
+                new() { Name = "Viện Khoa học và Kỹ thuật Cần Thơ", LogoUrl = "/image/logo-doi-tac/02-vien-khkt-can-tho.png" },
+                new() { Name = "Pharos Marine", LogoUrl = "/image/logo-doi-tac/03-pharos-marine.png" },
+                new() { Name = "Design24", LogoUrl = "/image/logo-doi-tac/04-design24.webp" },
+                new() { Name = "FPT Polytechnic Cần Thơ", LogoUrl = "/image/logo-doi-tac/05-fpt-polytechnic-can-tho.png" },
+                new() { Name = "Phù Sa Genomics", LogoUrl = "/image/logo-doi-tac/06-phu-sa-genomics.png" },
+                new() { Name = "Bệnh viện Đại học Nam Cần Thơ", LogoUrl = "/image/logo-doi-tac/07-benh-vien-dai-hoc-nam-can-tho.png" },
+                new() { Name = "Hygie & Panacee", LogoUrl = "/image/logo-doi-tac/08-hygie-panacee.png" }
+            };
         }
 
         private static List<string> BuildPopularTags()
