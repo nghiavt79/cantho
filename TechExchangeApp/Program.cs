@@ -210,19 +210,6 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.Use(async (ctx, next) =>
-{
-    var path = ctx.Request.Path.Value;
-    if (!string.IsNullOrEmpty(path) && path.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
-    {
-        var cleanPath = path[..^5];
-        ctx.Response.Redirect(cleanPath + ctx.Request.QueryString, permanent: true);
-        return;
-    }
-
-    await next();
-});
-
 app.UseRouting();
 
 // --- Bắt buộc: UseSession phải nằm ở đây ---
