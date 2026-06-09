@@ -217,15 +217,12 @@
                 <div class="home-v2-partner-row">
                     @foreach (var customer in Model.Customers)
                     {
-                        <div class="home-v2-partner">
+                        <div class="home-v2-partner @(!string.IsNullOrEmpty(customer.LogoUrl) ? "home-v2-partner--logo" : "")">
                             @if (!string.IsNullOrEmpty(customer.LogoUrl))
                             {
                                 <img src="@customer.LogoUrl" alt="@customer.Name">
                             }
-                            else
-                            {
-                                <span>@customer.Name</span>
-                            }
+                            <span class="home-v2-partner-name">@customer.Name</span>
                         </div>
                     }
                 </div>
@@ -239,15 +236,12 @@
             <div class="home-v2-partner-row">
                 @foreach (var partner in Model.Partners)
                 {
-                    <div class="home-v2-partner">
+                    <div class="home-v2-partner @(!string.IsNullOrEmpty(partner.LogoUrl) ? "home-v2-partner--logo" : "")">
                         @if (!string.IsNullOrEmpty(partner.LogoUrl))
                         {
                             <img src="@partner.LogoUrl" alt="@partner.Name">
                         }
-                        else
-                        {
-                            <span>@partner.Name</span>
-                        }
+                        <span class="home-v2-partner-name">@partner.Name</span>
                     </div>
                 }
             </div>

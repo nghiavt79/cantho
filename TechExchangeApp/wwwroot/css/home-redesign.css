@@ -875,6 +875,7 @@
 }
 
 .home-v2-partner {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -887,6 +888,16 @@
     font-weight: 800;
     font-size: 13px;
     text-align: center;
+    overflow: hidden;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, color .18s ease;
+    will-change: transform;
+}
+
+.home-v2-partner:hover {
+    transform: translateY(-4px);
+    border-color: #69c7df;
+    box-shadow: 0 12px 26px rgba(3, 95, 176, .14);
+    color: #0068b7;
 }
 
 .home-v2-partner img {
@@ -896,6 +907,44 @@
     width: auto;
     height: auto;
     object-fit: contain;
+    transition: transform .18s ease, filter .18s ease;
+}
+
+.home-v2-partner:hover img {
+    transform: scale(1.05);
+    filter: saturate(1.08) contrast(1.04);
+}
+
+.home-v2-partner-name {
+    display: block;
+    color: #1d5b91;
+    line-height: 1.25;
+}
+
+.home-v2-partner--logo .home-v2-partner-name {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    left: 8px;
+    opacity: 0;
+    transform: translateY(12px);
+    color: #005d9e;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    transition: transform .18s ease, opacity .18s ease;
+}
+
+.home-v2-partner--logo:hover img {
+    transform: translateY(-9px) scale(.92);
+    opacity: .82;
+}
+
+.home-v2-partner--logo:hover .home-v2-partner-name {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .home-v2-cta {
