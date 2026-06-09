@@ -50,7 +50,7 @@ namespace TechExchangeApp.Controllers
                 Services = BuildServices(),
                 Reasons = BuildReasons(),
                 ProcessSteps = BuildProcessSteps(),
-                Partners = BuildPartners(),
+                Partners = await LoadPartnersAsync(),
                 PopularTags = BuildPopularTags(),
                 FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(5)),
                 FeaturedNews = LoadFeaturedNews(),
@@ -150,19 +150,39 @@ namespace TechExchangeApp.Controllers
             };
         }
 
-        private static List<HomePartnerVm> BuildPartners()
+        private async Task<List<HomePartnerVm>> LoadPartnersAsync()
         {
-            return new List<HomePartnerVm>
+            var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+
+            return await _context.ImageAdvers
+                .AsNoTracking()
+                .Where(x => x.Subject == 5 && x.StatusID == 3 && x.LanguageID == lang)
+                .OrderBy(x => x.Sort ?? int.MaxValue)
+                .ThenBy(x => x.ID)
+                .Take(8)
+                .Select(x => new HomePartnerVm
+                {
+                    Name = x.Title ?? "",
+                    LogoUrl = NormalizeImageUrl(x.SRC)
+                })
+                .ToListAsync();
+        }
+
+        private static string NormalizeImageUrl(string? src)
+        {
+            if (string.IsNullOrWhiteSpace(src))
             {
-                new() { Name = "S.Light Ora", LogoUrl = "/image/logo-doi-tac/01-slight-ora.jpg" },
-                new() { Name = "Viện Khoa học và Kỹ thuật Cần Thơ", LogoUrl = "/image/logo-doi-tac/02-vien-khkt-can-tho.png" },
-                new() { Name = "Pharos Marine", LogoUrl = "/image/logo-doi-tac/03-pharos-marine.png" },
-                new() { Name = "Design24", LogoUrl = "/image/logo-doi-tac/04-design24.webp" },
-                new() { Name = "FPT Polytechnic Cần Thơ", LogoUrl = "/image/logo-doi-tac/05-fpt-polytechnic-can-tho.png" },
-                new() { Name = "Phù Sa Genomics", LogoUrl = "/image/logo-doi-tac/06-phu-sa-genomics.png" },
-                new() { Name = "Bệnh viện Đại học Nam Cần Thơ", LogoUrl = "/image/logo-doi-tac/07-benh-vien-dai-hoc-nam-can-tho.png" },
-                new() { Name = "Hygie & Panacee", LogoUrl = "/image/logo-doi-tac/08-hygie-panacee.png" }
-            };
+                return "";
+            }
+
+            if (src.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                src.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+                src.StartsWith("/", StringComparison.Ordinal))
+            {
+                return src;
+            }
+
+            return "/" + src.TrimStart('~', '/');
         }
 
         private static List<string> BuildPopularTags()
