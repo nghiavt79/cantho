@@ -279,9 +279,10 @@
 }
 
 .home-v2-hero {
+    --home-hero-height: clamp(430px, 33.333vw, 724px);
     position: relative;
     overflow: hidden;
-    min-height: 410px;
+    min-height: var(--home-hero-height);
     background: #eaf7ff var(--home-hero-image) center top / cover no-repeat;
 }
 
@@ -300,7 +301,8 @@
     grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1fr);
     gap: 34px;
     align-items: center;
-    min-height: 410px;
+    box-sizing: border-box;
+    min-height: var(--home-hero-height);
     padding: 34px 0 86px;
 }
 
@@ -1092,11 +1094,10 @@
     }
 
     .home-v2-hero {
-        min-height: 360px;
+        --home-hero-height: 360px;
     }
 
     .home-v2-hero__grid {
-        min-height: 360px;
         padding: 34px 0 88px;
     }
 
