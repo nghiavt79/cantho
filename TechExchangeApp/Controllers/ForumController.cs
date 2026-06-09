@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TechExchangeApp.Data;
@@ -161,7 +161,7 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = x.ForumYCTBId,
                     Title = x.Title,
-                    Url = $"{_mainDomain}chi-tiet-thao-luan-{x.ForumYCTBId}.html",
+                    Url = $"{_mainDomain}chi-tiet-thao-luan-{x.ForumYCTBId}",
                     AuthorInfo = x.FullName, // used as name
                     HinhDaiDien = string.IsNullOrEmpty(x.HinhDaiDien) ? $"{_mainDomain}images/TimSanPham.jpg" : x.HinhDaiDien,
                     Phone = x.Phone,
@@ -188,7 +188,7 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = x.CatId,
                     Title = x.Title,
-                    Url = $"{_mainDomain}thao-luan-{x.CatId}-1.html"
+                    Url = $"{_mainDomain}thao-luan-{x.CatId}-1"
                 })
                 .ToList();
 
@@ -243,7 +243,7 @@ namespace TechExchangeApp.Controllers
                 _context.SaveChanges();
             }
 
-            return Redirect($"{_mainDomain}chi-tiet-thao-luan-{id}.html");
+            return Redirect($"{_mainDomain}chi-tiet-thao-luan-{id}");
         }
 
         // ================= LOAD ALL =================
@@ -324,7 +324,7 @@ namespace TechExchangeApp.Controllers
             {
                 Id = x.ForumYCTBId,
                 Title = x.Title,
-                Url = $"{_mainDomain}chi-tiet-thao-luan-{x.ForumYCTBId}.html",
+                Url = $"{_mainDomain}chi-tiet-thao-luan-{x.ForumYCTBId}",
                 AuthorInfo = $"<b>{x.LastModifiedBy}</b> lúc <i>{x.LastModified}</i>",
                 Viewed = x.Viewed ?? 0,
                 Like = x.Like ?? 0,
@@ -342,7 +342,7 @@ namespace TechExchangeApp.Controllers
             {
                 Id = x.ForumYCDVId,
                 Title = x.Title,
-                Url = $"{_mainDomain}chi-tiet-thao-luanDVTV-{x.ForumYCDVId}.html",
+                Url = $"{_mainDomain}chi-tiet-thao-luanDVTV-{x.ForumYCDVId}",
                 AuthorInfo = $"<b>{x.LastModifiedBy}</b> lúc <i>{x.LastModified}</i>",
                 Viewed = x.Viewed ?? 0,
                 Like = x.Like ?? 0,
@@ -374,7 +374,7 @@ namespace TechExchangeApp.Controllers
                 .Select(x => new CategoryVm
                 {
                     Title = x.Title,
-                    Url = $"{_mainDomain}thao-luan-{x.CatId}-1.html"
+                    Url = $"{_mainDomain}thao-luan-{x.CatId}-1"
                 })
                 .ToList();
         }
@@ -452,7 +452,7 @@ namespace TechExchangeApp.Controllers
                     ImageUrl = CookedImageURL("254-170", x.HinhDaiDien, _mainDomain),
                     Tooltip = x.NoiDung,
                     DateText = DateToString(x.Created, "MM/dd/yyyy"),
-                    Url = $"{_mainDomain}chi-tiet-thao-luan-{x.ForumYCTBId}.html"
+                    Url = $"{_mainDomain}chi-tiet-thao-luan-{x.ForumYCTBId}"
                 })
                 .ToList();
 
@@ -564,7 +564,7 @@ namespace TechExchangeApp.Controllers
                     ImageUrl = CookedImageURL("254-170", q.Image, _mainDomain),
                     Tooltip = q.Title,
                     DateText = DateToString(q.PublishedDate, "mm/dd/yyyy"),
-                    Url = $"{_mainDomain}{q.MenuId}/{q.QueryString}-{q.Id}.html"
+                    Url = $"{_mainDomain}{q.MenuId}/{q.QueryString}-{q.Id}"
                 })
                 .ToList();
 
@@ -602,7 +602,7 @@ namespace TechExchangeApp.Controllers
                     ImageUrl = CookedImageURL("254-170", q.Image, _mainDomain),
                     Tooltip = q.Title,
                     DateText = DateToString(q.PublishedDate, "mm/dd/yyyy"),
-                    Url = $"{_mainDomain}{q.MenuId}/{q.QueryString}-{q.Id}.html"
+                    Url = $"{_mainDomain}{q.MenuId}/{q.QueryString}-{q.Id}"
                 })
                 .ToList();
 

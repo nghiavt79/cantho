@@ -26,22 +26,10 @@ namespace TechExchangeApp.Controllers
         }
 
         // =====================================================================
-        // GET /nha-cung-ung → redirect to /nha-cung-ung.html
+        // GET /nha-cung-ung.html
+        // GET /nha-cung-ung?cateId=3&page=1
         // =====================================================================
         [HttpGet("nha-cung-ung")]
-        public IActionResult IndexRedirect(int cateId = 0, int page = 1)
-        {
-            var qs = cateId > 0 || page > 1
-                ? $"?cateId={cateId}&page={page}"
-                : "";
-            return RedirectPermanent($"/nha-cung-ung.html{qs}");
-        }
-
-        // =====================================================================
-        // GET /nha-cung-ung.html
-        // GET /nha-cung-ung.html?cateId=3&page=1
-        // =====================================================================
-        [HttpGet("nha-cung-ung.html")]
         public IActionResult Index(int cateId = 0, int page = 1)
         {
             page = Math.Max(1, page);
@@ -106,7 +94,7 @@ namespace TechExchangeApp.Controllers
         // =====================================================================
         // GET /nha-cung-ung/{slug}-{id}.html
         // =====================================================================
-        [HttpGet("nha-cung-ung/{slug}-{id:int}.html")]
+        [HttpGet("nha-cung-ung/{slug}-{id:int}")]
         public IActionResult Detail(string slug, int id)
         {
             var entity = _context.NhaCungUngs
@@ -228,19 +216,12 @@ namespace TechExchangeApp.Controllers
                     PriceText   = p.OriginalPrice == null ? ""
                         : string.Format("{0:N0} {1}", p.OriginalPrice, p.Currency),
                     ImageUrl    = ProductController.CookedImageURL("254-170", p.QuyTrinhHinhAnh, _mainDomain),
-                    Url         = $"/2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}.html"
+                    Url         = $"/2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}"
                 })
                 .ToList();
 
             return View(vm);
         }
-
-        // =====================================================================
-        // OLD-ROUTE REDIRECTS (301 Permanent)
-        // =====================================================================
-        [HttpGet("8-dich-vu-cung-ung/{slug}-{id:int}.html")]
-        public IActionResult RedirectDetail(string slug, int id)
-            => RedirectPermanent($"/nha-cung-ung/{slug}-{id}.html");
 
         // =====================================================================
         // PRIVATE HELPERS

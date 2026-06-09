@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
@@ -100,7 +100,7 @@ namespace TechExchangeApp.Controllers
                         ? $"{_mainDomain}images/research.jpg"
                         : CookedImageURL("254-170", x.HinhDaiDien, _mainDomain),
                     Url = $"{_mainDomain}11-tim-kiem-doi-tac/" +
-                          $"{MakeURLFriendly(x.TenSanPham)}-{x.TimDoiTacId}.html"
+                          $"{MakeURLFriendly(x.TenSanPham)}-{x.TimDoiTacId}"
                 })
                 .ToList();
 
@@ -113,7 +113,7 @@ namespace TechExchangeApp.Controllers
                     CatId = x.CatId,
                     Title = x.Title,
                     Url = $"{_mainDomain}11-ds-tim-kiem-doi-tac/" +
-                          $"{MakeURLFriendly(x.QueryString)}-{x.CatId}.html",
+                          $"{MakeURLFriendly(x.QueryString)}-{x.CatId}",
                     Products = new List<TimKiemDoiTacItemVm>() // không load SP ở đây
                 })
                 .ToList();
@@ -159,7 +159,7 @@ namespace TechExchangeApp.Controllers
                         ? $"{_mainDomain}images/research.jpg"
                         : x.HinhDaiDien,
                     Url = $"{_mainDomain}11-tim-kiem-doi-tac/" +
-                          $"{MakeURLFriendly(x.TenSanPham)}-{x.TimDoiTacId}.html"
+                          $"{MakeURLFriendly(x.TenSanPham)}-{x.TimDoiTacId}"
                 })
                 .ToList();
 
@@ -182,7 +182,7 @@ namespace TechExchangeApp.Controllers
                         CatId = x.CatId,
                         Title = x.Title,
                         Url = $"{_mainDomain}11-ds-tim-kiem-doi-tac/" +
-                              $"{MakeURLFriendly(x.QueryString)}-{x.CatId}.html"
+                              $"{MakeURLFriendly(x.QueryString)}-{x.CatId}"
                     })
                     .ToList()
             };
@@ -225,7 +225,7 @@ namespace TechExchangeApp.Controllers
                             ? $"{_mainDomain}images/research.jpg"
                             : CookedImageURL("254-170", x.HinhDaiDien, _mainDomain),
                         Url = $"{_mainDomain}11-tim-kiem-doi-tac/" +
-                              $"{MakeURLFriendly(x.TenSanPham)}-{x.TimDoiTacId}.html"
+                              $"{MakeURLFriendly(x.TenSanPham)}-{x.TimDoiTacId}"
                     })
                     .ToList();
 
@@ -234,7 +234,7 @@ namespace TechExchangeApp.Controllers
                     CatId = c.CatId,
                     Title = c.Title,
                     Url = $"{_mainDomain}11-ds-tim-kiem-doi-tac/" +
-                          $"{MakeURLFriendly(c.QueryString)}-{c.CatId}.html",
+                          $"{MakeURLFriendly(c.QueryString)}-{c.CatId}",
                     Products = products
                 });
             }
@@ -248,7 +248,7 @@ namespace TechExchangeApp.Controllers
         {
             AddShoppingCart(productId);
             HttpContext.Session.SetString("LastURL", Request.Headers["Referer"].ToString());
-            return Redirect($"{_mainDomain}gio-hang.html");
+            return Redirect($"{_mainDomain}gio-hang");
         }
 
         private void AddShoppingCart(int productId)

@@ -291,7 +291,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 if (item.StatusId.HasValue && statuses.TryGetValue(item.StatusId.Value, out var t))
                     item.StatusTitle = t;
                 var slug = ProductController.MakeURLFriendly(item.FullName);
-                item.PublicUrl = $"{baseUrl}/nha-tu-van/{slug}-{item.TuVanId}.html";
+                item.PublicUrl = $"{baseUrl}/nha-tu-van/{slug}-{item.TuVanId}";
             }
 
             return _excelExport.Export(items, $"NhaTuVan_{DateTime.Now:yyyyMMdd}");

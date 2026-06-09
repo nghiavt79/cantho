@@ -16,7 +16,7 @@
                         <ul class="tree-menu">
                             @foreach (var c in Model.Categories)
                             {
-                                <li><a href="/chuyen-gia.html?cateId=@c.Id">@c.Title</a></li>
+                                <li><a href="/chuyen-gia?cateId=@c.Id">@c.Title</a></li>
                             }
                         </ul>
                     </div>
@@ -51,7 +51,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                        <li class="breadcrumb-item"><a href="/chuyen-gia.html">Chuyên gia</a></li>
+                        <li class="breadcrumb-item"><a href="/chuyen-gia">Chuyên gia</a></li>
                         <li class="breadcrumb-item active">@Model.FullName</li>
                     </ol>
                 </nav>

@@ -29,7 +29,7 @@ namespace TechExchangeApp.Controllers
         // GET /chuyen-gia
         // GET /chuyen-gia?cateId=5&page=2
         // =====================================================================
-        [HttpGet("chuyen-gia.html")]
+        [HttpGet("chuyen-gia")]
         public IActionResult Index(int cateId = 0, int page = 1)
         {
             page = Math.Max(1, page);
@@ -95,7 +95,7 @@ namespace TechExchangeApp.Controllers
         // =====================================================================
         // GET /chuyen-gia/{slug}-{id}.html
         // =====================================================================
-        [HttpGet("chuyen-gia/{slug}-{id:int}.html")]
+        [HttpGet("chuyen-gia/{slug}-{id:int}")]
         public IActionResult Detail(string slug, int id)
         {
             var entity = _context.NhaTuVans

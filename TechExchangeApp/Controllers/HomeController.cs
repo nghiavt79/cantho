@@ -107,12 +107,12 @@ namespace TechExchangeApp.Controllers
         {
             return new List<HomeFeatureVm>
             {
-                new() { Icon = "bi-cpu", Title = "Cung cấp công nghệ", Url = "/cong-nghe.html" },
-                new() { Icon = "bi-link-45deg", Title = "Kết nối cung cầu công nghệ", Url = "/tim-kiem-doi-tac.html" },
-                new() { Icon = "bi-lightbulb", Title = "Nghiên cứu - Ứng dụng - Chuyển giao công nghệ", Url = "/dich-vu-tu-van-8.html" },
-                new() { Icon = "bi-flask", Title = "Thử nghiệm & kiểm định", Url = "/dich-vu-tu-van-8.html" },
-                new() { Icon = "bi-stars", Title = "Tư vấn đổi mới sáng tạo & đổi mới công nghệ", Url = "/dang-ky-tu-van.html" },
-                new() { Icon = "bi-mortarboard", Title = "Truyền thông & nâng cao năng lực", Url = "/tin-su-kien-44.html" }
+                new() { Icon = "bi-cpu", Title = "Cung cấp công nghệ", Url = "/cong-nghe" },
+                new() { Icon = "bi-link-45deg", Title = "Kết nối cung cầu công nghệ", Url = "/tim-kiem-doi-tac" },
+                new() { Icon = "bi-lightbulb", Title = "Nghiên cứu - Ứng dụng - Chuyển giao công nghệ", Url = "/dich-vu-tu-van-8" },
+                new() { Icon = "bi-flask", Title = "Thử nghiệm & kiểm định", Url = "/dich-vu-tu-van-8" },
+                new() { Icon = "bi-stars", Title = "Tư vấn đổi mới sáng tạo & đổi mới công nghệ", Url = "/dang-ky-tu-van" },
+                new() { Icon = "bi-mortarboard", Title = "Truyền thông & nâng cao năng lực", Url = "/tin-su-kien-44" }
             };
         }
 
@@ -120,9 +120,9 @@ namespace TechExchangeApp.Controllers
         {
             return new List<HomeFeatureVm>
             {
-                new() { Icon = "bi-bezier2", Title = "Tư vấn & chuyển giao công nghệ", Description = "Giải pháp phù hợp nhu cầu thực tiễn.", Url = "/dang-ky-tu-van.html" },
-                new() { Icon = "bi-clipboard2-pulse", Title = "Kiểm định & thử nghiệm", Description = "Đánh giá chất lượng, độ tin cậy và an toàn.", Url = "/dich-vu-tu-van-8.html" },
-                new() { Icon = "bi-easel2", Title = "Đào tạo & tập huấn", Description = "Nâng cao năng lực cho cá nhân, tổ chức.", Url = "/tin-su-kien-44.html" }
+                new() { Icon = "bi-bezier2", Title = "Tư vấn & chuyển giao công nghệ", Description = "Giải pháp phù hợp nhu cầu thực tiễn.", Url = "/dang-ky-tu-van" },
+                new() { Icon = "bi-clipboard2-pulse", Title = "Kiểm định & thử nghiệm", Description = "Đánh giá chất lượng, độ tin cậy và an toàn.", Url = "/dich-vu-tu-van-8" },
+                new() { Icon = "bi-easel2", Title = "Đào tạo & tập huấn", Description = "Nâng cao năng lực cho cá nhân, tổ chức.", Url = "/tin-su-kien-44" }
             };
         }
 
@@ -175,7 +175,7 @@ namespace TechExchangeApp.Controllers
                 Title = x.Name ?? "Công nghệ đang cập nhật",
                 Description = CleanSummary(x.MoTaNgan ?? x.MoTa, 120),
                 ImageUrl = ProductController.CookedImageURL("254-170", x.QuyTrinhHinhAnh, _mainDomain),
-                Url = $"{_mainDomain}2-cong-nghe-thiet-bi/{x.ProductType}/{x.QueryString}-{x.ID}.html",
+                Url = $"{_mainDomain}2-cong-nghe-thiet-bi/{x.ProductType}/{x.QueryString}-{x.ID}",
                 Category = x.ProductType == 2 ? "Thiết bị" : x.ProductType == 3 ? "Tài sản trí tuệ" : "Công nghệ"
             }).ToList();
 
@@ -186,9 +186,9 @@ namespace TechExchangeApp.Controllers
         {
             return new List<HomeTechCardVm>
             {
-                new() { Title = "Hệ thống trồng rau thủy canh thông minh", Description = "Giải pháp canh tác sạch, tiết kiệm nước, năng suất cao.", ImageUrl = "/image/tuoinuocnhogiot.png", Url = "/cong-nghe.html", Category = "Nông nghiệp công nghệ cao" },
-                new() { Title = "Công nghệ xử lý nước thải sinh hoạt", Description = "Hiệu quả cao, vận hành dễ dàng, thân thiện môi trường.", ImageUrl = "/image/thietbiloc.png", Url = "/cong-nghe.html", Category = "Môi trường" },
-                new() { Title = "Hệ thống sấy lạnh nông sản", Description = "Giữ nguyên chất lượng, kéo dài thời gian bảo quản.", ImageUrl = "/image/dinhlang.png", Url = "/cong-nghe.html", Category = "Công nghệ sau thu hoạch" }
+                new() { Title = "Hệ thống trồng rau thủy canh thông minh", Description = "Giải pháp canh tác sạch, tiết kiệm nước, năng suất cao.", ImageUrl = "/image/tuoinuocnhogiot.png", Url = "/cong-nghe", Category = "Nông nghiệp công nghệ cao" },
+                new() { Title = "Công nghệ xử lý nước thải sinh hoạt", Description = "Hiệu quả cao, vận hành dễ dàng, thân thiện môi trường.", ImageUrl = "/image/thietbiloc.png", Url = "/cong-nghe", Category = "Môi trường" },
+                new() { Title = "Hệ thống sấy lạnh nông sản", Description = "Giữ nguyên chất lượng, kéo dài thời gian bảo quản.", ImageUrl = "/image/dinhlang.png", Url = "/cong-nghe", Category = "Công nghệ sau thu hoạch" }
             };
         }
 
@@ -206,7 +206,7 @@ namespace TechExchangeApp.Controllers
                     Title = x.Title ?? "Tin tức - sự kiện",
                     Description = CleanSummary(x.Description ?? x.Contents, 120),
                     ImageUrl = ProductController.CookedImageURL("254-170", x.Image, _mainDomain),
-                    Url = _mainDomain + x.MenuId + "/" + x.QueryString + "-" + x.Id + ".html",
+                    Url = _mainDomain + x.MenuId + "/" + x.QueryString + "-" + x.Id + "",
                     PublishedDate = x.PublishedDate
                 })
                 .ToList();
@@ -225,15 +225,15 @@ namespace TechExchangeApp.Controllers
                     Title = string.IsNullOrEmpty(x.HocHam) ? (x.ChucVu ?? "Chuyên gia tư vấn") : x.HocHam,
                     Field = x.DichVu ?? x.LinhVucId ?? x.CoQuan ?? "Khoa học và công nghệ",
                     ImageUrl = ProductController.CookedImageURL("254-170", x.HinhDaiDien, _mainDomain),
-                    Url = _mainDomain + "chuyen-gia/" + x.QueryString + "-" + x.TuVanId + ".html"
+                    Url = _mainDomain + "chuyen-gia/" + x.QueryString + "-" + x.TuVanId + ""
                 })
                 .ToList();
 
             return experts.Any() ? experts : new List<HomeExpertVm>
             {
-                new() { Name = "PGS.TS. Nguyễn Văn A", Title = "Chuyên gia Công nghệ sinh học", Field = "Nghiên cứu và ứng dụng công nghệ sinh học.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia.html" },
-                new() { Name = "TS. Trần Thị B", Title = "Chuyên gia Nông nghiệp công nghệ cao", Field = "Canh tác, bảo quản và chế biến nông sản.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia.html" },
-                new() { Name = "TS. Lê Hoàng C", Title = "Chuyên gia Môi trường", Field = "Xử lý môi trường và phát triển bền vững.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia.html" }
+                new() { Name = "PGS.TS. Nguyễn Văn A", Title = "Chuyên gia Công nghệ sinh học", Field = "Nghiên cứu và ứng dụng công nghệ sinh học.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia" },
+                new() { Name = "TS. Trần Thị B", Title = "Chuyên gia Nông nghiệp công nghệ cao", Field = "Canh tác, bảo quản và chế biến nông sản.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia" },
+                new() { Name = "TS. Lê Hoàng C", Title = "Chuyên gia Môi trường", Field = "Xử lý môi trường và phát triển bền vững.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia" }
             };
         }
 
@@ -260,7 +260,7 @@ namespace TechExchangeApp.Controllers
                         Title = x.Title,
                         Description = x.Description,
                         ImageUrl = ProductController.CookedImageURL("460-275", x.Image, _mainDomain),
-                        Link = $"{_mainDomain}{x.MenuId}/{x.QueryString}-{x.Id}.html"
+                        Link = $"{_mainDomain}{x.MenuId}/{x.QueryString}-{x.Id}"
                     })
                     .ToList();
 
@@ -289,7 +289,7 @@ namespace TechExchangeApp.Controllers
                     Title = x.Title,
                     VideoUrl = ExtractYouTubeUrl(x.Description),
                     ImageUrl = ProductController.CookedImageURL("460-275", x.Image, _mainDomain),
-                    Link = $"{_mainDomain}{x.MenuId}/{x.QueryString}-{x.Id}.html"
+                    Link = $"{_mainDomain}{x.MenuId}/{x.QueryString}-{x.Id}"
                 })
                 .ToList();
         }
@@ -337,7 +337,7 @@ namespace TechExchangeApp.Controllers
                 Title = x.Title,
                 Viewed = x.Viewed,
                 ImageUrl = ProductController.CookedImageURL("254-170", x.Image, _mainDomain),
-                Link = $"{_mainDomain}{x.MenuId}/yeu-cau/{x.QueryString}-{x.Id}.html"
+                Link = $"{_mainDomain}{x.MenuId}/yeu-cau/{x.QueryString}-{x.Id}"
             };
         }
 

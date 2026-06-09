@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TechExchangeApp.Data;
@@ -54,7 +54,7 @@ namespace TechExchangeApp.Controllers
                     MenuId = x.MenuId,
                     Title = x.Title,
                     NavigateUrl = string.IsNullOrEmpty(x.NavigateUrl)
-                        ? $"{_mainDomain}{x.QueryString}-{x.MenuId}.html"
+                        ? $"{_mainDomain}{x.QueryString}-{x.MenuId}"
                         : (x.NavigateUrl.Contains("http")
                             ? x.NavigateUrl
                             : $"{_mainDomain}{x.NavigateUrl}")

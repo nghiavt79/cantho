@@ -113,7 +113,7 @@ namespace TechExchangeApp.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
 
             if (string.IsNullOrEmpty(cartId))
-                return Redirect($"{_mainDomain}gio-hang.html");
+                return Redirect($"{_mainDomain}gio-hang");
 
             var check = _context.ShoppingCarts.FirstOrDefault(x =>
                 x.CartId == cartId &&
@@ -138,7 +138,7 @@ namespace TechExchangeApp.Controllers
             }
 
             HttpContext.Session.SetString("LastURL", Request.Path);
-            return Redirect($"{_mainDomain}gio-hang.html");
+            return Redirect($"{_mainDomain}gio-hang");
         }
 
         // ================== DETAIL (GIỮ NGUYÊN) ==================
@@ -148,15 +148,15 @@ namespace TechExchangeApp.Controllers
         {
             // Legacy redirects, could also use _mainDomain if they were internal, but seem specific. Keeping hardcoded external redirects as is for safety unless user wants all converted.
             if (id == 1311)
-                return RedirectPermanent("http://techport.vn/2-cong-nghe-thiet-bi/1/thiet-bi-dong-goi-hut-chan-khong-1311.html");
+                return RedirectPermanent("http://techport.vn/2-cong-nghe-thiet-bi/1/thiet-bi-dong-goi-hut-chan-khong-1311");
 
             if (id == 8512)
-                return RedirectPermanent("http://techport.vn/2-cong-nghe-thiet-bi/1/thiet-bi-dong-goi-bot-tu-dong-goi-lon--8512.html");
+                return RedirectPermanent("http://techport.vn/2-cong-nghe-thiet-bi/1/thiet-bi-dong-goi-bot-tu-dong-goi-lon--8512");
 
             var product = await _productService.GetProductByIdAsync(id);
 
             if (product == null)
-                return Redirect($"{_mainDomain}cong-nghe.html");
+                return Redirect($"{_mainDomain}cong-nghe");
 
             var model = new ProductDetailViewModel
             {
@@ -195,7 +195,7 @@ namespace TechExchangeApp.Controllers
             var supplier = _context.NhaCungUngs.FirstOrDefault(x => x.CungUngId == p.NCUId);
             if (supplier == null) return;
             vm.SupplierName = supplier.FullName;
-            vm.SupplierUrl = $"{_mainDomain}nha-cung-ung/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}.html";
+            vm.SupplierUrl = $"{_mainDomain}nha-cung-ung/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
         }
         
         private List<VSImage> GetImages(int contentId) => _context.VSImages.Where(x => x.ContentId == contentId && x.StatusId == 1).OrderBy(x => x.Id).ToList();
@@ -246,7 +246,7 @@ namespace TechExchangeApp.Controllers
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
                     // Using Instance Method or passing domain
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
-                    Url = _mainDomain + "2-cong-nghe-thiet-bi/" + row.ProductType + "/" + MakeURLFriendly(row.Name) + "-" + row.ID + ".html"
+                    Url = _mainDomain + "2-cong-nghe-thiet-bi/" + row.ProductType + "/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
                 };
                 vm.Products.Add(item);
             }
@@ -266,7 +266,7 @@ namespace TechExchangeApp.Controllers
         private void LoadCategories(ProductByCateViewModel vm)
         {
              var list = _context.Categories.Where(x => x.ParentId == vm.CateId && x.MainCate == true).OrderBy(x => x.Sort).ToList();
-            foreach (var row in list) { vm.Categories.Add(new CategoryItemVm { Title = row.Title, Url = _mainDomain + "2-ds-cong-nghe-thiet-bi/" + MakeURLFriendly(row.QueryString) + "-" + row.CatId + ".html" }); }
+            foreach (var row in list) { vm.Categories.Add(new CategoryItemVm { Title = row.Title, Url = _mainDomain + "2-ds-cong-nghe-thiet-bi/" + MakeURLFriendly(row.QueryString) + "-" + row.CatId + "" }); }
         }
         private void BuildPager(ProductByCateViewModel vm)
         {
@@ -283,7 +283,7 @@ namespace TechExchangeApp.Controllers
         {
             AddShoppingCart(id);
             HttpContext.Session.SetString("LastURL", Request.Path);
-            return Redirect(_mainDomain + "gio-hang.html");
+            return Redirect(_mainDomain + "gio-hang");
         }
 
         private void AddShoppingCart(int productId)
@@ -311,7 +311,7 @@ namespace TechExchangeApp.Controllers
                     Star = row.Rating ?? 0,
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
-                    Url = _mainDomain + "2-cong-nghe-thiet-bi/" + row.TypeId + "/" + MakeURLFriendly(row.Name) + "-" + row.ID + ".html"
+                    Url = _mainDomain + "2-cong-nghe-thiet-bi/" + row.TypeId + "/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
                 })
                 .ToList();
 

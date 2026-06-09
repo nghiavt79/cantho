@@ -1,4 +1,4 @@
-﻿@model TechExchangeApp.ViewModel.VideoIndexViewModel
+@model TechExchangeApp.ViewModel.VideoIndexViewModel
 
 
 <!-- porlet news -->
@@ -21,7 +21,7 @@
                             <div class="col-xs-12 col-sm-12 trademark-info">
                                 <div class="col-sm-6" style="position: relative;">
                                     <a class="VideoHOT"
-                                       href="@($"{Html.MainDomain()}{Model.Highlight.MenuId}/{Model.Highlight.QueryString}-{Model.Highlight.Id}.html")">
+                                       href="@($"{Html.MainDomain()}{Model.Highlight.MenuId}/{Model.Highlight.QueryString}-{Model.Highlight.Id}")">
                                         <img src="@Html.CookedImageURL("460-275", Model.Highlight.Image)"
                                              class="img-responsive" />
                                         @if (!string.IsNullOrEmpty(Model.Highlight.URL))
@@ -36,7 +36,7 @@
 
                                 <div class="col-sm-6">
                                     <a class="BoldVideo"
-                                       href="@($"{Html.MainDomain()}{Model.Highlight.MenuId}/{Model.Highlight.QueryString}-{Model.Highlight.Id}.html")">
+                                       href="@($"{Html.MainDomain()}{Model.Highlight.MenuId}/{Model.Highlight.QueryString}-{Model.Highlight.Id}")">
                                         @Model.Highlight.Title
                                     </a>
                                     <div class="Description">
@@ -60,7 +60,7 @@
                                     <div class="outer_video">
                                         <div class="col-sm-12 inner_video">
                                             <a class="Video"
-                                               href="@($"{Html.MainDomain()}{item.MenuId}/{item.QueryString}-{item.Id}.html")">
+                                               href="@($"{Html.MainDomain()}{item.MenuId}/{item.QueryString}-{item.Id}")">
                                                 <img src="@Html.CookedImageURL("460-275", item.Image)"
                                                      class="img-responsive" />
                                             </a>
@@ -70,7 +70,7 @@
                                     <div class="col-sm-12">
                                         <i class="fa" style="font-size:13px;color:dodgerblue">&#xf144;</i>
                                         <a class="Bold"
-                                           href="@($"{Html.MainDomain()}{item.MenuId}/{item.QueryString}-{item.Id}.html")">
+                                           href="@($"{Html.MainDomain()}{item.MenuId}/{item.QueryString}-{item.Id}")">
                                             @item.Title
                                         </a>
 

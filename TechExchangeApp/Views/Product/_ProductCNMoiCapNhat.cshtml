@@ -7,9 +7,9 @@
     var pageTitleUpper = pageTitle.ToUpper();
     var pageLink = pageTitle switch
     {
-        "Thiết bị" => "thiet-bi.html",
-        "Tài sản trí tuệ" => "tai-san-tri-tue.html",
-        _ => "cong-nghe.html"
+        "Thiết bị" => "thiet-bi",
+        "Tài sản trí tuệ" => "tai-san-tri-tue",
+        _ => "cong-nghe"
     };
 }
 
@@ -50,7 +50,7 @@
                                     imgUrl = TechExchangeApp.Controllers.ProductController.CookedImageURL("254-170", p.QuyTrinhHinhAnh, Html.MainDomain());
                                 }
 
-                                var detailUrl = $"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}.html";
+                                var detailUrl = $"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}";
 
                                 <div class="col-lg-3">
                                     <div class="product-container" style="margin-bottom: 20px;">
@@ -141,7 +141,7 @@
                                     imgUrl = TechExchangeApp.Controllers.ProductController.CookedImageURL("254-170", p.QuyTrinhHinhAnh, Html.MainDomain());
                                 }
 
-                                var detailUrl = $"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}.html";
+                                var detailUrl = $"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}";
 
                                 <div class="col-6">
                                     <div class="product-container" style="margin-bottom: 20px;">

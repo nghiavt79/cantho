@@ -1,4 +1,4 @@
-﻿@model TechExchangeApp.ViewModel.ProductIndexViewModel
+@model TechExchangeApp.ViewModel.ProductIndexViewModel
 @* @using Cls_Common *@
 
 
@@ -71,7 +71,7 @@
                 {
                     <div class="brand-showcase">
                         <h2 class="brand-showcase-title">
-                            <a href="@($"{Html.MainDomain()}2-ds-cong-nghe-thiet-bi/{@Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}.html")">
+                            <a href="@($"{Html.MainDomain()}2-ds-cong-nghe-thiet-bi/{@Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}")">
                                 @block.Category.Title
                             </a>
                         </h2>
@@ -103,7 +103,7 @@
                                                     <li class="col-sx-12 col-sm-3 ListProductMobile">
                                                         <div class="product-container">
                                                             <div class="left-block">
-                                                                <a href="@($"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{@Html.MakeURLFriendly(p.Name)}-{p.ID}.html")">
+                                                                <a href="@($"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{@Html.MakeURLFriendly(p.Name)}-{p.ID}")">
                                                                     <img src="@imgUrl" class="img-responsive ProductListImage" alt="@p.Name" />
                                                                 </a>
 
@@ -119,7 +119,7 @@
 
                                                             <div class="right-block">
                                                                 <h4 class="product-name">
-                                                                    <a href="@($"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{@Html.MakeURLFriendly(p.Name)}-{p.ID}.html")">
+                                                                    <a href="@($"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{@Html.MakeURLFriendly(p.Name)}-{p.ID}")">
                                                                         @p.Name
                                                                     </a>
                                                                 </h4>

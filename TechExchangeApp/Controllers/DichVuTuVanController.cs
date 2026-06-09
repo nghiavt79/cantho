@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TechExchangeApp.Data;
@@ -21,7 +21,7 @@ namespace TechExchangeApp.Controllers
         }
 
         // ================= INDEX =================
-        [HttpGet("dich-vu-tu-van-{menuId}.html")]
+        [HttpGet("dich-vu-tu-van-{menuId}")]
         public IActionResult Index(int menuId)
         {
             var vm = new DichVuTuVanIndexVm
@@ -210,7 +210,7 @@ namespace TechExchangeApp.Controllers
         }
 
 
-        [HttpGet("8-dich-vu-tu-van/{slug}-{id}.html")]
+        [HttpGet("8-dich-vu-tu-van/{slug}-{id}")]
         public IActionResult ChiTietNhaTuVan(int id)
         {
             int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
@@ -345,7 +345,7 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = x.CatId,
                     Name = x.Title,
-                    Url = "/dich-vu-tu-van-8.html"
+                    Url = "/dich-vu-tu-van-8"
                 })
                 .ToList();
 
@@ -355,7 +355,7 @@ namespace TechExchangeApp.Controllers
             return View("ChiTietNhaTuVan", vm);
         }
 
-        [HttpGet("8-dich-vu-cung-ung/{slug}-{id}.html")]
+        [HttpGet("8-dich-vu-cung-ung/{slug}-{id}")]
         public IActionResult ChiTietNhaCungUng(int id)
         {
             int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
@@ -488,7 +488,7 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = x.CatId,
                     Name = x.Title,
-                    Url = $"{_mainDomain}8-ds-dich-vu-tu-van/{x.QueryString}-{x.CatId}.html"
+                    Url = $"{_mainDomain}8-ds-dich-vu-tu-van/{x.QueryString}-{x.CatId}"
                 })
                 .ToList();
 
@@ -509,7 +509,7 @@ namespace TechExchangeApp.Controllers
         }
 
 
-        [HttpGet("8-ds-dich-vu-tu-van/{slug}-{cateId}.html")]
+        [HttpGet("8-ds-dich-vu-tu-van/{slug}-{cateId}")]
         public IActionResult DanhSachTheoCate(
             int cateId,
             int page = 1
@@ -561,7 +561,7 @@ namespace TechExchangeApp.Controllers
                 _context.SaveChanges();
             }
 
-            return Redirect($"{_mainDomain}gio-hang.html");
+            return Redirect($"{_mainDomain}gio-hang");
         }
 
     }

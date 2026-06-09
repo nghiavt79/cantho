@@ -168,7 +168,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             foreach (var item in items)
             {
                 var slug = ProductController.MakeURLFriendly(item.Name);
-                item.PublicUrl = $"{baseUrl}/2-cong-nghe-thiet-bi/{item.ProductType}/{slug}-{item.ID}.html";
+                item.PublicUrl = $"{baseUrl}/2-cong-nghe-thiet-bi/{item.ProductType}/{slug}-{item.ID}";
             }
 
             var typeName = productType switch

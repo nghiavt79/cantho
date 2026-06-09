@@ -1,4 +1,4 @@
-﻿@using TechExchangeApp.ViewModel
+@using TechExchangeApp.ViewModel
 @model ForumPortletNhieuNhatVm
 
 <style>
@@ -90,7 +90,7 @@
                             foreach (var item in Model.HoiNhieu)
                             {
                                 <p>
-                                    <a href="@($"{ViewBag.MainDomain}chi-tiet-user-{item.FullName}.html")">
+                                    <a href="@($"{ViewBag.MainDomain}chi-tiet-user-{item.FullName}")">
                                         @item.FullName
                                     </a>
                                     <span> - Hỏi @item.CountyCTB</span>
@@ -110,7 +110,7 @@
                             foreach (var item in Model.TraLoiNhieu)
                             {
                                 <p>
-                                    <a href="@($"{ViewBag.MainDomain}chi-tiet-user-{item.Name}.html")">
+                                    <a href="@($"{ViewBag.MainDomain}chi-tiet-user-{item.Name}")">
                                         @item.Name
                                     </a>
                                     <span> - Trả lời @item.CountyCTB</span>

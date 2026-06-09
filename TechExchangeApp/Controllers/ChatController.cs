@@ -48,7 +48,7 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = await GetCurrentUserIdAsync();
-            if (userId == 0) return Redirect("/dang-nhap.html");
+            if (userId == 0) return Redirect("/dang-nhap");
 
             var conversations = await _chatService.GetConversationsAsync(userId);
             return View(conversations);
@@ -59,7 +59,7 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> Conversation(long id)
         {
             var userId = await GetCurrentUserIdAsync();
-            if (userId == 0) return Redirect("/dang-nhap.html");
+            if (userId == 0) return Redirect("/dang-nhap");
 
             // Mark messages as read
             await _chatService.MarkAsReadAsync(id, userId);

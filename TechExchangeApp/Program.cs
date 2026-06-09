@@ -83,8 +83,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/dang-nhap.html";
-    options.LogoutPath = "/dang-ky.html"; // Or logout logic
+    options.LoginPath = "/dang-nhap";
+    options.LogoutPath = "/dang-ky"; // Or logout logic
     options.AccessDeniedPath = "/Account/AccessDenied";
     options.Cookie.Name = "TechExchangeApp.Identity";
     options.Cookie.HttpOnly = true;
@@ -210,6 +210,19 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.Use(async (ctx, next) =>
+{
+    var path = ctx.Request.Path.Value;
+    if (!string.IsNullOrEmpty(path) && path.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+    {
+        var cleanPath = path[..^5];
+        ctx.Response.Redirect(cleanPath + ctx.Request.QueryString, permanent: true);
+        return;
+    }
+
+    await next();
+});
+
 app.UseRouting();
 
 // --- Bắt buộc: UseSession phải nằm ở đây ---
@@ -235,32 +248,32 @@ app.MapAreaControllerRoute(
 // 1. Product Routes — each URL maps to its own dedicated action
 app.MapControllerRoute(
     name: "product_cong_nghe",
-    pattern: "cong-nghe.html",
+    pattern: "cong-nghe",
     defaults: new { controller = "Product", action = "CongNghe" }
 );
 
 app.MapControllerRoute(
     name: "product_thiet_bi",
-    pattern: "thiet-bi.html",
+    pattern: "thiet-bi",
     defaults: new { controller = "Product", action = "ThietBi" }
 );
 
 app.MapControllerRoute(
     name: "product_sp_tri_tue",
-    pattern: "tai-san-tri-tue.html",
+    pattern: "tai-san-tri-tue",
     defaults: new { controller = "Product", action = "TaiSanTriTue" }
 );
 
 
 app.MapControllerRoute(
     name: "product_detail",
-    pattern: "{menu:int}-cong-nghe-thiet-bi/{typeId:int}/{slug}-{id:int}.html",
+    pattern: "{menu:int}-cong-nghe-thiet-bi/{typeId:int}/{slug}-{id:int}",
     defaults: new { controller = "Product", action = "Detail" }
 );
 
 app.MapControllerRoute(
     name: "product_category",
-    pattern: "2-ds-cong-nghe-thiet-bi/{slug}-{cateId:int}.html",
+    pattern: "2-ds-cong-nghe-thiet-bi/{slug}-{cateId:int}",
     defaults: new { controller = "Product", action = "ProductByCate" }
 );
 
@@ -272,98 +285,104 @@ app.MapControllerRoute(
 
 // 2. TimKiemDoiTac Routes
 app.MapControllerRoute(
+    name: "tkdt_index_clean",
+    pattern: "tim-kiem-doi-tac",
+    defaults: new { controller = "TimKiemDoiTac", action = "Index" }
+);
+
+app.MapControllerRoute(
     name: "tkdt_index",
-    pattern: "tim-kiem-doi-tac-11.html",
+    pattern: "tim-kiem-doi-tac-11",
     defaults: new { controller = "TimKiemDoiTac", action = "Index" }
 );
 
 app.MapControllerRoute(
     name: "tkdt_detail",
-    pattern: "11-tim-kiem-doi-tac/{slug}-{id}.html",
+    pattern: "11-tim-kiem-doi-tac/{slug}-{id}",
     defaults: new { controller = "TimKiemDoiTac", action = "Detail" }
 );
 
 app.MapControllerRoute(
     name: "tkdt_category",
-    pattern: "11-ds-tim-kiem-doi-tac/{slug}-{cateId}.html",
+    pattern: "11-ds-tim-kiem-doi-tac/{slug}-{cateId}",
     defaults: new { controller = "TimKiemDoiTac", action = "List" }
 );
 
 // 3. TiemLucKHCN Routes
 app.MapControllerRoute(
     name: "tiemluc_index",
-    pattern: "tiem-luc-KHCN.html",
+    pattern: "tiem-luc-KHCN",
     defaults: new { controller = "TiemLucKHCN", action = "Index" }
 );
 
 // 4. NhuCauCongNghe Routes
 app.MapControllerRoute(
     name: "nhucau_dang",
-    pattern: "yeu-cau-cong-nghe-67.html",
+    pattern: "yeu-cau-cong-nghe-67",
     defaults: new { controller = "Nhucaucongnghe", action = "CateTechNeeds", menuId = 67 }
 );
 
 app.MapControllerRoute(
     name: "nhucau_detail",
-    pattern: "{menuId:int}/yeu-cau/{slug}-{id:int}.html",
+    pattern: "{menuId:int}/yeu-cau/{slug}-{id:int}",
     defaults: new { controller = "Nhucaucongnghe", action = "Detail" }
 );
 
 // 5. News Routes
 app.MapControllerRoute(
     name: "news_menu",
-    pattern: "{queryString:regex(^(tin-su-kien|hoi-thao-trinh-dien-cong-nghe|bao-cao-phan-tich-xu-huong-cong-nghe|giai-phap-cong-nghe|mo-hinh-cong-nghe)$)}-{menuId:int}.html",
+    pattern: "{queryString:regex(^(tin-su-kien|hoi-thao-trinh-dien-cong-nghe|bao-cao-phan-tich-xu-huong-cong-nghe|giai-phap-cong-nghe|mo-hinh-cong-nghe)$)}-{menuId:int}",
     defaults: new { controller = "News", action = "Category" }
 );
 
 app.MapControllerRoute(
     name: "news_detail",
-    pattern: "{menuId:int}/{queryString}-{id:long}.html",
+    pattern: "{menuId:int}/{queryString}-{id:long}",
     defaults: new { controller = "News", action = "Detail" }
 );
 
 // 6. Menus Routes (Gioi thieu, quy dinh)
 app.MapControllerRoute(
     name: "menu_detail",
-    pattern: "{queryString:regex(^gioi-thieu-chung|quy-dinh-chung$)}-{menuId:int}.html",
+    pattern: "{queryString:regex(^gioi-thieu-chung|quy-dinh-chung$)}-{menuId:int}",
     defaults: new { controller = "Menu", action = "Detail" }
 );
 
 // 7. Forum Routes
 app.MapControllerRoute(
     name: "forum_index",
-    pattern: "thao-luan.html",
+    pattern: "thao-luan",
     defaults: new { controller = "Forum", action = "Index" }
 );
 
 app.MapControllerRoute(
     name: "forum_detail",
-    pattern: "chi-tiet-thao-luan-{id}.html",
+    pattern: "chi-tiet-thao-luan-{id}",
     defaults: new { controller = "Forum", action = "Detail" }
 );
 
 app.MapControllerRoute(
     name: "forum_category",
-    pattern: "thao-luan-{linhvuc:int}-{parentid:int}.html",
+    pattern: "thao-luan-{linhvuc:int}-{parentid:int}",
     defaults: new { controller = "Forum", action = "Index" }
 );
 
 app.MapControllerRoute(
     name: "feedback_index",
-    pattern: "lien-he-74.html",
+    pattern: "lien-he-74",
     defaults: new { controller = "Feedback", action = "Index" }
 );
 
 // 8. Auth Routes
 app.MapControllerRoute(
     name: "login_page",
-    pattern: "dang-nhap.html",
+    pattern: "dang-nhap",
     defaults: new { controller = "Account", action = "Login" }
 );
 
 app.MapControllerRoute(
     name: "register_page",
-    pattern: "dang-ky.html",
+    pattern: "dang-ky",
     defaults: new { controller = "Account", action = "Register" }
 );
 
@@ -371,34 +390,29 @@ app.MapControllerRoute(
 // 9. ChuyenGia Routes
 app.MapControllerRoute(
     name: "chuyen_gia_index",
-    pattern: "chuyen-gia.html",
+    pattern: "chuyen-gia",
     defaults: new { controller = "ChuyenGia", action = "Index" }
 );
 
 app.MapControllerRoute(
     name: "nha_cung_ung_index",
-    pattern: "nha-cung-ung.html",
+    pattern: "nha-cung-ung",
     defaults: new { controller = "NhaCungUng", action = "Index" }
 );
 
 // 301 Redirect — old DichVuTuVan list pages
-app.MapGet("8-dich-vu-tu-van.html", ctx =>
+app.MapGet("8-dich-vu-tu-van", ctx =>
 {
-    ctx.Response.Redirect("/chuyen-gia.html", permanent: true);
+    ctx.Response.Redirect("/chuyen-gia", permanent: true);
     return Task.CompletedTask;
 });
-app.MapGet("8-dich-vu-cung-ung.html", ctx =>
+app.MapGet("8-dich-vu-cung-ung", ctx =>
 {
-    ctx.Response.Redirect("/nha-cung-ung.html", permanent: true);
+    ctx.Response.Redirect("/nha-cung-ung", permanent: true);
     return Task.CompletedTask;
 });
 
 // Video routes — /video và /video.html cùng trỏ vào VideoController.Index
-app.MapControllerRoute(
-    name: "video_html",
-    pattern: "video.html",
-    defaults: new { controller = "Video", action = "Index" }
-);
 app.MapControllerRoute(
     name: "video_clean",
     pattern: "video",
@@ -408,31 +422,31 @@ app.MapControllerRoute(
 // 10. Dashboard Routes (public)
 app.MapControllerRoute(
     name: "contract_dashboard",
-    pattern: "hop-dong-ky-ket.html",
+    pattern: "hop-dong-ky-ket",
     defaults: new { controller = "Home", action = "ContractDashboard" }
 );
 
 app.MapControllerRoute(
     name: "connection_dashboard",
-    pattern: "ket-noi-cung-cau.html",
+    pattern: "ket-noi-cung-cau",
     defaults: new { controller = "Home", action = "ConnectionDashboard" }
 );
 
 app.MapControllerRoute(
     name: "dang_ky_nha_cung_ung",
-    pattern: "dang-ky-nha-cung-ung.html",
+    pattern: "dang-ky-nha-cung-ung",
     defaults: new { controller = "DangKyNhaCungUng", action = "DangKy" }
 );
 
 app.MapControllerRoute(
     name: "dang_ky_tu_van",
-    pattern: "dang-ky-tu-van.html",
+    pattern: "dang-ky-tu-van",
     defaults: new { controller = "DangKyTuVan", action = "DangKy" }
 );
 
 app.MapControllerRoute(
     name: "quan_ly_san_pham",
-    pattern: "quan-ly-san-pham.html",
+    pattern: "quan-ly-san-pham",
     defaults: new { controller = "QuanLySanPham", action = "Index" }
 );
 

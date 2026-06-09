@@ -228,7 +228,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             foreach (var item in items)
             {
                 var slug = ProductController.MakeURLFriendly(item.Title);
-                item.PublicUrl = $"{baseUrl}/tin-tuc/{slug}-{item.Id}.html";
+                item.PublicUrl = $"{baseUrl}/tin-tuc/{slug}-{item.Id}";
             }
 
             return _excelExport.Export(items, $"Posts_{DateTime.Now:yyyyMMdd}");

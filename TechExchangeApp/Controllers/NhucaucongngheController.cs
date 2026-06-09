@@ -145,7 +145,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 Image = q.Image,
                 Description = q.Description,
                 PublishedDate = q.PublishedDate,
-                DetailUrl = $"{_mainDomain}{menuId}/yeu-cau/{q.QueryString}-{id}.html"
+                DetailUrl = $"{_mainDomain}{menuId}/yeu-cau/{q.QueryString}-{id}"
             };
         }
 
@@ -394,7 +394,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
             ViewData["Title"] = p.Title;
             ViewData["MetaDescription"] = p.Description;
-            ViewData["BackLink"] = _mainDomain + "yeu-cau-cong-nghe-67.html";
+            ViewData["BackLink"] = _mainDomain + "yeu-cau-cong-nghe-67";
 
             return View("Detail", vm);
         }
