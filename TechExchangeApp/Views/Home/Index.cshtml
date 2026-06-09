@@ -3,10 +3,11 @@
 @{
     ViewData["Title"] = "Trang chủ";
     var branding = Model.Branding;
+    var heroImageUrl = "/image/hero.png";
 }
 
 <div class="home-v2">
-    <section class="home-v2-hero">
+    <section class="home-v2-hero" style="--home-hero-image: url('@heroImageUrl');">
         <div class="home-v2-hero__bg"></div>
         <div class="container">
             <div class="home-v2-hero__grid">
@@ -25,17 +26,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="home-v2-hero__visual" aria-hidden="true">
-                    <div class="home-v2-orbit home-v2-orbit--main">
-                        <img src="/image/hero2u.jpg" alt="">
-                    </div>
-                    <div class="home-v2-orbit home-v2-orbit--small home-v2-orbit--a">
-                        <img src="/image/tuoinuocnhogiot.png" alt="">
-                    </div>
-                    <div class="home-v2-orbit home-v2-orbit--small home-v2-orbit--b">
-                        <img src="/image/hero3u.jpg" alt="">
-                    </div>
-                </div>
+                <div class="home-v2-hero__visual" aria-hidden="true"></div>
             </div>
         </div>
     </section>
