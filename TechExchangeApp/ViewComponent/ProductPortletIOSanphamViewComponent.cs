@@ -110,6 +110,6 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
                   "2-cong-nghe-thiet-bi/" +
                   row.TypeId + "/" +
                   ProductController.MakeURLFriendly(row.Name) +
-                  "-" + row.ID + ".html"
+                  "-" + row.ID
         }).ToList();
 }

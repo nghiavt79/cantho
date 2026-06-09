@@ -4,109 +4,109 @@
     {
       "label": "C\u00F4ng ngh\u1EC7",
       "value": 1374,
-      "link": "cong-nghe.html"
+      "link": "cong-nghe"
     },
     {
       "label": "Thi\u1EBFt b\u1ECB",
       "value": 23667,
-      "link": "thiet-bi.html"
+      "link": "thiet-bi"
     },
     {
       "label": "Nh\u00E0 cung \u1EE9ng",
       "value": 2461,
-      "link": "nha-cung-ung.html"
+      "link": "nha-cung-ung"
     },
     {
       "label": "Chuy\u00EAn gia t\u01B0 v\u1EA5n",
       "value": 1106,
-      "link": "chuyen-gia.html"
+      "link": "chuyen-gia"
     },
     {
       "label": "T\u00E0i s\u1EA3n tr\u00ED tu\u1EC7",
       "value": 44,
-      "link": "tai-san-tri-tue.html"
+      "link": "tai-san-tri-tue"
     },
     {
       "label": "Tin khoa h\u1ECDc c\u00F4ng ngh\u1EC7",
       "value": 2678,
-      "link": "tin-su-kien-44.html"
+      "link": "tin-su-kien-44"
     },
     {
       "label": "Video c\u00F4ng ngh\u1EC7",
       "value": 327,
-      "link": "video.html"
+      "link": "video"
     },
     {
       "label": "D\u1EF1 \u00E1n t\u00ECm ki\u1EBFm \u0111\u1ED1i t\u00E1c",
       "value": 744,
-      "link": "tim-kiem-doi-tac-11.html"
+      "link": "tim-kiem-doi-tac-11"
     }
   ],
   "kpi2026": [
     {
       "label": "C\u00F4ng ngh\u1EC7 m\u1EDBi",
       "value": 23,
-      "link": "cong-nghe.html"
+      "link": "cong-nghe"
     },
     {
       "label": "Thi\u1EBFt b\u1ECB m\u1EDBi",
       "value": 6,
-      "link": "thiet-bi.html"
+      "link": "thiet-bi"
     },
     {
       "label": "Nh\u00E0 cung \u1EE9ng m\u1EDBi",
       "value": 20,
-      "link": "nha-cung-ung.html"
+      "link": "nha-cung-ung"
     },
     {
       "label": "Chuy\u00EAn gia m\u1EDBi",
       "value": 2,
-      "link": "chuyen-gia.html"
+      "link": "chuyen-gia"
     },
     {
       "label": "T\u00E0i s\u1EA3n tr\u00ED tu\u1EC7 m\u1EDBi",
       "value": 3,
-      "link": "tai-san-tri-tue.html"
+      "link": "tai-san-tri-tue"
     },
     {
       "label": "Tin KHCN m\u1EDBi",
       "value": 45,
-      "link": "tin-su-kien-44.html"
+      "link": "tin-su-kien-44"
     },
     {
       "label": "Video m\u1EDBi",
       "value": 0,
-      "link": "video.html"
+      "link": "video"
     },
     {
       "label": "D\u1EF1 \u00E1n m\u1EDBi",
       "value": 0,
-      "link": "tim-kiem-doi-tac-11.html"
+      "link": "tim-kiem-doi-tac-11"
     }
   ],
   "statBoxes": [
     {
       "label": "Y\u00EAu c\u1EA7u t\u00ECm mua",
       "value": 91,
-      "link": "yeu-cau-cong-nghe-67.html",
+      "link": "yeu-cau-cong-nghe-67",
       "color": "blue"
     },
     {
       "label": "K\u1EBFt n\u1ED1i cung c\u1EA7u",
       "value": 28,
-      "link": "ket-noi-cung-cau.html",
+      "link": "ket-noi-cung-cau",
       "color": "amber"
     },
     {
       "label": "H\u1EE3p \u0111\u1ED3ng k\u00FD k\u1EBFt",
       "value": 11,
-      "link": "hop-dong-ky-ket.html",
+      "link": "hop-dong-ky-ket",
       "color": "green"
     },
     {
       "label": "T\u1ED5ng gi\u00E1 tr\u1ECB H\u0110 (tri\u1EC7u)",
       "value": 13560,
-      "link": "hop-dong-ky-ket.html",
+      "link": "hop-dong-ky-ket",
       "color": "purple"
     },
     {
@@ -122,43 +122,43 @@
         "label": "\u0110i\u1EC7n, \u0111i\u1EC7n t\u1EED, CNTT",
         "value": 30,
         "color": "#3b82f6",
-        "url": "2-ds-cong-nghe-thiet-bi/dien-dien-tu-cong-nghe-thong-tin-4.html"
+        "url": "2-ds-cong-nghe-thiet-bi/dien-dien-tu-cong-nghe-thong-tin-4"
       },
       {
         "label": "Th\u1EF1c ph\u1EA9m",
         "value": 17,
         "color": "#f59e0b",
-        "url": "2-ds-cong-nghe-thiet-bi/cong-nghe-thuc-pham-12.html"
+        "url": "2-ds-cong-nghe-thiet-bi/cong-nghe-thuc-pham-12"
       },
       {
         "label": "M\u00F4i tr\u01B0\u1EDDng",
         "value": 10,
         "color": "#10b981",
-        "url": "2-ds-cong-nghe-thiet-bi/moi-truong-9.html"
+        "url": "2-ds-cong-nghe-thiet-bi/moi-truong-9"
       },
       {
         "label": "Y t\u1EBF",
         "value": 7,
         "color": "#ef4444",
-        "url": "2-ds-cong-nghe-thiet-bi/y-hoc-8.html"
+        "url": "2-ds-cong-nghe-thiet-bi/y-hoc-8"
       },
       {
         "label": "CN sinh h\u1ECDc",
         "value": 5,
         "color": "#8b5cf6",
-        "url": "2-ds-cong-nghe-thiet-bi/cong-nghe-sinh-hoc-10.html"
+        "url": "2-ds-cong-nghe-thiet-bi/cong-nghe-sinh-hoc-10"
       },
       {
         "label": "Tr\u1ED3ng tr\u1ECDt",
         "value": 5,
         "color": "#06b6d4",
-        "url": "2-ds-cong-nghe-thiet-bi/trong-trot-14.html"
+        "url": "2-ds-cong-nghe-thiet-bi/trong-trot-14"
       },
       {
         "label": "Kh\u00E1c",
         "value": 26,
         "color": "#94a3b8",
-        "url": "cong-nghe.html"
+        "url": "cong-nghe"
       }
     ]
   }

@@ -47,7 +47,7 @@ public class MenuLeftViewComponent : ViewComponent
             {
                 MenuId = x.MenuId,
                 Title = x.Title,
-                NavigateUrl = $"{mainDomain}{x.QueryString}-{x.MenuId}.html"
+                NavigateUrl = $"{mainDomain}{x.QueryString}-{x.MenuId}"
             })
             .ToList();
 

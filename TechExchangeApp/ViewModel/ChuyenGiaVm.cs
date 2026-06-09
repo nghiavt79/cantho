@@ -41,7 +41,7 @@ namespace TechExchangeApp.ViewModel
         public int    Rating   { get; set; }
 
         // Derived URL
-        public string DetailUrl => $"/chuyen-gia/{Slug}-{Id}.html";
+        public string DetailUrl => $"/chuyen-gia/{Slug}-{Id}";
     }
 
     // =====================================================================

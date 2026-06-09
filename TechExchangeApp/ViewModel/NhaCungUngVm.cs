@@ -39,7 +39,7 @@ namespace TechExchangeApp.ViewModel
         public int    Rating   { get; set; }
 
         // Derived URL
-        public string DetailUrl => $"/nha-cung-ung/{Slug}-{Id}.html";
+        public string DetailUrl => $"/nha-cung-ung/{Slug}-{Id}";
     }
 
     // =====================================================================

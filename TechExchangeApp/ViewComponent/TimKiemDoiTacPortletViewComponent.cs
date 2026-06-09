@@ -56,7 +56,7 @@ public class TimKiemDoiTacPortletViewComponent : ViewComponent
             Url = _mainDomain +
                   "11-tim-kiem-doi-tac/" +
                   ProductController.MakeURLFriendly(x.TenSanPham) +
-                  "-" + x.TimDoiTacId + ".html"
+                  "-" + x.TimDoiTacId
         }).ToList();
 
         return View(model);

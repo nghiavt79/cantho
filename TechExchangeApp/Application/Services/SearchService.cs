@@ -358,7 +358,7 @@ namespace TechExchangeApp.Application.Services
                             {
                                 ProductId = product.ID,
                                 ProductName = product.Name ?? string.Empty,
-                                ProductUrl = $"2-cong-nghe-thiet-bi/{product.TypeId}/{Controllers.ProductController.MakeURLFriendly(product.Name)}-{product.ID}.html",
+                                ProductUrl = $"2-cong-nghe-thiet-bi/{product.TypeId}/{Controllers.ProductController.MakeURLFriendly(product.Name)}-{product.ID}",
                                 RelevancePercentage = CalculateRelevancePercentage(searchItem, keyword)
                             };
                         }).ToList();
@@ -367,7 +367,7 @@ namespace TechExchangeApp.Application.Services
                         {
                             CompanyId = company.CungUngId,
                             CompanyName = company.FullName ?? "Không rõ",
-                            CompanyUrl = $"nha-cung-ung/{company.QueryString}-{company.CungUngId}.html",
+                            CompanyUrl = $"nha-cung-ung/{company.QueryString}-{company.CungUngId}",
                             MatchPercentage = CalculateMatchPercentage(productList),
                             Rating = realRating,
                             ViewCount = company.Viewed ?? 0,

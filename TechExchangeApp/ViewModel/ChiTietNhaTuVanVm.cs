@@ -67,7 +67,7 @@
         /// Link SEO tới chi tiết nhà tư vấn
         /// </summary>
         public string DetailUrl =>
-            $"/nha-tu-van-{Id}.html";
+            $"/nha-tu-van-{Id}";
     }
 
 }

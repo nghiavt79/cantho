@@ -74,7 +74,7 @@ namespace TechExchangeApp.Services
             await _context.SaveChangesAsync();
 
             // Auto-generated first message with product link
-            var productUrl = $"/2-cong-nghe-thiet-bi/{product.ProductType}/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(product.Name)}-{product.ID}.html";
+            var productUrl = $"/2-cong-nghe-thiet-bi/{product.ProductType}/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(product.Name)}-{product.ID}";
             var firstMessage = new ChatMessage
             {
                 ConversationId = conversation.Id,
