@@ -19,6 +19,7 @@ namespace TechExchangeApp.ViewModel
         public List<HomeTechCardVm> FeaturedTechnologies { get; set; } = new();
         public List<HomeNewsCardVm> FeaturedNews { get; set; } = new();
         public List<HomeExpertVm> Experts { get; set; } = new();
+        public List<HomePartnerVm> Customers { get; set; } = new();
         public List<HomePartnerVm> Partners { get; set; } = new();
         public List<string> PopularTags { get; set; } = new();
     }

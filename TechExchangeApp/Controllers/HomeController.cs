@@ -50,7 +50,8 @@ namespace TechExchangeApp.Controllers
                 Services = BuildServices(),
                 Reasons = BuildReasons(),
                 ProcessSteps = BuildProcessSteps(),
-                Partners = await LoadPartnersAsync(),
+                Customers = await LoadLogoItemsAsync(subject: 4, take: 32),
+                Partners = await LoadLogoItemsAsync(subject: 5, take: 8),
                 PopularTags = BuildPopularTags(),
                 FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(5)),
                 FeaturedNews = LoadFeaturedNews(),
@@ -150,16 +151,16 @@ namespace TechExchangeApp.Controllers
             };
         }
 
-        private async Task<List<HomePartnerVm>> LoadPartnersAsync()
+        private async Task<List<HomePartnerVm>> LoadLogoItemsAsync(int subject, int take)
         {
             var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
 
             return await _context.ImageAdvers
                 .AsNoTracking()
-                .Where(x => x.Subject == 5 && x.StatusID == 3 && x.LanguageID == lang)
+                .Where(x => x.Subject == subject && x.StatusID == 3 && x.LanguageID == lang)
                 .OrderBy(x => x.Sort ?? int.MaxValue)
                 .ThenBy(x => x.ID)
-                .Take(8)
+                .Take(take)
                 .Select(x => new HomePartnerVm
                 {
                     Name = x.Title ?? "",

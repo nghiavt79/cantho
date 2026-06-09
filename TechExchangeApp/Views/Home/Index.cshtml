@@ -209,6 +209,30 @@
         </div>
     </section>
 
+    @if (Model.Customers.Any())
+    {
+        <section class="container home-v2-section">
+            <div class="home-v2-partners">
+                <h2>Khách hàng tiêu biểu</h2>
+                <div class="home-v2-partner-row">
+                    @foreach (var customer in Model.Customers)
+                    {
+                        <div class="home-v2-partner">
+                            @if (!string.IsNullOrEmpty(customer.LogoUrl))
+                            {
+                                <img src="@customer.LogoUrl" alt="@customer.Name">
+                            }
+                            else
+                            {
+                                <span>@customer.Name</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+
     <section class="container home-v2-section">
         <div class="home-v2-partners">
             <h2>Đối tác đồng hành</h2>
