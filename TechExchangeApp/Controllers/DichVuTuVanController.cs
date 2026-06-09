@@ -21,8 +21,8 @@ namespace TechExchangeApp.Controllers
         }
 
         // ================= INDEX =================
-        [HttpGet("dich-vu-tu-van-{menuId}")]
-        public IActionResult Index(int menuId)
+        [HttpGet("dich-vu-tu-van")]
+        public IActionResult Index(int menuId = 8)
         {
             var vm = new DichVuTuVanIndexVm
             {
@@ -345,7 +345,7 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = x.CatId,
                     Name = x.Title,
-                    Url = "/dich-vu-tu-van-8"
+                    Url = "/dich-vu-tu-van"
                 })
                 .ToList();
 

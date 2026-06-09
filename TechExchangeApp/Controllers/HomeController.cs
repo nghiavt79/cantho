@@ -109,8 +109,8 @@ namespace TechExchangeApp.Controllers
             {
                 new() { Icon = "bi-cpu", Title = "Cung cấp công nghệ", Url = "/cong-nghe" },
                 new() { Icon = "bi-link-45deg", Title = "Kết nối cung cầu công nghệ", Url = "/tim-kiem-doi-tac" },
-                new() { Icon = "bi-lightbulb", Title = "Nghiên cứu - Ứng dụng - Chuyển giao công nghệ", Url = "/dich-vu-tu-van-8" },
-                new() { Icon = "bi-flask", Title = "Thử nghiệm & kiểm định", Url = "/dich-vu-tu-van-8" },
+                new() { Icon = "bi-lightbulb", Title = "Nghiên cứu - Ứng dụng - Chuyển giao công nghệ", Url = "/dich-vu-tu-van" },
+                new() { Icon = "bi-flask", Title = "Thử nghiệm & kiểm định", Url = "/dich-vu-tu-van" },
                 new() { Icon = "bi-stars", Title = "Tư vấn đổi mới sáng tạo & đổi mới công nghệ", Url = "/dang-ky-tu-van" },
                 new() { Icon = "bi-mortarboard", Title = "Truyền thông & nâng cao năng lực", Url = "/tin-su-kien-44" }
             };
@@ -121,7 +121,7 @@ namespace TechExchangeApp.Controllers
             return new List<HomeFeatureVm>
             {
                 new() { Icon = "bi-bezier2", Title = "Tư vấn & chuyển giao công nghệ", Description = "Giải pháp phù hợp nhu cầu thực tiễn.", Url = "/dang-ky-tu-van" },
-                new() { Icon = "bi-clipboard2-pulse", Title = "Kiểm định & thử nghiệm", Description = "Đánh giá chất lượng, độ tin cậy và an toàn.", Url = "/dich-vu-tu-van-8" },
+                new() { Icon = "bi-clipboard2-pulse", Title = "Kiểm định & thử nghiệm", Description = "Đánh giá chất lượng, độ tin cậy và an toàn.", Url = "/dich-vu-tu-van" },
                 new() { Icon = "bi-easel2", Title = "Đào tạo & tập huấn", Description = "Nâng cao năng lực cho cá nhân, tổ chức.", Url = "/tin-su-kien-44" }
             };
         }
