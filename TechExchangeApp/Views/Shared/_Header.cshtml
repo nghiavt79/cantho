@@ -32,7 +32,7 @@
     <nav class="navbar navbar-expand-xl site-header-v2__nav">
         <div class="container">
             <a class="site-header-v2__brand" href="@mainDomain">
-                <img src="/images/logo.png" alt="@shortName" onerror="this.style.display='none'">
+                <img src="/image/logo-casta.webp" alt="@shortName" onerror="this.src='/image/logo.png'">
                 <span>
                     <strong>@organizationName</strong>
                     <small>@tagline</small>
@@ -84,13 +84,6 @@
                         </ul>
                     </div>
                 }
-                else
-                {
-                    <button type="button" class="site-header-v2__consult" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        <i class="bi bi-person-plus"></i> Đăng nhập
-                    </button>
-                }
-
                 <a class="site-header-v2__consult" href="/dang-ky-tu-van.html">
                     <i class="bi bi-people"></i> Đăng ký tư vấn
                 </a>

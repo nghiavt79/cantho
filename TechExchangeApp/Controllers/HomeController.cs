@@ -186,9 +186,9 @@ namespace TechExchangeApp.Controllers
         {
             return new List<HomeTechCardVm>
             {
-                new() { Title = "Hệ thống trồng rau thủy canh thông minh", Description = "Giải pháp canh tác sạch, tiết kiệm nước, năng suất cao.", ImageUrl = "/images/research.jpg", Url = "/cong-nghe.html", Category = "Nông nghiệp công nghệ cao" },
-                new() { Title = "Công nghệ xử lý nước thải sinh hoạt", Description = "Hiệu quả cao, vận hành dễ dàng, thân thiện môi trường.", ImageUrl = "/images/254-170_noImage.jpg", Url = "/cong-nghe.html", Category = "Môi trường" },
-                new() { Title = "Hệ thống sấy lạnh nông sản", Description = "Giữ nguyên chất lượng, kéo dài thời gian bảo quản.", ImageUrl = "/images/NoImages.jpg", Url = "/cong-nghe.html", Category = "Công nghệ sau thu hoạch" }
+                new() { Title = "Hệ thống trồng rau thủy canh thông minh", Description = "Giải pháp canh tác sạch, tiết kiệm nước, năng suất cao.", ImageUrl = "/image/tuoinuocnhogiot.png", Url = "/cong-nghe.html", Category = "Nông nghiệp công nghệ cao" },
+                new() { Title = "Công nghệ xử lý nước thải sinh hoạt", Description = "Hiệu quả cao, vận hành dễ dàng, thân thiện môi trường.", ImageUrl = "/image/thietbiloc.png", Url = "/cong-nghe.html", Category = "Môi trường" },
+                new() { Title = "Hệ thống sấy lạnh nông sản", Description = "Giữ nguyên chất lượng, kéo dài thời gian bảo quản.", ImageUrl = "/image/dinhlang.png", Url = "/cong-nghe.html", Category = "Công nghệ sau thu hoạch" }
             };
         }
 

@@ -34,6 +34,10 @@
     font-family: "Segoe UI", Arial, sans-serif;
 }
 
+.app-layout {
+    overflow-x: hidden;
+}
+
 .site-header-v2 {
     background: #fff;
     color: var(--te-text);
@@ -73,49 +77,54 @@
 }
 
 .site-header-v2__nav {
-    min-height: 92px;
+    min-height: 82px;
 }
 
 .site-header-v2__brand {
     display: flex;
     align-items: center;
-    gap: 18px;
-    max-width: 520px;
+    gap: 14px;
+    width: 420px;
+    min-width: 420px;
     color: var(--te-blue-900);
     text-decoration: none;
 }
 
 .site-header-v2__brand img {
-    width: 126px;
+    width: 116px;
     height: auto;
     object-fit: contain;
+    flex: 0 0 auto;
 }
 
 .site-header-v2__brand strong {
     display: block;
-    font-size: 17px;
+    max-width: 285px;
+    font-size: 13.5px;
     line-height: 1.25;
     text-transform: uppercase;
+    white-space: normal;
 }
 
 .site-header-v2__brand small {
     display: block;
     margin-top: 4px;
     color: var(--te-muted);
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1.35;
 }
 
 .site-header-v2__menu {
     align-items: center;
     gap: 4px;
+    flex-wrap: nowrap;
 }
 
 .site-header-v2__menu .nav-link {
     color: var(--te-text);
     font-weight: 600;
-    font-size: 14px;
-    padding: 12px 10px;
+    font-size: 12px;
+    padding: 10px 6px;
     white-space: nowrap;
 }
 
@@ -128,9 +137,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 235px;
-    min-height: 42px;
-    margin-left: 14px;
+    width: 185px;
+    min-height: 40px;
+    margin-left: 8px;
     padding: 0 13px;
     border: 1px solid #c9dced;
     border-radius: 7px;
@@ -141,7 +150,7 @@
     width: 100%;
     border: 0;
     outline: 0;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--te-text);
 }
 
@@ -152,14 +161,14 @@
     justify-content: center;
     gap: 8px;
     min-height: 42px;
-    margin-left: 10px;
-    padding: 0 18px;
+    margin-left: 8px;
+    padding: 0 10px;
     border: 0;
     border-radius: 7px;
     background: linear-gradient(135deg, var(--te-blue-700), #034d9a);
     color: #fff;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 12px;
     text-decoration: none;
     white-space: nowrap;
 }
@@ -185,9 +194,9 @@
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.84) 43%, rgba(255,255,255,0.1) 100%),
-        url("/images/localhost_52865_Page_LocTuKhoa_List.aspx.png") center right / cover no-repeat;
-    opacity: 0.72;
+        linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.84) 46%, rgba(255,255,255,0.36) 100%),
+        url("/image/homebg.png") center / cover no-repeat;
+    opacity: 1;
 }
 
 .home-v2-hero__grid {
@@ -482,6 +491,21 @@
     color: var(--te-text);
     text-decoration: none;
     font-weight: 700;
+}
+
+.home-v2-feature {
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    min-height: 112px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.home-v2-feature span {
+    display: block;
+    max-width: 150px;
 }
 
 .home-v2-feature i,
@@ -891,6 +915,8 @@
 
 @media (max-width: 1199px) {
     .site-header-v2__brand {
+        width: auto;
+        min-width: 0;
         max-width: 680px;
     }
 
@@ -921,6 +947,12 @@
 
     .home-v2-process__row {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1500px) {
+    .site-header-v2__search {
+        display: none;
     }
 }
 
