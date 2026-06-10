@@ -4,12 +4,12 @@
     ViewData["Title"] = "Liên hệ - Trung tâm Ứng dụng Tiến bộ KH&CN Cần Thơ";
 
     const string centerName = "Trung tâm Ứng dụng Tiến bộ Khoa học và Công nghệ Cần Thơ";
-    const string address = "79 Trương Định, Phường Bến Thành, Thành phố Cần Thơ";
-    const string phone = "(028) 3829 7040";
-    const string phoneHref = "02838297040";
-    const string fax = "(028) 3829 1957";
-    const string email = "info@techport.vn";
-    const string mapsUrl = "https://maps.google.com/?q=79+Truong+Dinh,+Ben+Thanh,+Can+Tho";
+    const string address = "166 Nguyễn Văn Cừ, P. An Bình, TP. Cần Thơ";
+    const string phone = "+(84) 292 3907 037";
+    const string phoneHref = "+842923907037";
+    const string fax = "";
+    const string email = "trungtamungdung@cantho.gov.vn";
+    const string mapsUrl = "https://maps.google.com/?q=166+Nguyen+Van+Cu,+An+Binh,+Can+Tho";
 }
 
 <link rel="stylesheet" href="~/css/contact-v2.css" asp-append-version="true" />
@@ -88,6 +88,8 @@
                                     <a href="tel:@phoneHref">@phone</a>
                                 </div>
                             </li>
+                            @if (!string.IsNullOrEmpty(fax))
+                            {
                             <li>
                                 <span class="ct-icon"><i class="bi bi-printer-fill"></i></span>
                                 <div>
@@ -95,6 +97,7 @@
                                     <span>@fax</span>
                                 </div>
                             </li>
+                            }
                             <li>
                                 <span class="ct-icon"><i class="bi bi-envelope-fill"></i></span>
                                 <div>
@@ -228,7 +231,7 @@
 
                 <div class="ct-card ct-map-card">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4848673988876!2d106.6932!3d10.7741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f5c9e2f2585%3A0x8f1cb69cd77e4d79!2s79%20Tr%C6%B0%C6%A1ng%20%C4%90%E1%BB%8Bnh%2C%20B%E1%BA%BFn%20Th%C3%A0nh%2C%20Qu%E1%BA%ADn%201%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh!5e0!3m2!1svi!2svn!4v1698760000000"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.8!2d105.7875!3d10.0333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0881b09c3e6a1%3A0x4d8b0e79a9e3b87e!2s166%20Nguy%E1%BB%85n%20V%C4%83n%20C%E1%BB%AB%2C%20An%20B%C3%ACnh%2C%20Ninh%20Ki%E1%BB%81u%2C%20C%E1%BA%A7n%20Th%C6%A1!5e0!3m2!1svi!2svn!4v1698760000000"
                         allowfullscreen loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
                         title="Bản đồ @address">
