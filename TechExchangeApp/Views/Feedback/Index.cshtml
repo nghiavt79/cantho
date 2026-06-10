@@ -1,313 +1,325 @@
 @model TechExchangeApp.ViewModel.FeedbackCreateViewModel
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Liên hệ – Techport";
+    ViewData["Title"] = "Liên hệ - Trung tâm Ứng dụng Tiến bộ KH&CN Cần Thơ";
+
+    const string centerName = "Trung tâm Ứng dụng Tiến bộ Khoa học và Công nghệ Cần Thơ";
+    const string address = "79 Trương Định, Phường Bến Thành, Thành phố Cần Thơ";
+    const string phone = "(028) 3829 7040";
+    const string phoneHref = "02838297040";
+    const string fax = "(028) 3829 1957";
+    const string email = "info@techport.vn";
+    const string mapsUrl = "https://maps.google.com/?q=79+Truong+Dinh,+Ben+Thanh,+Can+Tho";
 }
 
 <link rel="stylesheet" href="~/css/contact-v2.css" asp-append-version="true" />
 
-@* ── Hidden validation messages (giữ nguyên để JS dùng) ─────────────────── *@
 <input type="hidden" id="hidMaXacThuc" value="Vui lòng nhập đúng mã xác thực" />
-<input type="hidden" id="hidHoTen"     value="Vui lòng nhập họ tên" />
+<input type="hidden" id="hidHoTen" value="Vui lòng nhập họ tên" />
 <input type="hidden" id="hidDienThoai" value="Vui lòng nhập điện thoại" />
-<input type="hidden" id="hidEmail"     value="Vui lòng nhập đúng Email" />
-<input type="hidden" id="hidTieuDe"    value="Vui lòng nhập tiêu đề" />
-<input type="hidden" id="hidLoiNhat"   value="Vui lòng nhập lời nhắn" />
+<input type="hidden" id="hidEmail" value="Vui lòng nhập đúng Email" />
+<input type="hidden" id="hidTieuDe" value="Vui lòng nhập tiêu đề" />
+<input type="hidden" id="hidLoiNhat" value="Vui lòng nhập lời nhắn" />
 
-<!-- ══════════════════════════════════════════════════════════
-     MAIN
-     ══════════════════════════════════════════════════════════ -->
 <div class="columns-container">
-<div class="container" id="columns">
-
-<h2 class="brand-showcase-title"><span>Liên hệ</span></h2>
-
-<section class="ct-main" style="padding-top:16px;">
-    <div>
-
-        @* ── Alert từ TempData (giữ nguyên logic controller) *@
-        @if (TempData["Alert"] != null)
-        {
-            <div class="ct-alert-success mb-4" role="alert">
-                <span class="ct-alert-icon">✅</span>
-                <span>@TempData["Alert"]</span>
+    <div class="contact-page">
+        <section class="ct-hero">
+            <div class="container">
+                <div class="ct-hero__inner">
+                    <div>
+                        <span class="ct-eyebrow">Kết nối Trung tâm</span>
+                        <h1 class="ct-hero__title">Liên hệ với chúng tôi</h1>
+                        <p class="ct-hero__sub">
+                            @centerName luôn sẵn sàng tiếp nhận yêu cầu tư vấn, hợp tác, chuyển giao công nghệ
+                            và hỗ trợ doanh nghiệp trong quá trình đổi mới sáng tạo.
+                        </p>
+                    </div>
+                    <div class="ct-hero__badges" aria-label="Dịch vụ hỗ trợ">
+                        <span>Tư vấn công nghệ</span>
+                        <span>Chuyển giao KH&amp;CN</span>
+                        <span>Hỗ trợ doanh nghiệp</span>
+                    </div>
+                </div>
             </div>
-        }
+        </section>
 
-        <div class="ct-grid">
+        <main class="container">
+            @if (TempData["Alert"] != null)
+            {
+                <div class="ct-alert-success" role="alert">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>@TempData["Alert"]</span>
+                </div>
+            }
 
-            <!-- ── LEFT: THÔNG TIN LIÊN HỆ ──────────────── -->
-            <div>
-                <div class="ct-card">
-                    <p class="ct-info__brand">
-                        <i class="bi bi-building me-2 text-primary"></i>
-                        Sàn giao dịch công nghệ Thành Phố Cần Thơ
-                    </p>
+            <section class="ct-quick-support" aria-label="Kênh hỗ trợ nhanh">
+                <button type="button" data-contact-title="Yêu cầu tư vấn dịch vụ khoa học và công nghệ">
+                    <i class="bi bi-lightbulb"></i>Tư vấn dịch vụ KH&amp;CN
+                </button>
+                <button type="button" data-contact-title="Yêu cầu hợp tác chuyển giao công nghệ">
+                    <i class="bi bi-arrow-left-right"></i>Hợp tác chuyển giao
+                </button>
+                <button type="button" data-contact-title="Yêu cầu hỗ trợ doanh nghiệp">
+                    <i class="bi bi-briefcase"></i>Hỗ trợ doanh nghiệp
+                </button>
+                <button type="button" data-contact-title="Góp ý / phản ánh">
+                    <i class="bi bi-chat-dots"></i>Góp ý / phản ánh
+                </button>
+            </section>
 
-                    @* Tạm thời hiện cứng — đã comment phần load từ DB *@
-                    @*
-                    @if (!string.IsNullOrEmpty(Model.Description))
-                    {
-                        <div class="ct-description mb-4">
-                            @Html.Raw(Model.Description)
-                        </div>
-                    }
-                    else
-                    {
-                    *@
+            <section class="ct-main">
+                <div class="ct-grid">
+                    <aside class="ct-card ct-info-card">
+                        <span class="ct-card-kicker">Thông tin liên hệ</span>
+                        <h2 class="ct-info__brand">@centerName</h2>
+
                         <ul class="ct-info__list">
                             <li>
                                 <span class="ct-icon"><i class="bi bi-geo-alt-fill"></i></span>
-                                <span>79 Trương Định, Phường Bến Thành, Thành Phố Cần Thơ</span>
+                                <div>
+                                    <strong>Địa chỉ</strong>
+                                    <span>@address</span>
+                                </div>
                             </li>
                             <li>
                                 <span class="ct-icon"><i class="bi bi-telephone-fill"></i></span>
-                                <a href="tel:02838297040" class="text-decoration-none text-dark">
-                                    (028) 3829 7040
-                                </a>
+                                <div>
+                                    <strong>Điện thoại</strong>
+                                    <a href="tel:@phoneHref">@phone</a>
+                                </div>
                             </li>
                             <li>
                                 <span class="ct-icon"><i class="bi bi-printer-fill"></i></span>
-                                <span>Fax: (028) 3829 1957</span>
+                                <div>
+                                    <strong>Fax</strong>
+                                    <span>@fax</span>
+                                </div>
                             </li>
                             <li>
                                 <span class="ct-icon"><i class="bi bi-envelope-fill"></i></span>
-                                <a href="mailto:info@techport.vn" class="text-decoration-none text-dark">
-                                    info@techport.vn
-                                </a>
+                                <div>
+                                    <strong>Email</strong>
+                                    <a href="mailto:@email">@email</a>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="ct-icon"><i class="bi bi-clock-fill"></i></span>
+                                <div>
+                                    <strong>Giờ làm việc</strong>
+                                    <span>Thứ 2 - Thứ 6, 8:00 - 17:00</span>
+                                </div>
                             </li>
                         </ul>
-                    @* } *@
 
-                    <div class="ct-info__meta">
-                        <div><strong>🕐 Giờ làm việc:</strong> Thứ 2 – Thứ 6, 8:00 – 17:00</div>
-                        <div class="mt-1"><strong>⚡ Phản hồi:</strong> Trong vòng 24 giờ làm việc</div>
-                    </div>
-
-                    <div class="ct-info__actions">
-                        <a href="https://maps.google.com/?q=79+Truong+Dinh,+Ben+Thanh,+Ho+Chi+Minh"
-                           target="_blank" rel="noopener" class="ct-btn-outline">
-                            <i class="bi bi-map"></i> Chỉ đường
-                        </a>
-                        <a href="tel:02838297040" class="ct-btn-outline">
-                            <i class="bi bi-telephone"></i> Gọi ngay
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── RIGHT: FORM GỬI YÊU CẦU ──────────────── -->
-            <div>
-                <div class="ct-card ct-form-card">
-
-                    <div class="ct-form__title">Gửi yêu cầu</div>
-                    <p class="ct-form__sub">Điền thông tin bên dưới, chúng tôi sẽ liên hệ sớm nhất.</p>
-
-                    @* Error list — giữ nguyên id để JS điền vào *@
-                    <ul id="lstErrorContent"
-                        class="ct-validation-summary @(ViewData.ModelState.IsValid ? "d-none" : "")"
-                        style="list-style:none;padding:0;margin:0 0 16px;">
-                    </ul>
-
-                    @* ── FORM (giữ nguyên action/method/id) *@
-                    <form asp-controller="Feedback" asp-action="Index"
-                          method="post" id="contact-form">
-                        @Html.AntiForgeryToken()
-
-                        @* ── Phần "Thông tin cá nhân" *@
-                        <div class="ct-section-label">Thông tin cá nhân</div>
-
-                        <div class="ct-row-2">
-                            <div class="ct-form-group">
-                                <label class="ct-label" for="txtFullName">
-                                    Họ và tên <span class="req">*</span>
-                                </label>
-                                <input id="txtFullName" name="FullName"
-                                       type="text" class="ct-input"
-                                       placeholder="Nguyễn Văn A"
-                                       value="@Model.FullName"
-                                       autocomplete="name" />
-                            </div>
-                            <div class="ct-form-group">
-                                <label class="ct-label" for="txtPhone">
-                                    Điện thoại <span class="req">*</span>
-                                </label>
-                                <input id="txtPhone" name="Phone"
-                                       type="tel" class="ct-input"
-                                       placeholder="09x xxx xxxx"
-                                       autocomplete="tel" />
-                            </div>
+                        <div class="ct-help-box">
+                            <h3>Bạn cần hỗ trợ nhanh?</h3>
+                            <p>Gọi trực tiếp cho chúng tôi trong giờ hành chính để được hướng dẫn nhanh nhất.</p>
                         </div>
 
-                        <div class="ct-row-2">
-                            <div class="ct-form-group">
-                                <label class="ct-label" for="txtEmail">
-                                    Email <span class="req">*</span>
-                                </label>
-                                <input id="txtEmail" name="Email"
-                                       type="email" class="ct-input"
-                                       placeholder="email@company.com"
-                                       value="@Model.Email"
-                                       autocomplete="email" />
-                            </div>
-                            <div class="ct-form-group">
-                                <label class="ct-label" for="txtAddress">Địa chỉ</label>
-                                <input id="txtAddress" name="Address"
-                                       type="text" class="ct-input"
-                                       placeholder="Tỉnh / Thành phố"
-                                       autocomplete="address-level2" />
-                            </div>
+                        <div class="ct-info__actions">
+                            <a href="tel:@phoneHref" class="ct-btn-primary">
+                                <i class="bi bi-telephone"></i>Gọi ngay
+                            </a>
+                            <a href="@mapsUrl" target="_blank" rel="noopener" class="ct-btn-outline">
+                                <i class="bi bi-map"></i>Chỉ đường
+                            </a>
                         </div>
+                    </aside>
 
-                        @* ── Phần "Nội dung liên hệ" *@
-                        <div class="ct-section-label mt-2">Nội dung liên hệ</div>
+                    <section class="ct-card ct-form-card">
+                        <span class="ct-card-kicker">Biểu mẫu liên hệ</span>
+                        <h2 class="ct-form__title">Gửi yêu cầu tư vấn</h2>
+                        <p class="ct-form__sub">
+                            Vui lòng để lại thông tin, chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.
+                        </p>
 
-                        <div class="ct-form-group">
-                            <label class="ct-label" for="txtTitle">
-                                Tiêu đề <span class="req">*</span>
-                            </label>
-                            <input id="txtTitle" name="Title"
-                                   type="text" class="ct-input"
-                                   placeholder="Tóm tắt yêu cầu của bạn" />
-                        </div>
+                        <ul id="lstErrorContent"
+                            class="ct-validation-summary @(ViewData.ModelState.IsValid ? "d-none" : "")">
+                        </ul>
 
-                        <div class="ct-form-group">
-                            <label class="ct-label" for="txtYourMessage">
-                                Nội dung <span class="req">*</span>
-                            </label>
-                            <textarea id="txtYourMessage" name="Content"
-                                      class="ct-textarea"
-                                      rows="6"
-                                      placeholder="Mô tả chi tiết yêu cầu hoặc góp ý của bạn..."></textarea>
-                        </div>
+                        <form asp-controller="Feedback" asp-action="Index" method="post" id="contact-form">
+                            @Html.AntiForgeryToken()
 
-                        @* ── Math Captcha (server-side) *@
-                        <div class="ct-form-group">
-                            <label class="ct-label">Xác thực <span class="req">*</span></label>
-                            <div class="ct-captcha-box" style="justify-content:flex-start;gap:16px;flex-wrap:wrap;">
-                                <div class="ct-math-question" aria-label="Câu hỏi xác thực">
-                                    <span class="ct-math-expr">@Model.CaptchaQuestion = ?</span>
+                            <div class="ct-section-label">Thông tin cá nhân</div>
+
+                            <div class="ct-row-2">
+                                <div class="ct-form-group">
+                                    <label class="ct-label" for="txtFullName">Họ và tên <span class="req">*</span></label>
+                                    <input id="txtFullName" name="FullName" type="text" class="ct-input"
+                                           placeholder="Nguyễn Văn A" value="@Model.FullName" autocomplete="name" />
                                 </div>
-                                <input id="txtCode" name="CaptchaAnswer"
-                                       type="number" inputmode="numeric"
-                                       class="ct-input @(ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                       placeholder="Kết quả"
-                                       style="max-width:120px;height:44px;"
-                                       autocomplete="off" />
+                                <div class="ct-form-group">
+                                    <label class="ct-label" for="txtPhone">Điện thoại <span class="req">*</span></label>
+                                    <input id="txtPhone" name="Phone" type="tel" class="ct-input"
+                                           placeholder="09xx xxx xxx" value="@Model.Phone" autocomplete="tel" />
+                                </div>
                             </div>
-                            @if (ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0)
-                            {
-                                <span class="ct-error-msg">
-                                    <i class="bi bi-exclamation-circle me-1"></i>
-                                    @ViewData.ModelState["CaptchaAnswer"]!.Errors[0].ErrorMessage
+
+                            <div class="ct-row-2">
+                                <div class="ct-form-group">
+                                    <label class="ct-label" for="txtEmail">Email <span class="req">*</span></label>
+                                    <input id="txtEmail" name="Email" type="email" class="ct-input"
+                                           placeholder="email@company.com" value="@Model.Email" autocomplete="email" />
+                                </div>
+                                <div class="ct-form-group">
+                                    <label class="ct-label" for="txtAddress">Địa chỉ</label>
+                                    <input id="txtAddress" name="Address" type="text" class="ct-input"
+                                           placeholder="Quận/Huyện, Tỉnh/Thành phố" value="@Model.Address"
+                                           autocomplete="address-level2" />
+                                </div>
+                            </div>
+
+                            <div class="ct-section-label">Nội dung liên hệ</div>
+
+                            <div class="ct-form-group">
+                                <label class="ct-label" for="txtTitle">Tiêu đề <span class="req">*</span></label>
+                                <input id="txtTitle" name="Title" type="text" class="ct-input"
+                                       placeholder="Nhập tiêu đề yêu cầu" value="@Model.Title" />
+                            </div>
+
+                            <div class="ct-form-group">
+                                <label class="ct-label" for="txtYourMessage">Nội dung <span class="req">*</span></label>
+                                <textarea id="txtYourMessage" name="Content" class="ct-textarea" rows="6"
+                                          placeholder="Mô tả nhu cầu tư vấn, hợp tác hoặc hỗ trợ của bạn...">@Model.Content</textarea>
+                            </div>
+
+                            <div class="ct-form-group">
+                                <label class="ct-label">Xác thực <span class="req">*</span></label>
+                                <div class="ct-captcha-box">
+                                    <div class="ct-math-question" aria-label="Câu hỏi xác thực">
+                                        <span class="ct-math-expr">@Model.CaptchaQuestion = ?</span>
+                                    </div>
+                                    <input id="txtCode" name="CaptchaAnswer" type="number" inputmode="numeric"
+                                           class="ct-input ct-captcha-input @(ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                           placeholder="Kết quả" autocomplete="off" />
+                                </div>
+                                @if (ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0)
+                                {
+                                    <span class="ct-error-msg">
+                                        <i class="bi bi-exclamation-circle me-1"></i>
+                                        @ViewData.ModelState["CaptchaAnswer"]!.Errors[0].ErrorMessage
+                                    </span>
+                                }
+                            </div>
+
+                            <button id="btnSend" type="submit" class="ct-btn-submit">
+                                <span id="ctBtnText">
+                                    <i class="bi bi-send me-1"></i>Gửi yêu cầu tư vấn
                                 </span>
-                            }
-                        </div>
-
-                        @* ── Submit (giữ nguyên id="btnSend") *@
-                        <button id="btnSend" type="submit" class="ct-btn-submit">
-                            <span id="ctBtnText">
-                                <i class="bi bi-send me-1"></i> Gửi yêu cầu
-                            </span>
-                            <span id="ctBtnSpinner" class="d-none">
-                                <span class="spinner-border spinner-border-sm me-1"></span>
-                                Đang gửi...
-                            </span>
-                        </button>
-
-                    </form>
+                                <span id="ctBtnSpinner" class="d-none">
+                                    <span class="spinner-border spinner-border-sm me-1"></span>
+                                    Đang gửi...
+                                </span>
+                            </button>
+                        </form>
+                    </section>
                 </div>
-            </div>
+            </section>
 
-        </div><!-- /ct-grid -->
+            <section class="ct-map-section">
+                <div class="ct-map-heading">
+                    <span class="ct-card-kicker">Bản đồ</span>
+                    <h2>Vị trí của chúng tôi</h2>
+                    <p>
+                        Trung tâm tọa lạc tại khu vực trung tâm Thành phố Cần Thơ, thuận tiện cho việc liên hệ,
+                        làm việc và hợp tác.
+                    </p>
+                </div>
+
+                <div class="ct-card ct-map-card">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4848673988876!2d106.6932!3d10.7741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f5c9e2f2585%3A0x8f1cb69cd77e4d79!2s79%20Tr%C6%B0%C6%A1ng%20%C4%90%E1%BB%8Bnh%2C%20B%E1%BA%BFn%20Th%C3%A0nh%2C%20Qu%E1%BA%ADn%201%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh!5e0!3m2!1svi!2svn!4v1698760000000"
+                        allowfullscreen loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Bản đồ @address">
+                    </iframe>
+                </div>
+
+                <div class="ct-map-actions">
+                    <a href="@mapsUrl" target="_blank" rel="noopener" class="ct-btn-primary">
+                        <i class="bi bi-box-arrow-up-right"></i>Mở trong Google Maps
+                    </a>
+                    <button type="button" class="ct-btn-outline" id="copyAddressBtn" data-address="@address">
+                        <i class="bi bi-copy"></i>Sao chép địa chỉ
+                    </button>
+                </div>
+            </section>
+        </main>
     </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════════
-     MAP
-     ══════════════════════════════════════════════════════════ -->
-<section class="ct-map-section">
-    <div class="container">
-        <div class="ct-card ct-map-card p-0">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4848673988876!2d106.6932!3d10.7741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f5c9e2f2585%3A0x8f1cb69cd77e4d79!2s79%20Tr%C6%B0%C6%A1ng%20%C4%90%E1%BB%8Bnh%2C%20B%E1%BA%BFn%20Th%C3%A0nh%2C%20Qu%E1%BA%ADn%201%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh!5e0!3m2!1svi!2svn!4v1698760000000"
-                allowfullscreen loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                title="Bản đồ 79 Trương Định, Bến Thành, Thành Phố Cần Thơ">
-            </iframe>
-        </div>
-        <div class="text-center mt-3">
-            <a href="https://maps.google.com/?q=79+Truong+Dinh,+Ben+Thanh,+Ho+Chi+Minh"
-               target="_blank" rel="noopener" class="ct-btn-outline">
-                <i class="bi bi-box-arrow-up-right"></i> Mở trong Google Maps
-            </a>
-        </div>
-    </div>
-</section>
-
-</div><!-- /container #columns -->
-</div><!-- /columns-container -->
+</div>
 
 @section scripts {
     <script type="text/javascript">
         $(function () {
-            // Bắt sự kiện submit của form (bao gồm cả nhấn Enter)
             $("#contact-form").on("submit", function (e) {
                 if (!checkValid()) {
                     e.preventDefault();
                     return false;
                 }
             });
+
+            $("[data-contact-title]").on("click", function () {
+                $("#txtTitle").val($(this).data("contact-title")).trigger("focus");
+                $("html, body").animate({ scrollTop: $("#txtTitle").offset().top - 140 }, 350);
+            });
+
+            $("#copyAddressBtn").on("click", function () {
+                var address = $(this).data("address");
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(address);
+                }
+                $(this).addClass("is-copied").html('<i class="bi bi-check2"></i>Đã sao chép');
+                setTimeout(() => {
+                    $(this).removeClass("is-copied").html('<i class="bi bi-copy"></i>Sao chép địa chỉ');
+                }, 1800);
+            });
         });
 
         function checkValid() {
             var error = "", countbug = 0;
-            var _name    = $("#txtFullName").val().trim();
-            var _phone   = $("#txtPhone").val().trim();
-            var _email   = $("#txtEmail").val().trim();
-            var _title   = $("#txtTitle").val().trim();
+            var _name = $("#txtFullName").val().trim();
+            var _phone = $("#txtPhone").val().trim();
+            var _email = $("#txtEmail").val().trim();
+            var _title = $("#txtTitle").val().trim();
             var _content = $("#txtYourMessage").val().trim();
             var _captcha = $("#txtCode").val().trim();
 
-            if (_name    === "") { error += "<li>" + $("#hidHoTen").val()      + "</li>"; countbug++; }
-            if (!isEmail(_email)){ error += "<li>" + $("#hidEmail").val()    + "</li>"; countbug++; }
-            if (_phone   === "") { error += "<li>" + $("#hidDienThoai").val() + "</li>"; countbug++; }
-            if (_title   === "") { error += "<li>" + $("#hidTieuDe").val()    + "</li>"; countbug++; }
-            if (_content === "") { error += "<li>" + $("#hidLoiNhat").val()   + "</li>"; countbug++; }
+            if (_name === "") { error += "<li>" + $("#hidHoTen").val() + "</li>"; countbug++; }
+            if (!isEmail(_email)) { error += "<li>" + $("#hidEmail").val() + "</li>"; countbug++; }
+            if (_phone === "") { error += "<li>" + $("#hidDienThoai").val() + "</li>"; countbug++; }
+            if (_title === "") { error += "<li>" + $("#hidTieuDe").val() + "</li>"; countbug++; }
+            if (_content === "") { error += "<li>" + $("#hidLoiNhat").val() + "</li>"; countbug++; }
             if (_captcha === "") { error += "<li>" + $("#hidMaXacThuc").val() + "</li>"; countbug++; }
 
             if (countbug >= 1) {
-                $('#lstErrorContent li').remove();
+                $("#lstErrorContent li").remove();
                 $("#lstErrorContent").append(error);
-                $("#lstErrorContent").removeClass('d-none');
-                $('html, body').animate({ scrollTop: $("#lstErrorContent").offset().top - 80 }, 600);
+                $("#lstErrorContent").removeClass("d-none");
+                $("html, body").animate({ scrollTop: $("#lstErrorContent").offset().top - 80 }, 600);
                 return false;
             }
 
-            // Client OK → show loading state
-            document.getElementById('ctBtnText').classList.add('d-none');
-            document.getElementById('ctBtnSpinner').classList.remove('d-none');
-            document.getElementById('btnSend').disabled = true;
+            document.getElementById("ctBtnText").classList.add("d-none");
+            document.getElementById("ctBtnSpinner").classList.remove("d-none");
+            document.getElementById("btnSend").disabled = true;
             return true;
         }
 
-        @Html.Raw(@"
         function isEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+            return /^[^\s@@]+@@[^\s@@]+\.[^\s@@]{2,}$/.test(email);
         }
-        ")
 
-        // Scroll to success alert
-        @if (TempData["Alert"] != null) {
+        @if (TempData["Alert"] != null)
+        {
             <text>
-            document.querySelector('.ct-alert-success')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.querySelector(".ct-alert-success")?.scrollIntoView({ behavior: "smooth", block: "center" });
             </text>
         }
 
-        // Scroll to captcha error if invalid
-        @if (ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0) {
+        @if (ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0)
+        {
             <text>
-            document.getElementById('txtCode')?.focus();
+            document.getElementById("txtCode")?.focus();
             </text>
         }
     </script>

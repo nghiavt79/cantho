@@ -24,6 +24,19 @@ namespace TechExchangeApp.Controllers
         [HttpGet("dich-vu-tu-van")]
         public IActionResult Index(int menuId = 8)
         {
+            var dichVuOptions = new List<SelectItemVm>();
+            dichVuOptions.AddRange(
+                _context.Categories
+                    .Where(x => x.ParentId == 2)
+                    .OrderBy(x => x.Sort)
+                    .Select(x => new SelectItemVm
+                    {
+                        Value = x.CatId.ToString(),
+                        Text = x.Title
+                    })
+                    .ToList()
+            );
+
             var vm = new DichVuTuVanIndexVm
             {
                 DichVuTuVan = new DichVuTuVanVm
@@ -32,12 +45,14 @@ namespace TechExchangeApp.Controllers
                     SelectedCateId = 0,
                     MainDomain = _mainDomain,
                     CurrentPage = 1,
-                    PageSize = 16
+                    PageSize = 16,
+                    DichVuOptions = dichVuOptions
                 }
             };
 
             return View(vm);
         }
+
 
 
         [HttpGet]
@@ -518,6 +533,16 @@ namespace TechExchangeApp.Controllers
             const int pageSize = 16;
             int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
 
+            var dichVuOptions = _context.Categories
+                .Where(x => x.ParentId == 2)
+                .OrderBy(x => x.Sort)
+                .Select(x => new SelectItemVm
+                {
+                    Value = x.CatId.ToString(),
+                    Text = x.Title
+                })
+                .ToList();
+
             var vm = new DichVuTuVanIndexVm
             {
                 DichVuTuVan = new DichVuTuVanVm
@@ -526,7 +551,8 @@ namespace TechExchangeApp.Controllers
                     SelectedCateId = cateId,
                     CurrentPage = page,
                     PageSize = pageSize,
-                    MainDomain = _mainDomain
+                    MainDomain = _mainDomain,
+                    DichVuOptions = dichVuOptions
                 }
             };
 

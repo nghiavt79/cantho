@@ -1,222 +1,93 @@
 @model TechExchangeApp.ViewModel.DichVuTuVanVm
 
-<div class="brand-showcase">
+@{
+    int startIdx = (Model.CurrentPage - 1) * Model.PageSize + 1;
+    int endIdx = Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalCount);
+}
 
-    <h2 class="brand-showcase-title">
-        <a href="@($"{Model.MainDomain}chuyen-gia")">
-            NHÀ TƯ VẤN
-        </a>
-        <span class="icon-title">
-            <img alt="trademark"
-                 src="https://techport.vn/FrontEnd/assets/data/icon-title.png">
-        </span>
+@if (Model.TotalCount == 0)
+{
+    <div class="dvtv-empty">
+        <i class="fa fa-user-tie fa-2x mb-3 text-muted"></i>
+        <p>Không tìm thấy nhà tư vấn nào phù hợp.</p>
+    </div>
+}
+else
+{
+    <div class="dvtv-result-info">
+        Hiển thị <strong>@startIdx–@endIdx</strong> trong tổng số <strong>@Model.TotalCount</strong> nhà tư vấn
+    </div>
 
-        <div class="RightTuVan">
-            <!-- BỎ FORM + SUBMIT -->
-            <input type="hidden" id="menuId" value="@Model.MenuId" />
+    <div class="dvtv-card-list">
+        @foreach (var row in Model.Items)
+        {
+            var detailUrl = $"{Model.MainDomain}chuyen-gia/{row.QueryString}-{row.TuVanId}";
+            var rating = row.Rating ?? 0;
+            var star = Math.Clamp(rating, 0, 5);
+            var stars = new string('★', star) + new string('☆', 5 - star);
+            var avatarUrl = !string.IsNullOrEmpty(row.HinhDaiDien)
+                ? $"{Model.MainDomain}{row.HinhDaiDien}"
+                : "/image/NoAvarta.jpg";
 
-            <select id="ddlCate">
-                @foreach (var opt in Model.DichVuOptions)
-                {
-                    <option value="@opt.Value">@opt.Text</option>
-                }
-            </select>
-        </div>
-    </h2>
-
-    <!-- CONTAINER LOAD AJAX -->
-    <div id="dich-vu-tu-van-container">
-
-        <div class="brand-showcase-box">
-            <div class="brand-showcase-content">
-                <div id="showcase-1" class="brand-showcase-content-tab active">
-                    <div class="row">
-                        <div class="col-md-12 box-pro-list">
-                            <ul class="row product-list grid">
-
-                                @foreach (var row in Model.Items)
+            <article class="dvtv-card dvtv-card--expert">
+                <div class="dvtv-card__header">
+                    <div class="dvtv-card__avatar">
+                        <img src="@avatarUrl" alt="@row.FullName" />
+                    </div>
+                    <div class="dvtv-card__header-info">
+                        <h3 class="dvtv-card__name">
+                            <a href="@detailUrl">
+                                @if (!string.IsNullOrEmpty(row.HocHam))
                                 {
-                                    var detailUrl =
-                                    $"{Model.MainDomain}chuyen-gia/{row.QueryString}-{row.TuVanId}";
-
-                                    <li class="col-sx-12 col-sm-3 GioHang">
-                                        <div class="product-container" style="height:240px;overflow:hidden;">
-                                            <div class="left-block" style="height:218px;overflow:hidden;">
-
-                                                <h4 class="entry_title">
-                                                    <a href="@detailUrl" style="margin-bottom:10px;">
-                                                        @($"{row.HocHam} - {row.FullName}")
-                                                    </a>
-                                                </h4>
-
-                                                @if (!string.IsNullOrEmpty(row.HinhDaiDien))
-                                                {
-                                                    <a href="@detailUrl">
-                                                        <img src="@($"{Model.MainDomain}{row.HinhDaiDien}")"
-                                                             class="img-responsive"
-                                                             alt="@row.FullName"
-                                                             style="height:100px;max-width:none;" />
-                                                    </a>
-                                                }
-
-                                            <div class="content_price" style="margin-bottom:10px;">
-                                                <span class="price product-price">
-                                                    @row.ChucVu
-                                                </span>
-                                            </div>
-
-                                            <div class="content_price">
-                                                Cơ quan: @row.CoQuan
-                                            </div>
-
-                                            <div class="product-desc">
-                                                <i>
-                                                    @(string.IsNullOrEmpty(row.Phone)
-                                                                                                        ? "Điện thoại: Đăng nhập"
-                                                                                                        : "Điện thoại: " + row.Phone)
-                                                                                                                                 </i>
-                                                                                                                             </div>
-
-                                            <div class="product-desc">
-                                                <i>
-                                                    @(string.IsNullOrEmpty(row.Email)
-                                                                                                        ? "Email: Đăng nhập"
-                                                                                                        : "Email: " + row.Email)
-                                                </i>
-                                            </div>
-
-                                                <div id="stars-sp">
-                                                @{
-                                                        var rating = row.Rating ?? 0;
-                                                    }
-
-                                                    @if (rating == 0)
-                                                    {
-                                                        <span style="color:gold">☆☆☆☆☆</span>
-                                                    }
-                                                    else if (rating == 1)
-                                                    {
-
-                                                        <span style="color:gold">★☆☆☆☆</span>
-                                                    }
-                                                    else if (rating == 2)
-                                                    {
-
-                                                        <span style="color:gold">★★☆☆☆</span>
-                                                    }
-                                                    else if (rating == 3)
-                                                    {
-
-                                                        <span style="color:gold">★★★☆☆</span>
-                                                    }
-                                                    else if (rating == 4)
-                                                    {
-
-                                                        <span style="color:gold">★★★★☆</span>
-                                                    }
-                                                    else
-                                                    {
-
-                                                        <span style="color:gold">★★★★★</span>
-                                                    }
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </li>
+                                    <span class="dvtv-card__title-prefix">@row.HocHam</span>
                                 }
-
-                            </ul>
-                        </div>
-
-                        <!-- PAGING -->
-                        <div class="sortPagiBar">
-                            <div class="bottom-pagination">
-                                <nav>
-                                    <ul class="pagination"
-                                        style="width:860px;position:relative;float:right;">
-
-                                        <li>
-                                            <span class="first">
-                                                Tổng số @Model.TotalCount đơn vị tư vấn
-                                            </span>
-                                        </li>
-
-                                        @if (Model.CurrentPage > 1)
-                                        {
-                                            <li>
-                                                <a href="?menuId=@Model.MenuId&cateId=@Model.SelectedCateId&page=@(Model.CurrentPage - 1)">
-                                                    Trang trước
-                                                </a>
-                                            </li>
-                                        }
-
-                                        @foreach (var p in Model.Pages)
-                                        {
-                                            <li>
-                                                <a class="phantrang @(p == Model.CurrentPage ? "current" : "")"
-                                                   href="?menuId=@Model.MenuId&cateId=@Model.SelectedCateId&page=@p">
-                                                    @p
-                                                </a>
-                                            </li>
-                                        }
-
-                                        @if (Model.CurrentPage < Model.TotalPage)
-                                        {
-                                            <li>
-                                                <a href="?menuId=@Model.MenuId&cateId=@Model.SelectedCateId&page=@(Model.CurrentPage + 1)">
-                                                    Trang sau
-                                                </a>
-                                            </li>
-                                        }
-
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-
+                                @row.FullName
+                            </a>
+                        </h3>
+                        @if (!string.IsNullOrEmpty(row.ChucVu))
+                        {
+                            <span class="dvtv-card__role">@row.ChucVu</span>
+                        }
+                        <span class="dvtv-card__stars" title="Đánh giá: @star/5">@stars</span>
                     </div>
                 </div>
-            </div>
-        </div>
-
+                <div class="dvtv-card__body">
+                    @if (!string.IsNullOrEmpty(row.CoQuan))
+                    {
+                        <div class="dvtv-card__meta"><i class="fa fa-building"></i><span>@row.CoQuan</span></div>
+                    }
+                    @if (!string.IsNullOrEmpty(row.Phone))
+                    {
+                        <div class="dvtv-card__meta"><i class="fa fa-phone"></i><a href="tel:@row.Phone">@row.Phone</a></div>
+                    }
+                    @if (!string.IsNullOrEmpty(row.Email))
+                    {
+                        <div class="dvtv-card__meta"><i class="fa fa-envelope"></i><a href="mailto:@row.Email">@row.Email</a></div>
+                    }
+                </div>
+                <div class="dvtv-card__footer">
+                    <a href="@detailUrl" class="dvtv-btn dvtv-btn--sm dvtv-btn--accent">Xem hồ sơ</a>
+                </div>
+            </article>
+        }
     </div>
-</div>
 
-<script>
-    function loadTuVan(cateId, page) {
-        const menuId = $("#menuId").val();
-
-        const url = "?menuId=" + menuId
-            + "&cateId=" + cateId
-            + "&page=" + page;
-
-        $("#dich-vu-tu-van-container").load(url, function () {
-            $("#ddlCate").val(cateId);
-            bindTuVanEvents();
-        });
+    <!-- PAGINATION -->
+    @if (Model.Pages.Count > 1)
+    {
+        <nav class="dvtv-pagination">
+            @if (Model.CurrentPage > 1)
+            {
+                <a href="javascript:void(0)" class="dvtv-page-link" data-page="@(Model.CurrentPage - 1)"><i class="fa fa-chevron-left"></i> Trước</a>
+            }
+            @foreach (var pg in Model.Pages)
+            {
+                <a href="javascript:void(0)" class="dvtv-page-link @(pg == Model.CurrentPage ? "active" : "")" data-page="@pg">@pg</a>
+            }
+            @if (Model.CurrentPage < Model.TotalPage)
+            {
+                <a href="javascript:void(0)" class="dvtv-page-link" data-page="@(Model.CurrentPage + 1)">Sau <i class="fa fa-chevron-right"></i></a>
+            }
+        </nav>
     }
-
-    function bindTuVanEvents() {
-
-        $("#ddlCate").off("change").on("change", function () {
-            loadTuVan($(this).val(), 1);
-        });
-
-        $(".pagination a").off("click").on("click", function (e) {
-            e.preventDefault();
-
-            const url = new URL(this.href, location.origin);
-            const cateId = url.searchParams.get("cateId") || 0;
-            const page = url.searchParams.get("page") || 1;
-
-            loadTuVan(cateId, page);
-        });
-    }
-
-    $(function () {
-        $("#ddlCate").val("@Model.SelectedCateId");
-        bindTuVanEvents();
-    });
-</script>
+}

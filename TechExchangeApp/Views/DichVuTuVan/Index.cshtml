@@ -1,68 +1,177 @@
-﻿@model TechExchangeApp.ViewModel.DichVuTuVanIndexVm
+@model TechExchangeApp.ViewModel.DichVuTuVanIndexVm
+
+@{
+    ViewData["Title"] = "Dịch vụ tư vấn khoa học công nghệ";
+}
 
 @section Scripts {
     <script>
         $(function () {
-            $("#dich-vu-tu-van-container").load(
-                "/DichVuTuVan/DichVuTuVan?cateId=&page=1"
-            );
-        });
+            // Load initial data
+            loadCungUng(0, 1);
+            loadTuVan(0, 1);
 
-         $(function () {
-            $("#dich-vu-cung-ung-container").load(
-                "/DichVuTuVan/DichVuCungUng?menuId=@Model.DichVuTuVan.MenuId&industryId=0&page=1"
-            );
-        });
-
-
-
-            $(function () {
-                $(".GioHang").hover(function () {
-                    $(this).find(".button-group").attr("style", "display:inline");
-                }, function () {
-                    $(this).find(".button-group").attr("style", "display:none");
-                });
+            // Tab switching
+            $('#dvtvTabs button[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
+                var target = $(this).data('bs-target');
+                if (target === '#tab-donvi') loadCungUng($('#filterLinhVuc').val() || 0, 1);
+                if (target === '#tab-nhatuvan') loadTuVan($('#filterLinhVuc').val() || 0, 1);
             });
 
+            // Filter search
+            $('#btnFilterSearch').on('click', function () {
+                var activeTab = $('#dvtvTabs .nav-link.active').data('bs-target');
+                var linhVuc = $('#filterLinhVuc').val() || 0;
+                if (activeTab === '#tab-donvi') loadCungUng(linhVuc, 1);
+                else loadTuVan(linhVuc, 1);
+            });
 
+            // Clear filter
+            $('#btnFilterClear').on('click', function () {
+                $('#filterKeyword').val('');
+                $('#filterLinhVuc').val('0');
+                var activeTab = $('#dvtvTabs .nav-link.active').data('bs-target');
+                if (activeTab === '#tab-donvi') loadCungUng(0, 1);
+                else loadTuVan(0, 1);
+            });
+        });
 
-            function ajaxJquery() {
-                $(function () {
-                    $(".current").parent().addClass("active");
+        function loadCungUng(industryId, page) {
+            $('#tab-donvi').html('<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>');
+            var iid = (industryId && industryId != '0') ? industryId : 0;
+            $('#tab-donvi').load(
+                '/DichVuTuVan/DichVuCungUng?menuId=@Model.DichVuTuVan.MenuId&industryId=' + iid + '&page=' + page,
+                function () { bindCungUngEvents(); }
+            );
+        }
 
-                    $(".etheme_add_to_cart_button").click(function () {
-                        var url = $(this).parent().parent().find("a").attr("href");
-                        window.location.href = url;
-                        return false;
-                    });
-                });
-            }   
+        function loadTuVan(cateId, page) {
+            $('#tab-nhatuvan').html('<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>');
+            var cid = (cateId && cateId != '0') ? cateId : '';
+            $('#tab-nhatuvan').load(
+                '/DichVuTuVan/DichVuTuVan?menuId=@Model.DichVuTuVan.MenuId&cateId=' + cid + '&page=' + page,
+                function () { bindTuVanEvents(); }
+            );
+        }
+
+        function bindCungUngEvents() {
+            $('#tab-donvi').off('click', '.dvtv-page-link').on('click', '.dvtv-page-link', function (e) {
+                e.preventDefault();
+                loadCungUng($('#filterLinhVuc').val() || 0, $(this).data('page'));
+            });
+        }
+
+        function bindTuVanEvents() {
+            $('#tab-nhatuvan').off('click', '.dvtv-page-link').on('click', '.dvtv-page-link', function (e) {
+                e.preventDefault();
+                loadTuVan($('#filterLinhVuc').val() || 0, $(this).data('page'));
+            });
+        }
     </script>
 }
 
-<div class="columns-container">
-    <div class="container" id="columns">
-        <div class="row">
+<!-- HERO -->
+<section class="dvtv-hero">
+    <div class="container">
+        <nav class="dvtv-breadcrumb" aria-label="breadcrumb">
+            <a href="/">Trang chủ</a><span>/</span><span>Dịch vụ tư vấn</span>
+        </nav>
+        <h1 class="dvtv-hero__title">Dịch vụ tư vấn khoa học, công nghệ và đổi mới sáng tạo</h1>
+        <p class="dvtv-hero__desc">Kết nối doanh nghiệp, tổ chức, cá nhân với đơn vị tư vấn và chuyên gia hàng đầu trong lĩnh vực khoa học công nghệ tại Thành phố Cần Thơ.</p>
+        <div class="dvtv-hero__actions">
+            <a href="/TechTransfer/Create" class="dvtv-btn dvtv-btn--primary"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
+            <a href="#tab-donvi" class="dvtv-btn dvtv-btn--outline" onclick="$('#dvtvTabs button[data-bs-target=\'#tab-donvi\']').tab('show');">
+                <i class="fa fa-building me-2"></i>Tìm đơn vị tư vấn
+            </a>
+        </div>
+    </div>
+</section>
 
-            <!-- CENTER COLUMN -->
-            <div class="center_column col-xs-12 col-sm-9" id="center_column">
+<div class="dvtv-page">
+    <div class="container">
+        <div class="row g-4">
+            <!-- MAIN -->
+            <div class="col-lg-9">
 
-                <div id="dich-vu-cung-ung-container">
+                <!-- FILTER -->
+                <div class="dvtv-filter-card">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-5">
+                            <label class="dvtv-filter-label">Từ khóa</label>
+                            <input type="text" id="filterKeyword" class="form-control" placeholder="Nhập tên đơn vị, chuyên gia...">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="dvtv-filter-label">Lĩnh vực tư vấn</label>
+                            <select id="filterLinhVuc" class="form-select">
+                                <option value="0">Tất cả lĩnh vực</option>
+                                @if (Model.DichVuTuVan?.DichVuOptions != null)
+                                {
+                                    foreach (var opt in Model.DichVuTuVan.DichVuOptions.Where(o => o.Value != "0"))
+                                    {
+                                        <option value="@opt.Value">@opt.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-flex gap-2">
+                                <button type="button" id="btnFilterSearch" class="dvtv-btn dvtv-btn--primary flex-fill"><i class="fa fa-search me-1"></i>Tìm kiếm</button>
+                                <button type="button" id="btnFilterClear" class="dvtv-btn dvtv-btn--outline-sm"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="dich-vu-tu-van-container">
+                <!-- TABS -->
+                <ul class="nav dvtv-tabs" id="dvtvTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-donvi" type="button" role="tab">
+                            <i class="fa fa-building me-2"></i>Đơn vị tư vấn
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-nhatuvan" type="button" role="tab">
+                            <i class="fa fa-user-tie me-2"></i>Nhà tư vấn
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab-donvi" role="tabpanel">
+                        <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+                    </div>
+                    <div class="tab-pane fade" id="tab-nhatuvan" role="tabpanel">
+                        <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+                    </div>
                 </div>
 
             </div>
 
-            <div class="column col-xs-12 col-sm-3" id="left_column">
+            <!-- SIDEBAR -->
+            <div class="col-lg-3">
+                <aside class="dvtv-sidebar">
+                    <div class="dvtv-sidebar-card dvtv-sidebar-card--cta">
+                        <h3 class="dvtv-sidebar-title"><i class="fa fa-headset me-2"></i>Bạn cần tư vấn?</h3>
+                        <p class="dvtv-sidebar-text">Gửi yêu cầu tư vấn để được kết nối với đơn vị và chuyên gia phù hợp nhất.</p>
+                        <a href="/TechTransfer/Create" class="dvtv-btn dvtv-btn--primary w-100"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
+                    </div>
 
-                @await Component.InvokeAsync("QuangCaoLeft")
+                    <div class="dvtv-sidebar-card">
+                        <h3 class="dvtv-sidebar-title"><i class="fa fa-tags me-2"></i>Lĩnh vực tư vấn phổ biến</h3>
+                        <div class="dvtv-tag-cloud">
+                            @if (Model.DichVuTuVan?.DichVuOptions != null)
+                            {
+                                foreach (var opt in Model.DichVuTuVan.DichVuOptions.Where(o => o.Value != "0").Take(10))
+                                {
+                                    <a href="javascript:void(0)" class="dvtv-tag"
+                                       onclick="$('#filterLinhVuc').val('@opt.Value'); $('#btnFilterSearch').click();">@opt.Text</a>
+                                }
+                            }
+                        </div>
+                    </div>
 
-
+                </aside>
             </div>
-            <!-- END RIGHT COLUMN -->
-
         </div>
     </div>
 </div>
