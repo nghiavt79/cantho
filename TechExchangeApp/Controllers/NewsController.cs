@@ -156,11 +156,77 @@ namespace TechExchangeApp.Controllers
 
             var pager = BuildPager(total, page, pageSize, 10);
 
+            // Featured items: first 4 most recent (only on page 1)
+            var featuredItems = new List<NewsItemVm>();
+            if (page == 1)
+            {
+                featuredItems = await _context.Contents
+                    .AsNoTracking()
+                    .Where(q => allMenuIds.Contains(q.MenuId ?? 0)
+                        && q.LanguageId == langId
+                        && q.StatusId == 3
+                        && q.IsReport != true
+                        && q.PublishedDate <= DateTime.Now
+                        && (q.eEffectiveDate == null || q.eEffectiveDate >= DateTime.Now))
+                    .OrderByDescending(q => q.PublishedDate)
+                    .Take(4)
+                    .Select(q => new NewsItemVm
+                    {
+                        Id = q.Id,
+                        MenuId = q.MenuId,
+                        Title = q.Title,
+                        QueryString = q.QueryString,
+                        Image = q.Image,
+                        Description = q.Description,
+                        PublishedDate = q.PublishedDate
+                    })
+                    .ToListAsync();
+            }
+
+            // Latest items for sidebar (5 most recent across all news)
+            var latestItems = await _context.Contents
+                .AsNoTracking()
+                .Where(q => q.LanguageId == langId
+                    && q.StatusId == 3
+                    && q.IsReport != true
+                    && q.PublishedDate <= DateTime.Now)
+                .OrderByDescending(q => q.PublishedDate)
+                .Take(5)
+                .Select(q => new NewsItemVm
+                {
+                    Id = q.Id,
+                    MenuId = q.MenuId,
+                    Title = q.Title,
+                    QueryString = q.QueryString,
+                    Image = q.Image,
+                    PublishedDate = q.PublishedDate
+                })
+                .ToListAsync();
+
+            // Sibling menus for category filter tabs
+            var parentMenuId = menu.ParentId ?? 0;
+            var siblingMenus = await _context.Menus
+                .AsNoTracking()
+                .Where(m => m.ParentId == parentMenuId && m.StatusId == 1)
+                .OrderBy(m => m.Sort)
+                .Select(m => new SiblingMenuVm
+                {
+                    MenuId = m.MenuId,
+                    Title = m.Title,
+                    QueryString = m.QueryString,
+                    IsActive = m.MenuId == menuId
+                })
+                .ToListAsync();
+
             var vm = new NewsCategoryVm
             {
                 MenuId = menuId,
                 CategoryTitle = menu.Title,
+                CategoryDescription = $"Cập nhật các hoạt động, chương trình, hội thảo và thông tin khoa học công nghệ mới nhất thuộc mục {menu.Title}.",
                 Items = items,
+                FeaturedItems = featuredItems,
+                SiblingMenus = siblingMenus,
+                LatestItems = latestItems,
                 Pager = pager
             };
 

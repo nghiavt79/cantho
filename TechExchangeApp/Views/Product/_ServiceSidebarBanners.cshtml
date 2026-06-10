@@ -1,0 +1,53 @@
+@{
+    var mainDomain = Html.MainDomain();
+    var supportItems = new[]
+    {
+        new
+        {
+            Icon = "bi-box-arrow-up-right",
+            Title = "Ký gửi công nghệ",
+            Text = "Dành cho viện, trường, doanh nghiệp muốn giới thiệu công nghệ."
+        },
+        new
+        {
+            Icon = "bi-search",
+            Title = "Tìm kiếm công nghệ phù hợp",
+            Text = "Hỗ trợ doanh nghiệp tìm giải pháp theo nhu cầu sản xuất."
+        },
+        new
+        {
+            Icon = "bi-people",
+            Title = "Tư vấn chuyển giao",
+            Text = "Kết nối chuyên gia, đơn vị nghiên cứu và doanh nghiệp."
+        },
+        new
+        {
+            Icon = "bi-clipboard2-check",
+            Title = "Đánh giá khả năng ứng dụng",
+            Text = "Xem xét tính khả thi, chi phí và hiệu quả triển khai."
+        }
+    };
+}
+
+<aside class="support-box" aria-label="Trung tâm hỗ trợ chuyển giao">
+    <span class="support-box__kicker">Trung tâm hỗ trợ</span>
+    <h2>Bạn cần hỗ trợ chuyển giao công nghệ?</h2>
+    <p>Gửi nhu cầu để được tư vấn giải pháp, chuyên gia và đối tác phù hợp.</p>
+
+    <a class="support-box__cta" href="@($"{mainDomain}dang-ky-tu-van")">
+        Gửi yêu cầu tư vấn <i class="bi bi-arrow-right"></i>
+    </a>
+
+    <div class="support-box__items">
+        @foreach (var item in supportItems)
+        {
+            <div class="support-item">
+                <i class="bi @item.Icon"></i>
+                <div>
+                    <strong>@item.Title</strong>
+                    <small>@item.Text</small>
+                </div>
+            </div>
+        }
+    </div>
+</aside>

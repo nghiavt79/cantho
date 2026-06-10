@@ -1,4 +1,4 @@
-﻿using TechExchangeApp.Entities;
+using TechExchangeApp.Entities;
 
 namespace TechExchangeApp.ViewModel
 {
@@ -6,8 +6,11 @@ namespace TechExchangeApp.ViewModel
     {
         public string CateTitle { get; set; }
         public string PageTitle { get; set; }
+        public string? Description { get; set; }
+        public string MainDomain { get; set; } = "";
 
         public List<CategoryItemVm> Categories { get; set; } = new();
+        public List<Category> AllCategories { get; set; } = new();
         public List<ProductItemVm> Products { get; set; } = new();
         public List<PageItemVm> Pages { get; set; } = new();
 
@@ -31,6 +34,9 @@ namespace TechExchangeApp.ViewModel
         public string ImageUrl { get; set; }
         public string PriceText { get; set; }
         public string Code { get; set; }
+        public string? Description { get; set; }
+        public string? SupplierName { get; set; }
+        public string? CategoryName { get; set; }
         public int Star { get; set; }
 
         public bool IsSC { get; set; }

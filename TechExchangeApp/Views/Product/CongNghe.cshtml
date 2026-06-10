@@ -1,135 +1,154 @@
 @model TechExchangeApp.ViewModel.ProductIndexViewModel
 @{
-    ViewData["Title"] = ViewData["PageTitle"]?.ToString() ?? "Công Nghệ";
+    var pageTitle = ViewData["PageTitle"]?.ToString() ?? "Công nghệ";
+    ViewData["Title"] = pageTitle;
+
+    string ProductImage(TechExchangeApp.Entities.SanPhamCNTB p)
+    {
+        if (!string.IsNullOrEmpty(p.QuyTrinhHinhAnh))
+        {
+            return Html.CookedImageURL("254-170", p.QuyTrinhHinhAnh);
+        }
+
+        return p.TypeId switch
+        {
+            2 => Html.MainDomain() + "images/sangche.png",
+            3 => Html.MainDomain() + "images/research.jpg",
+            _ => Html.MainDomain() + "images/research.jpg"
+        };
+    }
+
+    string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
+        $"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
+
+    string PlainText(string? value)
+    {
+        var text = System.Text.RegularExpressions.Regex.Replace(value ?? "", "<.*?>", " ");
+        return System.Net.WebUtility.HtmlDecode(text).Trim();
+    }
+
+    string ProductDescription(TechExchangeApp.Entities.SanPhamCNTB p)
+    {
+        var text = PlainText(!string.IsNullOrWhiteSpace(p.MoTaNgan) ? p.MoTaNgan : p.MoTa);
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return "Giải pháp công nghệ phục vụ sản xuất, vận hành và ứng dụng thực tế cho doanh nghiệp.";
+        }
+
+        return text.Length > 110 ? text.Substring(0, 107).Trim() + "..." : text;
+    }
+
+    string ProductPrice(TechExchangeApp.Entities.SanPhamCNTB p) => p.OriginalPrice > 0
+        ? Html.FormatCurrencyOto(p.OriginalPrice.ToString(), p.Currency)
+        : "Liên hệ";
+
+    var _db = ((IServiceProvider)ViewContext.HttpContext.RequestServices)
+        .GetService(typeof(TechExchangeApp.Data.AppDbContext)) as TechExchangeApp.Data.AppDbContext;
+
+    string ProductSource(TechExchangeApp.Entities.SanPhamCNTB p)
+    {
+        if (p.NCUId != null && _db != null)
+        {
+            var ncu = _db.NhaCungUngs.FirstOrDefault(x => x.CungUngId == p.NCUId);
+            if (ncu != null && !string.IsNullOrWhiteSpace(ncu.FullName))
+                return ncu.FullName;
+        }
+        return "Đang cập nhật";
+    }
 }
 
-@section Scripts {
-    <script type="text/javascript">
-        $(function () {
-            $.fn.rating = function (method, options) {
-                method = method || 'create';
-                var settings = $.extend({
-                    limit: 5, value: 0, glyph: "glyphicon-star",
-                    coloroff: "gray", coloron: "gold", size: "1.5em",
-                    cursor: "default", onClick: function () { }
-                }, options);
-                var style = "font-size:" + settings.size + ";color:" + settings.coloroff + ";cursor:" + settings.cursor + ";";
-                if (method == 'create') {
-                    this.each(function () {
-                        if (!$(this).attr('data-rating')) { $(this).attr('data-rating', settings.value); }
-                    });
-                    for (var i = 0; i < settings.limit; i++) {
-                        this.append('<span data-value="' + (i + 1) + '" class="ratingicon glyphicon ' + settings.glyph + '" style="' + style + '"></span>');
-                    }
-                    this.each(function () {
-                        var rating = parseInt($(this).attr('data-rating'));
-                        $(this).find("span.ratingicon").each(function () {
-                            var value = parseInt($(this).attr('data-value'));
-                            $(this).css('color', value > rating ? settings.coloroff : settings.coloron);
-                        });
-                    });
-                }
-            };
-            $("#stars-sp").rating();
-        });
-    </script>
-}
-
-<div class="columns-container">
+<div class="columns-container tech-page">
     <div class="container" id="columns">
         <div class="row">
-
-            <!-- CENTER COLUMN -->
             <div class="center_column col-xs-12 col-sm-9 cntb" id="center_column">
+                <div class="tech-page-hero">
+                    <nav class="tech-breadcrumb" aria-label="breadcrumb">
+                        <a href="@Html.MainDomain()">Trang chủ</a>
+                        <span>/</span>
+                        <strong>@pageTitle</strong>
+                    </nav>
+                    <h1>Công nghệ &amp; Giải pháp ứng dụng</h1>
+                    <p>Khám phá các công nghệ, thiết bị và quy trình sẵn sàng chuyển giao, phục vụ doanh nghiệp, hợp tác xã và tổ chức tại Cần Thơ.</p>
 
-                <h1 class="page-heading CongNgheThietBi">@ViewData["PageTitle"]</h1>
+                    <form class="tech-search" action="@($"{Html.MainDomain()}Search")" method="get">
+                        <input type="hidden" name="type" value="Technology" />
+                        <input type="search" name="q" placeholder="Tìm kiếm công nghệ, thiết bị, giải pháp..." aria-label="Tìm kiếm công nghệ" />
+                        <button type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                    </form>
 
-                @* Sản phẩm mới nhất theo loại *@
+                    <div class="tech-hero-stats" aria-label="Thống kê công nghệ">
+                        <span><strong>@Model.TotalProducts</strong>Công nghệ sẵn sàng chuyển giao</span>
+                        <span><strong>@Model.TotalCategories</strong>Lĩnh vực ứng dụng</span>
+                        <span><strong>@Model.TotalSuppliers</strong>Đơn vị nghiên cứu &amp; doanh nghiệp</span>
+                    </div>
+                </div>
+
+                <div class="category-filter tech-filter" aria-label="Lĩnh vực công nghệ">
+                    @foreach (var cat in Model.AllCategories)
+                    {
+                        <a href="@($"{Html.MainDomain()}2-ds-cong-nghe-thiet-bi/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
+                            @cat.Title
+                        </a>
+                    }
+                </div>
+
                 @await Html.PartialAsync("_ProductCNMoiCapNhat", Model.NewProducts)
 
-                <!-- CATEGORY + PRODUCT BLOCKS -->
                 @foreach (var block in Model.Categories)
                 {
-                    <div class="brand-showcase">
-                        <h2 class="brand-showcase-title">
-                            <a href="@($"{Html.MainDomain()}2-ds-cong-nghe-thiet-bi/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}")">
-                                @block.Category.Title
-                            </a>
-                        </h2>
+                    var categoryUrl = $"{Html.MainDomain()}2-ds-cong-nghe-thiet-bi/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}";
 
-                        <div class="brand-showcase-box">
-                            <div class="brand-showcase-content">
-                                <div class="brand-showcase-content-tab active">
-                                    <div class="row">
-                                        <div class="col-md-12 box-pro-list">
-                                            <ul class="row product-list grid">
-                                                @foreach (var p in block.Products)
-                                                {
-                                                    string imgUrl;
-                                                    if (string.IsNullOrEmpty(p.QuyTrinhHinhAnh))
-                                                    {
-                                                        imgUrl = p.TypeId switch
-                                                        {
-                                                            2 => Html.MainDomain() + "images/sangche.png",
-                                                            3 => Html.MainDomain() + "images/research.jpg",
-                                                            _ => Html.MainDomain() + "images/research.jpg"
-                                                        };
-                                                    }
-                                                    else
-                                                    {
-                                                        imgUrl = Html.CookedImageURL("254-170", p.QuyTrinhHinhAnh);
-                                                    }
-
-                                                    <li class="col-sx-12 col-sm-3 ListProductMobile">
-                                                        <div class="product-container">
-                                                            <div class="left-block">
-                                                                <a href="@($"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{Html.MakeURLFriendly(p.Name)}-{p.ID}")">
-                                                                    <img src="@imgUrl" class="img-responsive ProductListImage" alt="@p.Name" />
-                                                                </a>
-                                                                @if (p.TypeId == 2) { <div class="label_sc"></div> }
-                                                                else if (p.TypeId == 3) { <div class="label_nc"></div> }
-                                                            </div>
-                                                            <div class="right-block">
-                                                                <h4 class="product-name">
-                                                                    <a href="@($"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{Html.MakeURLFriendly(p.Name)}-{p.ID}")">
-                                                                        @p.Name
-                                                                    </a>
-                                                                </h4>
-                                                                <div class="content_price">
-                                                                    <span class="price product-price">
-                                                                        Giá tham khảo:
-                                                                        @Html.FormatCurrencyOto(p.OriginalPrice.ToString(), p.Currency)
-                                                                    </span>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    @{ var rating = p.Rating ?? 0; }
-                                                                    @for (int i = 1; i <= 5; i++)
-                                                                    {
-                                                                        <span style="color:gold">@(i <= rating ? "★" : "☆")</span>
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <section class="tech-section">
+                        <div class="section-heading section-heading--plain">
+                            <h2 class="section-title">
+                                <a href="@categoryUrl">@block.Category.Title</a>
+                            </h2>
+                            <a href="@categoryUrl">Xem tất cả <i class="bi bi-arrow-right"></i></a>
                         </div>
-                    </div>
+
+                        <div class="tech-grid">
+                            @foreach (var p in block.Products.Take(4))
+                            {
+                                <article class="tech-card">
+                                    <a class="tech-card__image" href="@ProductUrl(p)">
+                                        <img src="@ProductImage(p)" alt="@p.Name" />
+                                    </a>
+                                    <div class="tech-card__body">
+                                        <span class="tech-card__badge">@block.Category.Title</span>
+                                        <h3 class="tech-card__title">
+                                            <a href="@ProductUrl(p)" title="@p.Name">@p.Name</a>
+                                        </h3>
+                                        <p class="tech-card__desc">@ProductDescription(p)</p>
+                                        <div class="tech-card__source">
+                                            <i class="bi bi-building"></i> Nhà cung ứng: @ProductSource(p)
+                                        </div>
+                                        <div class="tech-card__price">
+                                            Giá tham khảo: <strong>@ProductPrice(p)</strong>
+                                        </div>
+                                        <a href="@ProductUrl(p)" class="tech-card__btn">Chi tiết <i class="bi bi-arrow-right"></i></a>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    </section>
                 }
+
+                <section class="tech-transfer-cta">
+                    <div>
+                        <span>Kết nối chuyển giao</span>
+                        <h2>Bạn có công nghệ cần giới thiệu hoặc chuyển giao?</h2>
+                        <p>Gửi thông tin để trung tâm hỗ trợ đánh giá, kết nối doanh nghiệp và đề xuất lộ trình thương mại hóa phù hợp.</p>
+                    </div>
+                    <div class="tech-transfer-cta__actions">
+                        <a class="tech-transfer-cta__primary" href="@($"{Html.MainDomain()}dang-ky-tu-van")">Gửi yêu cầu tư vấn</a>
+                        <a class="tech-transfer-cta__secondary" href="@($"{Html.MainDomain()}feedback")">Liên hệ trung tâm</a>
+                    </div>
+                </section>
             </div>
 
-            <!-- RIGHT COLUMN -->
             <div class="column col-xs-12 col-sm-3" id="left_column">
-
-                @await Component.InvokeAsync("QuangCaoLeft")
-
-
+                @await Html.PartialAsync("_ServiceSidebarBanners")
             </div>
-
         </div>
     </div>
 </div>

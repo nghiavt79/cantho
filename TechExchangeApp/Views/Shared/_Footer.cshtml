@@ -6,6 +6,7 @@
     var phone = Configuration["SiteBranding:Phone"] ?? "";
     var email = Configuration["SiteBranding:Email"] ?? "";
     var address = Configuration["SiteBranding:Address"] ?? "";
+    var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + Uri.EscapeDataString(address);
 }
 
 <footer class="site-footer-v2">
@@ -18,10 +19,9 @@
                 </div>
                 <p>@organizationName là đơn vị sự nghiệp khoa học và công nghệ, hỗ trợ kết nối nghiên cứu, ứng dụng và chuyển giao công nghệ.</p>
                 <div class="site-footer-v2__social">
-                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                    <a href="#" aria-label="Zalo"><i class="bi bi-chat-dots"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100069991094645" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.youtube.com/@@TrungtamUngdungCanTho" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    <a href="https://id.zalo.me/account/login?continue=http%3A%2F%2Fzalo.me%2F02923907037" target="_blank" rel="noopener" aria-label="Zalo"><img class="site-footer-v2__zalo-icon" src="/image/zalo-icon.webp" alt=""></a>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
 
             <div>
                 <h3>Liên hệ</h3>
-                <p><i class="bi bi-geo-alt"></i> @address</p>
+                <p><a href="@mapUrl" target="_blank" rel="noopener"><i class="bi bi-geo-alt"></i> @address</a></p>
                 <p><i class="bi bi-telephone"></i> @phone</p>
                 <p><i class="bi bi-envelope"></i> @email</p>
                 <form class="site-footer-v2__newsletter">

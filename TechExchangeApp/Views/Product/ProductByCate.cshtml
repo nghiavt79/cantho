@@ -1,185 +1,219 @@
-﻿@model TechExchangeApp.ViewModel.ProductByCateViewModel
+@model TechExchangeApp.ViewModel.ProductByCateViewModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+    var mainDomain = Model.MainDomain;
+    int totalPages = Model.PageSize > 0 ? (int)Math.Ceiling((double)Model.Total / Model.PageSize) : 1;
+    int curPage = Model.CurPage;
+    int startItem = Model.Total > 0 ? (curPage - 1) * Model.PageSize + 1 : 0;
+    int endItem = Math.Min(curPage * Model.PageSize, Model.Total);
 
-@section Scripts {
-    <script>
-        $(function () {
-            $(".current").parent().addClass("active");
-
-            $(".etheme_add_to_cart_button").click(function (e) {
-                e.preventDefault();
-                var url = $(this).closest(".product-container").find(".product-image").attr("href");
-                window.location.href = url;
-            });
-        });
-    </script>
+    string categoryDesc = !string.IsNullOrWhiteSpace(Model.Description)
+        ? Model.Description
+        : $"Tổng hợp các thiết bị, phần mềm, giải pháp và công nghệ thuộc lĩnh vực {Model.CateTitle}, phục vụ kết nối, giới thiệu và chuyển giao công nghệ.";
 }
 
-<div class="container" id="columns">
-    <div class="row">
+<div class="columns-container tech-page">
+    <div class="container" id="columns">
 
-        <!-- ================= CENTER COLUMN ================= -->
-        <div class="center_column col-xs-12 col-sm-9" id="center_column">
+        <!-- ===== BREADCRUMB ===== -->
+        <nav class="catalog-breadcrumb" aria-label="breadcrumb">
+            <a href="@mainDomain">Trang chủ</a>
+            <span>/</span>
+            <a href="@($"{mainDomain}cong-nghe")">Công nghệ</a>
+            <span>/</span>
+            <strong>@Model.CateTitle</strong>
+        </nav>
 
-            <div id="view-product-list" class="view-product-list">
-
-                <h2 class="brand-showcase-title">
-                    <a>@Model.PageTitle</a>
-                </h2>
-
-                <ul class="display-product-option">
-                    <li class="view-as-grid selected"><span>grid</span></li>
-                    <li class="view-as-list"><span>list</span></li>
-                </ul>
-
-                <!-- ================= PRODUCT LIST ================= -->
-                <ul class="row product-list grid">
-
-                    @foreach (var p in Model.Products)
+        <!-- ===== COMPACT HEADER ===== -->
+        <div class="category-compact-header">
+            <div class="category-header-top">
+                <h1 class="category-title">@Model.CateTitle</h1>
+                <div class="category-meta">
+                    <span class="category-meta-chip"><i class="bi bi-box-seam"></i> @Model.Total sản phẩm</span>
+                    @if (Model.Total > 0)
                     {
-                        <li class="col-sx-12 col-sm-3 ListProductMobile">
-                            <div class="product-container">
-
-                                <div class="left-block">
-                                    <a class="product-image" href="@p.Url">
-                                        <img src="@p.ImageUrl"
-                                             class="img-responsive ProductListImage"
-                                             alt="@p.Title" />
-                                    </a>
-
-                                    @if (p.IsSC)
-                                    {
-                                        <span class="label_sc"></span>
-                                    }
-                                    @if (p.IsNC)
-                                    {
-                                        <span class="label_nc"></span>
-                                    }
-
-                                    <div class="quick-view"></div>
-
-                                </div>
-
-                                <div class="right-block">
-                                    <h5 class="product-name">
-                                        <a href="@p.Url">@p.Title</a>
-                                    </h5>
-
-                                    <div class="content_price">
-                                        <span class="price product-price">
-                                            Giá tham khảo : @p.PriceText
-                                        </span>
-                                    </div>
-
-                                    <div id="stars-sp">
-                                        @{
-                                            var star = p.Star;
-
-                                            if (star < 0) star = 0;
-                                            if (star > 5) star = 5;
-
-                                            var stars = new string('★', star) + new string('☆', 5 - star);
-                                        }
-                                        <span style="color: gold; font-size: medium">@stars</span>
-                                    </div>
-
-                                    <div class="info-orther">
-                                        <p>Mã sản phẩm: @p.Code</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </li>
+                        <span class="category-meta-chip"><i class="bi bi-eye"></i> Hiển thị @startItem–@endItem</span>
                     }
-
-                </ul>
-                <!-- ================= END PRODUCT LIST ================= -->
-
-            </div>
-
-            @{
-                int totalPages = Model.PageSize > 0 ? (int)Math.Ceiling((double)Model.Total / Model.PageSize) : 1;
-                int curPage   = Model.CurPage;
-            }
-
-            @if (totalPages > 1)
-            {
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
-                    <div class="small text-muted">
-                        Hiển thị <strong>@((curPage - 1) * Model.PageSize + 1)</strong>–<strong>@Math.Min(curPage * Model.PageSize, Model.Total)</strong>
-                        / <strong>@Model.Total</strong> sản phẩm &nbsp;|&nbsp;
-                        Sản phẩm/trang:
-                        <select class="form-select form-select-sm d-inline-block w-auto" onchange="location.href='?page=1&pageSize=' + this.value">
-                            @foreach (var size in new[] { 12, 24, 36, 48, 60 })
-                            {
-                                if (size == Model.PageSize)
-                                {
-                                    <option value="@size" selected>@size</option>
-                                }
-                                else
-                                {
-                                    <option value="@size">@size</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <ul class="pagination pagination-sm mb-0">
-                        <li class="page-item @(curPage == 1 ? "disabled" : "")">
-                            <a class="page-link" href="?page=1&pageSize=@Model.PageSize"><i class="fas fa-angles-left"></i></a>
-                        </li>
-                        <li class="page-item @(curPage == 1 ? "disabled" : "")">
-                            <a class="page-link" href="?page=@(curPage - 1)&pageSize=@Model.PageSize"><i class="fas fa-angle-left"></i></a>
-                        </li>
-                        @foreach (var pg in Model.Pages)
-                        {
-                            <li class="page-item @(pg.IsActive ? "active" : "")">
-                                <a class="page-link" href="?page=@pg.Page&pageSize=@Model.PageSize">@pg.Page</a>
-                            </li>
-                        }
-                        <li class="page-item @(curPage == totalPages ? "disabled" : "")">
-                            <a class="page-link" href="?page=@(curPage + 1)&pageSize=@Model.PageSize"><i class="fas fa-angle-right"></i></a>
-                        </li>
-                        <li class="page-item @(curPage == totalPages ? "disabled" : "")">
-                            <a class="page-link" href="?page=@totalPages&pageSize=@Model.PageSize"><i class="fas fa-angles-right"></i></a>
-                        </li>
-                    </ul>
                 </div>
-            }
-            else if (Model.Total > 0)
-            {
-                <div class="small text-muted mt-2">Tổng cộng <strong>@Model.Total</strong> sản phẩm</div>
-            }
-
-            <!-- hidden -->
-            <input type="hidden" value="@Model.CurPage" />
-            <input type="hidden" value="@Model.StoreId" />
-            <input type="hidden" value="@Model.CateId" />
-
-            <!-- PORTLET -->
-            @* PortletIONhaTuVan *@
-
+            </div>
+            <div class="category-header-bottom">
+                <p class="category-desc">@categoryDesc</p>
+                <div class="category-actions">
+                    <div class="category-search input-group input-group-sm">
+                        <input type="search" class="form-control" name="keyword" placeholder="Tìm theo tên sản phẩm, thiết bị, giải pháp..." aria-label="Tìm kiếm" />
+                        <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
+                    </div>
+                    <select class="form-select form-select-sm category-sort" onchange="location.href='?sort=' + this.value + '&pageSize=@Model.PageSize'" aria-label="Sắp xếp">
+                        <option value="newest" selected>Mới cập nhật</option>
+                        <option value="name-asc">Tên A–Z</option>
+                        <option value="name-desc">Tên Z–A</option>
+                        <option value="price-asc">Giá tăng dần</option>
+                        <option value="price-desc">Giá giảm dần</option>
+                    </select>
+                    <select class="form-select form-select-sm category-page-size" onchange="location.href='?page=1&pageSize=' + this.value" aria-label="Số sản phẩm/trang">
+                        @foreach (var size in new[] { 12, 24, 36 })
+                        {
+                            if (size == Model.PageSize)
+                            {
+                                <option value="@size" selected>@size / trang</option>
+                            }
+                            else
+                            {
+                                <option value="@size">@size / trang</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
         </div>
 
-        <!-- ================= LEFT COLUMN ================= -->
-        <div class="column col-xs-12 col-sm-3" id="left_column">
+        <!-- ===== MAIN LAYOUT: content LEFT, sidebar RIGHT ===== -->
+        <div class="row g-3">
 
-            <div class="block left-module">
-                <p class="title_block">@Model.CateTitle</p>
+            <!-- ===== PRODUCT GRID (col-9, LEFT) ===== -->
+            <div class="col-lg-9 col-12 order-1 order-lg-1" id="center_column">
 
-                <div class="block_content">
-                    <div class="layered layered-category">
-                        <div class="layered-content">
-                            <ul class="tree-menu">
+                @if (Model.Total > 0)
+                {
+                    <div class="catalog-info">
+                        Hiển thị <strong>@startItem–@endItem</strong> trong tổng số <strong>@Model.Total</strong> sản phẩm
+                    </div>
+                }
+
+                @if (!Model.Products.Any())
+                {
+                    <div class="catalog-empty">
+                        <i class="bi bi-inbox"></i>
+                        <p>Chưa có sản phẩm nào trong lĩnh vực này.</p>
+                        <a href="@($"{mainDomain}cong-nghe")" class="btn-back-catalog">← Quay lại danh sách công nghệ</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="catalog-grid">
+                        @foreach (var p in Model.Products)
+                        {
+                            var hasPriceText = !string.IsNullOrWhiteSpace(p.PriceText) && p.PriceText != "0 " && p.PriceText != "0";
+
+                            <article class="tech-card">
+                                <a class="tech-card__image" href="@p.Url">
+                                    <img src="@p.ImageUrl" alt="@p.Title" loading="lazy" />
+                                </a>
+                                <div class="tech-card__body">
+                                    @if (!string.IsNullOrWhiteSpace(p.CategoryName))
+                                    {
+                                        <span class="tech-card__badge">@p.CategoryName</span>
+                                    }
+                                    <h3 class="tech-card__title">
+                                        <a href="@p.Url" title="@p.Title">@p.Title</a>
+                                    </h3>
+                                    @if (!string.IsNullOrWhiteSpace(p.Description))
+                                    {
+                                        <p class="tech-card__desc">@p.Description</p>
+                                    }
+                                    <div class="tech-card__source">
+                                        <i class="bi bi-building"></i> Nhà cung ứng: @p.SupplierName
+                                    </div>
+                                    <div class="tech-card__price">
+                                        Giá tham khảo: <strong>@(hasPriceText ? p.PriceText : "Liên hệ")</strong>
+                                    </div>
+                                    <a href="@p.Url" class="tech-card__btn">Chi tiết <i class="bi bi-arrow-right"></i></a>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+
+                <!-- ===== PAGINATION ===== -->
+                @if (totalPages > 1)
+                {
+                    <nav class="catalog-pagination" aria-label="Phân trang">
+                        <ul>
+                            <li class="@(curPage == 1 ? "disabled" : "")">
+                                <a href="?page=@(curPage - 1)&pageSize=@Model.PageSize" aria-label="Trang trước"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            @foreach (var pg in Model.Pages)
+                            {
+                                <li class="@(pg.IsActive ? "active" : "")">
+                                    <a href="?page=@pg.Page&pageSize=@Model.PageSize">@pg.Page</a>
+                                </li>
+                            }
+                            <li class="@(curPage == totalPages ? "disabled" : "")">
+                                <a href="?page=@(curPage + 1)&pageSize=@Model.PageSize" aria-label="Trang sau"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+
+                <!-- ===== CTA ===== -->
+                <section class="catalog-cta">
+                    <div>
+                        <h2>Bạn cần tìm sản phẩm công nghệ phù hợp?</h2>
+                        <p>Trung tâm hỗ trợ kết nối, tư vấn và chuyển giao công nghệ theo nhu cầu thực tế của doanh nghiệp, hợp tác xã và tổ chức.</p>
+                    </div>
+                    <div class="catalog-cta__actions">
+                        <a class="catalog-cta__primary" href="@($"{mainDomain}dang-ky-tu-van")">Gửi yêu cầu tư vấn</a>
+                        <a class="catalog-cta__secondary" href="@($"{mainDomain}lien-he-74")">Liên hệ trung tâm</a>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ===== SIDEBAR (col-3, RIGHT) ===== -->
+            <div class="col-lg-3 d-none d-lg-block order-2 order-lg-2" id="left_column">
+                <aside class="filter-sidebar">
+
+                    <!-- Lĩnh vực -->
+                    <div class="filter-sidebar__group">
+                        <h4 class="filter-title">Lĩnh vực công nghệ</h4>
+                        <ul class="filter-sidebar__links category-list">
+                            @foreach (var cat in Model.AllCategories)
+                            {
+                                var isActive = cat.CatId == Model.CateId;
+                                <li class="@(isActive ? "active" : "")">
+                                    <a href="@($"{mainDomain}2-ds-cong-nghe-thiet-bi/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
+                                        @cat.Title
+                                        @if (isActive) { <i class="bi bi-check2"></i> }
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    @if (Model.Categories.Any())
+                    {
+                        <div class="filter-sidebar__group">
+                            <h4 class="filter-title">Danh mục con</h4>
+                            <ul class="filter-sidebar__links">
                                 @foreach (var cate in Model.Categories)
                                 {
-                                    <li>
-                                        <span></span>
-                                        <a href="@cate.Url">@cate.Title</a>
-                                    </li>
+                                    <li><a href="@cate.Url">@cate.Title</a></li>
                                 }
                             </ul>
                         </div>
+                    }
+
+                    <!-- Khoảng giá -->
+                    <div class="filter-sidebar__group filter-section">
+                        <h4 class="filter-title">Khoảng giá</h4>
+                        <label class="filter-check"><input type="checkbox" name="price" value="contact" /> Liên hệ báo giá</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="0-5" /> Dưới 5 triệu</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="5-20" /> 5 – 20 triệu</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="20+" /> Trên 20 triệu</label>
                     </div>
-                </div>
+
+                    <!-- Trạng thái -->
+                    <div class="filter-sidebar__group filter-section">
+                        <h4 class="filter-title">Trạng thái</h4>
+                        <label class="filter-check"><input type="checkbox" name="status" value="ready" /> Sẵn sàng chuyển giao</label>
+                        <label class="filter-check"><input type="checkbox" name="status" value="intro" /> Đang giới thiệu</label>
+                        <label class="filter-check"><input type="checkbox" name="status" value="consult" /> Có tư vấn triển khai</label>
+                    </div>
+
+                    <div class="filter-sidebar__actions">
+                        <button type="button" class="btn-filter-apply">Áp dụng</button>
+                        <button type="button" class="btn-filter-clear" onclick="location.href=location.pathname">Xóa lọc</button>
+                    </div>
+                </aside>
             </div>
 
         </div>

@@ -21,41 +21,10 @@
     Func<bool, string> chk = (v) => v ? "☑" : "☐";
 }
 
-<style>
-.hscn-section-title {
-    background: #1a5276;
-    color: #fff;
-    padding: 7px 14px;
-    font-weight: 700;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 14px;
-    border-radius: 3px;
-}
-.hscn-item { margin-bottom: 14px; }
-.hscn-item-title {
-    font-weight: 700;
-    color: #1a5276;
-    margin-bottom: 5px;
-    font-size: 13.5px;
-}
-.hscn-check-row {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    margin-bottom: 3px;
-    font-size: 13.5px;
-}
-.hscn-table-info td { border: none; padding: 3px 10px 3px 0; }
-.hscn-table-info td:first-child { font-weight: 700; min-width: 170px; color: #444; white-space: nowrap; }
-.content-body img  { max-width: 100%; height: auto; }
-.content-body table { width: 100%; }
-</style>
 
-@await Html.PartialAsync("_DetailHeader", Model)
 
-<div class="ho-so-cong-nghe mt-4">
+<div class="ho-so-cong-nghe">
+
 
     @* TAB NAVIGATION — Tab 1 hiện, Tab Nhà cung ứng ẩn *@
     <ul class="nav nav-tabs" id="detailTabsThietBi" role="tablist">

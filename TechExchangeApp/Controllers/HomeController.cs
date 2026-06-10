@@ -89,10 +89,10 @@ namespace TechExchangeApp.Controllers
 
             return new List<HomeStatVm>
             {
-                new() { Icon = "bi-people", Value = FormatCount(Math.Max(experts, 500)), Label = "Nhà khoa học & chuyên gia" },
-                new() { Icon = "bi-building-gear", Value = FormatCount(Math.Max(labs, 50)), Label = "Cơ sở & phòng thí nghiệm" },
-                new() { Icon = "bi-person-workspace", Value = FormatCount(Math.Max(experts, 30)), Label = "Chuyên gia tư vấn" },
-                new() { Icon = "bi-diagram-3", Value = FormatCount(Math.Max(partners, 100)), Label = "Đối tác doanh nghiệp" },
+                new() { Icon = "bi-people", Value = FormatCount(Math.Max(experts, 1000)), Label = "Nhà khoa học & chuyên gia" },
+                new() { Icon = "bi-building-gear", Value = FormatCount(Math.Max(labs, 70)), Label = "Cơ sở & phòng thí nghiệm" },
+                new() { Icon = "bi-person-workspace", Value = FormatCount(Math.Max(experts, 1000)), Label = "Chuyên gia tư vấn" },
+                new() { Icon = "bi-diagram-3", Value = FormatCount(Math.Max(partners, 2400)), Label = "Đối tác doanh nghiệp" },
                 new() { Icon = "bi-bank", Value = "20+", Label = "Năm hoạt động & phát triển" }
             };
         }

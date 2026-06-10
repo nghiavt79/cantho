@@ -1,30 +1,50 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @inject TechExchangeApp.Interfaces.ICmsAccessService CmsAccessService
+@inject TechExchangeApp.Data.AppDbContext AppDb
 @{
     var mainDomain = Configuration["AppSettings:MainDomain"] ?? "/";
-    var shortName = Configuration["SiteBranding:ShortName"] ?? "TechExchange";
-    var organizationName = Configuration["SiteBranding:OrganizationName"] ?? "TechExchange";
-    var tagline = Configuration["SiteBranding:Tagline"] ?? "";
-    var phone = Configuration["SiteBranding:Phone"] ?? "";
-    var email = Configuration["SiteBranding:Email"] ?? "";
-    var address = Configuration["SiteBranding:Address"] ?? "";
+    var shortName = Configuration["SiteBranding:ShortName"] ?? "CASTA";
+    var phone = Configuration["SiteBranding:Phone"] ?? "+(84) 292 3907 037";
+    var email = Configuration["SiteBranding:Email"] ?? "trungtamungdung@cantho.gov.vn";
+    var address = Configuration["SiteBranding:Address"] ?? "166 Nguyễn Văn Cừ, P. An Bình, TP. Cần Thơ";
+    var phoneHref = "tel:" + new string(phone.Where(char.IsDigit).ToArray());
+    var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + Uri.EscapeDataString(address);
     var canAccessCms = await CmsAccessService.CanAccessCmsAsync(ViewContext.HttpContext.User);
+    var headerTitle = "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ";
+    var headerSlogan = "Kết nối nghiên cứu · Ứng dụng thực tiễn · Đổi mới sáng tạo";
+    var currentDate = DateTime.Now.ToString("dddd, dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"));
+    var productCategories = AppDb.Categories
+        .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
+        .OrderBy(x => x.Sort ?? int.MaxValue)
+        .ThenBy(x => x.Title)
+        .Take(12)
+        .ToList();
+    var serviceCategories = AppDb.Categories
+        .Where(x => x.ParentId == 2 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
+        .OrderBy(x => x.Sort ?? int.MaxValue)
+        .ThenBy(x => x.Title)
+        .Take(12)
+        .ToList();
+
+    string CategorySlug(TechExchangeApp.Entities.Category category)
+    {
+        return TechExchangeApp.Controllers.ProductController.MakeURLFriendly(category.QueryString ?? category.Title);
+    }
 }
 
 <header class="site-header-v2">
     <div class="site-header-v2__top">
         <div class="container">
             <div class="site-header-v2__contact">
-                <span><i class="bi bi-telephone"></i> @phone</span>
-                <span><i class="bi bi-envelope"></i> @email</span>
-                <span><i class="bi bi-geo-alt"></i> @address</span>
+                <a href="@phoneHref"><i class="bi bi-telephone"></i> @phone</a>
+                <a href="mailto:@email"><i class="bi bi-envelope"></i> @email</a>
+                <a href="@mapUrl" target="_blank" rel="noopener"><i class="bi bi-geo-alt"></i> @address</a>
             </div>
             <div class="site-header-v2__social">
-                <span>@DateTime.Now.ToString("dddd, dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"))</span>
-                <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                <a href="#" aria-label="Zalo"><i class="bi bi-chat-dots"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <span>@currentDate</span>
+                <a href="https://www.facebook.com/profile.php?id=100069991094645" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="https://www.youtube.com/@@TrungtamUngdungCanTho" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                <a href="https://id.zalo.me/account/login?continue=http%3A%2F%2Fzalo.me%2F02923907037" target="_blank" rel="noopener" aria-label="Zalo"><img class="site-header-v2__zalo-icon" src="/image/zalo-icon.webp" alt=""></a>
             </div>
         </div>
     </div>
@@ -34,18 +54,62 @@
             <a class="site-header-v2__brand" href="@mainDomain">
                 <img src="/image/logo-casta.webp" alt="@shortName" onerror="this.src='/image/logo.png'">
                 <span>
-                    <strong>@organizationName</strong>
-                    <small>@tagline</small>
+                    <strong>@headerTitle</strong>
+                    <small>@headerSlogan</small>
                 </span>
             </a>
 
             <div class="site-header-v2__actions">
+                <nav class="site-header-v2__menu" aria-label="Menu chính">
+                    <a class="nav-link active site-header-v2__icon-link" href="/" aria-label="Trang chủ">
+                        <i class="bi bi-house-door"></i>
+                    </a>
+                    <a class="nav-link" href="/gioi-thieu-chung-3">Giới thiệu</a>
+                    <div class="site-header-v2__menu-item">
+                        <a class="nav-link" href="/cong-nghe">Sản phẩm CNTB</a>
+                        @if (productCategories.Any())
+                        {
+                            <div class="site-header-v2__submenu">
+                                @foreach (var category in productCategories)
+                                {
+                                    <a href="/2-ds-cong-nghe-thiet-bi/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="site-header-v2__menu-item">
+                        <a class="nav-link" href="/dich-vu-tu-van">Dịch vụ KH&amp;CN</a>
+                        @if (serviceCategories.Any())
+                        {
+                            <div class="site-header-v2__submenu">
+                                @foreach (var category in serviceCategories)
+                                {
+                                    <a href="/8-ds-dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <a class="nav-link" href="/tin-su-kien-44">Tin tức sự kiện</a>
+                    <a class="nav-link" href="/lien-he-74">Liên hệ</a>
+                    <a class="nav-link site-header-v2__icon-link" href="/Search" aria-label="Tìm kiếm">
+                        <i class="bi bi-search"></i>
+                    </a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a class="nav-link site-header-v2__login-link site-header-v2__icon-link" href="/Dashboard" aria-label="Hệ thống">
+                            <i class="bi bi-person-circle"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <button type="button" class="nav-link site-header-v2__login-link site-header-v2__icon-link" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="Đăng nhập hệ thống">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                    }
+                </nav>
                 <button class="site-header-v2__menu-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteMenuOffcanvas" aria-controls="siteMenuOffcanvas" aria-label="Mở menu">
                     <i class="bi bi-list"></i>
                 </button>
-                <a class="site-header-v2__consult" href="/dang-ky-tu-van">
-                    <i class="bi bi-people"></i> Đăng ký tư vấn
-                </a>
             </div>
         </div>
     </nav>
@@ -64,11 +128,19 @@
             <nav class="site-menu-offcanvas__nav">
                 <a href="/">Trang chủ</a>
                 <a href="/gioi-thieu-chung-3">Giới thiệu</a>
-                <a href="/dich-vu-tu-van">Dịch vụ & Giải pháp</a>
-                <a href="/cong-nghe">Chuyển giao công nghệ</a>
-                <a href="/thiet-bi">Cơ sở & Phòng thí nghiệm</a>
-                <a href="/tin-su-kien-44">Tin tức - Sự kiện</a>
+                <a href="/cong-nghe">Sản phẩm CNTB</a>
+                @foreach (var category in productCategories)
+                {
+                    <a class="site-menu-offcanvas__child" href="/2-ds-cong-nghe-thiet-bi/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                }
+                <a href="/dich-vu-tu-van">Dịch vụ KH&amp;CN</a>
+                @foreach (var category in serviceCategories)
+                {
+                    <a class="site-menu-offcanvas__child" href="/8-ds-dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                }
+                <a href="/tin-su-kien-44">Tin tức sự kiện</a>
                 <a href="/lien-he-74">Liên hệ</a>
+                <a href="/Search">Tìm kiếm</a>
             </nav>
 
             @if (User.Identity?.IsAuthenticated == true)
@@ -79,7 +151,7 @@
                     {
                         <a href="/cms"><i class="bi bi-gear-wide-connected"></i> CMS Admin</a>
                     }
-                    <a href="/Dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                    <a href="/Dashboard"><i class="bi bi-speedometer2"></i> Hệ thống</a>
                     <a href="/Projects/MyProjects"><i class="bi bi-folder2-open"></i> Dự án của tôi</a>
                     <a href="/Chat"><i class="bi bi-chat-dots"></i> Tin nhắn</a>
                     <form asp-controller="Account" asp-action="Logout" method="post">
@@ -91,7 +163,7 @@
             else
             {
                 <button type="button" class="site-menu-offcanvas__login" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="offcanvas">
-                    <i class="bi bi-person-circle"></i> Đăng nhập
+                    <i class="bi bi-person-circle"></i> Đăng nhập hệ thống
                 </button>
             }
         </div>

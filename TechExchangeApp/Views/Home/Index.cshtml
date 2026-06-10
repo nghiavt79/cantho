@@ -4,6 +4,9 @@
     ViewData["Title"] = "Trang chủ";
     var branding = Model.Branding;
     var heroImageUrl = "/image/hero.png";
+
+    string StatTarget(string value) => new string((value ?? "").Where(char.IsDigit).ToArray());
+    string StatSuffix(string value) => (value ?? "").Contains('+') ? "+" : "";
 }
 
 <div class="home-v2">
@@ -75,7 +78,9 @@
                     <div class="home-v2-stat">
                         <i class="bi @stat.Icon"></i>
                         <div>
-                            <strong>@stat.Value</strong>
+                            <strong class="js-home-stat-number"
+                                    data-count-target="@StatTarget(stat.Value)"
+                                    data-count-suffix="@StatSuffix(stat.Value)">@stat.Value</strong>
                             <span>@stat.Label</span>
                         </div>
                     </div>
@@ -274,5 +279,59 @@
                 document.getElementById('homeSearchType').value = button.dataset.searchType || 'Technology';
             });
         });
+
+        (function () {
+            var statWrap = document.querySelector('.home-v2-stats-wrap');
+            var statNumbers = document.querySelectorAll('.js-home-stat-number[data-count-target]');
+            if (!statWrap || !statNumbers.length) return;
+
+            function easeOutCubic(t) {
+                return 1 - Math.pow(1 - t, 3);
+            }
+
+            function formatNumber(value) {
+                return Math.round(value).toLocaleString('vi-VN');
+            }
+
+            function animateNumber(el) {
+                var target = parseInt(el.dataset.countTarget, 10);
+                if (Number.isNaN(target)) return;
+
+                var suffix = el.dataset.countSuffix || '';
+                var duration = 1400;
+                var start = performance.now();
+
+                function step(now) {
+                    var progress = Math.min((now - start) / duration, 1);
+                    el.textContent = formatNumber(easeOutCubic(progress) * target) + suffix;
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+
+                el.textContent = '0' + suffix;
+                requestAnimationFrame(step);
+            }
+
+            function runStatsAnimation() {
+                if (statWrap.dataset.animated === 'true') return;
+                statWrap.dataset.animated = 'true';
+                statNumbers.forEach(animateNumber);
+            }
+
+            if (!('IntersectionObserver' in window)) {
+                runStatsAnimation();
+                return;
+            }
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        runStatsAnimation();
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.35 });
+
+            observer.observe(statWrap);
+        })();
     </script>
 }

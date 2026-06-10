@@ -1,125 +1,207 @@
-﻿@model TechExchangeApp.ViewModel.NewsCategoryVm
+@model TechExchangeApp.ViewModel.NewsCategoryVm
 @using TechExchangeApp.Web.Helpers
 @{
     ViewData["Title"] = Model.CategoryTitle;
+    var mainDomain = Html.MainDomain();
+
+    string StripHtml(string? value)
+    {
+        var text = System.Text.RegularExpressions.Regex.Replace(value ?? "", "<.*?>", " ");
+        return System.Net.WebUtility.HtmlDecode(text).Trim();
+    }
+
+    string Truncate(string? text, int maxLen)
+    {
+        var clean = StripHtml(text);
+        return clean.Length > maxLen ? clean.Substring(0, maxLen - 3).Trim() + "..." : clean;
+    }
 }
 
-<div class="columns-container">
+<div class="columns-container news-page">
     <div class="container" id="columns">
-        <!-- row -->
-        <div class="row">
 
-            <!-- Center column -->
-            <div class="center_column col-xs-12 col-sm-9" id="center_column">
-                <h2 class="brand-showcase-title">
-                    <span>@Model.CategoryTitle</span>
-                </h2>
+        <!-- ===== BREADCRUMB ===== -->
+        <nav class="news-breadcrumb" aria-label="breadcrumb">
+            <a href="@mainDomain">Trang chủ</a>
+            <span>/</span>
+            <a href="#">Tin tức</a>
+            <span>/</span>
+            <strong>@Model.CategoryTitle</strong>
+        </nav>
 
-                <ul class="blog-posts">
+        <!-- ===== HERO HEADER ===== -->
+        <div class="news-hero">
+            <h1 class="news-hero__title">@Model.CategoryTitle</h1>
+            <div class="news-hero__accent"></div>
+            <p class="news-hero__desc">@Model.CategoryDescription</p>
+        </div>
+
+        <!-- ===== FEATURED (page 1 only) ===== -->
+        @if (Model.FeaturedItems.Any())
+        {
+            var mainFeatured = Model.FeaturedItems.First();
+            var sideFeatured = Model.FeaturedItems.Skip(1).Take(3).ToList();
+
+            <section class="news-featured">
+                <div class="news-featured__main">
+                    <a href="@mainFeatured.DetailUrl(mainDomain)" class="news-featured__image">
+                        <img src="@Html.CookedImageURL("750-450", mainFeatured.Image)" alt="@mainFeatured.Title" loading="lazy" />
+                    </a>
+                    <div class="news-featured__body">
+                        <span class="news-featured__date"><i class="bi bi-calendar3"></i> @mainFeatured.PublishedDateText</span>
+                        <h2 class="news-featured__title"><a href="@mainFeatured.DetailUrl(mainDomain)">@mainFeatured.Title</a></h2>
+                        <p class="news-featured__desc">@Truncate(mainFeatured.Description, 200)</p>
+                    </div>
+                </div>
+                @if (sideFeatured.Any())
+                {
+                    <div class="news-featured__side">
+                        @foreach (var f in sideFeatured)
+                        {
+                            <a class="news-featured__card" href="@f.DetailUrl(mainDomain)">
+                                <div class="news-featured__card-img">
+                                    <img src="@Html.CookedImageURL("460-275", f.Image)" alt="@f.Title" loading="lazy" />
+                                </div>
+                                <div class="news-featured__card-body">
+                                    <span class="news-featured__card-date"><i class="bi bi-calendar3"></i> @f.PublishedDateText</span>
+                                    <h4 class="news-featured__card-title">@f.Title</h4>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                }
+            </section>
+        }
+
+        <!-- ===== CATEGORY FILTER TABS ===== -->
+        @if (Model.SiblingMenus.Any())
+        {
+            <div class="news-filter-tabs">
+                @foreach (var m in Model.SiblingMenus)
+                {
+                    <a href="@($"{mainDomain}{m.QueryString}-{m.MenuId}")"
+                       class="news-filter-tab @(m.IsActive ? "news-filter-tab--active" : "")">
+                        @m.Title
+                    </a>
+                }
+            </div>
+        }
+
+        <!-- ===== MAIN LAYOUT ===== -->
+        <div class="row g-4">
+
+            <!-- ===== NEWS LIST (LEFT) ===== -->
+            <div class="col-lg-8 col-12">
+                <div class="news-list">
                     @foreach (var item in Model.Items)
                     {
-                        <li class="post-item">
-                            <article class="entry">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <div class="entry-thumb image-hover2">
-                                            <a href="@item.DetailUrl(Html.MainDomain())">
-                                                <img src="@Html.CookedImageURL("460-275", item.Image)"
-                                                     alt="@item.Title"
-                                                     title="@item.Title" />
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-9">
-                                        <div class="entry-ci">
-                                            <h3 class="entry-title">
-                                                <a href="@item.DetailUrl(Html.MainDomain())">
-                                                    @item.Title
-                                                </a>
-                                            </h3>
-
-                                            <div class="entry-meta-data">
-                                                @if (item.MenuId != 83)
-                                                {
-                                                    <span class="Date">
-                                                        <i class="fa fa-calendar"></i>
-                                                        @item.PublishedDateText
-                                                    </span>
-                                                }
-                                            </div>
-
-                                            <div class="entry-excerpt">
-                                                @Html.Raw(item.Description)
-                                            </div>
-
-                                            <div class="entry-more">
-                                                <a href="@item.DetailUrl(Html.MainDomain())">Đọc thêm</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <article class="news-card">
+                            <a class="news-card__image" href="@item.DetailUrl(mainDomain)">
+                                <img src="@Html.CookedImageURL("460-275", item.Image)" alt="@item.Title" loading="lazy" />
+                            </a>
+                            <div class="news-card__body">
+                                <div class="news-card__meta">
+                                    <span class="news-card__category">@Model.CategoryTitle</span>
+                                    @if (item.MenuId != 83)
+                                    {
+                                        <span class="news-card__date"><i class="bi bi-calendar3"></i> @item.PublishedDateText</span>
+                                    }
                                 </div>
-                            </article>
-                        </li>
+                                <h3 class="news-card__title">
+                                    <a href="@item.DetailUrl(mainDomain)">@item.Title</a>
+                                </h3>
+                                <p class="news-card__desc">@Truncate(item.Description, 160)</p>
+                                <a href="@item.DetailUrl(mainDomain)" class="news-card__readmore">Đọc thêm <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </article>
                     }
-                </ul>
+                </div>
 
                 <!-- PAGINATION -->
                 @if (Model.Pager.TotalPage > 1)
                 {
-                    <div class="sortPagiBar clearfix">
-                        <div class="bottom-pagination">
-                            <nav>
-                                <ul class="pagination">
-
-                                    <!-- PREVIOUS -->
-                                    <li class="@(Model.Pager.CurrentPage == 1 ? "disabled" : "")">
-                                        <a href="@Url.Action("Category", new {
-                                                menuId = Model.MenuId,
-                                                page = Model.Pager.CurrentPage - 1
-                                            })">
-                                            Trang trước
-                                        </a>
-                                    </li>
-
-                                    <!-- PAGE NUMBERS -->
-                                    @foreach (var p in Model.Pager.Pages)
-                                    {
-                                        <li class="@(p == Model.Pager.CurrentPage ? "active" : "")">
-                                            <a href="@Url.Action("Category", new {
-                                                    menuId = Model.MenuId,
-                                                    page = p
-                                                })">
-                                                <span>@p</span>
-                                            </a>
-                                        </li>
-                                    }
-
-                                    <!-- NEXT -->
-                                    <li class="@(Model.Pager.CurrentPage == Model.Pager.TotalPage ? "disabled" : "")">
-                                        <a href="@Url.Action("Category", new {
-                                                menuId = Model.MenuId,
-                                                page = Model.Pager.CurrentPage + 1
-                                            })">
-                                            Trang sau
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                    <nav class="news-pagination" aria-label="Phân trang">
+                        <ul>
+                            <li class="@(Model.Pager.CurrentPage == 1 ? "disabled" : "")">
+                                <a href="@Url.Action("Category", new { menuId = Model.MenuId, page = Model.Pager.CurrentPage - 1 })">
+                                    <i class="bi bi-chevron-left"></i> Trước
+                                </a>
+                            </li>
+                            @foreach (var p in Model.Pager.Pages)
+                            {
+                                <li class="@(p == Model.Pager.CurrentPage ? "active" : "")">
+                                    <a href="@Url.Action("Category", new { menuId = Model.MenuId, page = p })">@p</a>
+                                </li>
+                            }
+                            <li class="@(Model.Pager.CurrentPage == Model.Pager.TotalPage ? "disabled" : "")">
+                                <a href="@Url.Action("Category", new { menuId = Model.MenuId, page = Model.Pager.CurrentPage + 1 })">
+                                    Sau <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 }
             </div>
-            <!-- ./ Center column -->
 
-            <!-- Left column -->
-            <div class="column col-xs-12 col-sm-3" id="left_column">
-                @await Component.InvokeAsync("MenuLeft", new { menuId = Model.MenuId })
-                @await Html.PartialAsync("~/Views/QuangCao/TopRight.cshtml")
+            <!-- ===== SIDEBAR (RIGHT) ===== -->
+            <div class="col-lg-4 col-12">
+
+                <!-- Search -->
+                <div class="news-sidebar-card">
+                    <h4 class="news-sidebar-card__title">Tìm kiếm tin tức</h4>
+                    <div class="news-sidebar-search">
+                        <input type="search" class="form-control" placeholder="Nhập từ khóa tìm kiếm..." aria-label="Tìm kiếm" />
+                        <button class="btn" type="button"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="news-sidebar-card">
+                    <h4 class="news-sidebar-card__title">Danh mục tin</h4>
+                    <ul class="news-sidebar-categories">
+                        @foreach (var m in Model.SiblingMenus)
+                        {
+                            <li class="@(m.IsActive ? "active" : "")">
+                                <a href="@($"{mainDomain}{m.QueryString}-{m.MenuId}")">
+                                    <i class="bi bi-chevron-right"></i> @m.Title
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <!-- Latest -->
+                <div class="news-sidebar-card">
+                    <h4 class="news-sidebar-card__title">Tin mới nhất</h4>
+                    <div class="news-sidebar-latest">
+                        @foreach (var item in Model.LatestItems)
+                        {
+                            <a class="news-sidebar-latest__item" href="@item.DetailUrl(mainDomain)">
+                                <div class="news-sidebar-latest__thumb">
+                                    <img src="@Html.CookedImageURL("150-100", item.Image)" alt="@item.Title" loading="lazy" />
+                                </div>
+                                <div class="news-sidebar-latest__body">
+                                    <h5>@item.Title</h5>
+                                    <span><i class="bi bi-calendar3"></i> @item.PublishedDateText</span>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <!-- Archive -->
+                <div class="news-sidebar-card">
+                    <h4 class="news-sidebar-card__title">Lưu trữ</h4>
+                    <ul class="news-sidebar-categories">
+                        <li><a href="#"><i class="bi bi-folder"></i> Năm 2026</a></li>
+                        <li><a href="#"><i class="bi bi-folder"></i> Năm 2025</a></li>
+                        <li><a href="#"><i class="bi bi-folder"></i> Năm 2024</a></li>
+                    </ul>
+                </div>
+
             </div>
-            <!-- ./ Left column -->
 
         </div>
+
     </div>
 </div>

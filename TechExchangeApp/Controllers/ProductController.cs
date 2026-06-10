@@ -79,15 +79,23 @@ namespace TechExchangeApp.Controllers
             var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
             ViewData["PageTitle"] = pageTitle;
 
-            var categories = _context.Categories
+            var allCategories = _context.Categories
                 .Where(x => x.ParentId == 1 && x.MainCate == true)
                 .OrderBy(x => x.Sort)
                 .ToList();
 
             var model = new ProductIndexViewModel();
-            model.NewProducts = await _productService.GetNewProductsByProductTypeAsync(productType, 12);
+            model.NewProducts = await _productService.GetNewProductsByProductTypeAsync(productType, 16);
+            model.AllCategories = allCategories;
 
-            foreach (var cate in categories)
+            // Hero stats from DB
+            model.TotalProducts = _context.SanPhamCNTBs
+                .Count(x => x.TypeId == productType && x.StatusId == 3);
+            model.TotalCategories = allCategories.Count;
+            model.TotalSuppliers = _context.NhaCungUngs
+                .Count(x => x.StatusId == 3);
+
+            foreach (var cate in allCategories)
             {
                 var products = await _productService
                     .GetProductsByCategoryAndProductTypeAsync(cate.CatId, productType, lang, 4);
@@ -219,11 +227,18 @@ namespace TechExchangeApp.Controllers
             {
                 CateId = cateId,
                 CurPage = page,
-                PageSize = pageSize
+                PageSize = pageSize,
+                MainDomain = _mainDomain
             };
 
-            await LoadProductsAsync(model); // Converted to Async
+            await LoadProductsAsync(model);
             LoadCategories(model);
+
+            // All top-level categories for sidebar navigation
+            model.AllCategories = _context.Categories
+                .Where(x => x.ParentId == 1 && x.MainCate == true)
+                .OrderBy(x => x.Sort)
+                .ToList();
 
             return View(model);
         }
@@ -235,6 +250,25 @@ namespace TechExchangeApp.Controllers
 
             foreach (var row in list)
             {
+                // Supplier: lookup via NCUId → NhaCungUng.FullName (same logic as Detail page)
+                string supplierName = "Đang cập nhật";
+                if (row.NCUId != null)
+                {
+                    var ncu = _context.NhaCungUngs.FirstOrDefault(x => x.CungUngId == row.NCUId);
+                    if (ncu != null && !string.IsNullOrWhiteSpace(ncu.FullName))
+                        supplierName = ncu.FullName;
+                }
+
+                // Description: strip HTML, truncate
+                var descRaw = Regex.Replace(!string.IsNullOrWhiteSpace(row.MoTaNgan) ? row.MoTaNgan : (row.MoTa ?? ""), "<.*?>", " ").Trim();
+                descRaw = System.Net.WebUtility.HtmlDecode(descRaw).Trim();
+                var desc = descRaw.Length > 110 ? descRaw.Substring(0, 107).Trim() + "..." : descRaw;
+
+                // Category name
+                var catName = int.TryParse(row.CategoryId, out var catIdParsed)
+                    ? _context.Categories.Where(c => c.CatId == catIdParsed).Select(c => c.Title).FirstOrDefault()
+                    : null;
+
                 var item = new ProductItemVm
                 {
                     ProductId = row.ID,
@@ -243,8 +277,10 @@ namespace TechExchangeApp.Controllers
                     Star = row.Rating ?? 0,
                     IsSC = row.TypeId == 2,
                     IsNC = row.TypeId == 3,
+                    Description = desc,
+                    SupplierName = supplierName,
+                    CategoryName = catName,
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
-                    // Using Instance Method or passing domain
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
                     Url = _mainDomain + "2-cong-nghe-thiet-bi/" + row.ProductType + "/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
                 };
@@ -256,6 +292,7 @@ namespace TechExchangeApp.Controllers
             {
                 vm.CateTitle = cate.Title;
                 vm.PageTitle = cate.Title;
+                vm.Description = cate.Description;
                 ViewData["MetaDescription"] = cate.Description;
                 ViewData["MetaKeywords"] = cate.LogoURL;
             }

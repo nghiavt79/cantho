@@ -1,4 +1,4 @@
-﻿using TechExchangeApp.Entities;
+using TechExchangeApp.Entities;
 
 namespace TechExchangeApp.ViewModel
 {
@@ -33,8 +33,20 @@ namespace TechExchangeApp.ViewModel
     {
         public int MenuId { get; set; }
         public string CategoryTitle { get; set; } = "";
+        public string CategoryDescription { get; set; } = "";
         public List<NewsItemVm> Items { get; set; } = new();
+        public List<NewsItemVm> FeaturedItems { get; set; } = new();
+        public List<SiblingMenuVm> SiblingMenus { get; set; } = new();
+        public List<NewsItemVm> LatestItems { get; set; } = new();
         public PagerVm Pager { get; set; } = new();
+    }
+
+    public class SiblingMenuVm
+    {
+        public int MenuId { get; set; }
+        public string Title { get; set; } = "";
+        public string QueryString { get; set; } = "";
+        public bool IsActive { get; set; }
     }
 
     public class NewsItemVm

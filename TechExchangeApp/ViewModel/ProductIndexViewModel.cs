@@ -1,4 +1,4 @@
-﻿using TechExchangeApp.Entities;
+using TechExchangeApp.Entities;
 
 namespace TechExchangeApp.ViewModel
 {
@@ -6,6 +6,14 @@ namespace TechExchangeApp.ViewModel
     {
         public List<SanPhamCNTB> NewProducts { get; set; } = new();
         public List<CategoryBlockVm> Categories { get; set; } = new();
+
+        /// <summary>All categories with ParentId=1 for the filter bar (including those with no products).</summary>
+        public List<Category> AllCategories { get; set; } = new();
+
+        // Hero stats
+        public int TotalProducts { get; set; }
+        public int TotalCategories { get; set; }
+        public int TotalSuppliers { get; set; }
     }
 
     public class CategoryBlockVm

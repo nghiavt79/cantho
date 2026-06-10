@@ -1,67 +1,171 @@
-﻿@using TechExchangeApp.ViewModel
+@using TechExchangeApp.ViewModel
 @using TechExchangeApp.Enums
 @model ProductDetailViewModel
 @{
     ViewData["Title"] = Model.Product.Name;
+
+    var typeName = Model.Product.ProductType switch
+    {
+        1 => "Công nghệ",
+        2 => "Thiết bị",
+        3 => "Tài sản trí tuệ",
+        _ => "Sản phẩm"
+    };
+
+    var categories = Model.RelatedCategories ?? new List<TechExchangeApp.Entities.Category>();
+    var productImage = Html.CookedImageURL("org", Model.Product.QuyTrinhHinhAnh);
+    var p = Model.Product;
+    var rating = p.Rating ?? 0;
+    var ratingText = rating > 0 ? rating.ToString("0.0") : "0.0";
+    var priceText = p.SellPrice.HasValue && p.SellPrice.Value > 0
+        ? string.Format("{0:N0} {1}", p.SellPrice.Value, p.Currency)
+        : "Liên hệ báo giá";
+    var updatedText = (p.Modified ?? p.PublishedDate ?? p.Created)?.ToString("dd/MM/yyyy") ?? "Đang cập nhật";
+    var categoryText = string.IsNullOrWhiteSpace(Model.CategoryTitle) ? "Đang cập nhật" : Model.CategoryTitle;
+    var supplierText = string.IsNullOrWhiteSpace(Model.SupplierName) ? "Đang cập nhật" : Model.SupplierName;
+    var originText = string.IsNullOrWhiteSpace(p.XuatXu) ? "Đang cập nhật" : p.XuatXu;
+    var techCode = string.IsNullOrWhiteSpace(p.Code) ? p.ID.ToString("D5") : p.Code;
 }
 
 <div class="columns-container">
     <div class="container">
-        <div class="row">
-
-            @* MAIN CONTENT *@
-            <div class="center_column col-xs-12 col-sm-9">
-
-                @{
-                    var typeName = Model.Product.ProductType switch
+        @if (Model.Product.ProductType == (int)ProductTypeEnum.CongNghe)
+        {
+            @await Html.PartialAsync("_DetailCongNghe", Model)
+        }
+        else
+        {
+            <div class="tech-detail-page">
+                <nav class="tech-breadcrumb" aria-label="breadcrumb">
+                    <a href="/">Trang chủ</a><span>/</span>
+                    @if (Model.Product.ProductType == (int)ProductTypeEnum.ThietBi)
                     {
-                        1 => "Công nghệ",
-                        2 => "Thiết bị",
-                        3 => "Tài sản trí tuệ",
-                        _ => "Sản phẩm"
-                    };
-                }
-                <h1 class="page-heading CongNgheThietBi">@typeName</h1>
+                        <a href="/thiet-bi">Thiết bị</a>
+                    }
+                    else
+                    {
+                        <a href="/tai-san-tri-tue">Tài sản trí tuệ</a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.CategoryTitle))
+                    {
+                        <span>/</span><span>@Model.CategoryTitle</span>
+                    }
+                </nav>
 
-                @switch (Model.Product.ProductType)
-                {
-                    case (int)ProductTypeEnum.CongNghe:
-                        @await Html.PartialAsync("_DetailCongNghe", Model)
-                        break;
+                <h1 class="tech-page-title">Chi tiết @typeName.ToLower()</h1>
 
-                    case (int)ProductTypeEnum.ThietBi:
-                        @await Html.PartialAsync("_DetailThietBi", Model)
-                        break;
-
-                    case (int)ProductTypeEnum.SangChe:
-                        @await Html.PartialAsync("_DetailSangChe", Model)
-                        break;
-
-                    default:
-                        <div class="alert alert-warning mt-4">
-                            <i class="fa fa-exclamation-triangle me-2"></i>
-                            Không xác định loại sản phẩm.
+                <!-- HERO -->
+                <section class="tech-card tech-hero">
+                    <div class="row g-4">
+                        <div class="col-lg-5">
+                            <div class="tech-hero-image"><img src="@productImage" alt="@p.Name" /></div>
+                            @if (Model.Images != null && Model.Images.Any())
+                            {
+                                <div class="tech-thumbs">
+                                    @foreach (var img in Model.Images.Take(6))
+                                    {
+                                        <img src="@Html.CookedImageURL("68-68", img.ToString())" alt="@p.Name" />
+                                    }
+                                </div>
+                            }
                         </div>
-                        break;
-                }
+                        <div class="col-lg-7">
+                            <span class="tech-badge"><i class="fa fa-microchip"></i>@categoryText</span>
+                            <h2 class="tech-name">@p.Name</h2>
+                            <div class="tech-meta" id="headerMetaLine" data-entity-type="SanPhamCNTB" data-entity-id="@p.ID">
+                                <span><span class="tech-stars">★★★★★</span> <strong id="headerRatingAvg">@ratingText</strong> (<span id="headerRatingCount">@Model.RatingCount</span> đánh giá)</span>
+                                <span><i class="fa fa-eye"></i> <span id="headerViewCount">@((p.Viewed ?? 0).ToString("N0"))</span> lượt xem</span>
+                            </div>
 
-                @* ── Rating + View Widget ── *@
-                <div class="mt-4">
-                    @await Html.PartialAsync("_EntityRating", null, new ViewDataDictionary(ViewData) {
-                        { "EntityType", "SanPhamCNTB" },
-                        { "EntityId", Model.Product.ID }
-                    })
+                            <div class="tech-info-grid">
+                                <div class="tech-info-row">
+                                    <span class="tech-info-label">Nhà cung cấp</span>
+                                    <span class="tech-info-value">
+                                        @if (!string.IsNullOrWhiteSpace(Model.SupplierUrl) && !string.IsNullOrWhiteSpace(Model.SupplierName))
+                                        {
+                                            <a href="@Model.SupplierUrl">@Model.SupplierName</a>
+                                        }
+                                        else
+                                        {
+                                            @supplierText
+                                        }
+                                    </span>
+                                </div>
+                                <div class="tech-info-row"><span class="tech-info-label">Danh mục</span><span class="tech-info-value">@categoryText</span></div>
+                                <div class="tech-info-row"><span class="tech-info-label">Xuất xứ</span><span class="tech-info-value">@originText</span></div>
+                                <div class="tech-info-row"><span class="tech-info-label">Giá tham khảo</span><span class="tech-price">@priceText</span></div>
+                            </div>
+
+                            <div class="tech-actions">
+                                <a href="/TechTransfer/Create?fromId=@p.ID&typeData=1" class="tech-btn tech-btn-primary"><i class="fa fa-file-signature"></i>Liên hệ báo giá</a>
+                                <button type="button" class="tech-btn tech-btn-outline" onclick="window.print()"><i class="fa fa-print"></i>In trang</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MAIN LAYOUT -->
+                <div class="tech-layout">
+                    <main>
+                        <section class="tech-tabs-card">
+                            @switch (Model.Product.ProductType)
+                            {
+                                case (int)ProductTypeEnum.ThietBi:
+                                    @await Html.PartialAsync("_DetailThietBi", Model)
+                                    break;
+
+                                case (int)ProductTypeEnum.SangChe:
+                                    @await Html.PartialAsync("_DetailSangChe", Model)
+                                    break;
+
+                                default:
+                                    <div class="alert alert-warning mt-4">
+                                        <i class="fa fa-exclamation-triangle me-2"></i>
+                                        Không xác định loại sản phẩm.
+                                    </div>
+                                    break;
+                            }
+                        </section>
+
+                        <div class="mt-4">
+                            @await Html.PartialAsync("_EntityRating", null, new ViewDataDictionary(ViewData) {
+                                { "EntityType", "SanPhamCNTB" },
+                                { "EntityId", Model.Product.ID }
+                            })
+                        </div>
+                    </main>
+
+                    <aside class="tech-sidebar">
+                        <section class="tech-sidebar-card">
+                            <h3 class="tech-sidebar-title">Thông tin nhanh</h3>
+                            <dl class="tech-quick-list">
+                                <div><dt>Mã sản phẩm</dt><dd>@techCode</dd></div>
+                                <div><dt>Danh mục</dt><dd>@categoryText</dd></div>
+                                <div><dt>Lượt xem</dt><dd>@((p.Viewed ?? 0).ToString("N0"))</dd></div>
+                                <div><dt>Cập nhật</dt><dd>@updatedText</dd></div>
+                                <div><dt>Trạng thái</dt><dd>Đang giới thiệu</dd></div>
+                            </dl>
+                        </section>
+
+                        @if (categories.Any())
+                        {
+                            <section class="tech-sidebar-card">
+                                <h3 class="tech-sidebar-title">Danh mục liên quan</h3>
+                                <ul class="tech-category-list">
+                                    @foreach (var cat in categories.Take(6))
+                                    {
+                                        <li><a href="/2-ds-cong-nghe-thiet-bi/@cat.QueryString-@cat.CatId">@cat.Title</a></li>
+                                    }
+                                </ul>
+                            </section>
+                        }
+                    </aside>
                 </div>
 
-            @await Component.InvokeAsync("ProductPortletIOSanpham", new { productId = Model.Product.ID })
-                @*      @await Component.InvokeAsync("TimKiemDoiTacPortlet") *@
+                <div class="tech-related-wrap">
+                    @await Component.InvokeAsync("ProductPortletIOSanpham", new { productId = p.ID })
+                </div>
             </div>
-
-            @* SIDEBAR *@
-            <div class="col-sm-3">
-                @await Component.InvokeAsync("QuangCaoLeft")
-            </div>
-
-        </div>
+        }
     </div>
 </div>

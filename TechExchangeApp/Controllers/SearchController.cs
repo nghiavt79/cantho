@@ -213,11 +213,28 @@ namespace TechExchangeApp.Controllers
                 Title = SearchHighlightHelper.HighlightKeywords(item.Title ?? string.Empty, query),
                 SnippetHtml = SearchHighlightHelper.CreateSnippet(
                     item.Description ?? item.Contents ?? string.Empty, query, 250),
-                Url = item.URL ?? string.Empty,
+                Url = NormalizeLegacyUrl(item.URL),
                 UpdatedDate = item.Modified ?? item.Created,
                 Tags = new List<string> { SearchEntityTypeHelper.ToLabel(entityType) }
             };
         
+        }
+
+        private static string NormalizeLegacyUrl(string? url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return string.Empty;
+
+            var normalized = url.Trim();
+            var queryOrHashIndex = normalized.IndexOfAny(new[] { '?', '#' });
+            var pathEnd = queryOrHashIndex >= 0 ? queryOrHashIndex : normalized.Length;
+
+            if (pathEnd >= 5 && normalized.Substring(pathEnd - 5, 5).Equals(".html", StringComparison.OrdinalIgnoreCase))
+            {
+                normalized = normalized.Remove(pathEnd - 5, 5);
+            }
+
+            return normalized;
         }
 
         private static SearchEntityType ParseEntityType(string? type)
