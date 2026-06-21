@@ -52,6 +52,7 @@ builder.Services.Configure<TechExchangeApp.Configuration.SiteBrandingOptions>(bu
 builder.Services.Configure<TechExchangeApp.Configuration.FeatureFlags>(builder.Configuration.GetSection("FeatureFlags"));
 builder.Services.Configure<TechExchangeApp.Configuration.DashboardJobOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.DashboardJobOptions.SectionName));
 builder.Services.Configure<TechExchangeApp.Configuration.OtpSettings>(builder.Configuration.GetSection(TechExchangeApp.Configuration.OtpSettings.SectionName));
+builder.Services.Configure<TechExchangeApp.Configuration.AiChatOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.AiChatOptions.SectionName));
 
 // In-process memory cache (used by HomeAnalyticsService)
 builder.Services.AddMemoryCache();
@@ -128,6 +129,10 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.IProjectService, TechExcha
 
 // Chat System
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IChatService, TechExchangeApp.Services.ChatService>();
+builder.Services.AddScoped<TechExchangeApp.Services.IAiChatService, TechExchangeApp.Services.AiChatService>();
+builder.Services.AddScoped<TechExchangeApp.Services.IAiKnowledgeService, TechExchangeApp.Services.AiKnowledgeService>();
+builder.Services.AddScoped<TechExchangeApp.Services.IAiFeedbackService, TechExchangeApp.Services.AiFeedbackService>();
+builder.Services.AddHttpClient<TechExchangeApp.Services.IOpenAiClientService, TechExchangeApp.Services.OpenAiClientService>();
 
 // Generic Entity Action Engine
 builder.Services.AddScoped<TechExchangeApp.Services.IEntityOwnershipResolver, TechExchangeApp.Services.EntityOwnershipResolver>();

@@ -126,6 +126,7 @@ namespace TechExchangeApp.Data
         public DbSet<Store> Stores { get; set; }
         public DbSet<SearchIndexContent> SearchIndexContents { get; set; }
         public DbSet<SearchQueryLog> SearchQueryLogs { get; set; }
+        public DbSet<AiKnowledgeDocument> AiKnowledgeDocuments { get; set; } = null!;
         public DbSet<Likepage> Likepages { get; set; }
         public DbSet<TechTransferRequest> TechTransferRequests { get; set; } = null!;
         public DbSet<NDAAgreement> NDAAgreements { get; set; } = null!;
