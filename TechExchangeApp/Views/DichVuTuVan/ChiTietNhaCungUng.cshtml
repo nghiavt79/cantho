@@ -96,6 +96,13 @@
                             <div class="d-flex gap-2 flex-wrap">
                                 <a class="btn btn-primary btn-sm" href="#"><i class="fa fa-check me-1"></i>Chọn nhà cung ứng</a>
                                 <button class="btn btn-outline-secondary btn-sm" onclick="window.print()"><i class="fa fa-print me-1"></i>In trang</button>
+                                <button type="button" class="btn btn-outline-danger btn-sm btn-report-violation"
+                                        data-target-datatype="Nha cung ung"
+                                        data-target-id="@Model.Id"
+                                        data-target-title="@Model.FullName"
+                                        data-target-url="@Context.Request.Path">
+                                    <i class="fa fa-flag me-1"></i>Bao cao vi pham
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -258,6 +265,7 @@
 </div>
 
 @section Scripts {
+    @await Html.PartialAsync("_ReportViolationModal")
     <script>
         $(document).ready(function () {
 

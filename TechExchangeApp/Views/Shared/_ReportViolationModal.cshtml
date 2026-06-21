@@ -1,0 +1,156 @@
+@inject TechExchangeApp.Data.AppDbContext _context
+@using Microsoft.AspNetCore.Http
+@{
+    var userId = Context.Session.GetInt32("UserId");
+    string uName = "";
+    string uEmail = "";
+    string uPhone = "";
+
+    if (userId.HasValue)
+    {
+        var u = _context.Users.FirstOrDefault(x => x.Id == userId.Value);
+        if (u != null)
+        {
+            uName = u.FullName ?? "";
+            uEmail = u.Email ?? "";
+            uPhone = u.Phone ?? "";
+        }
+    }
+}
+
+<div class="modal fade" id="violationReportModal" tabindex="-1" aria-labelledby="violationReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="frmViolationReport">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="violationReportModalLabel">
+                        <i class="fa fa-exclamation-triangle"></i> Bao cao vi pham
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="vr_TargetDataType" name="TargetDataType" />
+                    <input type="hidden" id="vr_TargetSubType" name="TargetSubType" />
+                    <input type="hidden" id="vr_TargetId" name="TargetId" />
+                    <input type="hidden" id="vr_TargetTitle" name="TargetTitle" />
+                    <input type="hidden" id="vr_TargetUrl" name="TargetUrl" />
+
+                    <div id="vr_alert" class="alert" style="display:none;"></div>
+
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Loai vi pham <span class="text-danger">*</span></label>
+                        <select class="form-control" name="ViolationType" required>
+                            <option value="">-- Chon loai vi pham --</option>
+                            <option value="Thong tin sai su that">Thong tin sai su that</option>
+                            <option value="Vi pham ban quyen / quyen so huu tri tue">Vi pham ban quyen / quyen so huu tri tue</option>
+                            <option value="Gia mao thuong hieu / gia mao to chuc">Gia mao thuong hieu / gia mao to chuc</option>
+                            <option value="Noi dung lua dao / gay nham lan">Noi dung lua dao / gay nham lan</option>
+                            <option value="Noi dung khong phu hop">Noi dung khong phu hop</option>
+                            <option value="Noi dung vi pham phap luat">Noi dung vi pham phap luat</option>
+                            <option value="Noi dung khac">Noi dung khac</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="fw-bold">Noi dung bao cao <span class="text-danger">*</span></label>
+                        <textarea class="form-control" name="ReportContent" rows="4" required maxlength="500"
+                                  placeholder="Vui long cung cap chi tiet ve vi pham..."></textarea>
+                    </div>
+
+                    <h6 class="mt-4 fw-bold border-bottom pb-2">Thong tin lien he</h6>
+                    <div class="form-group mb-3">
+                        <label>Ho va ten <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="FullName" id="vr_FullName" required value="@uName" @(userId.HasValue && !string.IsNullOrEmpty(uName) ? "readonly" : "") />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group mb-3">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="Email" id="vr_Email" value="@uEmail" @(userId.HasValue && !string.IsNullOrEmpty(uEmail) ? "readonly" : "") />
+                        </div>
+                        <div class="col-md-6 form-group mb-3">
+                            <label>So dien thoai</label>
+                            <input type="text" class="form-control" name="Phone" id="vr_Phone" value="@uPhone" @(userId.HasValue && !string.IsNullOrEmpty(uPhone) ? "readonly" : "") />
+                        </div>
+                    </div>
+                    <small class="text-muted">Vui long cung cap Email hoac So dien thoai de chung toi lien he khi can.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dong</button>
+                    <button type="submit" class="btn btn-danger" id="btnSubmitViolationReport">Gui bao cao</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '.btn-report-violation', function (e) {
+        e.preventDefault();
+
+        var isLogged = @(userId.HasValue ? "true" : "false");
+        if (!isLogged) {
+            var loginEl = document.getElementById('loginModal');
+            if (loginEl) {
+                new bootstrap.Modal(loginEl).show();
+            } else {
+                alert('Vui long dang nhap de gui bao cao vi pham.');
+            }
+            return;
+        }
+
+        var $btn = $(this);
+        $('#frmViolationReport')[0].reset();
+        $('#vr_TargetDataType').val($btn.data('target-datatype'));
+        $('#vr_TargetSubType').val($btn.data('target-subtype') || '');
+        $('#vr_TargetId').val($btn.data('target-id'));
+        $('#vr_TargetTitle').val($btn.data('target-title'));
+        $('#vr_TargetUrl').val($btn.data('target-url') || window.location.pathname);
+        $('#vr_FullName').val($('#vr_FullName').attr('value'));
+        $('#vr_Email').val($('#vr_Email').attr('value'));
+        $('#vr_Phone').val($('#vr_Phone').attr('value'));
+        $('#vr_alert').hide().removeClass('alert-success alert-danger');
+        $('#btnSubmitViolationReport').prop('disabled', false).text('Gui bao cao');
+
+        new bootstrap.Modal(document.getElementById('violationReportModal')).show();
+    });
+
+    $('#frmViolationReport').on('submit', function (e) {
+        e.preventDefault();
+
+        var email = $('#vr_Email').val().trim();
+        var phone = $('#vr_Phone').val().trim();
+        if (!email && !phone) {
+            $('#vr_alert').show().removeClass('alert-success').addClass('alert-danger').text('Vui long nhap Email hoac So dien thoai.');
+            return;
+        }
+
+        var $form = $(this);
+        var btn = $('#btnSubmitViolationReport');
+        btn.prop('disabled', true).text('Dang gui...');
+
+        $.ajax({
+            url: '/Feedback/SubmitViolationReport',
+            type: 'POST',
+            data: $form.serialize(),
+            success: function (res) {
+                if (res.success) {
+                    $('#vr_alert').show().removeClass('alert-danger').addClass('alert-success').text(res.message);
+                    $form.find('textarea, select').val('');
+                    setTimeout(function () {
+                        bootstrap.Modal.getInstance(document.getElementById('violationReportModal')).hide();
+                        $('#vr_alert').hide();
+                        btn.prop('disabled', false).text('Gui bao cao');
+                    }, 2000);
+                } else {
+                    $('#vr_alert').show().removeClass('alert-success').addClass('alert-danger').text(res.message);
+                    btn.prop('disabled', false).text('Gui bao cao');
+                }
+            },
+            error: function () {
+                $('#vr_alert').show().removeClass('alert-success').addClass('alert-danger').text('Co loi xay ra. Vui long thu lai sau.');
+                btn.prop('disabled', false).text('Gui bao cao');
+            }
+        });
+    });
+</script>

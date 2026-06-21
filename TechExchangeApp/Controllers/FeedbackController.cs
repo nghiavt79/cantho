@@ -182,5 +182,80 @@ namespace TechExchangeApp.Controllers
             var menu = _context.Menus.FirstOrDefault(x => x.MenuId == 74);
             if (menu != null) vm.Description = menu.Description;
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitViolationReport(ViolationReportDto dto)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(dto.ViolationType) || string.IsNullOrWhiteSpace(dto.ReportContent))
+                {
+                    return Json(new { success = false, message = "Vui long nhap day du loai vi pham va noi dung bao cao." });
+                }
+
+                var userId = HttpContext.Session.GetInt32("UserId");
+                if (!userId.HasValue &&
+                    (string.IsNullOrWhiteSpace(dto.FullName) ||
+                     (string.IsNullOrWhiteSpace(dto.Email) && string.IsNullOrWhiteSpace(dto.Phone))))
+                {
+                    return Json(new { success = false, message = "Vui long nhap ho ten va email hoac so dien thoai." });
+                }
+
+                var settingTime = _config.GetValue<int>("SettingTimeUpdatePageView");
+                if (settingTime <= 0) settingTime = 60;
+
+                var lastPost = HttpContext.Session.GetString("PostedViolationReport");
+                if (lastPost != null && DateTime.TryParse(lastPost, out var postedAt) &&
+                    (DateTime.Now - postedAt).TotalSeconds < settingTime)
+                {
+                    return Json(new { success = false, message = $"Thao tac qua nhanh. Vui long doi {settingTime} giay truoc khi gui tiep." });
+                }
+
+                var content = new System.Text.StringBuilder();
+                content.AppendLine("Loai phan anh: Bao cao vi pham");
+                content.AppendLine($"Loai du lieu bi bao cao: {dto.TargetDataType}");
+                if (!string.IsNullOrWhiteSpace(dto.TargetSubType))
+                    content.AppendLine($"Phan loai du lieu: {dto.TargetSubType}");
+                content.AppendLine($"ID du lieu: {dto.TargetId}");
+                content.AppendLine($"Tieu de du lieu: {dto.TargetTitle}");
+                content.AppendLine($"URL du lieu: {dto.TargetUrl}");
+                content.AppendLine($"Loai vi pham: {dto.ViolationType}");
+                content.AppendLine($"Nguoi bao cao: {dto.FullName}");
+                content.AppendLine($"Email nguoi bao cao: {dto.Email}");
+                content.AppendLine($"So dien thoai nguoi bao cao: {dto.Phone}");
+                if (userId.HasValue)
+                    content.AppendLine($"UserId nguoi bao cao: {userId.Value}");
+                content.AppendLine($"Thoi gian gui: {DateTime.Now:yyyy-MM-dd HH:mm}");
+                content.AppendLine();
+                content.AppendLine("Noi dung bao cao:");
+                content.AppendLine(System.Net.WebUtility.HtmlEncode(dto.ReportContent));
+
+                var feedback = new Feedback
+                {
+                    FullName = dto.FullName,
+                    Email = dto.Email,
+                    Phone = dto.Phone,
+                    Title = "Bao cao vi pham",
+                    Content = content.ToString(),
+                    Created = DateTime.Now,
+                    StatusId = 2,
+                    SiteId = SiteId,
+                    Domain = DomainName
+                };
+
+                _context.Feedbacks.Add(feedback);
+                _context.SaveChanges();
+
+                HttpContext.Session.SetString("PostedViolationReport", DateTime.Now.ToString("O"));
+
+                return Json(new { success = true, message = "Gui bao cao vi pham thanh cong. Cam on ban da dong gop!" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Cannot save violation report.");
+                return Json(new { success = false, message = "Co loi he thong xay ra. Vui long thu lai sau." });
+            }
+        }
     }
 }

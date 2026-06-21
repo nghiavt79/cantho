@@ -148,6 +148,13 @@
                                             <button type="submit" class="btn btn-default" style="color: #3399ff; border: 1px solid #ccc;">
                                                  <i class="fa fa-thumbs-up"> </i> Thích 
                                             </button>
+                                            <button type="button" class="btn btn-default btn-report-violation" style="color: #d9534f; border-color: #d9534f;"
+                                                    data-target-datatype="Forum"
+                                                    data-target-id="@Model.Id"
+                                                    data-target-title="@Model.Title"
+                                                    data-target-url="@Context.Request.Path">
+                                                <i class="fa fa-flag"></i> Bao cao vi pham
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -216,6 +223,7 @@
 </div>
 
 @section Scripts {
+    @await Html.PartialAsync("_ReportViolationModal")
     <script>
         $(document).ready(function() {
             // Initialize Owl Carousel if not already automatically initialized by class

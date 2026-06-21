@@ -1,0 +1,35 @@
+@{
+    var statuses = (IEnumerable<dynamic>)ViewBag.Statuses;
+    var id = (int)ViewBag.ItemId;
+    var statusId = (int?)ViewBag.StatusId;
+    var isActivated = (bool)ViewBag.IsActivated;
+    var itemName = (string?)ViewBag.ItemName ?? "";
+}
+
+<form id="quickConfigForm">
+    <input type="hidden" name="id" value="@id" />
+    <div class="mb-2 text-muted small">
+        <i class="fas fa-user-tie me-1"></i> <strong>@itemName</strong>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-semibold small">Trạng thái</label>
+        <select name="statusId" class="form-select form-select-sm">
+            <option value="">-- Chưa xác định --</option>
+            @foreach (var s in statuses)
+            {
+                <option value="@s.StatusId" selected="@(statusId == (int)s.StatusId)">@s.Title</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="isActivated" value="true"
+                   @(isActivated ? "checked" : "") id="qcIsActivated">
+            <label class="form-check-label" for="qcIsActivated">
+                <i class="fas fa-toggle-on text-success me-1"></i> Kích hoạt
+            </label>
+        </div>
+    </div>
+</form>

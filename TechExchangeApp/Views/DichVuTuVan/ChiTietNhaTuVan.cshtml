@@ -353,8 +353,21 @@
                         { "EntityId", Model.Id }
                     })
                 </div>
+                <div class="text-end mt-3">
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-report-violation"
+                            data-target-datatype="Nha tu van"
+                            data-target-id="@Model.Id"
+                            data-target-title="@Model.FullName"
+                            data-target-url="@Context.Request.Path">
+                        <i class="fa fa-flag me-1"></i>Bao cao vi pham
+                    </button>
+                </div>
 
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ReportViolationModal")
+}

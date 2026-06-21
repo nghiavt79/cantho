@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 namespace TechExchangeApp.Areas.Cms.Controllers
 {
     [Area("Cms")]
-    [Authorize(Policy = "CmsAccess")]
+    [Authorize]
     public class UploadController : Controller
     {
         private readonly IWebHostEnvironment _env;

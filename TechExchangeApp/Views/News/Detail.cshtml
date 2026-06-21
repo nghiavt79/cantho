@@ -63,6 +63,15 @@
                         }
                     </div>
                 </article>
+                <div class="clearfix" style="text-align: right; margin-top: 15px;">
+                    <button type="button" class="btn btn-default btn-sm btn-report-violation" style="color: #d9534f; border-color: #d9534f;"
+                            data-target-datatype="Tin tuc"
+                            data-target-id="@Model.Id"
+                            data-target-title="@Model.Title"
+                            data-target-url="@Context.Request.Path">
+                        <i class="fa fa-flag"></i> Bao cao vi pham
+                    </button>
+                </div>
 
                 <!-- Related Posts -->
                 <div class="single-box">
@@ -96,3 +105,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ReportViolationModal")
+}

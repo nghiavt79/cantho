@@ -486,6 +486,60 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             return Json(new { success = true, message = $"Đã đổi chủ sở hữu thành: {newUserName}" });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> QuickConfig(int id)
+        {
+            var entity = await _context.NhaTuVans.FindAsync(id);
+            if (entity == null)
+                return NotFound("Không tìm thấy bản ghi.");
+
+            ViewBag.ItemId = entity.TuVanId;
+            ViewBag.ItemName = entity.FullName ?? "(Chưa có tên)";
+            ViewBag.StatusId = entity.StatusId;
+            ViewBag.IsActivated = entity.IsActivated ?? false;
+            ViewBag.Statuses = await _context.Statuses.AsNoTracking()
+                .OrderBy(s => s.StatusId)
+                .Select(s => new { s.StatusId, s.Title })
+                .ToListAsync();
+
+            return PartialView("_QuickConfigPartial");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuickConfig(int id, int? statusId, bool isActivated)
+        {
+            var entity = await _context.NhaTuVans.FindAsync(id);
+            if (entity == null)
+                return Json(new { success = false, message = "Không tìm thấy bản ghi." });
+
+            if (statusId.HasValue)
+            {
+                var statusExists = await _context.Statuses.AsNoTracking()
+                    .AnyAsync(s => s.StatusId == statusId.Value);
+                if (!statusExists)
+                    return Json(new { success = false, message = "Trạng thái không hợp lệ." });
+            }
+
+            entity.StatusId = statusId;
+            entity.IsActivated = isActivated;
+            entity.Modified = DateTime.Now;
+            entity.Modifier = User.Identity?.Name;
+
+            await _context.SaveChangesAsync();
+
+            var statusTitle = statusId.HasValue
+                ? await _context.Statuses.AsNoTracking()
+                    .Where(s => s.StatusId == statusId.Value)
+                    .Select(s => s.Title)
+                    .FirstOrDefaultAsync() ?? ""
+                : "(trống)";
+
+            await WriteLog(2, $"QuickConfig NhaTuVan #{id}: Status={statusTitle}, IsActivated={isActivated}");
+
+            return Json(new { success = true, message = "Đã cập nhật cấu hình." });
+        }
+
         // ── HELPERS ──
         private void ValidateForm(NhaTuVanFormVm vm)
         {

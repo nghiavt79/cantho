@@ -153,6 +153,26 @@
 </div>
 
 <!-- ─── Change Owner Modal ─── -->
+<div class="modal fade" id="configModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title"><i class="fas fa-gear me-1"></i> Quick config</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="configModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Close
+                </button>
+                <button type="button" class="btn btn-warning btn-sm" id="btnSaveConfig">
+                    <i class="fas fa-save me-1"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="changeOwnerModal" tabindex="-1" aria-labelledby="changeOwnerLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -266,6 +286,38 @@ $(function(){
     $(document).on('change', '#chkAll', function() { $('.chkRow:not(:disabled)').prop('checked', this.checked); toggleBulk(); });
     $(document).on('change', '.chkRow', toggleBulk);
     function toggleBulk() { $('#btnBulkDelete').prop('disabled', !$('.chkRow:checked').length); }
+
+    $(document).on('click', '.btn-config', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $('#configModalBody').html('<div class="text-center py-4"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
+        new bootstrap.Modal(document.getElementById('configModal')).show();
+
+        $.get('@Url.Action("QuickConfig", "NhaCungUngAdmin", new { area = "Cms" })', { id: id }, function(html) {
+            $('#configModalBody').html(html);
+        }).fail(function() {
+            $('#configModalBody').html('<div class="alert alert-danger mb-0"><i class="fas fa-exclamation-triangle me-1"></i> Could not load quick config.</div>');
+        });
+
+        $('#btnSaveConfig').off('click').on('click', function() {
+            var $btn = $(this);
+            $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i> Saving...');
+            var formData = $('#quickConfigForm').serialize() + '&__RequestVerificationToken=' + encodeURIComponent(token);
+            $.post('@Url.Action("QuickConfig", "NhaCungUngAdmin", new { area = "Cms" })', formData, function(r) {
+                if (r.success) {
+                    toastr.success(r.message);
+                    bootstrap.Modal.getInstance(document.getElementById('configModal')).hide();
+                    loadList(currentPage);
+                } else {
+                    toastr.error(r.message);
+                }
+            }).fail(function() {
+                toastr.error('Save quick config failed.');
+            }).always(function() {
+                $btn.prop('disabled', false).html('<i class="fas fa-save me-1"></i> Save');
+            });
+        });
+    });
 
     $(document).on('click', '.btn-del', function(e) {
         e.preventDefault();
@@ -427,4 +479,3 @@ $(function(){
 });
 </script>
 }
-

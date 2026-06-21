@@ -98,8 +98,7 @@ async function handleLoginSubmit(event) {
         const result = await response.json();
         
         if (result.success) {
-            // Success - redirect to dashboard
-            window.location.href = result.redirectUrl || '/Dashboard';
+            window.location.reload();
         } else {
             // Show errors
             displayErrors('loginErrors', result.errors);
@@ -159,8 +158,7 @@ async function handleRegisterSubmit(event) {
         const result = await response.json();
         
         if (result.success) {
-            // Success - redirect to dashboard
-            window.location.href = result.redirectUrl || '/Dashboard';
+            window.location.reload();
         } else {
             // Show specific errors from server
             displayErrors('registerErrors', result.errors);
