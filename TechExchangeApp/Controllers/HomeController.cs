@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
 using TechExchangeApp.Configuration;
@@ -15,6 +16,7 @@ namespace TechExchangeApp.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IProductService _productService;
+        private readonly IMemoryCache _cache;
         private readonly string _mainDomain;
         private readonly SiteBrandingOptions _branding;
 
@@ -25,42 +27,65 @@ namespace TechExchangeApp.Controllers
         public HomeController(
             AppDbContext context,
             IProductService productService,
+            IMemoryCache cache,
             IOptions<AppSettings> appSettings,
             IOptions<SiteBrandingOptions> branding)
         {
             _context = context;
             _productService = productService;
+            _cache = cache;
             _mainDomain = appSettings.Value.MainDomain;
             _branding = branding.Value;
         }
 
         public async Task<IActionResult> Index()
         {
-            var newProducts = await _productService.GetNewProductsAsync(12);
+            var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var cacheKey = $"home:index:{lang}:{_mainDomain}";
+            var data = await _cache.GetOrCreateAsync(cacheKey, async entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3);
+                entry.SlidingExpiration = TimeSpan.FromMinutes(1);
+                var newProducts = await _productService.GetNewProductsAsync(12);
+
+                return new HomeIndexCacheVm
+                {
+                    TinSuKien = LoadTinSuKien(),
+                    VideoCongNghe = LoadVideoCongNghe(),
+                    YeuCauCongNghe = LoadYeuCauCongNghe(),
+                    Customers = await LoadLogoItemsAsync(subject: 4, take: 32),
+                    Partners = await LoadLogoItemsAsync(subject: 5, take: 8),
+                    FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(5)),
+                    FeaturedNews = LoadFeaturedNews(),
+                    Experts = LoadExperts(),
+                    Stats = await BuildStatsAsync(),
+                    NewProducts = newProducts
+                };
+            }) ?? new HomeIndexCacheVm();
 
             var model = new HomeViewModel
             {
                 Branding = MapBranding(),
                 CongNgheMoiCapNhatHtml = "",
                 ProductCNMoiCapNhatHtml = "",
-                TinSuKien = LoadTinSuKien(),
-                VideoCongNghe = LoadVideoCongNghe(),
-                YeuCauCongNghe = LoadYeuCauCongNghe(),
+                TinSuKien = data.TinSuKien,
+                VideoCongNghe = data.VideoCongNghe,
+                YeuCauCongNghe = data.YeuCauCongNghe,
                 WhatWeDo = BuildWhatWeDo(),
                 Services = BuildServices(),
                 Reasons = BuildReasons(),
                 ProcessSteps = BuildProcessSteps(),
-                Customers = await LoadLogoItemsAsync(subject: 4, take: 32),
-                Partners = await LoadLogoItemsAsync(subject: 5, take: 8),
+                Customers = data.Customers,
+                Partners = data.Partners,
                 PopularTags = BuildPopularTags(),
-                FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(5)),
-                FeaturedNews = LoadFeaturedNews(),
-                Experts = LoadExperts(),
-                Stats = await BuildStatsAsync()
+                FeaturedTechnologies = data.FeaturedTechnologies,
+                FeaturedNews = data.FeaturedNews,
+                Experts = data.Experts,
+                Stats = data.Stats
             };
 
-            ViewBag.NewTech = newProducts.Take(10).ToList();
-            ViewBag.NewProducts = newProducts;
+            ViewBag.NewTech = data.NewProducts.Take(10).ToList();
+            ViewBag.NewProducts = data.NewProducts;
 
             return View(model);
         }
@@ -270,17 +295,29 @@ namespace TechExchangeApp.Controllers
         private List<TinSuKienTabVm> LoadTinSuKien()
         {
             var menus = _context.Menus
+                .AsNoTracking()
                 .Where(x => TinSuKienMenus.Contains(x.MenuId))
                 .OrderBy(x => x.Sort)
                 .ToList();
+
+            var menuIds = menus.Select(x => x.MenuId).ToList();
+            var childIdsByParent = _context.Menus
+                .AsNoTracking()
+                .Where(x => x.ParentId.HasValue && menuIds.Contains(x.ParentId.Value))
+                .Select(x => new { ParentId = x.ParentId!.Value, x.MenuId })
+                .ToList()
+                .GroupBy(x => x.ParentId)
+                .ToDictionary(x => x.Key, x => x.Select(i => i.MenuId).ToList());
 
             var result = new List<TinSuKienTabVm>();
 
             foreach (var m in menus)
             {
-                var childIds = uspSelectSubMenu(m.MenuId);
+                childIdsByParent.TryGetValue(m.MenuId, out var childIds);
+                childIds ??= new List<int>();
 
                 var items = _context.Contents
+                    .AsNoTracking()
                     .Where(x => (x.MenuId == m.MenuId || childIds.Contains(x.MenuId ?? 0))
                              && x.StatusId == 3)
                     .OrderByDescending(x => x.PublishedDate)
@@ -310,6 +347,7 @@ namespace TechExchangeApp.Controllers
              var childIds = uspSelectSubMenu(VideoMenuId);
 
             return _context.Contents
+                .AsNoTracking()
                 .Where(x => (x.MenuId == VideoMenuId || childIds.Contains(x.MenuId ?? 0))
                          && x.StatusId == 3)
                 .OrderByDescending(x => x.PublishedDate)
@@ -329,6 +367,7 @@ namespace TechExchangeApp.Controllers
             var childIds = uspSelectSubMenu(YeuCauMenuId);
 
             var list = _context.ContentsYeuCaus
+                .AsNoTracking()
                 .Where(x => (x.MenuId == YeuCauMenuId || childIds.Contains(x.MenuId ?? 0))
                          && x.StatusId == 3)
                 .OrderByDescending(x => x.PublishedDate)
@@ -355,6 +394,7 @@ namespace TechExchangeApp.Controllers
         private List<int> uspSelectSubMenu(int parentId)
         {
             return _context.Menus
+                .AsNoTracking()
                 .Where(x => x.ParentId == parentId)
                 .Select(x => x.MenuId)
                 .ToList();
@@ -378,6 +418,20 @@ namespace TechExchangeApp.Controllers
             text = Regex.Replace(text, "\\s+", " ").Trim();
             if (text.Length <= maxLength) return text;
             return text.Substring(0, maxLength).TrimEnd() + "...";
+        }
+
+        private sealed class HomeIndexCacheVm
+        {
+            public List<TinSuKienTabVm> TinSuKien { get; set; } = new();
+            public List<VideoVm> VideoCongNghe { get; set; } = new();
+            public YeuCauCongNgheVm YeuCauCongNghe { get; set; } = new();
+            public List<HomePartnerVm> Customers { get; set; } = new();
+            public List<HomePartnerVm> Partners { get; set; } = new();
+            public List<HomeTechCardVm> FeaturedTechnologies { get; set; } = new();
+            public List<HomeNewsCardVm> FeaturedNews { get; set; } = new();
+            public List<HomeExpertVm> Experts { get; set; } = new();
+            public List<HomeStatVm> Stats { get; set; } = new();
+            public List<SanPhamCNTB> NewProducts { get; set; } = new();
         }
 
         public IActionResult ContractDashboard()

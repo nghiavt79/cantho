@@ -98,15 +98,6 @@
 
                             <div class="tech-actions">
                                 <a href="/TechTransfer/Create?fromId=@p.ID&typeData=1" class="tech-btn tech-btn-primary"><i class="fa fa-file-signature"></i>Liên hệ báo giá</a>
-                                <button type="button" class="tech-btn tech-btn-outline" onclick="window.print()"><i class="fa fa-print"></i>In trang</button>
-                                <button type="button" class="tech-btn tech-btn-outline btn-report-violation"
-                                        data-target-datatype="San pham CNTB"
-                                        data-target-subtype="@typeName"
-                                        data-target-id="@p.ID"
-                                        data-target-title="@p.Name"
-                                        data-target-url="@Context.Request.Path">
-                                    <i class="fa fa-flag"></i>Bao cao vi pham
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -134,6 +125,15 @@
                                     break;
                             }
                         </section>
+
+                        @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
+                        {
+                            TargetDataType = "San pham CNTB",
+                            TargetSubType = typeName,
+                            TargetId = Model.Product.ID,
+                            TargetTitle = Model.Product.Name,
+                            ShareTitle = Model.Product.Name
+                        })
 
                         <div class="mt-4">
                             @await Html.PartialAsync("_EntityRating", null, new ViewDataDictionary(ViewData) {

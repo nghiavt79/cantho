@@ -35,6 +35,14 @@
                             @Model.Author
                         </div>
 
+                        @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
+                        {
+                            TargetDataType = "Tin tuc",
+                            TargetId = Model.Id,
+                            TargetTitle = Model.Title,
+                            ShareTitle = Model.Title
+                        })
+
                         @* ===== IMAGE CAROUSEL (TypeId = 4) ===== *@
                         @if (Model.Images != null && Model.Images.Any())
                         {
@@ -63,15 +71,6 @@
                         }
                     </div>
                 </article>
-                <div class="clearfix" style="text-align: right; margin-top: 15px;">
-                    <button type="button" class="btn btn-default btn-sm btn-report-violation" style="color: #d9534f; border-color: #d9534f;"
-                            data-target-datatype="Tin tuc"
-                            data-target-id="@Model.Id"
-                            data-target-title="@Model.Title"
-                            data-target-url="@Context.Request.Path">
-                        <i class="fa fa-flag"></i> Bao cao vi pham
-                    </button>
-                </div>
 
                 <!-- Related Posts -->
                 <div class="single-box">

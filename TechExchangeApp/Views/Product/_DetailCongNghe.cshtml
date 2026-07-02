@@ -89,7 +89,6 @@
 
                 <div class="tech-actions">
                     <a href="/TechTransfer/Create?fromId=@p.ID&typeData=1" class="tech-btn tech-btn-primary"><i class="fa fa-file-signature"></i>Liên hệ báo giá</a>
-                    <button type="button" class="tech-btn tech-btn-outline" onclick="window.print()"><i class="fa fa-print"></i>In trang</button>
                 </div>
             </div>
         </div>
@@ -207,6 +206,15 @@
                     </div>
                 </div>
             </section>
+
+            @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
+            {
+                TargetDataType = "San pham CNTB",
+                TargetSubType = "Cong nghe",
+                TargetId = p.ID,
+                TargetTitle = p.Name,
+                ShareTitle = p.Name
+            })
         </main>
 
         <aside class="tech-sidebar">

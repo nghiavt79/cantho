@@ -1,6 +1,7 @@
 @model TechExchangeApp.ViewModel.NhuCauCongNgheDetailViewModel
 
 @section Scripts {
+    @await Html.PartialAsync("_ReportViolationModal")
     <script>
         const btn = document.getElementById("DangYCCN");
         const box = document.getElementById("DangYCCNRegion");
@@ -67,6 +68,14 @@
                                  style="text-align:right;font-weight:700;">
                                 @Model.Detail.Author
                             </div>
+
+                            @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
+                            {
+                                TargetDataType = "Yeu cau cong nghe",
+                                TargetId = Model.Detail.Id,
+                                TargetTitle = Model.Detail.Title,
+                                ShareTitle = Model.Detail.Title
+                            })
 
                             <!-- ====== IMAGE CAROUSEL ====== -->
                             @if (Model.Images.Any())

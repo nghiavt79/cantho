@@ -1,0 +1,221 @@
+@model TechExchangeApp.ViewModel.ContentUtilitiesVm
+@{
+    var currentUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}{Context.Request.Path}{Context.Request.QueryString}";
+    var shareUrl = string.IsNullOrWhiteSpace(Model.ShareUrl) ? currentUrl : Model.ShareUrl;
+    var reportUrl = string.IsNullOrWhiteSpace(Model.TargetUrl)
+        ? $"{Context.Request.PathBase}{Context.Request.Path}{Context.Request.QueryString}"
+        : Model.TargetUrl;
+    var shareTitle = string.IsNullOrWhiteSpace(Model.ShareTitle) ? Model.TargetTitle : Model.ShareTitle;
+    var encodedUrl = Uri.EscapeDataString(shareUrl);
+    var encodedTitle = Uri.EscapeDataString(shareTitle ?? "");
+}
+
+<div class="content-utilities" aria-label="Tien ich noi dung">
+    @if (Model.ShowReport || Model.ShowShare || Model.ShowPrint)
+    {
+        <div class="content-utility-share" aria-label="Tien ich bai viet">
+            @if (Model.ShowReport)
+            {
+                <button type="button"
+                        class="content-utility content-utility-social content-utility-report btn-report-violation"
+                        data-target-datatype="@Model.TargetDataType"
+                        data-target-subtype="@Model.TargetSubType"
+                        data-target-id="@Model.TargetId"
+                        data-target-title="@Model.TargetTitle"
+                        data-target-url="@reportUrl"
+                        title="Bao cao vi pham">
+                    <i class="fa fa-flag" aria-hidden="true"></i>
+                    <span class="sr-only">Bao cao vi pham</span>
+                </button>
+            }
+
+            @if (Model.ShowShare)
+            {
+                <a class="content-utility content-utility-social content-utility-facebook"
+                   href="https://www.facebook.com/sharer/sharer.php?u=@encodedUrl"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Chia se Facebook">
+                    <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+                    <span class="sr-only">Facebook</span>
+                </a>
+                <a class="content-utility content-utility-social content-utility-zalo"
+                   href="https://zalo.me/share?u=@encodedUrl"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Chia se Zalo">
+                    <span aria-hidden="true">Zalo</span>
+                    <span class="sr-only">Zalo</span>
+                </a>
+                <a class="content-utility content-utility-social content-utility-linkedin"
+                   href="https://www.linkedin.com/sharing/share-offsite/?url=@encodedUrl"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Chia se LinkedIn">
+                    <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+                    <span class="sr-only">LinkedIn</span>
+                </a>
+                <a class="content-utility content-utility-social content-utility-x"
+                   href="https://twitter.com/intent/tweet?url=@encodedUrl&text=@encodedTitle"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Chia se X">
+                    <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+                    <span class="sr-only">X</span>
+                </a>
+            }
+
+            @if (Model.ShowPrint)
+            {
+                <button type="button"
+                        class="content-utility content-utility-social content-utility-print js-content-print"
+                        title="In bai">
+                    <i class="fa fa-print" aria-hidden="true"></i>
+                    <span class="sr-only">In bai</span>
+                </button>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .content-utilities {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        margin: 18px 0 8px;
+        padding-top: 14px;
+        border-top: 1px solid #ececec;
+    }
+
+    .content-utility-share {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px;
+        border: 1px solid #e6e9ef;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .content-utility {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 34px;
+        padding: 7px 11px;
+        border: 1px solid #dce1e8;
+        border-radius: 8px;
+        background: #fff;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.2;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background-color .15s ease, border-color .15s ease, color .15s ease, filter .15s ease;
+    }
+
+    .content-utility:hover,
+    .content-utility:focus {
+        border-color: #b7c2d0;
+        background: #f8fafc;
+        color: #0f172a;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .content-utility-social {
+        width: 34px;
+        min-width: 34px;
+        padding: 0;
+        border-radius: 50%;
+        color: #fff;
+    }
+
+    .content-utility-report {
+        background: #f59e0b;
+        border-color: #f59e0b;
+        color: #fff;
+    }
+
+    .content-utility-report:hover,
+    .content-utility-report:focus {
+        border-color: #d97706;
+        background: #d97706;
+        color: #fff;
+    }
+
+    .content-utility-facebook {
+        background: #1877f2;
+        border-color: #1877f2;
+    }
+
+    .content-utility-zalo {
+        background: #0068ff;
+        border-color: #0068ff;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .content-utility-linkedin {
+        background: #0a66c2;
+        border-color: #0a66c2;
+    }
+
+    .content-utility-x {
+        background: #111827;
+        border-color: #111827;
+    }
+
+    .content-utility-print {
+        background: #0f766e;
+        border-color: #0f766e;
+        color: #fff;
+    }
+
+    .content-utility-print:hover,
+    .content-utility-print:focus {
+        border-color: #115e59;
+        background: #115e59;
+        color: #fff;
+    }
+
+    .content-utility-social:hover,
+    .content-utility-social:focus {
+        filter: brightness(.94);
+        color: #fff;
+    }
+
+    @@media (max-width: 575px) {
+        .content-utilities {
+            justify-content: flex-start;
+        }
+
+        .content-utility-share {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+
+    @@media print {
+        .content-utilities {
+            display: none !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('click', function (e) {
+        var printButton = e.target.closest('.js-content-print');
+        if (!printButton) {
+            return;
+        }
+
+        e.preventDefault();
+        window.print();
+    });
+</script>

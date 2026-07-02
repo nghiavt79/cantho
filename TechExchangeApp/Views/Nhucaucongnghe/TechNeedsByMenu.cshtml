@@ -1,5 +1,6 @@
 ﻿@model TechExchangeApp.ViewModel.CateTechNeedsViewModel
 @section Scripts {
+    @await Html.PartialAsync("_ReportViolationModal")
     <script>
         const btn = document.getElementById("DangYCCN");
         const box = document.getElementById("DangYCCNRegion");
@@ -28,6 +29,14 @@
 
                 <!-- Phiếu yêu cầu công nghệ -->
                 @await Html.PartialAsync("_PhieuYeuCauCN", Model.PhieuYeuCau )
+
+                @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
+                {
+                    TargetDataType = "Yeu cau chuyen giao cong nghe",
+                    TargetId = Model.MenuId,
+                    TargetTitle = "Yeu cau chuyen giao cong nghe",
+                    ShareTitle = "Yeu cau chuyen giao cong nghe"
+                })
 
                 <!-- ITEM NỔI BẬT (tương đương block đầu trong WebForms) -->
                 @if (Model.FirstItem != null)

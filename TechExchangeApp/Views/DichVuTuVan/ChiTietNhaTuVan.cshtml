@@ -353,15 +353,13 @@
                         { "EntityId", Model.Id }
                     })
                 </div>
-                <div class="text-end mt-3">
-                    <button type="button" class="btn btn-outline-danger btn-sm btn-report-violation"
-                            data-target-datatype="Nha tu van"
-                            data-target-id="@Model.Id"
-                            data-target-title="@Model.FullName"
-                            data-target-url="@Context.Request.Path">
-                        <i class="fa fa-flag me-1"></i>Bao cao vi pham
-                    </button>
-                </div>
+                @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
+                {
+                    TargetDataType = "Nha tu van",
+                    TargetId = Model.Id,
+                    TargetTitle = Model.FullName,
+                    ShareTitle = Model.FullName
+                })
 
             </div>
         </div>

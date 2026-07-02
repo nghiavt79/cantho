@@ -80,21 +80,13 @@
                                 </div>
                             </div>
 
-                            <!-- SHARE -->
-                            <div class="form-share">
-                                <div class="sendtofriend-print">
-                                    <div class="post-share">
-                                        <div class="ShareThis">
-                                            <a href="javascript:print();"><i class="fa fa-print"></i></a>
-                                            <span class='st_facebook_large'></span>
-                                            <span class='st_twitter_large'></span>
-                                            <span class='st_linkedin_large'></span>
-                                            <span class='st_pinterest_large'></span>
-                                            <span class='st_sharethis_large'></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
+                            {
+                                TargetDataType = "Tim kiem doi tac",
+                                TargetId = Model.TimDoiTacId,
+                                TargetTitle = Model.TenSanPham,
+                                ShareTitle = Model.TenSanPham
+                            })
 
                         </div>
                     </div>
@@ -179,6 +171,7 @@
 </div>
 
 @section Scripts {
+    @await Html.PartialAsync("_ReportViolationModal")
     <script>
 
         function ajaxJquery() {
