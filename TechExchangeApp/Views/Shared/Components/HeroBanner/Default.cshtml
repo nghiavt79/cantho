@@ -1,8 +1,4 @@
 @model List<TechExchangeApp.Entities.ImageAdver>
-@{
-    var isEn = Context.Request.Cookies["site_lang"] == "en";
-    var ctaText = isEn ? "Learn more" : "Xem thêm";
-}
 
 @if (Model.Any())
 {
@@ -12,17 +8,15 @@
                 @for (var i = 0; i < Model.Count; i++)
                 {
                     var item = Model[i];
-                    var url = string.IsNullOrWhiteSpace(item.URL) ? "#" : item.URL;
 
                     <div class="carousel-item home-v2-hero__slide @(i == 0 ? "active" : "")" style="background-image:url('@item.SRC')">
                         <div class="container">
                             <div class="home-v2-hero__content">
                                 <h1>@item.Title</h1>
-                                <div class="home-v2-hero__actions">
-                                    <a class="home-v2-btn home-v2-btn--primary" href="@url">
-                                        @ctaText <i class="bi bi-arrow-right"></i>
-                                    </a>
-                                </div>
+                                @if (!string.IsNullOrWhiteSpace(item.Description))
+                                {
+                                    @Html.Raw(item.Description)
+                                }
                             </div>
                         </div>
                     </div>

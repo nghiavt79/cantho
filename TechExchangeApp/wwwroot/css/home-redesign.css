@@ -854,24 +854,92 @@
 
 .home-v2-hero__content p {
     max-width: 600px;
-    margin: 0;
+    margin: 10px 0 0;
     color: rgba(255, 255, 255, .92);
-    font-size: 18px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.55;
 }
 
-.home-v2-hero__actions {
+.home-v2-hero__content p:first-of-type {
+    margin-top: 10px;
+}
+
+/* Description is rendered as raw HTML from the CMS — leave layout/spacing
+   loose so editors can freely add their own styled links/buttons alongside
+   the copy without fighting a fixed line-clamp. */
+.home-v2-hero__content a:not(.home-v2-btn):not(.hero-btn) {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Styling for the hand-authored CTA markup editors paste via CKEditor's
+   Source Editing (hero-description / hero-actions / hero-btn classes). */
+.home-v2-hero__content .hero-description {
+    max-width: 600px;
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, .92);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.home-v2-hero__content .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 28px;
+    gap: 14px;
+    margin-top: 22px;
 }
 
-.home-v2-hero__actions .home-v2-btn {
-    min-height: 52px;
-    padding: 0 34px;
-    font-size: 15.5px;
+.home-v2-hero__content .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
 }
+
+.home-v2-hero__content .hero-btn:hover {
+    transform: translateY(-1px);
+}
+
+.home-v2-hero__content .hero-btn-primary {
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #005AA9, #00AEEF);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(0, 90, 169, 0.25);
+}
+
+.home-v2-hero__content .hero-btn-primary:hover {
+    background: linear-gradient(135deg, #004B8D, #00C2E8);
+    box-shadow: 0 12px 26px rgba(0, 90, 169, .32);
+    color: #fff;
+}
+
+.home-v2-hero__content .hero-btn-outline {
+    border: 1.5px solid rgba(255, 255, 255, .6);
+    background: transparent;
+    color: #fff;
+}
+
+.home-v2-hero__content .hero-btn-outline:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+}
+
+.home-v2-hero__content .btn-arrow {
+    transition: transform .2s ease;
+}
+
+.home-v2-hero__content .hero-btn:hover .btn-arrow {
+    transform: translateX(3px);
+}
+
 
 .home-v2-btn {
     display: inline-flex;
@@ -1071,20 +1139,21 @@
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0;
     margin-top: 16px;
-    padding: 12px 14px;
-    border: 1px solid var(--te-line);
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: var(--te-shadow);
+    padding: 30px 14px;
+    border-top: 2px solid var(--te-line);
+    border-bottom: 2px solid var(--te-line);
+    border-radius: 0;
+    background: #EFF8FC;
+    box-shadow: none;
 }
 
 .home-v2-stat {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    min-height: 90px;
-    border-right: 1px solid #dce8f3;
+    gap: 14px;
+    min-height: 100px;
+    border-right: 1px solid #d6e6f2;
 }
 
 .home-v2-stat:last-child {
@@ -1093,21 +1162,22 @@
 
 .home-v2-stat i {
     color: var(--te-blue-700);
-    font-size: 25px;
+    font-size: 27px;
 }
 
 .home-v2-stat strong {
     display: block;
     color: var(--te-blue-700);
-    font-size: 23px;
+    font-size: 32px;
+    font-weight: 700;
     line-height: 1;
 }
 
 .home-v2-stat span {
     display: block;
-    margin-top: 4px;
+    margin-top: 6px;
     color: #45617d;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
 }
 
@@ -1383,13 +1453,13 @@
     position: relative;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    background: #f4f9fc;
+    background: #f7fafc;
 }
 
 .home-v2-carousel-card__image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform .4s ease;
 }
 
@@ -1449,21 +1519,24 @@
 }
 
 .home-v2-carousel-card__btn {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-top: 8px;
-    padding: 8px;
-    border: 1px solid var(--te-blue-700);
-    border-radius: 7px;
     color: var(--te-blue-700);
     font-size: 13px;
     font-weight: 700;
-    text-align: center;
-    transition: background-color .2s ease, color .2s ease;
+    transition: gap .2s ease, color .2s ease;
+}
+
+.home-v2-carousel-card__btn::after {
+    content: "\2192";
+    transition: transform .2s ease;
 }
 
 .home-v2-carousel-card:hover .home-v2-carousel-card__btn {
-    background: var(--te-blue-700);
-    color: #fff;
+    gap: 10px;
+    color: var(--te-cyan-600);
 }
 
 .home-v2-carousel-nav {
@@ -2363,13 +2436,6 @@ body.is-chat-open .action-dock-vr-shortcut {
         font-size: 14px;
     }
 
-    .home-v2-hero__actions .home-v2-btn {
-        min-height: 46px;
-        padding: 0 24px;
-        font-size: 14px;
-    }
-
-    .home-v2-hero__actions,
     .home-v2-cta {
         flex-direction: column;
         align-items: stretch;

@@ -44,13 +44,13 @@
 $(function(){
     const { ClassicEditor, Essentials, Bold, Italic, Link, Paragraph,
             Heading, List, BlockQuote, Table, TableToolbar,
-            SourceEditing, Alignment, Font, HtmlEmbed } = CKEDITOR;
+            SourceEditing, Alignment, Font, HtmlEmbed, GeneralHtmlSupport } = CKEDITOR;
 
     ClassicEditor.create(document.querySelector('#editorDescription'), {
         plugins: [
             Essentials, Bold, Italic, Link, Paragraph, Heading,
             List, BlockQuote, Table, TableToolbar,
-            SourceEditing, Alignment, Font, HtmlEmbed
+            SourceEditing, Alignment, Font, HtmlEmbed, GeneralHtmlSupport
         ],
         toolbar: {
             items: [
@@ -66,6 +66,14 @@ $(function(){
         },
         table: {
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+        },
+        // Preserve custom classes/attributes/inline styles (e.g. hand-authored
+        // CTA buttons pasted via Source Editing) instead of CKEditor stripping
+        // anything outside its default schema.
+        htmlSupport: {
+            allow: [
+                { name: /.*/, attributes: true, classes: true, styles: true }
+            ]
         }
     }).then(editor => {
         window._descEditor = editor;
