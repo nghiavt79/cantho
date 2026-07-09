@@ -4,26 +4,23 @@
 @{
     var mainDomain = Configuration["AppSettings:MainDomain"] ?? "/";
     var shortName = Configuration["SiteBranding:ShortName"] ?? "CASTA";
-    var phone = Configuration["SiteBranding:Phone"] ?? "+(84) 292 3907 037";
-    var email = Configuration["SiteBranding:Email"] ?? "trungtamungdung@cantho.gov.vn";
-    var address = Configuration["SiteBranding:Address"] ?? "166 Nguyễn Văn Cừ, P. An Bình, TP. Cần Thơ";
-    var phoneHref = "tel:" + new string(phone.Where(char.IsDigit).ToArray());
-    var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + Uri.EscapeDataString(address);
     var canAccessCms = await CmsAccessService.CanAccessCmsAsync(ViewContext.HttpContext.User);
-    var headerTitle = "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ";
-    var headerSlogan = "Kết nối nghiên cứu · Ứng dụng thực tiễn · Đổi mới sáng tạo";
-    var currentDate = DateTime.Now.ToString("dddd, dd/MM/yyyy", new System.Globalization.CultureInfo("vi-VN"));
+    var isEn = Context.Request.Cookies["site_lang"] == "en";
+    string T(string vi, string en) => isEn ? en : vi;
+    var currentUrl = Context.Request.Path + Context.Request.QueryString;
+    var accountDisplayName = User.Identity?.Name ?? "Tài khoản";
+    var accountInitial = string.IsNullOrWhiteSpace(accountDisplayName)
+        ? "U"
+        : accountDisplayName.Trim().Substring(0, 1).ToUpperInvariant();
     var productCategories = AppDb.Categories
         .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
         .OrderBy(x => x.Sort ?? int.MaxValue)
         .ThenBy(x => x.Title)
-        .Take(12)
         .ToList();
     var serviceCategories = AppDb.Categories
         .Where(x => x.ParentId == 2 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
         .OrderBy(x => x.Sort ?? int.MaxValue)
         .ThenBy(x => x.Title)
-        .Take(12)
         .ToList();
 
     string CategorySlug(TechExchangeApp.Entities.Category category)
@@ -33,43 +30,27 @@
 }
 
 <header class="site-header-v2">
-    <div class="site-header-v2__top">
-        <div class="container">
-            <div class="site-header-v2__contact">
-                <a href="@phoneHref"><i class="bi bi-telephone"></i> @phone</a>
-                <a href="mailto:@email"><i class="bi bi-envelope"></i> @email</a>
-                <a href="@mapUrl" target="_blank" rel="noopener"><i class="bi bi-geo-alt"></i> @address</a>
-            </div>
-            <div class="site-header-v2__social">
-                <span>@currentDate</span>
-                <a href="https://www.facebook.com/profile.php?id=100069991094645" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="https://www.youtube.com/@@TrungtamUngdungCanTho" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                <a href="https://id.zalo.me/account/login?continue=http%3A%2F%2Fzalo.me%2F02923907037" target="_blank" rel="noopener" aria-label="Zalo"><img class="site-header-v2__zalo-icon" src="/image/zalo-icon.webp" alt=""></a>
-            </div>
-        </div>
-    </div>
-
     <nav class="site-header-v2__nav">
         <div class="container site-header-v2__nav-inner">
             <a class="site-header-v2__brand" href="@mainDomain">
                 <img src="/image/logo-casta.webp" alt="@shortName" onerror="this.src='/image/logo.png'">
-                <span>
-                    <strong>@headerTitle</strong>
-                    <small>@headerSlogan</small>
-                </span>
             </a>
 
             <div class="site-header-v2__actions">
                 <nav class="site-header-v2__menu" aria-label="Menu chính">
-                    <a class="nav-link active site-header-v2__icon-link" href="/" aria-label="Trang chủ">
-                        <i class="bi bi-house-door"></i>
-                    </a>
-                    <a class="nav-link" href="/gioi-thieu-chung-3">Giới thiệu</a>
+                    <a class="nav-link" href="/gioi-thieu-chung-3">@T("Giới thiệu", "About")</a>
                     <div class="site-header-v2__menu-item">
-                        <a class="nav-link" href="/cong-nghe">Sản phẩm CNTB</a>
+                        <a class="nav-link site-header-v2__has-submenu" href="/cong-nghe">
+                            <span>@T("Sản phẩm", "Products")</span>
+                            @if (productCategories.Any())
+                            {
+                                <i class="bi bi-chevron-down"></i>
+                            }
+                        </a>
                         @if (productCategories.Any())
                         {
-                            <div class="site-header-v2__submenu">
+                            var productSubmenuRows = (int)Math.Ceiling(productCategories.Count / 2.0);
+                            <div class="site-header-v2__submenu site-header-v2__submenu--cols" style="grid-template-rows: repeat(@productSubmenuRows, auto);">
                                 @foreach (var category in productCategories)
                                 {
                                     <a href="/2-ds-cong-nghe-thiet-bi/@CategorySlug(category)-@category.CatId">@category.Title</a>
@@ -78,7 +59,13 @@
                         }
                     </div>
                     <div class="site-header-v2__menu-item">
-                        <a class="nav-link" href="/dich-vu-tu-van">Dịch vụ KH&amp;CN</a>
+                        <a class="nav-link site-header-v2__has-submenu" href="/dich-vu-tu-van">
+                            <span>@T("Dịch vụ", "Services")</span>
+                            @if (serviceCategories.Any())
+                            {
+                                <i class="bi bi-chevron-down"></i>
+                            }
+                        </a>
                         @if (serviceCategories.Any())
                         {
                             <div class="site-header-v2__submenu">
@@ -89,23 +76,82 @@
                             </div>
                         }
                     </div>
-                    <a class="nav-link" href="/tin-su-kien-44">Tin tức sự kiện</a>
-                    <a class="nav-link" href="/lien-he-74">Liên hệ</a>
-                    <a class="nav-link site-header-v2__icon-link" href="/Search" aria-label="Tìm kiếm">
-                        <i class="bi bi-search"></i>
-                    </a>
+                    <a class="nav-link" href="/tin-su-kien-44">@T("Tin tức sự kiện", "News & Events")</a>
+                    <a class="nav-link" href="/lien-he-74">@T("Liên hệ", "Contact")</a>
+                    <form class="site-header-v2__quick-search" action="/Search" method="get" role="search">
+                        <input type="search" name="q" placeholder="@T("Tìm kiếm...", "Search...")" aria-label="@T("Tìm kiếm", "Search")" autocomplete="off">
+                        <button type="submit" class="site-header-v2__quick-search-btn" aria-label="@T("Tìm kiếm", "Search")">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        <a class="nav-link site-header-v2__login-link site-header-v2__icon-link" href="/Dashboard" aria-label="Hệ thống">
-                            <i class="bi bi-person-circle"></i>
-                        </a>
+                        <div class="site-header-v2__account-actions">
+                            <div class="dropdown site-header-v2__account">
+                                <button type="button"
+                                        class="nav-link site-header-v2__login-link site-header-v2__account-toggle"
+                                        data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside"
+                                        aria-expanded="false"
+                                        aria-label="Menu tài khoản">
+                                    <span class="site-header-v2__account-avatar">@accountInitial</span>
+                                    <i class="bi bi-chevron-down site-header-v2__account-chevron"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end site-header-v2__account-menu">
+                                    @if (canAccessCms)
+                                    {
+                                        <a class="dropdown-item site-header-v2__account-admin" href="/cms"><i class="bi bi-gear-wide-connected"></i> CMS Admin</a>
+                                    }
+                                    <a class="dropdown-item" href="/Dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                                    <a class="dropdown-item" href="/Projects/MyProjects"><i class="bi bi-folder2-open"></i> Dự án của tôi</a>
+                                    <a class="dropdown-item" href="/Chat"><i class="bi bi-chat-dots"></i> Tin nhắn</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/Account/Profile"><i class="bi bi-person"></i> Thông tin cá nhân</a>
+                                    <a class="dropdown-item" href="/Account/ChangePassword"><i class="bi bi-key"></i> Đổi mật khẩu</a>
+                                    <div class="dropdown-divider"></div>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="dropdown-item site-header-v2__account-logout">
+                                            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="dropdown site-header-v2__notify">
+                                <button type="button"
+                                        class="site-header-v2__notify-btn"
+                                        data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside"
+                                        aria-expanded="false"
+                                        aria-label="Thông báo">
+                                    <i class="bi bi-bell"></i>
+                                    <span id="tpBadge" class="badge bg-danger tp-badge d-none">0</span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end tp-dropdown">
+                                    <div class="tp-header d-flex justify-content-between align-items-center px-3 py-2">
+                                        <strong>Thông báo</strong>
+                                        <button type="button" class="btn btn-sm btn-link text-decoration-none" onclick="tpMarkAllRead()">Đánh dấu đã đọc</button>
+                                    </div>
+                                    <div id="tpList" class="tp-list">
+                                        <div class="tp-empty text-center text-muted py-3 small">Không có thông báo</div>
+                                    </div>
+                                    <a class="tp-footer d-block text-center py-2 text-decoration-none" href="/Notifications">Xem tất cả</a>
+                                </div>
+                            </div>
+                        </div>
                     }
                     else
                     {
-                        <button type="button" class="nav-link site-header-v2__login-link site-header-v2__icon-link" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="Đăng nhập hệ thống">
+                        <button type="button" class="nav-link site-header-v2__login-link site-header-v2__icon-link" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="@T("Đăng nhập", "Log in")">
                             <i class="bi bi-person-circle"></i>
                         </button>
                     }
+                    <div class="site-header-v2__lang">
+                        <a class="@(!isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=vi&returnUrl=@Uri.EscapeDataString(currentUrl)">VI</a>
+                        <span>/</span>
+                        <a class="@(isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=en&returnUrl=@Uri.EscapeDataString(currentUrl)">EN</a>
+                    </div>
                 </nav>
                 <button class="site-header-v2__menu-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteMenuOffcanvas" aria-controls="siteMenuOffcanvas" aria-label="Mở menu">
                     <i class="bi bi-list"></i>
@@ -120,27 +166,32 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
         </div>
         <div class="offcanvas-body">
+            <div class="site-header-v2__lang site-header-v2__lang--offcanvas">
+                <a class="@(!isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=vi&returnUrl=@Uri.EscapeDataString(currentUrl)">VI</a>
+                <span>/</span>
+                <a class="@(isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=en&returnUrl=@Uri.EscapeDataString(currentUrl)">EN</a>
+            </div>
             <form class="site-menu-offcanvas__search" action="/Search" method="get">
                 <i class="bi bi-search"></i>
-                <input type="search" name="q" placeholder="Tìm kiếm dịch vụ, công nghệ..." aria-label="Tìm kiếm">
+                <input type="search" name="q" placeholder="@T("Tìm kiếm dịch vụ, công nghệ...", "Search services, technologies...")" aria-label="@T("Tìm kiếm", "Search")">
             </form>
 
             <nav class="site-menu-offcanvas__nav">
-                <a href="/">Trang chủ</a>
-                <a href="/gioi-thieu-chung-3">Giới thiệu</a>
-                <a href="/cong-nghe">Sản phẩm CNTB</a>
+                <a href="/">@T("Trang chủ", "Home")</a>
+                <a href="/gioi-thieu-chung-3">@T("Giới thiệu", "About")</a>
+                <a href="/cong-nghe">@T("Sản phẩm", "Products")</a>
                 @foreach (var category in productCategories)
                 {
                     <a class="site-menu-offcanvas__child" href="/2-ds-cong-nghe-thiet-bi/@CategorySlug(category)-@category.CatId">@category.Title</a>
                 }
-                <a href="/dich-vu-tu-van">Dịch vụ KH&amp;CN</a>
+                <a href="/dich-vu-tu-van">@T("Dịch vụ", "Services")</a>
                 @foreach (var category in serviceCategories)
                 {
                     <a class="site-menu-offcanvas__child" href="/8-ds-dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
                 }
-                <a href="/tin-su-kien-44">Tin tức sự kiện</a>
-                <a href="/lien-he-74">Liên hệ</a>
-                <a href="/Search">Tìm kiếm</a>
+                <a href="/tin-su-kien-44">@T("Tin tức sự kiện", "News & Events")</a>
+                <a href="/lien-he-74">@T("Liên hệ", "Contact")</a>
+                <a href="/Search">@T("Tìm kiếm", "Search")</a>
             </nav>
 
             @if (User.Identity?.IsAuthenticated == true)
@@ -163,9 +214,41 @@
             else
             {
                 <button type="button" class="site-menu-offcanvas__login" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="offcanvas">
-                    <i class="bi bi-person-circle"></i> Đăng nhập hệ thống
+                    <i class="bi bi-person-circle"></i> @T("Đăng nhập", "Log in")
+                </button>
+                <button type="button" class="site-menu-offcanvas__login" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="offcanvas">
+                    <i class="bi bi-person-plus"></i> @T("Đăng ký", "Sign up")
                 </button>
             }
         </div>
     </div>
 </header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.site-header-v2__quick-search').forEach(function (form) {
+            const input = form.querySelector('input[type="search"]');
+            const button = form.querySelector('button[type="submit"]');
+
+            button.addEventListener('click', function (event) {
+                if (!form.classList.contains('is-open')) {
+                    event.preventDefault();
+                    form.classList.add('is-open');
+                    window.setTimeout(function () { input.focus(); }, 120);
+                    return;
+                }
+
+                if (!input.value.trim()) {
+                    event.preventDefault();
+                    input.focus();
+                }
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!form.contains(event.target) && !input.value.trim()) {
+                    form.classList.remove('is-open');
+                }
+            });
+        });
+    });
+</script>

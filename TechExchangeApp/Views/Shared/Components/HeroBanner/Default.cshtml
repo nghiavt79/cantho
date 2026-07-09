@@ -1,97 +1,43 @@
 @model List<TechExchangeApp.Entities.ImageAdver>
+@{
+    var isEn = Context.Request.Cookies["site_lang"] == "en";
+    var ctaText = isEn ? "Learn more" : "Xem thêm";
+}
 
 @if (Model.Any())
 {
-    <section class="hero-section" style="margin-top:0;">
-        <div class="container">
-            <div id="heroCarousel"
-                 class="carousel slide carousel-fade"
-                 data-bs-ride="carousel"
-                 data-bs-interval="3000">
-
-                <div class="carousel-inner">
-                    @for (int i = 0; i < Model.Count; i++)
-                    {
-                        var item = Model[i];
-
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <a href="@item.URL">
-                                <img src="@item.SRC"
-                                     class="d-block w-100"
-                                     alt="@item.Title"
-                                     style="border-radius:24px; object-fit:contain;"
-                                     onerror="this.style.display='none'">
-                            </a>
-                        </div>
-                    }
-                </div>
-
-                @if (Model.Count > 1)
+    <section class="home-v2-hero">
+        <div id="homeHeroCarousel" class="carousel slide carousel-fade home-v2-hero__carousel" data-bs-ride="carousel" data-bs-interval="6000">
+            <div class="carousel-inner">
+                @for (var i = 0; i < Model.Count; i++)
                 {
-                    <!-- Indicators -->
-                    <div class="carousel-indicators carousel-indicators-fix">
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
-                            <button type="button" data-bs-target="#heroCarousel"
-                                    data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"></button>
-                        }
-                    </div>
-                }
+                    var item = Model[i];
+                    var url = string.IsNullOrWhiteSpace(item.URL) ? "#" : item.URL;
 
-            </div>
-        </div>
-    </section>
-}
-
-
-@* @if (Model.Any())
-{
-    <section class="hero-section" style="margin-top:0;">
-        <div class="container">
-            <div id="heroCarousel"
-                 class="carousel slide carousel-fade"
-                 data-bs-ride="carousel"
-                 data-bs-interval="3000">
-
-                <div class="carousel-inner">
-                    @for (int i = 0; i < Model.Count; i++)
-                    {
-                        var item = Model[i];
-                        <div class="carousel-item @(i == 0 ? "active" : "") hero-slide @(i > 0 ? "hero-slide-2" : "")"
-                             style="background-image:url('@item.SRC')">
-                            <div class="hero-content">
+                    <div class="carousel-item home-v2-hero__slide @(i == 0 ? "active" : "")" style="background-image:url('@item.SRC')">
+                        <div class="container">
+                            <div class="home-v2-hero__content">
                                 <h1>@item.Title</h1>
-                                @if (!string.IsNullOrEmpty(item.Description))
-                                {
-                                    @Html.Raw(item.Description)
-                                }
-                                @if (!string.IsNullOrEmpty(item.URL))
-                                {
-                                    <a href="@item.URL" class="btn btn-primary hero-btn">
-                                        Thông tin chi tiết <i class="bi bi-arrow-right"></i>
+                                <div class="home-v2-hero__actions">
+                                    <a class="home-v2-btn home-v2-btn--primary" href="@url">
+                                        @ctaText <i class="bi bi-arrow-right"></i>
                                     </a>
-                                }
+                                </div>
                             </div>
                         </div>
-                    }
-                </div>
-
-                @if (Model.Count > 1)
-                {
-                    <!-- Indicators -->
-                    <div class="carousel-indicators">
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
-                            <button type="button" data-bs-target="#heroCarousel"
-                                    data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"></button>
-                        }
                     </div>
                 }
-
             </div>
+
+            @if (Model.Count > 1)
+            {
+                <div class="home-v2-hero__dots carousel-indicators">
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <button type="button" data-bs-target="#homeHeroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
+                    }
+                </div>
+            }
         </div>
     </section>
 }
- *@
-
-

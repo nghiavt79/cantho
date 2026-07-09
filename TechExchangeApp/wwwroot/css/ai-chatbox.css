@@ -14,13 +14,8 @@
 }
 
 .ai-chatbox__launcher {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #0f7a65;
-    color: #fff;
-    box-shadow: 0 10px 28px rgba(15, 122, 101, .34);
-    font-size: 24px;
+    /* Replaced by the consolidated .action-dock trigger — panel still opens from this container's position. */
+    display: none;
 }
 
 .ai-chatbox__panel {

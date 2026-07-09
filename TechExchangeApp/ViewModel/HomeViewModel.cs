@@ -2,6 +2,8 @@ namespace TechExchangeApp.ViewModel
 {
     public class HomeViewModel
     {
+        public bool IsEnglish { get; set; }
+
         public string? CongNgheMoiCapNhatHtml { get; set; }
         public string? ProductCNMoiCapNhatHtml { get; set; }
 
@@ -22,6 +24,13 @@ namespace TechExchangeApp.ViewModel
         public List<HomePartnerVm> Customers { get; set; } = new();
         public List<HomePartnerVm> Partners { get; set; } = new();
         public List<string> PopularTags { get; set; } = new();
+        public List<HomeFieldOptionVm> SearchFields { get; set; } = new();
+    }
+
+    public class HomeFieldOptionVm
+    {
+        public string Value { get; set; } = "";
+        public string Label { get; set; } = "";
     }
 
     public class HomeBrandingVm
@@ -66,6 +75,9 @@ namespace TechExchangeApp.ViewModel
         public string ImageUrl { get; set; } = "";
         public string Url { get; set; } = "#";
         public string Category { get; set; } = "Công nghệ";
+        public string Company { get; set; } = "";
+        public string Badge { get; set; } = "";
+        public string BadgeType { get; set; } = "new";
     }
 
     public class HomeNewsCardVm

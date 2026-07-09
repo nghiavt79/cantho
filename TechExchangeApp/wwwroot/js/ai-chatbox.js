@@ -13,12 +13,14 @@
     let isSending = false;
     const typingSpeedMs = 14;
 
-    root.querySelectorAll('[data-ai-chat-toggle]').forEach((button) => {
+    document.querySelectorAll('[data-ai-chat-toggle]').forEach((button) => {
         button.addEventListener('click', () => {
             root.classList.toggle('is-open');
+            const isOpen = root.classList.contains('is-open');
             const panel = root.querySelector('.ai-chatbox__panel');
-            panel?.setAttribute('aria-hidden', root.classList.contains('is-open') ? 'false' : 'true');
-            if (root.classList.contains('is-open')) input?.focus();
+            panel?.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            document.body.classList.toggle('is-chat-open', isOpen);
+            if (isOpen) input?.focus();
         });
     });
 

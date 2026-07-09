@@ -3,64 +3,42 @@
 @{
     ViewData["Title"] = "Trang chủ";
     var branding = Model.Branding;
-    var heroImageUrl = "/image/hero.png";
+    var isEn = Model.IsEnglish;
+    string T(string vi, string en) => isEn ? en : vi;
 
     string StatTarget(string value) => new string((value ?? "").Where(char.IsDigit).ToArray());
     string StatSuffix(string value) => (value ?? "").Contains('+') ? "+" : "";
 }
 
 <div class="home-v2">
-    <section class="home-v2-hero" style="--home-hero-image: url('@heroImageUrl');">
-        <div class="home-v2-hero__bg"></div>
-        <div class="container">
-            <div class="home-v2-hero__grid">
-                <div class="home-v2-hero__content">
-                    <h1>Kết nối nghiên cứu, ứng dụng và chuyển giao công nghệ cho @branding.ProvinceName</h1>
-                    <p>
-                        @branding.ShortName là cầu nối giữa nhà khoa học, doanh nghiệp và cộng đồng,
-                        đưa tri thức và công nghệ vào đời sống, kiến tạo giá trị thực tiễn và thúc đẩy đổi mới sáng tạo.
-                    </p>
-                    <div class="home-v2-hero__actions">
-                        <a class="home-v2-btn home-v2-btn--primary" href="/dich-vu-tu-van">
-                            Khám phá dịch vụ <i class="bi bi-arrow-right"></i>
-                        </a>
-                        <a class="home-v2-btn home-v2-btn--light" href="/cong-nghe">
-                            Xem các công nghệ <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="home-v2-hero__visual" aria-hidden="true"></div>
-            </div>
-        </div>
-    </section>
+    @await Component.InvokeAsync("HeroBanner")
 
-    <section class="home-v2-search-wrap">
+    <section class="home-v2-search-wrap home-v2-search-wrap--overlap">
         <div class="container">
             <div class="home-v2-search-panel">
-                <h2>Tìm kiếm công nghệ, thiết bị, chuyên gia và dịch vụ</h2>
-                <div class="home-v2-search-tabs" role="tablist" aria-label="Nhóm tìm kiếm">
-                    <button class="active" type="button" data-search-type="Technology">Công nghệ</button>
-                    <button type="button" data-search-type="Equipment">Thiết bị</button>
-                    <button type="button" data-search-type="Expert">Chuyên gia</button>
-                    <button type="button" data-search-type="Service">Dịch vụ</button>
-                    <button type="button" data-search-type="Demand">Nhu cầu công nghệ</button>
+                <div class="home-v2-search-tabs" role="tablist" aria-label="@T("Nhóm tìm kiếm", "Search groups")">
+                    <button class="active" type="button" data-search-type="Technology">@T("Công nghệ", "Technology")</button>
+                    <button type="button" data-search-type="Equipment">@T("Thiết bị", "Equipment")</button>
+                    <button type="button" data-search-type="Expert">@T("Chuyên gia", "Experts")</button>
+                    <button type="button" data-search-type="Service">@T("Dịch vụ", "Services")</button>
+                    <button type="button" data-search-type="Demand">@T("Nhu cầu công nghệ", "Technology needs")</button>
                 </div>
                 <form class="home-v2-search-form" action="/Search" method="get">
                     <input type="hidden" name="type" value="Technology" id="homeSearchType">
-                    <input type="text" name="q" placeholder="Nhập từ khóa: công nghệ, thiết bị, chuyên gia, dịch vụ..." aria-label="Từ khóa tìm kiếm">
-                    <select name="field" aria-label="Lĩnh vực">
-                        <option value="">Tất cả lĩnh vực</option>
-                        <option value="nong-nghiep">Nông nghiệp</option>
-                        <option value="moi-truong">Môi trường</option>
-                        <option value="nang-luong">Năng lượng</option>
-                        <option value="sinh-hoc">Công nghệ sinh học</option>
+                    <input type="text" name="q" placeholder="@T("Nhập từ khóa: công nghệ, thiết bị, chuyên gia, dịch vụ...", "Enter a keyword: technology, equipment, expert, service...")" aria-label="@T("Từ khóa tìm kiếm", "Search keyword")">
+                    <select name="field" aria-label="@T("Lĩnh vực", "Field")">
+                        <option value="">@T("Tất cả lĩnh vực", "All fields")</option>
+                        @foreach (var fieldOption in Model.SearchFields)
+                        {
+                            <option value="@fieldOption.Value">@fieldOption.Label</option>
+                        }
                     </select>
                     <button type="submit">
-                        <i class="bi bi-search"></i> Tìm kiếm
+                        <i class="bi bi-search"></i> @T("Tìm kiếm", "Search")
                     </button>
                 </form>
                 <div class="home-v2-tags">
-                    <span>Tìm kiếm phổ biến:</span>
+                    <span>@T("Tìm kiếm phổ biến:", "Popular searches:")</span>
                     @foreach (var tag in Model.PopularTags)
                     {
                         <a href="/Search?q=@Uri.EscapeDataString(tag)&type=Technology">@tag</a>
@@ -70,7 +48,46 @@
         </div>
     </section>
 
-    <section class="home-v2-stats-wrap" aria-label="Thống kê">
+    <section class="container home-v2-section home-v2-section--first">
+        <div class="home-v2-section-head">
+            <h2>@T("Sản phẩm & Công nghệ nổi bật", "Featured Products & Technologies")</h2>
+            <a href="/cong-nghe">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="home-v2-carousel-wrap" data-carousel-per-page="4">
+            <button type="button" class="home-v2-carousel-nav home-v2-carousel-nav--prev" data-carousel-prev aria-label="@T("Trang trước", "Previous page")">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <div class="home-v2-carousel" data-carousel>
+                @foreach (var item in Model.FeaturedTechnologies)
+                {
+                    <a class="home-v2-carousel-card" href="@item.Url">
+                        <div class="home-v2-carousel-card__image">
+                            @if (!string.IsNullOrEmpty(item.Badge))
+                            {
+                                <span class="home-v2-carousel-card__badge home-v2-carousel-card__badge--@item.BadgeType">@item.Badge</span>
+                            }
+                            <img src="@item.ImageUrl" alt="@item.Title" onerror="this.src='/images/254-170_noImage.jpg'">
+                        </div>
+                        <div class="home-v2-carousel-card__body">
+                            <strong>@item.Title</strong>
+                            <span class="home-v2-carousel-card__meta"><i class="bi bi-tools"></i> @item.Category</span>
+                            @if (!string.IsNullOrEmpty(item.Company))
+                            {
+                                <span class="home-v2-carousel-card__meta"><i class="bi bi-building"></i> @item.Company</span>
+                            }
+                            <span class="home-v2-carousel-card__btn">@T("Xem chi tiết", "View details")</span>
+                        </div>
+                    </a>
+                }
+            </div>
+            <button type="button" class="home-v2-carousel-nav home-v2-carousel-nav--next" data-carousel-next aria-label="@T("Trang sau", "Next page")">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+        <div class="home-v2-carousel-dots" data-carousel-dots></div>
+    </section>
+
+    <section class="home-v2-stats-wrap" aria-label="@T("Thống kê", "Statistics")">
         <div class="container">
             <div class="home-v2-stats">
                 @foreach (var stat in Model.Stats)
@@ -92,7 +109,7 @@
     <section class="container home-v2-band">
         <div class="home-v2-grid home-v2-grid--intro">
             <div class="home-v2-card home-v2-card--wide">
-                <h2>Chúng tôi làm gì?</h2>
+                <h2>@T("Chúng tôi làm gì?", "What we do")</h2>
                 <div class="home-v2-feature-grid">
                     @foreach (var item in Model.WhatWeDo)
                     {
@@ -105,7 +122,7 @@
             </div>
 
             <div class="home-v2-card">
-                <h2>Dịch vụ nổi bật</h2>
+                <h2>@T("Dịch vụ nổi bật", "Featured services")</h2>
                 <div class="home-v2-service-list">
                     @foreach (var item in Model.Services)
                     {
@@ -121,7 +138,7 @@
             </div>
 
             <div class="home-v2-card">
-                <h2>Vì sao chọn @branding.ShortName?</h2>
+                <h2>@T($"Vì sao chọn {branding.ShortName}?", $"Why choose {branding.ShortName}?")</h2>
                 <div class="home-v2-reason-list">
                     @foreach (var item in Model.Reasons)
                     {
@@ -136,28 +153,8 @@
     </section>
 
     <section class="container home-v2-section">
-        <div class="home-v2-section-head">
-            <h2>Công nghệ / Dự án nổi bật</h2>
-            <a href="/cong-nghe">Xem tất cả <i class="bi bi-arrow-right"></i></a>
-        </div>
-        <div class="home-v2-tech-row">
-            @foreach (var item in Model.FeaturedTechnologies)
-            {
-                <a class="home-v2-tech-card" href="@item.Url">
-                    <div class="home-v2-tech-card__image">
-                        <img src="@item.ImageUrl" alt="@item.Title" onerror="this.src='/images/254-170_noImage.jpg'">
-                        <span>@item.Category</span>
-                    </div>
-                    <strong>@item.Title</strong>
-                    <p>@item.Description</p>
-                </a>
-            }
-        </div>
-    </section>
-
-    <section class="container home-v2-section">
         <div class="home-v2-process">
-            <h2>Quy trình hỗ trợ</h2>
+            <h2>@T("Quy trình hỗ trợ", "Support process")</h2>
             <div class="home-v2-process__row">
                 @foreach (var step in Model.ProcessSteps)
                 {
@@ -178,15 +175,15 @@
         <div class="home-v2-grid home-v2-grid--news">
             <div class="home-v2-card">
                 <div class="home-v2-section-head home-v2-section-head--compact">
-                    <h2>Tin tức - Sự kiện</h2>
-                    <a href="/tin-su-kien-44">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                    <h2>@T("Tin tức - Sự kiện", "News & Events")</h2>
+                    <a href="/tin-su-kien-44">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="home-v2-news-list">
                     @foreach (var item in Model.FeaturedNews)
                     {
                         <a class="home-v2-news-card" href="@item.Url">
                             <img src="@item.ImageUrl" alt="@item.Title" onerror="this.src='/images/254-170_noImage.jpg'">
-                            <span>@(item.PublishedDate?.ToString("dd/MM/yyyy") ?? "Đang cập nhật")</span>
+                            <span>@(item.PublishedDate?.ToString("dd/MM/yyyy") ?? T("Đang cập nhật", "Updating"))</span>
                             <strong>@item.Title</strong>
                             <p>@item.Description</p>
                         </a>
@@ -196,8 +193,8 @@
 
             <div class="home-v2-card">
                 <div class="home-v2-section-head home-v2-section-head--compact">
-                    <h2>Chuyên gia của chúng tôi</h2>
-                    <a href="/chuyen-gia">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                    <h2>@T("Chuyên gia của chúng tôi", "Our experts")</h2>
+                    <a href="/chuyen-gia">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="home-v2-expert-list">
                     @foreach (var item in Model.Experts)
@@ -218,7 +215,7 @@
     {
         <section class="container home-v2-section">
             <div class="home-v2-partners">
-                <h2>Khách hàng tiêu biểu</h2>
+                <h2>@T("Khách hàng tiêu biểu", "Featured customers")</h2>
                 <div class="home-v2-partner-row">
                     @foreach (var customer in Model.Customers)
                     {
@@ -237,7 +234,7 @@
 
     <section class="container home-v2-section">
         <div class="home-v2-partners">
-            <h2>Đối tác đồng hành</h2>
+            <h2>@T("Đối tác đồng hành", "Partners")</h2>
             <div class="home-v2-partner-row">
                 @foreach (var partner in Model.Partners)
                 {
@@ -257,11 +254,11 @@
         <div class="container">
             <div class="home-v2-cta">
                 <div>
-                    <h2>Bạn cần tư vấn giải pháp công nghệ phù hợp?</h2>
-                    <p>Đội ngũ chuyên gia của @branding.ShortName luôn sẵn sàng đồng hành cùng bạn.</p>
+                    <h2>@T("Bạn cần tư vấn giải pháp công nghệ phù hợp?", "Need advice on the right technology solution?")</h2>
+                    <p>@T($"Đội ngũ chuyên gia của {branding.ShortName} luôn sẵn sàng đồng hành cùng bạn.", $"The {branding.ShortName} expert team is always ready to accompany you.")</p>
                 </div>
                 <a class="home-v2-btn home-v2-btn--light" href="/dang-ky-tu-van">
-                    Đăng ký tư vấn ngay <i class="bi bi-arrow-right"></i>
+                    @T("Đăng ký tư vấn ngay", "Request consulting now") <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -270,6 +267,83 @@
 
 @section Scripts {
     <script>
+        (function () {
+            document.querySelectorAll('.home-v2-carousel-wrap').forEach(function (wrap) {
+                var track = wrap.querySelector('[data-carousel]');
+                var prev = wrap.querySelector('[data-carousel-prev]');
+                var next = wrap.querySelector('[data-carousel-next]');
+                var dotsWrap = wrap.parentElement.querySelector('[data-carousel-dots]');
+                var cards = track ? Array.from(track.children) : [];
+                if (!track || !cards.length) return;
+
+                var perPage = parseInt(wrap.dataset.carouselPerPage, 10) || 4;
+
+                function cardStep() {
+                    var styles = window.getComputedStyle(track);
+                    var gap = parseFloat(styles.columnGap || styles.gap || 0) || 0;
+                    return cards[0].getBoundingClientRect().width + gap;
+                }
+
+                function pageCount() {
+                    return Math.max(1, Math.ceil(cards.length / perPage));
+                }
+
+                function currentPage() {
+                    var step = cardStep() * perPage;
+                    return step ? Math.round(track.scrollLeft / step) : 0;
+                }
+
+                function buildDots() {
+                    if (!dotsWrap) return;
+                    dotsWrap.innerHTML = '';
+                    var total = pageCount();
+                    if (total <= 1) return;
+                    for (var i = 0; i < total; i++) {
+                        var dot = document.createElement('button');
+                        dot.type = 'button';
+                        dot.className = 'home-v2-carousel-dot';
+                        dot.setAttribute('aria-label', 'Trang ' + (i + 1));
+                        (function (page) {
+                            dot.addEventListener('click', function () {
+                                track.scrollTo({ left: cardStep() * perPage * page, behavior: 'smooth' });
+                            });
+                        })(i);
+                        dotsWrap.appendChild(dot);
+                    }
+                    updateState();
+                }
+
+                function updateState() {
+                    var maxScroll = track.scrollWidth - track.clientWidth - 2;
+                    if (prev) prev.disabled = track.scrollLeft <= 2;
+                    if (next) next.disabled = track.scrollLeft >= maxScroll;
+                    if (dotsWrap) {
+                        var page = currentPage();
+                        Array.from(dotsWrap.children).forEach(function (dot, i) {
+                            dot.classList.toggle('is-active', i === page);
+                        });
+                    }
+                }
+
+                prev?.addEventListener('click', function () {
+                    track.scrollBy({ left: -cardStep() * perPage, behavior: 'smooth' });
+                });
+
+                next?.addEventListener('click', function () {
+                    track.scrollBy({ left: cardStep() * perPage, behavior: 'smooth' });
+                });
+
+                track.addEventListener('scroll', function () {
+                    window.requestAnimationFrame(updateState);
+                }, { passive: true });
+                window.addEventListener('resize', function () {
+                    buildDots();
+                });
+
+                buildDots();
+            });
+        })();
+
         document.querySelectorAll('.home-v2-search-tabs button').forEach(function (button) {
             button.addEventListener('click', function () {
                 document.querySelectorAll('.home-v2-search-tabs button').forEach(function (item) {

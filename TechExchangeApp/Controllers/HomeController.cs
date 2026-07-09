@@ -41,6 +41,7 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> Index()
         {
             var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var isEn = Request.Cookies["site_lang"] == "en";
             var cacheKey = $"home:index:{lang}:{_mainDomain}";
             var data = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
@@ -55,7 +56,7 @@ namespace TechExchangeApp.Controllers
                     YeuCauCongNghe = LoadYeuCauCongNghe(),
                     Customers = await LoadLogoItemsAsync(subject: 4, take: 32),
                     Partners = await LoadLogoItemsAsync(subject: 5, take: 8),
-                    FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(5)),
+                    FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(10)),
                     FeaturedNews = LoadFeaturedNews(),
                     Experts = LoadExperts(),
                     Stats = await BuildStatsAsync(),
@@ -65,23 +66,30 @@ namespace TechExchangeApp.Controllers
 
             var model = new HomeViewModel
             {
+                IsEnglish = isEn,
                 Branding = MapBranding(),
                 CongNgheMoiCapNhatHtml = "",
                 ProductCNMoiCapNhatHtml = "",
                 TinSuKien = data.TinSuKien,
                 VideoCongNghe = data.VideoCongNghe,
                 YeuCauCongNghe = data.YeuCauCongNghe,
-                WhatWeDo = BuildWhatWeDo(),
-                Services = BuildServices(),
-                Reasons = BuildReasons(),
-                ProcessSteps = BuildProcessSteps(),
+                WhatWeDo = BuildWhatWeDo(isEn),
+                Services = BuildServices(isEn),
+                Reasons = BuildReasons(isEn),
+                ProcessSteps = BuildProcessSteps(isEn),
                 Customers = data.Customers,
                 Partners = data.Partners,
                 PopularTags = BuildPopularTags(),
                 FeaturedTechnologies = data.FeaturedTechnologies,
                 FeaturedNews = data.FeaturedNews,
                 Experts = data.Experts,
-                Stats = data.Stats
+                Stats = data.Stats,
+                SearchFields = _context.Categories
+                    .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
+                    .OrderBy(x => x.Sort ?? int.MaxValue)
+                    .ThenBy(x => x.Title)
+                    .Select(x => new HomeFieldOptionVm { Value = x.CatId.ToString(), Label = x.Title ?? "" })
+                    .ToList()
             };
 
             ViewBag.NewTech = data.NewProducts.Take(10).ToList();
@@ -129,31 +137,65 @@ namespace TechExchangeApp.Controllers
             return $"{rounded}+";
         }
 
-        private static List<HomeFeatureVm> BuildWhatWeDo()
+        private static List<HomeFeatureVm> BuildWhatWeDo(bool isEn)
         {
+            if (isEn)
+            {
+                return new List<HomeFeatureVm>
+                {
+                    new() { Icon = "bi-cpu", Title = "Supply technologies", Url = "/cong-nghe" },
+                    new() { Icon = "bi-link-45deg", Title = "Connect supply & demand", Url = "/tim-kiem-doi-tac" },
+                    new() { Icon = "bi-lightbulb", Title = "Research - Application - Technology transfer", Url = "/dich-vu-tu-van" },
+                    new() { Icon = "bi-upc-scan", Title = "Product traceability", Url = "/dich-vu-tu-van" },
+                    new() { Icon = "bi-stars", Title = "Innovation & technology upgrade consulting", Url = "/dang-ky-tu-van" },
+                    new() { Icon = "bi-mortarboard", Title = "Outreach & capacity building", Url = "/tin-su-kien-44" }
+                };
+            }
+
             return new List<HomeFeatureVm>
             {
                 new() { Icon = "bi-cpu", Title = "Cung cấp công nghệ", Url = "/cong-nghe" },
                 new() { Icon = "bi-link-45deg", Title = "Kết nối cung cầu công nghệ", Url = "/tim-kiem-doi-tac" },
                 new() { Icon = "bi-lightbulb", Title = "Nghiên cứu - Ứng dụng - Chuyển giao công nghệ", Url = "/dich-vu-tu-van" },
-                new() { Icon = "bi-flask", Title = "Thử nghiệm & kiểm định", Url = "/dich-vu-tu-van" },
+                new() { Icon = "bi-upc-scan", Title = "Truy xuất nguồn gốc sản phẩm", Url = "/dich-vu-tu-van" },
                 new() { Icon = "bi-stars", Title = "Tư vấn đổi mới sáng tạo & đổi mới công nghệ", Url = "/dang-ky-tu-van" },
                 new() { Icon = "bi-mortarboard", Title = "Truyền thông & nâng cao năng lực", Url = "/tin-su-kien-44" }
             };
         }
 
-        private static List<HomeFeatureVm> BuildServices()
+        private static List<HomeFeatureVm> BuildServices(bool isEn)
         {
+            if (isEn)
+            {
+                return new List<HomeFeatureVm>
+                {
+                    new() { Icon = "bi-bezier2", Title = "Technology consulting & transfer", Description = "Solutions tailored to real-world needs.", Url = "/dang-ky-tu-van" },
+                    new() { Icon = "bi-upc-scan", Title = "Traceability", Description = "Product origin tracing and QR-code verification.", Url = "/dich-vu-tu-van" },
+                    new() { Icon = "bi-easel2", Title = "Training & capacity building", Description = "Upskilling for individuals and organizations.", Url = "/tin-su-kien-44" }
+                };
+            }
+
             return new List<HomeFeatureVm>
             {
                 new() { Icon = "bi-bezier2", Title = "Tư vấn & chuyển giao công nghệ", Description = "Giải pháp phù hợp nhu cầu thực tiễn.", Url = "/dang-ky-tu-van" },
-                new() { Icon = "bi-clipboard2-pulse", Title = "Kiểm định & thử nghiệm", Description = "Đánh giá chất lượng, độ tin cậy và an toàn.", Url = "/dich-vu-tu-van" },
+                new() { Icon = "bi-upc-scan", Title = "Truy xuất nguồn gốc", Description = "Xác thực nguồn gốc sản phẩm qua mã QR truy xuất.", Url = "/dich-vu-tu-van" },
                 new() { Icon = "bi-easel2", Title = "Đào tạo & tập huấn", Description = "Nâng cao năng lực cho cá nhân, tổ chức.", Url = "/tin-su-kien-44" }
             };
         }
 
-        private static List<HomeFeatureVm> BuildReasons()
+        private static List<HomeFeatureVm> BuildReasons(bool isEn)
         {
+            if (isEn)
+            {
+                return new List<HomeFeatureVm>
+                {
+                    new() { Icon = "bi-award", Title = "Experienced expert network" },
+                    new() { Icon = "bi-check2-circle", Title = "Practical, effective, sustainable solutions" },
+                    new() { Icon = "bi-share", Title = "Wide partner network" },
+                    new() { Icon = "bi-hand-thumbs-up", Title = "A steady companion for businesses and community" }
+                };
+            }
+
             return new List<HomeFeatureVm>
             {
                 new() { Icon = "bi-award", Title = "Đội ngũ chuyên gia giàu kinh nghiệm" },
@@ -163,13 +205,26 @@ namespace TechExchangeApp.Controllers
             };
         }
 
-        private static List<HomeProcessStepVm> BuildProcessSteps()
+        private static List<HomeProcessStepVm> BuildProcessSteps(bool isEn)
         {
+            if (isEn)
+            {
+                return new List<HomeProcessStepVm>
+                {
+                    new() { Number = 1, Icon = "bi-bullseye", Title = "Receive requirements", Description = "Listen to and analyze real-world needs." },
+                    new() { Number = 2, Icon = "bi-file-earmark-text", Title = "Advise & propose solutions", Description = "Recommend suitable technologies and equipment." },
+                    new() { Number = 3, Icon = "bi-upc-scan", Title = "Traceability check", Description = "Verify product origin and feasibility." },
+                    new() { Number = 4, Icon = "bi-diagram-3", Title = "Transfer & deploy", Description = "Transfer technology and roll out applications." },
+                    new() { Number = 5, Icon = "bi-headset", Title = "Support & accompany", Description = "Technical support throughout the process." },
+                    new() { Number = 6, Icon = "bi-graph-up-arrow", Title = "Grow & improve", Description = "Training, technology updates and expanded adoption." }
+                };
+            }
+
             return new List<HomeProcessStepVm>
             {
                 new() { Number = 1, Icon = "bi-bullseye", Title = "Tiếp nhận nhu cầu", Description = "Lắng nghe, phân tích nhu cầu thực tế." },
                 new() { Number = 2, Icon = "bi-file-earmark-text", Title = "Tư vấn & đề xuất giải pháp", Description = "Đề xuất công nghệ, thiết bị phù hợp." },
-                new() { Number = 3, Icon = "bi-clipboard2-check", Title = "Thử nghiệm & kiểm định", Description = "Đánh giá tính khả thi và hiệu quả." },
+                new() { Number = 3, Icon = "bi-upc-scan", Title = "Truy xuất nguồn gốc", Description = "Xác thực nguồn gốc và đánh giá tính khả thi." },
                 new() { Number = 4, Icon = "bi-diagram-3", Title = "Chuyển giao & triển khai", Description = "Chuyển giao công nghệ và triển khai ứng dụng." },
                 new() { Number = 5, Icon = "bi-headset", Title = "Đồng hành & hỗ trợ", Description = "Hỗ trợ kỹ thuật trong suốt quá trình." },
                 new() { Number = 6, Icon = "bi-graph-up-arrow", Title = "Nâng cao & phát triển", Description = "Đào tạo, cập nhật công nghệ và mở rộng ứng dụng." }
@@ -223,15 +278,37 @@ namespace TechExchangeApp.Controllers
             };
         }
 
+        private static string ProductCompany(SanPhamCNTB x)
+        {
+            if (!string.IsNullOrWhiteSpace(x.CoQuanChuTri)) return x.CoQuanChuTri;
+            if (!string.IsNullOrWhiteSpace(x.CoQuanChuQuan)) return x.CoQuanChuQuan;
+            if (!string.IsNullOrWhiteSpace(x.HoTen)) return x.HoTen;
+            return "";
+        }
+
+        private static (string Badge, string BadgeType) ProductBadge(SanPhamCNTB x)
+        {
+            if (x.IsHot == true) return ("Nổi bật", "hot");
+            if (x.Created.HasValue && x.Created.Value >= DateTime.Now.AddDays(-30)) return ("Mới", "new");
+            return ("", "new");
+        }
+
         private List<HomeTechCardVm> MapFeaturedTechnologies(IEnumerable<SanPhamCNTB> items)
         {
-            var result = items.Select(x => new HomeTechCardVm
+            var result = items.Select(x =>
             {
-                Title = x.Name ?? "Công nghệ đang cập nhật",
-                Description = CleanSummary(x.MoTaNgan ?? x.MoTa, 120),
-                ImageUrl = ProductController.CookedImageURL("254-170", x.QuyTrinhHinhAnh, _mainDomain),
-                Url = $"{_mainDomain}2-cong-nghe-thiet-bi/{x.ProductType}/{x.QueryString}-{x.ID}",
-                Category = x.ProductType == 2 ? "Thiết bị" : x.ProductType == 3 ? "Tài sản trí tuệ" : "Công nghệ"
+                var (badge, badgeType) = ProductBadge(x);
+                return new HomeTechCardVm
+                {
+                    Title = x.Name ?? "Công nghệ đang cập nhật",
+                    Description = CleanSummary(x.MoTaNgan ?? x.MoTa, 120),
+                    ImageUrl = ProductController.CookedImageURL("254-170", x.QuyTrinhHinhAnh, _mainDomain),
+                    Url = $"{_mainDomain}2-cong-nghe-thiet-bi/{x.ProductType}/{x.QueryString}-{x.ID}",
+                    Category = x.ProductType == 2 ? "Thiết bị" : x.ProductType == 3 ? "Tài sản trí tuệ" : "Công nghệ",
+                    Company = ProductCompany(x),
+                    Badge = badge,
+                    BadgeType = badgeType
+                };
             }).ToList();
 
             return result.Any() ? result : BuildFallbackTechnologies();
@@ -241,9 +318,9 @@ namespace TechExchangeApp.Controllers
         {
             return new List<HomeTechCardVm>
             {
-                new() { Title = "Hệ thống trồng rau thủy canh thông minh", Description = "Giải pháp canh tác sạch, tiết kiệm nước, năng suất cao.", ImageUrl = "/image/tuoinuocnhogiot.png", Url = "/cong-nghe", Category = "Nông nghiệp công nghệ cao" },
-                new() { Title = "Công nghệ xử lý nước thải sinh hoạt", Description = "Hiệu quả cao, vận hành dễ dàng, thân thiện môi trường.", ImageUrl = "/image/thietbiloc.png", Url = "/cong-nghe", Category = "Môi trường" },
-                new() { Title = "Hệ thống sấy lạnh nông sản", Description = "Giữ nguyên chất lượng, kéo dài thời gian bảo quản.", ImageUrl = "/image/dinhlang.png", Url = "/cong-nghe", Category = "Công nghệ sau thu hoạch" }
+                new() { Title = "Hệ thống trồng rau thủy canh thông minh", Description = "Giải pháp canh tác sạch, tiết kiệm nước, năng suất cao.", ImageUrl = "/image/tuoinuocnhogiot.png", Url = "/cong-nghe", Category = "Nông nghiệp công nghệ cao", Badge = "Mới", BadgeType = "new" },
+                new() { Title = "Công nghệ xử lý nước thải sinh hoạt", Description = "Hiệu quả cao, vận hành dễ dàng, thân thiện môi trường.", ImageUrl = "/image/thietbiloc.png", Url = "/cong-nghe", Category = "Môi trường", Badge = "Nổi bật", BadgeType = "hot" },
+                new() { Title = "Hệ thống sấy lạnh nông sản", Description = "Giữ nguyên chất lượng, kéo dài thời gian bảo quản.", ImageUrl = "/image/dinhlang.png", Url = "/cong-nghe", Category = "Công nghệ sau thu hoạch", Badge = "", BadgeType = "new" }
             };
         }
 
