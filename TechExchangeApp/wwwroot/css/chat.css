@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Chat — Messages List & Conversation (Views/Chat/Index.cshtml,
+   Views/Chat/Conversation.cshtml)
+   Scoped under .chat-page / .chat-conversation, both of which render inside
+   a .user-portal wrapper — brand tokens (--up-primary, --up-navy, --up-border,
+   --up-bg, --up-radius...) come from user-portal.css, loaded on both pages
+   alongside this file. No page-specific tokens are redeclared here.
+   Existing Bootstrap utility classes (bg-primary, bg-white, border,
+   rounded, d-flex...) are kept intact in both server-rendered markup and
+   the appendMessage() JS so bubbles never desync — these rules only layer
+   additional, purely visual refinement.
+   ========================================================================== */
+
+/* ==========================================================================
+   Messages list (Index)
+   ========================================================================== */
+
+.chat-page-header h4 {
+    color: var(--up-navy);
+    font-weight: 700;
+}
+
+.chat-page .card {
+    border: 1px solid var(--up-border) !important;
+    border-radius: var(--up-radius) !important;
+}
+
+.chat-thread-item {
+    transition: background-color .15s ease;
+}
+
+.chat-thread-item:hover {
+    background-color: var(--up-bg);
+}
+
+.chat-thread-item a:active {
+    transform: scale(.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chat-thread-item a:active {
+        transform: none;
+    }
+}
+
+.chat-thread-item.notif-unread {
+    background-color: rgba(232, 40, 39, 0.05);
+    border-left: 3px solid var(--up-primary);
+}
+
+.chat-thread-item .notif-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.chat-thread-item .notif-icon-unread {
+    background-color: var(--up-primary);
+    color: #fff;
+}
+
+.chat-thread-item .notif-icon-read {
+    background-color: #eef1f5;
+    color: #9aa4b2;
+}
+
+.chat-thread-item .badge.bg-danger {
+    background-color: var(--up-primary) !important;
+}
+
+/* ==========================================================================
+   Conversation (Conversation.cshtml)
+   ========================================================================== */
+
+.chat-conversation-header h4 {
+    color: var(--up-navy);
+}
+
+/* Height/overflow/background moved here from an inline style attribute
+   that duplicated (and was overridden by) this same rule. */
+.chat-conversation-messages {
+    height: 450px;
+    overflow-y: auto;
+    background: var(--up-bg) !important;
+    border: 1px solid var(--up-border) !important;
+    border-radius: var(--up-radius) !important;
+}
+
+/* Message bubble refinement — layered on top of the existing bg-primary /
+   bg-white.border classes used by both the Razor loop and appendMessage(). */
+.chat-bubble {
+    border-radius: 16px !important;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .06);
+}
+
+.chat-bubble-out.bg-primary {
+    background-color: var(--up-primary) !important;
+    border-color: var(--up-primary) !important;
+}
+
+.chat-bubble-in.bg-white {
+    background-color: #fff !important;
+}
+
+/* Links inside bubbles */
+.chat-bubble-out a {
+    color: #fff;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.chat-bubble-out a:hover {
+    color: #ffe1e1;
+}
+
+.chat-bubble-in a {
+    color: var(--up-primary);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.chat-bubble-in a:hover {
+    color: var(--up-primary-dark);
+}
+
+.chat-conversation-composer {
+    background: #fff;
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+    padding: .6rem;
+}
+
+.chat-conversation-composer .form-control {
+    border-radius: 999px;
+    padding-left: 1rem;
+}
+
+.chat-conversation-composer .btn-primary {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+    border-radius: 999px;
+}
+
+.chat-conversation-composer .btn-primary:hover {
+    background-color: var(--up-primary-dark);
+    border-color: var(--up-primary-dark);
+}
+
+@media (max-width: 767.98px) {
+    .chat-conversation-messages {
+        height: 60vh;
+    }
+}

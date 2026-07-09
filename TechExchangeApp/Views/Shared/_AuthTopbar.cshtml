@@ -1,0 +1,86 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@inject TechExchangeApp.Interfaces.ICmsAccessService CmsAccessService
+@{
+    var shortName = Configuration["SiteBranding:ShortName"] ?? "CASTA";
+    var canAccessCms = await CmsAccessService.CanAccessCmsAsync(ViewContext.HttpContext.User);
+    var isEn = Context.Request.Cookies["site_lang"] == "en";
+    var currentUrl = Context.Request.Path + Context.Request.QueryString;
+    var accountDisplayName = User.Identity?.Name ?? "Tài khoản";
+    var accountInitial = string.IsNullOrWhiteSpace(accountDisplayName)
+        ? "U"
+        : accountDisplayName.Trim().Substring(0, 1).ToUpperInvariant();
+}
+<header class="auth-topbar user-portal">
+    <div class="auth-topbar-inner">
+        <a class="auth-topbar-brand" href="/Dashboard">
+            <img src="/image/logo-casta.webp" alt="@shortName" onerror="this.src='/image/logo.png'">
+        </a>
+
+        <form class="auth-topbar-search" action="/Search" method="get" role="search">
+            <i class="fas fa-search"></i>
+            <input type="search" name="q" placeholder="Tìm công nghệ, thiết bị, chuyên gia, dự án..." aria-label="Tìm kiếm" autocomplete="off">
+        </form>
+
+        <div class="auth-topbar-actions">
+            <a class="auth-topbar-icon-btn" href="/chat" aria-label="Tin nhắn" title="Tin nhắn">
+                <i class="fas fa-comments"></i>
+            </a>
+
+            <div class="dropdown">
+                <button type="button"
+                        class="auth-topbar-icon-btn"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                        aria-expanded="false"
+                        aria-label="Thông báo">
+                    <i class="fas fa-bell"></i>
+                    <span id="tpBadge" class="badge bg-danger tp-badge d-none">0</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end tp-dropdown">
+                    <div class="tp-header d-flex justify-content-between align-items-center px-3 py-2">
+                        <strong>Thông báo</strong>
+                        <button type="button" class="btn btn-sm btn-link text-decoration-none" onclick="tpMarkAllRead()">Đánh dấu đã đọc</button>
+                    </div>
+                    <div id="tpList" class="tp-list">
+                        <div class="tp-empty text-center text-muted py-3 small">Không có thông báo</div>
+                    </div>
+                    <a class="tp-footer d-block text-center py-2 text-decoration-none" href="/Notifications">Xem tất cả</a>
+                </div>
+            </div>
+
+            <div class="auth-topbar-lang">
+                <a class="@(!isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=vi&returnUrl=@Uri.EscapeDataString(currentUrl)">VI</a>
+                <span>/</span>
+                <a class="@(isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=en&returnUrl=@Uri.EscapeDataString(currentUrl)">EN</a>
+            </div>
+
+            <div class="dropdown">
+                <button type="button"
+                        class="auth-topbar-account"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                        aria-expanded="false"
+                        aria-label="Menu tài khoản">
+                    <span class="auth-topbar-avatar">@accountInitial</span>
+                    <span class="auth-topbar-account-name d-none d-lg-inline">@accountDisplayName</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                    @if (canAccessCms)
+                    {
+                        <a class="dropdown-item" href="/cms"><i class="fas fa-cog fa-fw"></i> CMS Admin</a>
+                        <div class="dropdown-divider"></div>
+                    }
+                    <a class="dropdown-item" href="/"><i class="fas fa-globe fa-fw"></i> Về trang chủ</a>
+                    <a class="dropdown-item" href="/Account/Profile"><i class="fas fa-user fa-fw"></i> Hồ sơ tài khoản</a>
+                    <a class="dropdown-item" href="/Account/ChangePassword"><i class="fas fa-key fa-fw"></i> Bảo mật &amp; mật khẩu</a>
+                    <div class="dropdown-divider"></div>
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt fa-fw"></i> Đăng xuất</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

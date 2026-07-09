@@ -1,23 +1,28 @@
 @model TechExchangeApp.ViewModel.AccountSidebarVm
 
-<div class="card shadow-sm mb-4">
+<div class="card shadow-sm mb-4 user-sidebar">
     <div class="card-body">
         <!-- User Panel -->
-        <div class="text-center mb-4">
-            <img src="@Model.AvatarUrl" class="rounded-circle mb-3" alt="Avatar" style="width: 80px; height: 80px; object-fit: cover;">
-            <h6 class="mb-1">@Model.FullName</h6>
-            <small class="text-muted">@Model.Email</small>
+        <div class="text-center mb-4 user-sidebar-profile">
+            <img src="@Model.AvatarUrl" class="rounded-circle mb-3 user-sidebar-avatar" alt="Avatar" style="width: 80px; height: 80px; object-fit: cover;">
+            <div class="user-sidebar-meta">
+                <h6 class="mb-1 user-sidebar-name">@Model.FullName</h6>
+                <small class="text-muted">@Model.Email</small>
+            </div>
         </div>
 
         <hr>
 
         <!-- Navigation Menu -->
         <nav class="nav flex-column">
+            <div class="user-sidebar-section-label">Tổng quan</div>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Dashboard") ? "active" : "")" href="@Url.Action("Index", "Dashboard")">
-                <i class="fas fa-home me-2"></i> Dashboard
+                <i class="fas fa-house me-2"></i> Tổng quan
             </a>
+
+            <div class="user-sidebar-section-label">Giao dịch</div>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Projects/MyProjects") ? "active" : "")" href="@Url.Action("MyProjects", "Projects")">
-                <i class="fas fa-folder me-2"></i> Dự án của tôi
+                <i class="fas fa-folder-open me-2"></i> Dự án của tôi
                 @if (Model.ProjectCount > 0)
                 {
                     <span class="badge bg-primary float-end">@Model.ProjectCount</span>
@@ -26,7 +31,7 @@
             @if (Model.IsSeller && Model.InvitationCount > 0)
             {
                 <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Seller/InvitedProjects") ? "active" : "")" href="@Url.Action("InvitedProjects", "Seller")">
-                    <i class="fas fa-file-invoice me-2"></i> Dự án mời tham gia
+                    <i class="fas fa-envelope-open-text me-2"></i> Lời mời tham gia
                     <span class="badge bg-danger float-end">@Model.InvitationCount</span>
                 </a>
             }
@@ -34,33 +39,30 @@
                 <i class="fas fa-comments me-2"></i> Tin nhắn
                 <span id="chatUnreadBadge" class="badge bg-danger float-end" style="display:none;"></span>
             </a>
+
+            <div class="user-sidebar-section-label">Tài khoản</div>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Account/Profile") ? "active" : "")" href="@Url.Action("Profile", "Account")">
-                <i class="fas fa-user me-2"></i> Thông tin cá nhân
+                <i class="fas fa-user me-2"></i> Hồ sơ tài khoản
             </a>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Account/ChangePassword") ? "active" : "")" href="@Url.Action("ChangePassword", "Account")">
-                <i class="fas fa-key me-2"></i> Đổi mật khẩu
+                <i class="fas fa-shield-halved me-2"></i> Bảo mật &amp; mật khẩu
             </a>
-            
-            <hr>
 
-            <div class="px-1 mb-1">
-                <small class="text-muted fw-semibold text-uppercase" style="font-size:.7rem; letter-spacing:.06em;">
-                    <i class="fas fa-handshake me-1"></i>Nhà cung ứng công nghệ và dịch vụ tư vấn
-                </small>
-            </div>
+            <div class="user-sidebar-section-label">Dịch vụ của tôi</div>
             <a class="nav-link" href="/dang-ky-nha-cung-ung">
-                <i class="fas fa-boxes me-2"></i> Đăng ký nhà cung ứng
+                <i class="fas fa-handshake me-2"></i> Hồ sơ nhà cung ứng
             </a>
             <a class="nav-link" href="/quan-ly-san-pham">
-                <i class="fas fa-store me-2"></i> Đăng công nghệ thiết bị
+                <i class="fas fa-boxes-stacked me-2"></i> Công nghệ &amp; thiết bị
             </a>
             <a class="nav-link" href="/dang-ky-tu-van">
-                <i class="fas fa-user-graduate me-2"></i> Đăng ký nhà tư vấn
+                <i class="fas fa-user-graduate me-2"></i> Hồ sơ chuyên gia
             </a>
+
             <hr>
 
             <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                <i class="fas fa-arrow-right-from-bracket me-2"></i> Đăng xuất
             </a>
         </nav>
     </div>
@@ -69,33 +71,6 @@
 <form id="logout-form" action="@Url.Action("Logout", "Account")" method="POST" style="display: none;">
     @Html.AntiForgeryToken()
 </form>
-
-<style>
-    .nav-link {
-        color: #495057;
-        padding: 0.75rem 1rem;
-        border-radius: 0.25rem;
-        transition: all 0.2s;
-    }
-    
-    .nav-link:hover {
-        background-color: #f8f9fa;
-        color: #0d6efd;
-    }
-    
-    .nav-link.active {
-        background-color: #0d6efd;
-        color: white;
-    }
-    
-    .nav-link.active:hover {
-        background-color: #0b5ed7;
-    }
-    
-    .nav-link i {
-        width: 20px;
-    }
-</style>
 
 <script>
     (function () {

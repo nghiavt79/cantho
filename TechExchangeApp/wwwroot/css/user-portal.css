@@ -1,0 +1,1320 @@
+/* ==========================================================================
+   CASTA Technology Marketplace Workspace — Dashboard, My Projects, Profile,
+   Change Password, Sidebar, Topbar. Scoped under .user-portal / .user-sidebar
+   to avoid touching global Bootstrap classes or unrelated public pages.
+   Loaded page-specifically via @section Styles on every authenticated
+   workspace page + rendered wherever _AccountSidebar / _AuthTopbar is used.
+
+   Primary action color is CASTA teal-blue, NOT red — red/--up-danger is
+   reserved strictly for destructive/critical actions (uses Bootstrap's
+   native .btn-danger/.text-danger, untouched by these tokens).
+   ========================================================================== */
+
+.user-portal,
+.user-sidebar {
+    --up-primary: #087EA4;
+    --up-primary-dark: #066B8D;
+    --up-primary-soft: #EAF6FA;
+    --up-teal: #18A7A0;
+    --up-cyan: #22A9D6;
+    --up-navy: #12324A;
+    --up-navy-soft: #EAF0F5;
+    --up-text: #172B3A;
+    --up-muted: #667886;
+    --up-muted-2: #8A9AA7;
+    --up-border: #E2EAF0;
+    --up-bg: #F5F8FB;
+    --up-card-bg: #FFFFFF;
+    --up-surface-soft: #F8FAFC;
+    --up-radius: 14px;
+    --up-radius-sm: 10px;
+    --up-shadow: 0 1px 2px rgba(15, 35, 50, .03), 0 8px 24px rgba(15, 35, 50, .045);
+    --up-success: #169B62;
+    --up-success-soft: #EAF8F1;
+    --up-warning: #D99012;
+    --up-warning-soft: #FFF7E6;
+    --up-info: #22A9D6;
+    --up-danger: #DC4C4C;
+    --up-danger-soft: #FDEEEE;
+}
+
+.user-portal {
+    background: var(--up-bg);
+    color: var(--up-text);
+}
+
+.user-portal .user-portal-main {
+    min-width: 0;
+}
+
+/* ==========================================================================
+   Base authenticated-area rules — shared across every page that loads this
+   file (Dashboard, My Projects, Profile, Change Password, Chat, Project
+   Detail all load user-portal.css; chat.css / project-detail.css layer
+   page-specific rules on top and consume these same --up-* tokens).
+   ========================================================================== */
+
+/* Tactile feedback on genuinely interactive controls only. */
+.user-portal .btn,
+.user-sidebar .nav-link {
+    transition: transform .1s ease, background-color .15s ease, color .15s ease;
+}
+
+.user-portal .btn:active {
+    transform: translateY(1px);
+}
+
+.user-sidebar .nav-link:active {
+    transform: scale(.99);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .user-portal .btn:active,
+    .user-sidebar .nav-link:active {
+        transform: none;
+    }
+}
+
+/* Shared empty-state pattern: icon + heading + supporting line + optional CTA. */
+.user-portal .empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+
+.user-portal .empty-state-icon {
+    font-size: 2.25rem;
+    color: var(--up-border);
+    margin-bottom: .75rem;
+}
+
+.user-portal .empty-state-title {
+    color: var(--up-navy);
+    font-weight: 600;
+    margin-bottom: .35rem;
+}
+
+.user-portal .empty-state-text {
+    color: var(--up-muted);
+    margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   Topbar (_AuthTopbar.cshtml) — replaces the public _Header on every
+   authenticated workspace page (see _Layout.cshtml's AuthWorkspace branch).
+   Reuses the existing global .tp-badge/.tp-dropdown/.tp-list/.tp-item
+   notification classes (styled in site.css) unchanged — only the icon
+   buttons and layout around them are new.
+   ========================================================================== */
+
+.auth-topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--up-border);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.auth-topbar-inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    height: 68px;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.auth-topbar-brand {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.auth-topbar-brand img {
+    height: 34px;
+    width: auto;
+    display: block;
+}
+
+.auth-topbar-search {
+    flex: 1;
+    max-width: 480px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-topbar-search i {
+    position: absolute;
+    left: 14px;
+    color: var(--up-muted-2);
+    font-size: .8rem;
+    pointer-events: none;
+}
+
+.auth-topbar-search input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--up-border);
+    background: var(--up-surface-soft);
+    border-radius: 999px;
+    padding: 0 1rem 0 2.25rem;
+    font-size: .875rem;
+    outline: none;
+    transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+
+.auth-topbar-search input:focus {
+    border-color: var(--up-primary);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(8, 126, 164, .12);
+}
+
+.auth-topbar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    flex-shrink: 0;
+}
+
+.auth-topbar-icon-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--up-muted);
+    background: transparent;
+    border: none;
+    font-size: .95rem;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.auth-topbar-icon-btn:hover {
+    background: var(--up-surface-soft);
+    color: var(--up-primary);
+}
+
+.auth-topbar-lang {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--up-muted);
+    padding: 0 .35rem;
+}
+
+.auth-topbar-lang a {
+    color: inherit;
+    text-decoration: none;
+    padding: .2rem .4rem;
+    border-radius: 6px;
+}
+
+.auth-topbar-lang a.is-active {
+    color: var(--up-primary);
+    background: var(--up-primary-soft);
+}
+
+.auth-topbar-account {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    border: none;
+    background: transparent;
+    padding: .3rem .6rem .3rem .3rem;
+    border-radius: 999px;
+    transition: background-color .15s ease;
+}
+
+.auth-topbar-account:hover {
+    background: var(--up-surface-soft);
+}
+
+.auth-topbar-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--up-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .85rem;
+    flex-shrink: 0;
+}
+
+.auth-topbar-account-name {
+    font-size: .875rem;
+    font-weight: 600;
+    color: var(--up-text);
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.auth-topbar-account .fa-chevron-down {
+    font-size: .65rem;
+    color: var(--up-muted-2);
+}
+
+@media (max-width: 767.98px) {
+    .auth-topbar-search {
+        display: none;
+    }
+
+    .auth-topbar-inner {
+        padding: 0 1rem;
+        gap: .75rem;
+        height: 60px;
+    }
+
+    .auth-topbar-lang {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Sidebar (_AccountSidebar.cshtml)
+   ========================================================================== */
+
+.user-sidebar {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+    box-shadow: var(--up-shadow);
+    position: sticky;
+    top: 1rem;
+}
+
+.user-sidebar-profile {
+    padding-bottom: .5rem;
+}
+
+.user-sidebar-avatar {
+    border: 3px solid var(--up-primary-soft);
+}
+
+.user-sidebar-name {
+    color: var(--up-navy);
+    font-weight: 700;
+}
+
+.user-sidebar hr {
+    margin: .75rem 0;
+    border-color: var(--up-border);
+}
+
+.user-sidebar-nav.nav-link,
+.user-sidebar .nav-link {
+    color: var(--up-text);
+    padding: .65rem .85rem;
+    min-height: 44px;
+    border-radius: 9px;
+    border-left: 3px solid transparent;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    display: flex;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.user-sidebar .nav-link i:first-child {
+    width: 20px;
+    text-align: center;
+    color: var(--up-muted-2);
+    transition: color .15s ease;
+}
+
+.user-sidebar .nav-link:hover {
+    background-color: var(--up-surface-soft);
+    color: var(--up-text);
+}
+
+.user-sidebar .nav-link:hover i:first-child {
+    color: var(--up-primary);
+}
+
+/* Soft-tint active state, not a solid fill — matches the CASTA workspace
+   system used across the whole authenticated area. */
+.user-sidebar .nav-link.active {
+    background-color: rgba(8, 126, 164, .1);
+    border-left-color: var(--up-primary);
+    color: var(--up-primary);
+    font-weight: 600;
+}
+
+.user-sidebar .nav-link.active i:first-child {
+    color: var(--up-primary);
+}
+
+.user-sidebar .nav-link.text-danger:hover {
+    background-color: var(--up-danger-soft);
+    color: var(--up-danger) !important;
+}
+
+.user-sidebar-section-label {
+    padding: .9rem .85rem .35rem;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--up-muted-2);
+}
+
+.user-sidebar-section-label:first-of-type {
+    padding-top: .35rem;
+}
+
+/* Mobile: collapse the vertical sidebar into a compact horizontal scroller */
+@media (max-width: 767.98px) {
+    .user-sidebar {
+        position: static;
+    }
+
+    .user-sidebar-profile {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        text-align: left;
+        margin-bottom: .75rem !important;
+    }
+
+    .user-sidebar-avatar {
+        width: 48px !important;
+        height: 48px !important;
+        margin: 0 !important;
+    }
+
+    .user-sidebar-profile .user-sidebar-meta {
+        min-width: 0;
+    }
+
+    .user-sidebar-profile .user-sidebar-name,
+    .user-sidebar-profile small {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .user-sidebar .nav.flex-column {
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: .4rem;
+        padding-bottom: .35rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .user-sidebar .nav-link {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-size: .85rem;
+    }
+
+    .user-sidebar .nav-link .badge {
+        position: static;
+        margin-left: .35rem;
+    }
+
+    /* Secondary supplier links + section label collapse away on mobile to
+       save vertical space; still reachable from the desktop sidebar. */
+    .user-sidebar-section-label,
+    .user-sidebar hr {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   Dashboard (Views/Dashboard/Index.cshtml)
+   ========================================================================== */
+
+.user-dashboard-header h2 {
+    color: var(--up-navy);
+    font-weight: 700;
+}
+
+.user-dashboard-stat {
+    border: 1px solid var(--up-border) !important;
+    border-radius: var(--up-radius) !important;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.user-dashboard-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(16, 24, 40, .1) !important;
+}
+
+.user-dashboard-stat-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.user-dashboard .card {
+    border-radius: var(--up-radius);
+}
+
+.user-dashboard-table-card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+}
+
+.user-dashboard .table th {
+    font-weight: 600;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--up-muted);
+    border-bottom-width: 1px;
+}
+
+.user-dashboard .table td {
+    vertical-align: middle;
+}
+
+/* Mobile: transform the SAME table markup into label/value blocks via
+   data-label attributes already present on each <td> — no second render
+   loop, no duplicated project/status markup. */
+@media (max-width: 767.98px) {
+    .user-dashboard-table-card .table-responsive {
+        overflow-x: visible;
+    }
+
+    .user-dashboard-table-card table,
+    .user-dashboard-table-card tbody,
+    .user-dashboard-table-card tr,
+    .user-dashboard-table-card td {
+        display: block;
+        width: 100%;
+    }
+
+    .user-dashboard-table-card thead {
+        display: none;
+    }
+
+    .user-dashboard-table-card tr {
+        border-bottom: 1px solid var(--up-border);
+        padding: .75rem 1rem;
+    }
+
+    .user-dashboard-table-card tr:last-child {
+        border-bottom: none;
+    }
+
+    .user-dashboard-table-card td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .15rem;
+        padding: .35rem 0;
+        border: none;
+    }
+
+    .user-dashboard-table-card td::before {
+        content: attr(data-label);
+        font-size: .7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: var(--up-muted);
+    }
+}
+
+.user-dashboard-workflow-step {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    transition: transform .15s ease;
+}
+
+.user-dashboard-workflow-step:hover {
+    transform: scale(1.35);
+}
+
+.user-dashboard-workflow-step.step-completed {
+    background-color: var(--up-success);
+}
+
+.user-dashboard-workflow-step.step-inprogress {
+    background-color: var(--up-info);
+    animation: up-pulse 2s infinite;
+}
+
+.user-dashboard-workflow-step.step-notstarted {
+    background-color: #e2e6eb;
+}
+
+@keyframes up-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .45; }
+}
+
+/* ==========================================================================
+   My Projects (Views/Projects/MyProjects.cshtml)
+   ========================================================================== */
+
+.user-projects .card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+}
+
+.user-projects .table th {
+    font-weight: 600;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--up-muted);
+}
+
+.user-projects .table td {
+    vertical-align: middle;
+}
+
+.user-projects .progress {
+    border-radius: 999px;
+    background-color: var(--up-bg);
+}
+
+/* Restrained summary cards: neutral surface + subtle border + small
+   semantic accent bar + strong number + label. Replaces raw
+   bg-info/bg-success/bg-warning solid fills (kept as data-status hooks
+   only, no longer used for the card background). */
+.user-projects-summary-card {
+    background: var(--up-card-bg);
+    color: var(--up-text);
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+    border-top: 3px solid var(--up-border);
+}
+
+.user-projects-summary-card .card-body {
+    padding: 1.1rem 1.25rem;
+}
+
+.user-projects-summary-card h3 {
+    color: var(--up-navy);
+    font-weight: 700;
+}
+
+.user-projects-summary-card p {
+    color: var(--up-muted);
+}
+
+.user-projects-summary-card[data-accent="info"] { border-top-color: var(--up-info); }
+.user-projects-summary-card[data-accent="success"] { border-top-color: var(--up-success); }
+.user-projects-summary-card[data-accent="warning"] { border-top-color: var(--up-warning); }
+
+/* Mobile: transform the SAME table markup into label/value blocks via
+   data-label attributes already present on each <td> — no second render
+   loop, no duplicated project/status markup. */
+@media (max-width: 767.98px) {
+    .user-projects .table-responsive {
+        overflow-x: visible;
+    }
+
+    .user-projects table,
+    .user-projects tbody,
+    .user-projects tr,
+    .user-projects td {
+        display: block;
+        width: 100%;
+    }
+
+    .user-projects thead {
+        display: none;
+    }
+
+    .user-projects tr {
+        border-bottom: 1px solid var(--up-border);
+        padding: .75rem 1rem;
+    }
+
+    .user-projects tr:last-child {
+        border-bottom: none;
+    }
+
+    .user-projects td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .15rem;
+        padding: .35rem 0;
+        border: none;
+    }
+
+    .user-projects td::before {
+        content: attr(data-label);
+        font-size: .7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: var(--up-muted);
+    }
+}
+
+/* ==========================================================================
+   Tech Transfer Create (Views/TechTransfer/Create.cshtml) — a focused,
+   sidebar-free single-task form, same shell pattern as Project Detail.
+   ========================================================================== */
+
+.user-tech-transfer-form .card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+    box-shadow: var(--up-shadow) !important;
+}
+
+.user-tech-transfer-form .card-header {
+    background: #fff !important;
+    color: var(--up-navy) !important;
+    border-bottom: 1px solid var(--up-border);
+}
+
+.user-tech-transfer-form .card-header i {
+    color: var(--up-primary) !important;
+}
+
+.user-tech-transfer-form h5.text-primary {
+    color: var(--up-navy) !important;
+    border-bottom-color: var(--up-border) !important;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.user-tech-transfer-form .form-control,
+.user-tech-transfer-form .form-select {
+    border-color: var(--up-border);
+    border-radius: var(--up-radius-sm);
+}
+
+.user-tech-transfer-form .form-control:focus,
+.user-tech-transfer-form .form-select:focus {
+    border-color: var(--up-primary);
+    box-shadow: 0 0 0 3px rgba(8, 126, 164, .12);
+}
+
+.user-tech-transfer-form .btn-primary {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.user-tech-transfer-form .btn-primary:hover,
+.user-tech-transfer-form .btn-primary:focus {
+    background-color: var(--up-primary-dark);
+    border-color: var(--up-primary-dark);
+}
+
+/* ==========================================================================
+   Registration forms — Nhà cung ứng & Nhà tư vấn
+   (Views/DangKyNhaCungUng/DangKy.cshtml, Views/DangKyTuVan/DangKy.cshtml).
+   Both pages are the same tabbed "profile registration" pattern with
+   different fields, so they share one scoped treatment.
+   ========================================================================== */
+
+.user-registration-form .nav-tabs {
+    border-bottom: 1px solid var(--up-border);
+    gap: .25rem;
+}
+
+.user-registration-form .nav-tabs .nav-link {
+    border: none;
+    border-radius: var(--up-radius-sm) var(--up-radius-sm) 0 0;
+    color: var(--up-muted);
+    font-weight: 600;
+    font-size: .875rem;
+    padding: .75rem 1.1rem;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.user-registration-form .nav-tabs .nav-link:hover {
+    color: var(--up-primary);
+    background: var(--up-surface-soft);
+}
+
+.user-registration-form .nav-tabs .nav-link.active {
+    color: var(--up-primary);
+    background: var(--up-primary-soft);
+    border-bottom: 2px solid var(--up-primary);
+}
+
+.user-registration-form .card {
+    border: 1px solid var(--up-border);
+    border-radius: 0 var(--up-radius) var(--up-radius) var(--up-radius);
+    box-shadow: none;
+}
+
+.user-registration-form fieldset {
+    border-color: var(--up-border) !important;
+    border-radius: var(--up-radius-sm);
+    background: var(--up-surface-soft);
+}
+
+.user-registration-form fieldset legend {
+    color: var(--up-navy);
+}
+
+.user-registration-form .form-control,
+.user-registration-form .form-select {
+    border-color: var(--up-border);
+    border-radius: var(--up-radius-sm);
+}
+
+.user-registration-form .form-control:focus,
+.user-registration-form .form-select:focus {
+    border-color: var(--up-primary);
+    box-shadow: 0 0 0 3px rgba(8, 126, 164, .12);
+}
+
+.user-registration-form .card-footer {
+    border-top: 1px solid var(--up-border);
+    background: #fff !important;
+}
+
+.user-registration-form .btn-primary {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.user-registration-form .btn-primary:hover,
+.user-registration-form .btn-primary:focus {
+    background-color: var(--up-primary-dark);
+    border-color: var(--up-primary-dark);
+}
+
+/* ==========================================================================
+   Product Management (Views/QuanLySanPham/Index.cshtml)
+   ========================================================================== */
+
+.user-product-list .card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+}
+
+.user-product-list .table th {
+    font-weight: 600;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--up-muted);
+}
+
+.user-product-list .table td {
+    vertical-align: middle;
+}
+
+.user-product-list .btn-primary {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.user-product-list .btn-primary:hover,
+.user-product-list .btn-primary:focus {
+    background-color: var(--up-primary-dark);
+    border-color: var(--up-primary-dark);
+}
+
+/* Mobile: transform the SAME table markup into label/value blocks via
+   data-label attributes — no second render loop. */
+@media (max-width: 767.98px) {
+    .user-product-list .table-responsive {
+        overflow-x: visible;
+    }
+
+    .user-product-list table,
+    .user-product-list tbody,
+    .user-product-list tr,
+    .user-product-list td {
+        display: block;
+        width: 100%;
+    }
+
+    .user-product-list thead {
+        display: none;
+    }
+
+    .user-product-list tr {
+        border-bottom: 1px solid var(--up-border);
+        padding: .75rem 1rem;
+    }
+
+    .user-product-list tr:last-child {
+        border-bottom: none;
+    }
+
+    .user-product-list td {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .15rem;
+        padding: .35rem 0;
+        border: none;
+    }
+
+    .user-product-list td::before {
+        content: attr(data-label);
+        font-size: .7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: var(--up-muted);
+    }
+
+    .user-product-list td.text-center {
+        align-items: flex-start;
+    }
+}
+
+/* ==========================================================================
+   Invited Projects (Views/Seller/InvitedProjects.cshtml)
+   ========================================================================== */
+
+.user-invitations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-invitation-card {
+    background: var(--up-card-bg);
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+    padding: 1.25rem 1.5rem;
+    transition: box-shadow .15s ease;
+}
+
+.user-invitation-card:hover {
+    box-shadow: var(--up-shadow);
+}
+
+.user-invitation-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.user-invitation-card-title {
+    color: var(--up-navy);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: .2rem;
+}
+
+.user-invitation-card-code {
+    color: var(--up-muted);
+    font-size: .82rem;
+}
+
+.user-invitation-card-meta {
+    color: var(--up-muted);
+    font-size: .85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: .75rem;
+}
+
+.user-invitation-card-meta i {
+    color: var(--up-muted-2);
+    margin-right: .35rem;
+}
+
+.user-invitation-card-meta .is-urgent {
+    color: var(--up-warning);
+    font-weight: 600;
+}
+
+.user-invitation-card-meta .is-urgent i {
+    color: var(--up-warning);
+}
+
+.user-invitation-card-actions {
+    display: flex;
+    gap: .5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Profile (Views/Account/Profile.cshtml)
+   ========================================================================== */
+
+.user-profile-header p {
+    color: var(--up-muted);
+}
+
+/* Profile completion card — soft tinted surface, NOT a solid navy bar. */
+.user-profile-trust {
+    border-radius: var(--up-radius) !important;
+    border: 1px solid var(--up-border) !important;
+    background: linear-gradient(135deg, rgba(8, 126, 164, .08), rgba(24, 167, 160, .04)) !important;
+}
+
+.user-profile-trust .card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+.user-profile-trust-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.user-profile-trust-avatar {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: var(--up-shadow);
+    flex-shrink: 0;
+}
+
+.user-profile-trust-info {
+    min-width: 0;
+}
+
+.user-profile-trust-info .name {
+    color: var(--up-navy);
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.user-profile-trust-info .type,
+.user-profile-trust-info .email {
+    color: var(--up-muted);
+    font-size: .85rem;
+}
+
+.user-profile-trust-score {
+    margin-left: auto;
+    min-width: 180px;
+    text-align: right;
+}
+
+.user-profile-trust-score .label {
+    font-size: .8rem;
+    color: var(--up-muted);
+    font-weight: 600;
+}
+
+.user-profile-trust-score .progress {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--up-border);
+    margin-top: .35rem;
+}
+
+.user-profile-trust-checklist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 1.1rem;
+}
+
+.user-profile-trust-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .3rem .7rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+    background: #fff;
+    border: 1px solid var(--up-border);
+    color: var(--up-muted);
+}
+
+.user-profile-trust-chip.is-done {
+    color: var(--up-success);
+    border-color: transparent;
+    background: var(--up-success-soft);
+}
+
+.user-profile-trust-chip.is-pending {
+    color: var(--up-warning);
+    border-color: transparent;
+    background: var(--up-warning-soft);
+}
+
+/* Desktop layout ratio: ~60/65% info column, ~35/40% verification column —
+   not a forced 50/50 split. */
+.user-profile-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, .8fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 991.98px) {
+    .user-profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.user-profile .card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+}
+
+/* Light card headers everywhere in Profile — no repeated dark bars. */
+.user-profile .card-header {
+    background: #fff !important;
+    color: var(--up-navy) !important;
+    border-bottom: 1px solid var(--up-border);
+    padding: 1rem 1.25rem;
+}
+
+.user-profile .card-header i {
+    color: var(--up-primary) !important;
+}
+
+.user-profile-avatar-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.user-profile-avatar {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: var(--up-shadow);
+}
+
+.user-profile-avatar-edit {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--up-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    cursor: pointer;
+    font-size: .8rem;
+    transition: background-color .15s ease;
+}
+
+.user-profile-avatar-edit:hover {
+    background: var(--up-primary-dark);
+}
+
+/* Segmented account-type selector — same radio inputs/model binding,
+   restyled as clickable segments instead of plain radio buttons. */
+.user-profile-type-select {
+    display: flex;
+    gap: .75rem;
+}
+
+.user-profile-type-option {
+    flex: 1;
+    position: relative;
+    margin: 0;
+}
+
+.user-profile-type-option .form-check-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.user-profile-type-option .form-check-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border: 1.5px solid var(--up-border);
+    border-radius: var(--up-radius-sm);
+    padding: .65rem 1rem;
+    font-weight: 600;
+    color: var(--up-muted);
+    cursor: pointer;
+    transition: border-color .15s ease, background-color .15s ease, color .15s ease;
+}
+
+.user-profile-type-option .form-check-input:checked + .form-check-label {
+    border-color: var(--up-primary);
+    background: var(--up-primary-soft);
+    color: var(--up-primary);
+}
+
+.user-profile-type-option .form-check-input:checked + .form-check-label i {
+    color: var(--up-primary);
+}
+
+.user-profile-type-option .form-check-input:focus-visible + .form-check-label {
+    box-shadow: 0 0 0 3px rgba(8, 126, 164, .15);
+}
+
+/* Scoped CASTA primary actions — not a global .btn-primary override,
+   only applies inside the Profile page wrapper. */
+.user-profile .btn-primary {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.user-profile .btn-primary:hover,
+.user-profile .btn-primary:focus {
+    background-color: var(--up-primary-dark);
+    border-color: var(--up-primary-dark);
+}
+
+.user-profile .btn-outline-primary {
+    color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.user-profile .btn-outline-primary:hover {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+/* Verification: one card containing flat, divided sections instead of three
+   stacked elevated cards — phone/email/doc are sub-parts of one concept. */
+.user-profile-verify-section {
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--up-border);
+}
+
+.user-profile-verify-section:last-child {
+    border-bottom: none;
+}
+
+.user-profile-verify-section-header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .75rem;
+    color: var(--up-navy);
+    font-weight: 600;
+}
+
+.user-profile-verify-section-header i:first-child {
+    color: var(--up-muted);
+}
+
+/* Compact document card (_DocUpload.cshtml) — replaces the old stretched
+   full-width image preview with a small thumbnail + metadata row. */
+.user-profile .user-profile-doc-card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius-sm);
+    padding: .85rem;
+}
+
+.user-profile-doc-card-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.user-profile-doc-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--up-border);
+    flex-shrink: 0;
+}
+
+.user-profile-doc-thumb-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: var(--up-surface-soft);
+    color: var(--up-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.user-profile-doc-meta {
+    min-width: 0;
+    flex: 1;
+}
+
+.user-profile-doc-meta .doc-name {
+    font-weight: 600;
+    color: var(--up-text);
+    font-size: .875rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-profile-doc-meta .doc-date {
+    color: var(--up-muted);
+    font-size: .78rem;
+}
+
+.user-profile-doc-actions {
+    margin-top: .75rem;
+    display: flex;
+    gap: .5rem;
+}
+
+/* ==========================================================================
+   Change Password (Views/Account/ChangePassword.cshtml)
+   ========================================================================== */
+
+.user-password .card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+}
+
+.user-password .card-header {
+    background: #fff !important;
+    color: var(--up-navy) !important;
+    border-bottom: 1px solid var(--up-border);
+}
+
+.user-password .card-header i {
+    color: var(--up-primary) !important;
+}
+
+.user-password .btn-warning {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+    color: #fff;
+}
+
+.user-password .btn-warning:hover {
+    background-color: var(--up-primary-dark);
+    border-color: var(--up-primary-dark);
+}
+
+/* Flatten the password-rules notice from a heavy alert box to a quiet,
+   bordered note — informational text doesn't need elevation. */
+.user-password-note {
+    background: var(--up-surface-soft);
+    border: none;
+    border-left: 3px solid var(--up-info);
+    border-radius: var(--up-radius-sm);
+    color: var(--up-text);
+    padding: .85rem 1rem;
+}
+
+.user-password-note ul {
+    color: var(--up-muted);
+}

@@ -5,141 +5,88 @@
     var totalVisible = visibleSteps.Count;
     var completedCount = visibleSteps.Count(s => s.StatusId > 0);
     var progressPercent = totalVisible > 0 ? (int)Math.Round((completedCount / (double)totalVisible) * 100) : 0;
+    var isComplete = totalVisible > 0 && completedCount == totalVisible;
 }
 
-<div class="project-steps-nav mb-4">
-    <div class="card shadow-sm">
+<div class="project-steps-nav tx-workflow-card mb-4">
+    <div class="card">
         <div class="card-body">
-            <!-- Progress Bar -->
-            <div class="progress mb-4" style="height: 8px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: @progressPercent%" aria-valuenow="@progressPercent" aria-valuemin="0" aria-valuemax="100"></div>
+
+            <!-- Header summary -->
+            <div class="tx-workflow-header">
+                <div class="tx-workflow-heading">
+                    <h3 class="tx-workflow-title">Tiến trình giao dịch</h3>
+                    <p class="tx-workflow-subtitle">Theo dõi toàn bộ quy trình chuyển giao công nghệ</p>
+                </div>
+                <div class="tx-workflow-summary">
+                    <span class="tx-workflow-chip">
+                        <i class="fas fa-list-check" aria-hidden="true"></i>@completedCount/@totalVisible bước
+                    </span>
+                    <span class="tx-workflow-chip tx-workflow-chip-percent">@progressPercent%</span>
+                </div>
             </div>
 
-            <!-- Horizontal Steps -->
-            <ul class="nav nav-pills nav-justified flex-nowrap overflow-auto">
-                @foreach (var step in visibleSteps)
+            <!-- Connected stepper -->
+            <ul class="nav tx-workflow-stepper">
+                @for (var i = 0; i < visibleSteps.Count; i++)
                 {
+                    var step = visibleSteps[i];
                     var stepClass = step.StatusId > 0 ? "completed" : (step.IsCurrent ? "current" : "pending");
                     var badgeClass = step.StatusId > 0 ? "bg-success" : (step.IsCurrent ? "bg-primary" : "bg-light text-muted");
-                    var disabled = !step.IsAccessible ? "disabled" : "";
-                    
-                    <li class="nav-item step-item">
+                    var connectorFilled = i > 0 && visibleSteps[i - 1].StatusId > 0;
+
+                    <li class="nav-item step-item tx-workflow-step @stepClass @(connectorFilled ? "tx-connector-filled" : "")">
                         @if (step.IsAccessible)
                         {
-                            <a class="nav-link step-link @stepClass" href="#" data-step="@step.StepNumber">
-                                <div class="step-circle @badgeClass">
+                            <a class="nav-link step-link tx-workflow-node-link @stepClass" href="#" data-step="@step.StepNumber"
+                               aria-current="@(step.IsCurrent ? "step" : null)">
+                                <span class="step-circle tx-workflow-node @badgeClass">
                                     @if (step.StatusId > 0)
                                     {
-                                        <i class="fas fa-check"></i>
+                                        <i class="fas fa-check" aria-hidden="true"></i>
                                     }
                                     else
                                     {
-                                        @step.StepNumber
+                                        <span>@step.StepNumber.ToString("D2")</span>
                                     }
-                                </div>
-                                <div class="step-name">@step.StepName</div>
+                                </span>
+                                <span class="step-name tx-workflow-label">@step.StepName</span>
                             </a>
                         }
                         else
                         {
-                            <span class="nav-link disabled @stepClass">
-                                <div class="step-circle @badgeClass">@step.StepNumber</div>
-                                <div class="step-name">@step.StepName</div>
+                            <span class="nav-link disabled tx-workflow-node-link @stepClass" aria-disabled="true">
+                                <span class="step-circle tx-workflow-node @badgeClass">@step.StepNumber.ToString("D2")</span>
+                                <span class="step-name tx-workflow-label">@step.StepName</span>
                             </span>
                         }
                     </li>
                 }
             </ul>
 
-            <!-- Progress Text -->
-            <div class="text-center mt-3">
-                <small class="text-muted">
-                    <i class="fas fa-tasks"></i> Hoàn thành: <strong>@completedCount/@totalVisible</strong> bước (@progressPercent%)
-                </small>
+            <!-- Overall progress -->
+            <div class="tx-workflow-progress-wrap">
+                <div class="tx-workflow-progress-label">
+                    <span>Tiến độ tổng thể</span>
+                    <span class="tx-workflow-progress-value">@progressPercent%</span>
+                </div>
+                <div class="progress tx-workflow-progress" role="progressbar"
+                     aria-label="Tiến độ tổng thể dự án" aria-valuenow="@progressPercent" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar @(isComplete ? "bg-success" : "bg-primary")" style="width: @progressPercent%"></div>
+                </div>
             </div>
+
+            @if (isComplete)
+            {
+                <div class="tx-workflow-complete">
+                    <i class="fas fa-circle-check" aria-hidden="true"></i>
+                    <div>
+                        <div class="tx-workflow-complete-title">Quy trình giao dịch đã hoàn tất</div>
+                        <div class="tx-workflow-complete-text">Toàn bộ @totalVisible bước đã được xử lý thành công.</div>
+                    </div>
+                </div>
+            }
+
         </div>
     </div>
 </div>
-
-<style>
-    .project-steps-nav .nav {
-        gap: 10px;
-    }
-
-    .step-item {
-        min-width: 100px;
-        flex: 0 0 auto;
-    }
-
-    .step-item .nav-link {
-        padding: 10px;
-        text-decoration: none;
-        transition: all 0.3s;
-        border: none;
-        background: transparent;
-    }
-
-    .step-item .nav-link:hover:not(.disabled) {
-        transform: translateY(-2px);
-    }
-
-    .step-circle {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px;
-        font-weight: bold;
-        font-size: 18px;
-        transition: all 0.3s;
-    }
-
-    .step-item .nav-link.current .step-circle {
-        box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
-        animation: pulse 2s infinite;
-    }
-
-    .step-name {
-        font-size: 11px;
-        color: #6c757d;
-        line-height: 1.2;
-        max-width: 100px;
-        margin: 0 auto;
-    }
-
-    .step-item .nav-link.disabled {
-        cursor: not-allowed;
-        opacity: 0.6;
-    }
-
-    @@keyframes pulse {
-        0%, 100% {
-            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25);
-        }
-        50% {
-            box-shadow: 0 0 0 8px rgba(13, 110, 253, 0.15);
-        }
-    }
-
-    @@media (max-width: 768px) {
-        .project-steps-nav .nav {
-            padding-bottom: 10px;
-        }
-        
-        .step-item {
-            min-width: 80px;
-        }
-        
-        .step-circle {
-            width: 40px;
-            height: 40px;
-            font-size: 16px;
-        }
-        
-        .step-name {
-            font-size: 10px;
-        }
-    }
-</style>

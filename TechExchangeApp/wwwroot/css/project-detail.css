@@ -1,0 +1,581 @@
+/* ==========================================================================
+   Project Detail (Views/Project/Details.cshtml + _ProjectStepsNav,
+   _StepEditModal, Views/Project/Steps/_Step1..14.cshtml)
+   Scoped under .project-detail, which renders inside a .user-portal wrapper
+   — brand tokens (--up-primary, --up-navy, --up-border, --up-bg, --up-radius...)
+   come from user-portal.css, loaded alongside this file. No page-specific
+   tokens are redeclared here. The 14 step partials contain extensive,
+   highly stateful JS (OTP flows, e-sign, file upload, iframes) — their
+   markup/IDs/classes are intentionally left untouched. This stylesheet only
+   restyles the shared, structurally-consistent Bootstrap patterns that
+   cascade down to every step (cards, badges, dl/dt/dd fact lists, tables,
+   alerts, buttons, forms, modals) so the whole workspace looks cohesive
+   without risking any of that JS. Project Detail is a workflow workspace,
+   not a dashboard — no stat-card patterns are introduced here.
+   ========================================================================== */
+
+/* ==========================================================================
+   Header (Views/Project/Details.cshtml)
+   ========================================================================== */
+
+.tx-project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--up-card-bg);
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+    box-shadow: var(--up-shadow);
+    margin-bottom: 1.25rem;
+}
+
+.tx-project-back {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--up-muted);
+    text-decoration: none;
+    margin-bottom: .5rem;
+}
+
+.tx-project-back:hover {
+    color: var(--up-primary);
+}
+
+.tx-project-title-row {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    flex-wrap: wrap;
+}
+
+.tx-project-title {
+    color: var(--up-navy);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0;
+}
+
+@media (min-width: 992px) {
+    .tx-project-title {
+        font-size: 1.75rem;
+    }
+}
+
+.tx-project-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .4rem .6rem;
+    margin-top: .35rem;
+    font-size: .82rem;
+    color: var(--up-muted);
+}
+
+.tx-project-meta i {
+    color: var(--up-muted-2);
+    margin-right: .3rem;
+}
+
+.tx-project-meta .tx-project-role {
+    font-weight: 600;
+    color: var(--up-text);
+}
+
+.tx-project-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .3rem .75rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.tx-project-status-done {
+    background: var(--up-success-soft);
+    color: var(--up-success);
+}
+
+.tx-project-status-progress {
+    background: var(--up-primary-soft);
+    color: var(--up-primary);
+}
+
+.tx-project-status-pending {
+    background: var(--up-surface-soft);
+    color: var(--up-muted);
+    border: 1px solid var(--up-border);
+}
+
+.tx-project-actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-shrink: 0;
+}
+
+@media (max-width: 575.98px) {
+    .tx-project-header {
+        flex-direction: column;
+    }
+
+    .tx-project-actions {
+        width: 100%;
+    }
+
+    .tx-project-actions .btn {
+        flex: 1;
+    }
+}
+
+/* ==========================================================================
+   Workflow card (_ProjectStepsNav.cshtml)
+   ========================================================================== */
+
+.tx-workflow-card .card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+    box-shadow: var(--up-shadow);
+}
+
+.tx-workflow-card .card-body {
+    padding: 1.5rem 1.75rem;
+}
+
+.tx-workflow-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
+}
+
+.tx-workflow-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--up-navy);
+    margin: 0 0 .2rem;
+}
+
+.tx-workflow-subtitle {
+    font-size: .85rem;
+    color: var(--up-muted);
+    margin: 0;
+}
+
+.tx-workflow-summary {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-shrink: 0;
+}
+
+.tx-workflow-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .3rem .65rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 700;
+    background: var(--up-surface-soft);
+    color: var(--up-text);
+    border: 1px solid var(--up-border);
+}
+
+.tx-workflow-chip-percent {
+    background: var(--up-primary-soft);
+    color: var(--up-primary);
+    border-color: transparent;
+}
+
+/* ── Connected stepper ───────────────────────────────────────────────── */
+
+.tx-workflow-stepper {
+    display: flex;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+}
+
+.tx-workflow-step {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Connector line sits behind the node, spanning from the previous step's
+   center to this step's center. Color reflects whether the PRECEDING step
+   is completed. */
+.tx-workflow-step:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -50%;
+    width: 100%;
+    height: 2px;
+    background: var(--up-border);
+    z-index: 0;
+}
+
+.tx-workflow-step.tx-connector-filled:not(:first-child)::before {
+    background: var(--up-success);
+}
+
+.tx-workflow-node-link {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    padding: 0 .35rem;
+    text-decoration: none;
+    border: none;
+    background: transparent;
+    transition: transform .15s ease;
+}
+
+.tx-workflow-node-link:hover:not(.disabled) {
+    transform: translateY(-2px);
+}
+
+.tx-workflow-node-link:active:not(.disabled) {
+    transform: translateY(0) scale(.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tx-workflow-node-link:hover:not(.disabled),
+    .tx-workflow-node-link:active:not(.disabled) {
+        transform: none;
+    }
+}
+
+.tx-workflow-node {
+    position: relative;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .8rem;
+    background: var(--up-card-bg);
+    border: 2px solid var(--up-border);
+    color: var(--up-muted);
+    transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.tx-workflow-node.bg-success {
+    background-color: var(--up-success) !important;
+    border-color: var(--up-success);
+    color: #fff;
+}
+
+.tx-workflow-node.bg-primary {
+    background-color: var(--up-primary) !important;
+    border-color: var(--up-primary);
+    color: #fff;
+    box-shadow: 0 0 0 4px var(--up-primary-soft);
+}
+
+.tx-workflow-node.bg-light {
+    background-color: var(--up-card-bg) !important;
+}
+
+.tx-workflow-label {
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--up-muted);
+    line-height: 1.25;
+    max-width: 110px;
+}
+
+.tx-workflow-step.current .tx-workflow-label {
+    color: var(--up-navy);
+    font-weight: 700;
+}
+
+.tx-workflow-step.completed .tx-workflow-label {
+    color: var(--up-text);
+}
+
+.tx-workflow-node-link.disabled {
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+/* ── Overall progress ────────────────────────────────────────────────── */
+
+.tx-workflow-progress-wrap {
+    margin-bottom: 0;
+}
+
+.tx-workflow-progress-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--up-text);
+    margin-bottom: .4rem;
+}
+
+.tx-workflow-progress-value {
+    color: var(--up-navy);
+    font-weight: 700;
+}
+
+.tx-workflow-progress {
+    height: 7px;
+    border-radius: 999px;
+    background: var(--up-border);
+    overflow: hidden;
+}
+
+.tx-workflow-progress .progress-bar {
+    transition: width .4s ease;
+}
+
+/* ── Completion banner ───────────────────────────────────────────────── */
+
+.tx-workflow-complete {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    margin-top: 1.25rem;
+    padding: .85rem 1rem;
+    background: var(--up-success-soft);
+    border: 1px solid rgba(22, 138, 91, .2);
+    border-radius: var(--up-radius-sm);
+    color: var(--up-success);
+}
+
+.tx-workflow-complete i {
+    font-size: 1.1rem;
+    margin-top: .1rem;
+}
+
+.tx-workflow-complete-title {
+    font-weight: 700;
+    color: var(--up-success);
+}
+
+.tx-workflow-complete-text {
+    font-size: .85rem;
+    color: var(--up-text);
+}
+
+/* ── Tablet: allow controlled horizontal scroll instead of squeezing ──── */
+@media (max-width: 1199.98px) and (min-width: 768px) {
+    .tx-workflow-stepper {
+        overflow-x: auto;
+        padding-bottom: .5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tx-workflow-step {
+        flex: 0 0 auto;
+        min-width: 110px;
+    }
+
+    .tx-workflow-step:not(:first-child)::before {
+        left: -55px;
+        width: 110px;
+    }
+}
+
+/* ── Mobile: vertical timeline (same markup, no duplicated loop) ──────── */
+@media (max-width: 767.98px) {
+    .tx-workflow-card .card-body {
+        padding: 1.25rem 1.1rem;
+    }
+
+    .tx-workflow-stepper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tx-workflow-step {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        padding-bottom: 1.1rem;
+    }
+
+    .tx-workflow-step:last-child {
+        padding-bottom: 0;
+    }
+
+    .tx-workflow-step:not(:first-child)::before {
+        top: -1.1rem;
+        left: 19px;
+        width: 2px;
+        height: 1.1rem;
+    }
+
+    .tx-workflow-node-link {
+        flex-direction: row;
+        align-items: center;
+        gap: .75rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    .tx-workflow-label {
+        max-width: none;
+        text-align: left;
+    }
+}
+
+/* ==========================================================================
+   Shared shell for step content (#step-content, rendered per-step partials)
+   ========================================================================== */
+
+.project-detail #step-content .card {
+    border: 1px solid var(--up-border);
+    border-radius: var(--up-radius);
+}
+
+.project-detail #step-content .card-header.bg-primary {
+    background: #fff !important;
+    color: var(--up-navy) !important;
+    border-bottom: 1px solid var(--up-border);
+}
+
+.project-detail #step-content .card-header.bg-primary i {
+    color: var(--up-primary) !important;
+}
+
+/* Definition-list fact rows used consistently across every step partial */
+.project-detail #step-content dl.row dt {
+    color: var(--up-muted);
+    font-weight: 600;
+    font-size: .875rem;
+}
+
+.project-detail #step-content dl.row dd {
+    color: var(--up-text);
+}
+
+.project-detail #step-content .table th {
+    font-weight: 600;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--up-muted);
+}
+
+.project-detail #step-content .table td {
+    vertical-align: middle;
+}
+
+.project-detail #step-content .alert {
+    border-radius: var(--up-radius-sm);
+    border: 1px solid transparent;
+}
+
+/* Action hierarchy: red primary, neutral secondary, reserved danger/disabled */
+.project-detail .btn-primary {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.project-detail .btn-primary:hover,
+.project-detail .btn-primary:focus {
+    background-color: var(--up-primary-dark);
+    border-color: var(--up-primary-dark);
+}
+
+.project-detail .btn-outline-primary {
+    color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.project-detail .btn-outline-primary:hover {
+    background-color: var(--up-primary);
+    border-color: var(--up-primary);
+}
+
+.project-detail .btn-secondary,
+.project-detail .btn-outline-secondary {
+    --bs-btn-hover-bg: #4b5563;
+}
+
+.project-detail .btn:disabled,
+.project-detail .btn.disabled {
+    opacity: .55;
+}
+
+/* Star rating widget (moved from Steps/_Step4.cshtml inline <style>) */
+.project-detail .star-rating {
+    display: inline-flex;
+    gap: 4px;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.project-detail .star-rating i {
+    color: #ffc107;
+    transition: all .2s ease;
+}
+
+.project-detail .star-rating i:hover {
+    transform: scale(1.2);
+}
+
+.project-detail .star-rating i.far {
+    color: #ddd;
+}
+
+.project-detail .star-rating i.fas {
+    color: #ffc107;
+}
+
+/* ==========================================================================
+   Member management / edit-step modals — light header, no colored bar.
+   ========================================================================== */
+
+.project-detail-modal .modal-header,
+#editStepModal .modal-header {
+    background: #fff;
+    border-bottom: 1px solid var(--up-border);
+}
+
+.project-detail-modal .modal-title,
+#editStepModal .modal-title {
+    color: var(--up-navy);
+    font-weight: 600;
+}
+
+.project-detail-modal .modal-title i,
+#editStepModal .modal-title i {
+    color: var(--up-primary);
+}
+
+@media (max-width: 575.98px) {
+    .project-detail #step-content {
+        overflow-x: hidden;
+    }
+
+    .project-detail #step-content .table-responsive {
+        border: 1px solid var(--up-border);
+        border-radius: var(--up-radius-sm);
+    }
+}

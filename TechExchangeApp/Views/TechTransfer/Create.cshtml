@@ -1,13 +1,32 @@
+@using TechExchangeApp.Interfaces
+@using Microsoft.AspNetCore.Identity
+@using TechExchangeApp.Entities
+@inject IAccountService AccountService
+@inject UserManager<ApplicationUser> UserManager
+
 @model TechExchangeApp.Entities.TechTransferRequest
 
 @{
     ViewData["Title"] = "PHIẾU YÊU CẦU CHUYỂN GIAO CÔNG NGHỆ";
+    ViewData["AuthWorkspace"] = true;
     var linhVucList = ViewBag.LinhVucList as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? new();
+
+    var userId = int.Parse(UserManager.GetUserId(User)!);
+    var sidebarData = await AccountService.GetSidebarDataAsync(userId);
 }
 
-<div class="container mt-5 mb-5">
+<div class="container-fluid py-4 user-portal">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2">
+      @await Html.PartialAsync("_AccountSidebar", sidebarData)
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 user-portal-main">
+<div class="container user-tech-transfer-form" style="max-width:900px;">
     <div class="card shadow">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header">
             <h2 class="h4 mb-0"><i class="fas fa-file-signature me-2"></i>@ViewData["Title"]</h2>
         </div>
         <div class="card-body">
@@ -102,6 +121,13 @@
         </div>
     </div>
 </div>
+    </div><!-- End Main Content -->
+  </div><!-- End row -->
+</div><!-- End container-fluid -->
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -13,42 +13,55 @@
         : "<span class='badge bg-secondary'>Chưa tải lên</span>";
 }
 
-<div class="border rounded p-3 mb-3">
-    <div class="d-flex align-items-center mb-2">
-        <i class="@icon text-warning me-2"></i>
+<div class="user-profile-doc-card mb-3">
+    <div class="d-flex align-items-center justify-content-between mb-2">
         <span class="fw-semibold small">@label</span>
-        <span class="ms-auto">@Html.Raw(statusBadge)</span>
+        @Html.Raw(statusBadge)
     </div>
 
     @if (hasDoc)
     {
         var ext = System.IO.Path.GetExtension(doc!.FilePath).ToLowerInvariant();
-        <div class="text-muted small mb-2">
-            <i class="fas fa-paperclip"></i> @doc.FileName
-            <span class="ms-2">@doc.UploadedAt.ToString("dd/MM/yyyy HH:mm")</span>
+        <div class="user-profile-doc-card-row">
+            @if (ext == ".pdf")
+            {
+                <span class="user-profile-doc-thumb-icon"><i class="fas fa-file-pdf"></i></span>
+            }
+            else
+            {
+                <a href="@doc.FilePath" target="_blank">
+                    <img src="@doc.FilePath" class="user-profile-doc-thumb" alt="@doc.FileName">
+                </a>
+            }
+            <div class="user-profile-doc-meta">
+                <div class="doc-name">@doc.FileName</div>
+                <div class="doc-date">@doc.UploadedAt.ToString("dd/MM/yyyy HH:mm")</div>
+            </div>
         </div>
-        @if (ext == ".pdf")
-        {
-            <a href="@doc.FilePath" target="_blank" class="btn btn-sm btn-outline-danger mb-2">
-                <i class="fas fa-file-pdf"></i> Xem PDF
+        <div class="user-profile-doc-actions">
+            <a href="@doc.FilePath" target="_blank" class="btn btn-sm btn-outline-secondary">
+                <i class="fas @(ext == ".pdf" ? "fa-file-pdf" : "fa-eye")"></i> Xem tài liệu
             </a>
-        }
-        else
-        {
-            <a href="@doc.FilePath" target="_blank">
-                <img src="@doc.FilePath" class="img-thumbnail mb-2" style="max-height:120px;max-width:100%">
-            </a>
-        }
+        </div>
+    }
+    else
+    {
+        <div class="user-profile-doc-card-row">
+            <span class="user-profile-doc-thumb-icon"><i class="@icon"></i></span>
+            <div class="user-profile-doc-meta">
+                <div class="doc-date">Chưa có tài liệu nào được tải lên</div>
+            </div>
+        </div>
     }
 
-    <form asp-action="UploadDoc" asp-controller="Account" method="post" enctype="multipart/form-data">
+    <form asp-action="UploadDoc" asp-controller="Account" method="post" enctype="multipart/form-data" class="mt-3">
         @Html.AntiForgeryToken()
         <input type="hidden" name="docType" value="@docType">
         <div class="input-group input-group-sm">
             <input type="file" name="docFile" class="form-control form-control-sm"
                    accept=".jpg,.jpeg,.png,.pdf" required>
             <button type="submit" class="btn btn-sm btn-primary">
-                <i class="fas fa-upload"></i> @(hasDoc ? "Cập nhật" : "Tải lên")
+                <i class="fas fa-upload"></i> @(hasDoc ? "Thay thế" : "Tải lên")
             </button>
         </div>
         <div class="form-text">JPG, PNG hoặc PDF. Tối đa 5MB.</div>

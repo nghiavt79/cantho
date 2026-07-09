@@ -7,6 +7,7 @@
 @model TechExchangeApp.Areas.Cms.Controllers.NhaTuVanFormVm
 @{
     ViewData["Title"] = "Đăng ký Nhà tư vấn / Chuyên gia";
+    ViewData["AuthWorkspace"] = true;
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
@@ -26,16 +27,16 @@
     };
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 user-portal">
   <div class="row">
     <div class="col-md-3 col-lg-2">
       @await Html.PartialAsync("_AccountSidebar", sidebarData)
     </div>
-    <div class="col-md-9 col-lg-10">
+    <div class="col-md-9 col-lg-10 user-portal-main user-registration-form">
 
             <div class="d-flex align-items-center justify-content-between mb-3">
-                <h4 class="fw-bold mb-0">
-                    <i class="fas fa-user-tie me-2 text-primary"></i>
+                <h4 class="fw-bold mb-0" style="color:var(--up-navy);">
+                    <i class="fas fa-user-tie me-2" style="color:var(--up-primary);"></i>
                     @(ViewBag.IsUpdate == true ? "Cập nhật hồ sơ Nhà tư vấn" : "Đăng ký Nhà tư vấn / Chuyên gia")
                 </h4>
                 @if (ViewBag.IsUpdate == true && ViewBag.StatusTitle != null)
@@ -345,6 +346,7 @@
 
 
 @section Styles {
+<link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css" />
 <style>.ck-editor__editable { min-height: 200px; }</style>
 }

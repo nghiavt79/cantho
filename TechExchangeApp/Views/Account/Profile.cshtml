@@ -8,7 +8,8 @@
 @model TechExchangeApp.ViewModel.ProfileVm
 
 @{
-    ViewData["Title"] = "Thông tin cá nhân & Xác thực";
+    ViewData["Title"] = "Hồ sơ tài khoản";
+    ViewData["AuthWorkspace"] = true;
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
 
@@ -25,7 +26,7 @@
     string trustColor = trustScore >= 80 ? "success" : trustScore >= 50 ? "warning" : "danger";
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 user-portal">
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2">
@@ -33,7 +34,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="col-md-9 col-lg-10">
+        <div class="col-md-9 col-lg-10 user-portal-main user-profile">
 
             @if (TempData["SuccessMessage"] != null)
             {
@@ -50,33 +51,46 @@
                 </div>
             }
 
-            <!-- Trust Score Banner -->
-            <div class="card shadow-sm mb-4 border-0 bg-gradient" style="background:linear-gradient(135deg,#1a73e8,#0d47a1)">
-                <div class="card-body text-white py-3 px-4">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="flex-grow-1">
-                            <div class="fw-semibold mb-1">Độ tin cậy tài khoản · @trustScore%</div>
-                            <div class="progress" style="height:8px;background:rgba(255,255,255,.25)">
+            <!-- Page header -->
+            <div class="user-profile-header mb-3">
+                <h2 class="h4 mb-1" style="color:var(--up-navy);font-weight:700;">Hồ sơ tài khoản</h2>
+                <p class="mb-0">Quản lý thông tin cá nhân, doanh nghiệp và mức độ xác thực tài khoản.</p>
+            </div>
+
+            <!-- Profile completion card -->
+            <div class="card mb-4 border-0 user-profile-trust">
+                <div class="card-body">
+                    <div class="user-profile-trust-top">
+                        <img src="@Model.AvatarUrl" alt="Avatar" class="user-profile-trust-avatar">
+                        <div class="user-profile-trust-info">
+                            <div class="name">@Model.FullName</div>
+                            <div class="type">@(Model.AccountTypeId == 2 ? "Tài khoản doanh nghiệp" : "Tài khoản cá nhân")</div>
+                            <div class="email">@Model.Email</div>
+                        </div>
+                        <div class="user-profile-trust-score">
+                            <div class="label">Hồ sơ hoàn thiện · @trustScore%</div>
+                            <div class="progress">
                                 <div class="progress-bar bg-@trustColor" style="width:@trustScore%"></div>
                             </div>
                         </div>
-                        <div class="text-center">
-                            @if (Model.VerificationLevel >= 3)
-                            {
-                                <span class="badge bg-success fs-6 px-3 py-2"><i class="fas fa-shield-alt"></i> Đã xác thực</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning text-dark fs-6 px-3 py-2"><i class="fas fa-exclamation-triangle"></i> Chưa xác thực</span>
-                            }
-                        </div>
+                    </div>
+                    <div class="user-profile-trust-checklist">
+                        <span class="user-profile-trust-chip @(Model.EmailVerified ? "is-done" : "")">
+                            <i class="fas fa-@(Model.EmailVerified ? "check-circle" : "circle")"></i> Email
+                        </span>
+                        <span class="user-profile-trust-chip @(Model.PhoneVerified ? "is-done" : "")">
+                            <i class="fas fa-@(Model.PhoneVerified ? "check-circle" : "circle")"></i> Điện thoại
+                        </span>
+                        <span class="user-profile-trust-chip @(hasDoc ? "is-done" : "is-pending")">
+                            <i class="fas fa-@(hasDoc ? "check-circle" : "clock")"></i> Hồ sơ pháp lý
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div class="row g-4">
+            <div class="user-profile-grid">
                 <!-- Left: Basic Info -->
-                <div class="col-lg-6">
+                <div>
                     <div class="card shadow-sm h-100">
                         <div class="card-header bg-primary text-white">
                             <h5 class="mb-0"><i class="fas fa-user me-2"></i>Thông tin cơ bản</h5>
@@ -88,11 +102,11 @@
 
                                 <!-- Avatar -->
                                 <div class="text-center mb-4">
-                                    <img src="@Model.AvatarUrl" alt="Avatar" class="rounded-circle shadow"
-                                         id="avatarPreview" style="width:110px;height:110px;object-fit:cover;border:3px solid #0d6efd">
-                                    <div class="mt-2">
-                                        <label class="btn btn-sm btn-outline-primary" for="avatarInput">
-                                            <i class="fas fa-camera"></i> Đổi ảnh
+                                    <div class="user-profile-avatar-wrap">
+                                        <img src="@Model.AvatarUrl" alt="Avatar" class="rounded-circle user-profile-avatar"
+                                             id="avatarPreview">
+                                        <label class="user-profile-avatar-edit" for="avatarInput" title="Đổi ảnh đại diện" aria-label="Đổi ảnh đại diện">
+                                            <i class="fas fa-camera"></i>
                                         </label>
                                         <input type="file" name="avatar" id="avatarInput" class="d-none" accept="image/*">
                                     </div>
@@ -116,14 +130,14 @@
                                 <!-- Account Type -->
                                 <div class="mb-3">
                                     <label class="form-label">Loại tài khoản</label>
-                                    <div class="d-flex gap-3">
-                                        <div class="form-check">
+                                    <div class="user-profile-type-select">
+                                        <div class="form-check user-profile-type-option">
                                             <input class="form-check-input" type="radio" asp-for="AccountTypeId" value="1" id="typePersonal">
-                                            <label class="form-check-label" for="typePersonal"><i class="fas fa-user text-primary"></i> Cá nhân</label>
+                                            <label class="form-check-label" for="typePersonal"><i class="fas fa-user"></i> Cá nhân</label>
                                         </div>
-                                        <div class="form-check">
+                                        <div class="form-check user-profile-type-option">
                                             <input class="form-check-input" type="radio" asp-for="AccountTypeId" value="2" id="typeBusiness">
-                                            <label class="form-check-label" for="typeBusiness"><i class="fas fa-building text-info"></i> Doanh nghiệp</label>
+                                            <label class="form-check-label" for="typeBusiness"><i class="fas fa-building"></i> Doanh nghiệp</label>
                                         </div>
                                     </div>
                                 </div>
@@ -135,129 +149,147 @@
                             </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Lưu thay đổi</button>
-                                <a href="@Url.Action("ChangePassword","Account")" class="btn btn-outline-secondary ms-2"><i class="fas fa-key me-1"></i>Đổi mật khẩu</a>
+                                <a href="@Url.Action("ChangePassword","Account")" class="btn btn-outline-secondary ms-2"><i class="fas fa-shield-halved me-1"></i>Bảo mật &amp; mật khẩu</a>
                             </div>
                         </form>
                     </div>
                 </div>
 
                 <!-- Right: Verification -->
-                <div class="col-lg-6">
+                <div>
 
-                    <!-- Phone Verification -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
-                            <i class="fas fa-mobile-alt"></i>
-                            <span class="fw-semibold">Số điện thoại</span>
-                            @if (Model.PhoneVerified)
-                            {
-                                <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> Đã xác thực</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary ms-auto">Chưa xác thực</span>
-                            }
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Xác thực tài khoản</h5>
                         </div>
-                        <div class="card-body">
-                            <div class="input-group mb-2">
-                                <input type="tel" id="phoneInput" class="form-control"
-                                       placeholder="Nhập số điện thoại" value="@Model.PhoneNumber">
-                                <button class="btn btn-outline-primary" onclick="pv_savePhone()">Lưu SĐT</button>
+                        <div class="card-body p-0">
+
+                            <!-- Phone Verification -->
+                            <div class="user-profile-verify-section">
+                                <div class="user-profile-verify-section-header">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>Số điện thoại</span>
+                                    @if (Model.PhoneVerified)
+                                    {
+                                        <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> Đã xác thực</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary ms-auto">Chưa xác thực</span>
+                                    }
+                                </div>
+                                @if (Model.PhoneVerified)
+                                {
+                                    <p class="text-muted small mb-0">@Model.PhoneNumber</p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted small mb-2">Bảo vệ tài khoản và nhận mã OTP khi cần xác nhận giao dịch.</p>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-target="phoneVerifyForm" onclick="pv_toggleVerifyForm(this)">
+                                        <i class="fas fa-shield-halved"></i> Xác thực số điện thoại
+                                    </button>
+                                    <div id="phoneVerifyForm" class="mt-2 d-none">
+                                        <div class="input-group mb-2">
+                                            <input type="tel" id="phoneInput" class="form-control"
+                                                   placeholder="Nhập số điện thoại" value="@Model.PhoneNumber">
+                                            <button class="btn btn-outline-primary" onclick="pv_savePhone()">Lưu SĐT</button>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-1" id="btnSendPhoneOtp"
+                                                onclick="pv_sendPhoneOtp()" @(!string.IsNullOrEmpty(Model.PhoneNumber) ? "" : "disabled")>
+                                            <i class="fas fa-paper-plane"></i> Gửi mã OTP qua SMS
+                                        </button>
+                                        <div id="phoneOtpBox" class="mt-2 d-none">
+                                            <div class="input-group">
+                                                <input type="text" id="phoneOtpInput" class="form-control" placeholder="Nhập mã 6 số" maxlength="6">
+                                                <button class="btn btn-success" onclick="pv_verifyPhoneOtp()">Xác nhận</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                            @if (!Model.PhoneVerified)
-                            {
-                                <button class="btn btn-sm btn-primary mt-1" id="btnSendPhoneOtp"
-                                        onclick="pv_sendPhoneOtp()" @(!string.IsNullOrEmpty(Model.PhoneNumber) ? "" : "disabled")>
-                                    <i class="fas fa-paper-plane"></i> Gửi mã OTP qua SMS
-                                </button>
-                                <div id="phoneOtpBox" class="mt-2 d-none">
-                                    <div class="input-group">
-                                        <input type="text" id="phoneOtpInput" class="form-control" placeholder="Nhập mã 6 số" maxlength="6">
-                                        <button class="btn btn-success" onclick="pv_verifyPhoneOtp()">Xác nhận</button>
-                                    </div>
+
+                            <!-- Email Verification -->
+                            <div class="user-profile-verify-section">
+                                <div class="user-profile-verify-section-header">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Email</span>
+                                    @if (Model.EmailVerified)
+                                    {
+                                        <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> Đã xác thực</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary ms-auto">Chưa xác thực</span>
+                                    }
                                 </div>
-                            }
-                        </div>
-                    </div>
-
-                    <!-- Email Verification -->
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
-                            <i class="fas fa-envelope"></i>
-                            <span class="fw-semibold">Email</span>
-                            @if (Model.EmailVerified)
-                            {
-                                <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> Đã xác thực</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary ms-auto">Chưa xác thực</span>
-                            }
-                        </div>
-                        <div class="card-body">
-                            <p class="text-muted small mb-2">Email: <strong>@Model.Email</strong></p>
-                            @if (!Model.EmailVerified)
-                            {
-                                <button class="btn btn-sm btn-primary" id="btnSendEmailOtp"
-                                        onclick="pv_sendEmailOtp()">
-                                    <i class="fas fa-paper-plane"></i> Gửi mã OTP xác thực Email
-                                </button>
-                                <div id="emailOtpBox" class="mt-2 d-none">
-                                    <div class="input-group">
-                                        <input type="text" id="emailOtpInput" class="form-control" placeholder="Nhập mã 6 số" maxlength="6">
-                                        <button class="btn btn-success" onclick="pv_verifyEmailOtp()">Xác nhận</button>
+                                <p class="text-muted small mb-2">@Model.Email</p>
+                                @if (!Model.EmailVerified)
+                                {
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-target="emailVerifyForm" onclick="pv_toggleVerifyForm(this)">
+                                        <i class="fas fa-shield-halved"></i> Xác thực email
+                                    </button>
+                                    <div id="emailVerifyForm" class="mt-2 d-none">
+                                        <button class="btn btn-sm btn-primary" id="btnSendEmailOtp"
+                                                onclick="pv_sendEmailOtp()">
+                                            <i class="fas fa-paper-plane"></i> Gửi mã OTP xác thực Email
+                                        </button>
+                                        <div id="emailOtpBox" class="mt-2 d-none">
+                                            <div class="input-group">
+                                                <input type="text" id="emailOtpInput" class="form-control" placeholder="Nhập mã 6 số" maxlength="6">
+                                                <button class="btn btn-success" onclick="pv_verifyEmailOtp()">Xác nhận</button>
+                                            </div>
+                                        </div>
                                     </div>
+                                }
+                                else
+                                {
+                                    <div class="text-success small"><i class="fas fa-check-circle"></i> Email đã được xác thực</div>
+                                }
+                            </div>
+
+                            <!-- Document Upload -->
+                            <div class="user-profile-verify-section">
+                                <div class="user-profile-verify-section-header">
+                                    <i class="fas fa-id-card"></i>
+                                    <span>Tài liệu xác minh</span>
                                 </div>
-                            }
-                            else
-                            {
-                                <div class="text-success small"><i class="fas fa-check-circle"></i> Email đã được xác thực</div>
-                            }
+                                @{
+                                    // Personal: CCCD front + back
+                                    // Business: Business license
+                                    bool isBusiness = Model.AccountTypeId == 2;
+                                }
+
+                                @if (!isBusiness)
+                                {
+                                    <!-- CCCD Front -->
+                                    @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
+                                        { "DocType", 1 }, { "Label", "CCCD / CMND Mặt trước" },
+                                        { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 1) },
+                                        { "Icon", "fas fa-id-card" }
+                                    })
+                                    <!-- CCCD Back -->
+                                    @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
+                                        { "DocType", 2 }, { "Label", "CCCD / CMND Mặt sau" },
+                                        { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 2) },
+                                        { "Icon", "fas fa-id-card-alt" }
+                                    })
+                                }
+                                else
+                                {
+                                    <!-- Business License -->
+                                    @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
+                                        { "DocType", 3 }, { "Label", "Giấy phép kinh doanh" },
+                                        { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 3) },
+                                        { "Icon", "fas fa-file-contract" }
+                                    })
+                                }
+                            </div>
+
                         </div>
                     </div>
 
-                    <!-- Document Upload -->
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
-                            <i class="fas fa-id-card"></i>
-                            <span class="fw-semibold">Tài liệu xác minh</span>
-                        </div>
-                        <div class="card-body">
-                            @{
-                                // Personal: CCCD front + back
-                                // Business: Business license
-                                bool isBusiness = Model.AccountTypeId == 2;
-                            }
-
-                            @if (!isBusiness)
-                            {
-                                <!-- CCCD Front -->
-                                @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
-                                    { "DocType", 1 }, { "Label", "CCCD / CMND Mặt trước" },
-                                    { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 1) },
-                                    { "Icon", "fas fa-id-card" }
-                                })
-                                <!-- CCCD Back -->
-                                @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
-                                    { "DocType", 2 }, { "Label", "CCCD / CMND Mặt sau" },
-                                    { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 2) },
-                                    { "Icon", "fas fa-id-card-alt" }
-                                })
-                            }
-                            else
-                            {
-                                <!-- Business License -->
-                                @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
-                                    { "DocType", 3 }, { "Label", "Giấy phép kinh doanh" },
-                                    { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 3) },
-                                    { "Icon", "fas fa-file-contract" }
-                                })
-                            }
-                        </div>
-                    </div>
-
-                </div><!-- /col-lg-6 -->
-            </div><!-- /row -->
+                </div><!-- /Right column -->
+            </div><!-- /user-profile-grid -->
 
         </div><!-- /Main Content -->
     </div>
@@ -273,6 +305,14 @@
             reader.readAsDataURL(file);
         }
     });
+
+    function pv_toggleVerifyForm(btn) {
+        const target = document.getElementById(btn.dataset.target);
+        if (target) {
+            target.classList.remove('d-none');
+            btn.classList.add('d-none');
+        }
+    }
 
     function pv_toast(msg, type = 'success') {
         const t = document.createElement('div');
@@ -354,6 +394,10 @@
         }, 1000);
     }
 </script>
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
+}
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

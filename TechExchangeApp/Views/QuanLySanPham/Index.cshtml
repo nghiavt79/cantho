@@ -7,6 +7,7 @@
 @model List<TechExchangeApp.Areas.Cms.Controllers.SanPhamCNTBListItem>
 @{
     ViewData["Title"] = "Quản lý Sản phẩm / Công nghệ";
+    ViewData["AuthWorkspace"] = true;
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
@@ -41,7 +42,7 @@
     };
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 user-portal">
   <div class="row">
 
     @* Sidebar *@
@@ -50,15 +51,15 @@
     </div>
 
     @* Main *@
-    <div class="col-md-9 col-lg-10">
+    <div class="col-md-9 col-lg-10 user-portal-main user-product-list">
 
       <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-        <h4 class="fw-bold mb-0">
-          <i class="fas fa-box-open me-2 text-primary"></i>@ViewData["Title"]
+        <h4 class="fw-bold mb-0" style="color:var(--up-navy);">
+          <i class="fas fa-box-open me-2" style="color:var(--up-primary);"></i>@ViewData["Title"]
         </h4>
         <div class="d-flex gap-2">
           <div class="dropdown">
-            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
               <i class="fas fa-plus me-1"></i>Thêm mới
             </button>
             <ul class="dropdown-menu">
@@ -127,9 +128,10 @@
         <div class="card-body p-0">
           @if (!Model.Any())
           {
-            <div class="text-center py-5 text-muted">
-              <i class="fas fa-inbox fa-3x mb-3 d-block"></i>
-              Chưa có sản phẩm nào. Hãy thêm mới bằng nút <strong>Thêm mới</strong> bên trên.
+            <div class="empty-state">
+              <i class="fas fa-inbox empty-state-icon"></i>
+              <p class="empty-state-title">Chưa có sản phẩm nào</p>
+              <p class="empty-state-text mb-0">Hãy thêm mới bằng nút <strong>Thêm mới</strong> bên trên.</p>
             </div>
           }
           else
@@ -156,24 +158,24 @@
                         _ => $"/quan-ly-san-pham/cong-nghe/chinh-sua/{item.ID}"
                     };
                     <tr>
-                      <td class="text-muted small">@stt</td>
-                      <td>
+                      <td class="text-muted small" data-label="#">@stt</td>
+                      <td data-label="Tên sản phẩm">
                         <div class="fw-semibold">@item.Name</div>
                         @if (!string.IsNullOrEmpty(item.Code))
                         {
                           <small class="text-muted">Mã: @item.Code</small>
                         }
                       </td>
-                      <td>
+                      <td data-label="Loại">
                         <span class="badge bg-secondary">
                           <i class="@ProductTypeIcon(item.ProductType) me-1"></i>@ProductTypeLabel(item.ProductType)
                         </span>
                       </td>
-                      <td>
+                      <td data-label="Trạng thái">
                         <span class="badge @BadgeClass(item.StatusId)">@StatusLabel(item.StatusId)</span>
                       </td>
-                      <td class="small text-muted">@item.Created?.ToString("dd/MM/yyyy")</td>
-                      <td class="text-center">
+                      <td class="small text-muted" data-label="Ngày tạo">@item.Created?.ToString("dd/MM/yyyy")</td>
+                      <td class="text-center" data-label="Thao tác">
                         <a href="@editUrl" class="btn btn-outline-primary btn-sm" title="Chỉnh sửa">
                           <i class="fas fa-edit"></i>
                         </a>
@@ -225,6 +227,10 @@
     </div>
   </div>
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
+}
 
 @section Scripts {
 <script>

@@ -125,14 +125,27 @@
         }
     </ul>
 
+    @{
+        bool isAuthWorkspace = ViewData["AuthWorkspace"] as bool? == true;
+    }
     <div class="app-layout">
-        @await Html.PartialAsync("_Header")
+        @if (isAuthWorkspace)
+        {
+            @await Html.PartialAsync("_AuthTopbar")
+        }
+        else
+        {
+            @await Html.PartialAsync("_Header")
+        }
         <div class="">
             <main role="main">
                 @RenderBody()
             </main>
         </div>
-        @await Html.PartialAsync("_Footer")
+        @if (!isAuthWorkspace)
+        {
+            @await Html.PartialAsync("_Footer")
+        }
         <!-- Side Buttons -->
         @await Html.PartialAsync("_SideButtons")
         @await Component.InvokeAsync("AiChatBox")

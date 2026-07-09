@@ -7,11 +7,12 @@
 @model TechExchangeApp.Interfaces.ChatConversationDetailVm
 @{
     ViewData["Title"] = "Trò chuyện — " + Model.ProductName;
+    ViewData["AuthWorkspace"] = true;
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 user-portal">
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2">
@@ -19,11 +20,11 @@
         </div>
 
         <!-- Main Content -->
-        <div class="col-md-9 col-lg-10">
-            <div class="container-fluid py-2">
+        <div class="col-md-9 col-lg-10 user-portal-main">
+            <div class="chat-conversation">
 
                 @* Header *@
-                <div class="d-flex align-items-center mb-3 gap-2">
+                <div class="d-flex align-items-center mb-3 gap-2 chat-conversation-header">
                     <a href="/chat" class="btn btn-outline-secondary btn-sm">
                         <i class="fa fa-arrow-left"></i> Quay lại
                     </a>
@@ -41,13 +42,12 @@
 
                 @* Messages *@
                 <div id="chatMessages"
-                     class="card border-0 shadow-sm p-3 mb-3"
-                     style="height:450px; overflow-y:auto; background:#f8f9fa;">
+                     class="card border-0 shadow-sm p-3 mb-3 chat-conversation-messages">
 
                     @foreach (var m in Model.Messages)
                     {
                         <div class="d-flex mb-2 @(m.IsMe ? "justify-content-end" : "justify-content-start")">
-                            <div class="@(m.IsMe ? "bg-primary text-white" : "bg-white border") rounded px-3 py-2"
+                            <div class="@(m.IsMe ? "bg-primary text-white chat-bubble chat-bubble-out" : "bg-white border chat-bubble chat-bubble-in") rounded px-3 py-2"
                                  style="max-width:70%; word-wrap:break-word;">
                                 @if (!m.IsMe)
                                 {
@@ -70,7 +70,7 @@
                 </div>
 
                 @* Send form *@
-                <form id="chatSendForm" class="d-flex gap-2">
+                <form id="chatSendForm" class="d-flex gap-2 chat-conversation-composer">
                     <input type="text" id="chatInput"
                            class="form-control"
                            placeholder="Nhập tin nhắn..."
@@ -86,26 +86,10 @@
     </div>
 </div>
 
-<style>
-    /* Links in blue (sender) bubbles */
-    .bg-primary a {
-        color: #fff;
-        text-decoration: underline;
-        font-weight: 600;
-    }
-    .bg-primary a:hover {
-        color: #e0e7ff;
-    }
-    /* Links in white (receiver) bubbles */
-    .bg-white a {
-        color: #2563eb;
-        text-decoration: underline;
-        font-weight: 600;
-    }
-    .bg-white a:hover {
-        color: #1d4ed8;
-    }
-</style>
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/chat.css" asp-append-version="true" />
+}
 
 @section Scripts {
     <script>
@@ -172,7 +156,7 @@
                 const bubble = document.createElement('div');
                 bubble.className = 'd-flex mb-2 ' + (m.isMe ? 'justify-content-end' : 'justify-content-start');
 
-                const bgClass = m.isMe ? 'bg-primary text-white' : 'bg-white border';
+                const bgClass = m.isMe ? 'bg-primary text-white chat-bubble chat-bubble-out' : 'bg-white border chat-bubble chat-bubble-in';
                 const senderHtml = !m.isMe ? `<div class="fw-bold small text-secondary mb-1">${escapeHtml(m.senderName)}</div>` : '';
                 const msgHtml = m.isSystem ? `<em>${m.message}</em>` : `<span style="white-space:pre-wrap;">${escapeHtml(m.message)}</span>`;
 

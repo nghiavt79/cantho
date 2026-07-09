@@ -1,23 +1,64 @@
+@using TechExchangeApp.Interfaces
+@using Microsoft.AspNetCore.Identity
+@using TechExchangeApp.Entities
+@inject IAccountService AccountService
+@inject UserManager<ApplicationUser> UserManager
+
 @model TechExchangeApp.ViewModel.ProjectDetailWithStepsVm
 
 @{
     ViewData["Title"] = "Chi tiết dự án: " + Model.Project.ProjectName;
+    ViewData["AuthWorkspace"] = true;
+
+    var userId = int.Parse(UserManager.GetUserId(User)!);
+    var sidebarData = await AccountService.GetSidebarDataAsync(userId);
+
+    // Derived from the same visible-step data _ProjectStepsNav.cshtml uses —
+    // no new backend state, just a header-level summary of it.
+    var headerVisibleSteps = Model.Steps.Where(s => s.IsVisible).ToList();
+    var headerCompletedCount = headerVisibleSteps.Count(s => s.StatusId > 0);
+    var headerTotalVisible = headerVisibleSteps.Count;
+    var headerIsComplete = headerTotalVisible > 0 && headerCompletedCount == headerTotalVisible;
+
+    string projectStatusLabel = headerIsComplete
+        ? "Đã hoàn tất"
+        : headerCompletedCount > 0 ? "Đang xử lý" : "Chờ xử lý";
+    string projectStatusClass = headerIsComplete
+        ? "tx-project-status-done"
+        : headerCompletedCount > 0 ? "tx-project-status-progress" : "tx-project-status-pending";
+    string projectStatusIcon = headerIsComplete
+        ? "fa-circle-check" : headerCompletedCount > 0 ? "fa-spinner" : "fa-hourglass-half";
 }
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 user-portal project-detail">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2">
+      @await Html.PartialAsync("_AccountSidebar", sidebarData)
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 user-portal-main">
+
     <!-- Project Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="tx-project-header">
         <div>
-            <h2>@Model.Project.ProjectName</h2>
-            <p class="text-muted mb-0">
-                <i class="fas fa-code"></i> @Model.Project.ProjectCode
-            </p>
+            <a class="tx-project-back" asp-controller="Projects" asp-action="MyProjects">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Quay lại danh sách dự án
+            </a>
+            <div class="tx-project-title-row">
+                <h2 class="tx-project-title">@Model.Project.ProjectName</h2>
+                <span class="tx-project-status @projectStatusClass">
+                    <i class="fas @projectStatusIcon" aria-hidden="true"></i> @projectStatusLabel
+                </span>
+            </div>
+            <div class="tx-project-meta">
+                <span><i class="fas fa-code" aria-hidden="true"></i>@Model.Project.ProjectCode</span>
+                <span>•</span>
+                <span>Vai trò: <span class="tx-project-role">@(Model.UserRole == 1 ? "Bên mua" : Model.UserRole == 2 ? "Bên bán" : "Chuyên gia tư vấn")</span></span>
+            </div>
         </div>
-        <div class="d-flex align-items-center gap-2">
-            <span class="badge bg-secondary fs-6">
-                <i class="fas fa-user"></i> 
-                @(Model.UserRole == 1 ? "Buyer" : Model.UserRole == 2 ? "Seller" : "Consultant")
-            </span>
+        <div class="tx-project-actions">
             @if (Model.UserRole == 1)
             {
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#memberManagementModal">
@@ -32,8 +73,8 @@
 
     <!-- Dynamic Step Content Container -->
     <div id="step-content">
-        @await Html.PartialAsync($"Steps/_Step{Model.CurrentStep}", new TechExchangeApp.ViewModel.StepContentVm 
-        { 
+        @await Html.PartialAsync($"Steps/_Step{Model.CurrentStep}", new TechExchangeApp.ViewModel.StepContentVm
+        {
             ProjectId = Model.Project.Id,
             StepNumber = Model.CurrentStep,
             StepName = Model.Steps[Model.CurrentStep - 1].StepName,
@@ -43,20 +84,23 @@
             CurrentStep = Model.CurrentStep
         })
     </div>
-</div>
+
+    </div><!-- End Main Content -->
+  </div><!-- End row -->
+</div><!-- End container-fluid -->
 
 <!-- Include Edit Modal -->
 @await Html.PartialAsync("_StepEditModal")
 
 <!-- Member Management Modal -->
-<div class="modal fade" id="memberManagementModal" tabindex="-1" aria-labelledby="memberManagementModalLabel" aria-hidden="true">
+<div class="modal fade project-detail-modal" id="memberManagementModal" tabindex="-1" aria-labelledby="memberManagementModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header">
                 <h5 class="modal-title" id="memberManagementModalLabel">
                     <i class="fas fa-users"></i> Quản lý thành viên dự án
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="memberManagementModalBody">
                 <div class="text-center p-5">
@@ -67,6 +111,11 @@
         </div>
     </div>
 </div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/project-detail.css" asp-append-version="true" />
+}
 
 @section Scripts {
     <script>
