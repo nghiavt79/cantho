@@ -298,6 +298,18 @@ app.MapControllerRoute(
     defaults: new { controller = "Product", action = "AddToCart" }
 );
 
+app.MapControllerRoute(
+    name: "ocop_index",
+    pattern: "ocop",
+    defaults: new { controller = "Ocop", action = "Index" }
+);
+
+app.MapControllerRoute(
+    name: "ocop_detail",
+    pattern: "ocop/{slug}-{id:int}",
+    defaults: new { controller = "Ocop", action = "Detail" }
+);
+
 // 2. TimKiemDoiTac Routes
 app.MapControllerRoute(
     name: "tkdt_index_clean",

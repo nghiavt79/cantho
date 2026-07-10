@@ -1,0 +1,138 @@
+@model TechExchangeApp.ViewModel.OcopDetailViewModel
+@{
+    var p = Model.Product;
+    ViewData["Title"] = p.Name;
+
+    string ProductImage(TechExchangeApp.Entities.SanPhamCNTB x) => Html.CookedImageURL("600-400", x.QuyTrinhHinhAnh);
+    string ThumbImage(TechExchangeApp.Entities.SanPhamCNTB x) => Html.CookedImageURL("254-170", x.QuyTrinhHinhAnh);
+
+    string RelatedUrl(TechExchangeApp.Entities.SanPhamCNTB x) =>
+        $"{Html.MainDomain()}ocop/{Html.MakeURLFriendly(x.Name)}-{x.ID}";
+
+    string Stars(int? soSao)
+    {
+        var n = Math.Clamp(soSao ?? 0, 0, 5);
+        return new string('★', n) + new string('☆', 5 - n);
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ocop.css" asp-append-version="true" />
+}
+
+<div class="columns-container tech-page">
+    <div class="container" id="columns">
+        <div class="center_column" id="center_column">
+            <div class="ocop-page">
+                <div class="container" style="padding-top: 28px;">
+                    <nav class="tech-breadcrumb" aria-label="breadcrumb">
+                        <a href="@Html.MainDomain()">Trang chủ</a>
+                        <span>/</span>
+                        <a href="@(Html.MainDomain())ocop">OCOP</a>
+                        <span>/</span>
+                        <strong>@p.Name</strong>
+                    </nav>
+
+                    <div class="ocop-detail">
+                        <div>
+                            <div class="ocop-detail__gallery">
+                                <img src="@ProductImage(p)" alt="@p.Name" />
+                                @if (p.SoSaoOCOP is > 0)
+                                {
+                                    <span class="ocop-detail__stars">@Stars(p.SoSaoOCOP)</span>
+                                }
+                            </div>
+
+                            <h1 class="ocop-detail__name">@p.Name</h1>
+                            @if (!string.IsNullOrWhiteSpace(p.XuatXu))
+                            {
+                                <div class="ocop-detail__origin"><i class="bi bi-geo-alt-fill"></i> @p.XuatXu</div>
+                            }
+
+                            <p class="ocop-detail__desc">@(string.IsNullOrWhiteSpace(p.MoTa) ? "Đang cập nhật thông tin sản phẩm." : p.MoTa)</p>
+
+                            <div class="ocop-cert-badges">
+                                @if (!string.IsNullOrWhiteSpace(p.ChungNhanKhacText))
+                                {
+                                    <span class="ocop-cert-badge"><i class="bi bi-patch-check-fill"></i> @p.ChungNhanKhacText</span>
+                                }
+                                @if (p.ChungNhanISO == true)
+                                {
+                                    <span class="ocop-cert-badge"><i class="bi bi-patch-check-fill"></i> ISO</span>
+                                }
+                                @if (p.ChungNhanQuatest == true)
+                                {
+                                    <span class="ocop-cert-badge"><i class="bi bi-patch-check-fill"></i> Quatest</span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="ocop-trace-panel">
+                            <div class="ocop-trace-panel__head"><i class="bi bi-check-circle-fill"></i> Đã xác thực nguồn gốc</div>
+
+                            <div class="ocop-qr-box">
+                                <img src="@Model.QrDataUri" alt="Mã QR truy xuất nguồn gốc" />
+                            </div>
+                            <div class="ocop-qr-caption">Quét mã để xem lại hồ sơ truy xuất này</div>
+
+                            @if (!string.IsNullOrWhiteSpace(p.MaTruyXuat))
+                            {
+                                <div class="ocop-trace-row"><span class="k">Mã truy xuất</span><span class="v">@p.MaTruyXuat</span></div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(p.HoTen))
+                            {
+                                <div class="ocop-trace-row"><span class="k">Đơn vị sản xuất</span><span class="v">@p.HoTen</span></div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(p.DiaChi))
+                            {
+                                <div class="ocop-trace-row"><span class="k">Địa chỉ</span><span class="v">@p.DiaChi</span></div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(p.XuatXu))
+                            {
+                                <div class="ocop-trace-row"><span class="k">Vùng nguyên liệu</span><span class="v">@p.XuatXu</span></div>
+                            }
+                            @if (p.SoSaoOCOP is > 0)
+                            {
+                                <div class="ocop-trace-row"><span class="k">Xếp hạng</span><span class="v">OCOP @p.SoSaoOCOP sao</span></div>
+                            }
+                            @if (p.Modified.HasValue)
+                            {
+                                <div class="ocop-trace-row"><span class="k">Cập nhật</span><span class="v">@p.Modified.Value.ToString("dd/MM/yyyy")</span></div>
+                            }
+                        </div>
+                    </div>
+
+                    @if (Model.RelatedProducts.Any())
+                    {
+                        <div class="ocop-section-head">
+                            <h2>Sản phẩm OCOP khác</h2>
+                        </div>
+                        <div class="ocop-related-grid" style="margin-bottom: 40px;">
+                            @foreach (var rp in Model.RelatedProducts)
+                            {
+                                <a class="ocop-card" href="@RelatedUrl(rp)">
+                                    <div class="thumb">
+                                        <img src="@ThumbImage(rp)" alt="@rp.Name" />
+                                        @if (rp.SoSaoOCOP is > 0)
+                                        {
+                                            <span class="stars">@Stars(rp.SoSaoOCOP)</span>
+                                        }
+                                    </div>
+                                    <div class="body">
+                                        <div class="name">@rp.Name</div>
+                                        @if (!string.IsNullOrWhiteSpace(rp.XuatXu))
+                                        {
+                                            <div class="origin"><i class="bi bi-geo-alt-fill"></i> @rp.XuatXu</div>
+                                        }
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+
+                    <a class="ocop-back-link" href="@(Html.MainDomain())ocop"><i class="bi bi-arrow-left"></i> Quay lại Góc trưng bày OCOP</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

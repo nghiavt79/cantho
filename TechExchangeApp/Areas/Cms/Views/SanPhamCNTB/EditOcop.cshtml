@@ -1,0 +1,198 @@
+@model TechExchangeApp.Areas.Cms.Controllers.SanPhamCNTBFormVm
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "Sửa sản phẩm OCOP";
+}
+
+<style>
+    .ck-editor__editable { min-height: 220px !important; }
+    .star-picker .btn-check:checked + label { background: #F59E0B; border-color: #F59E0B; color: #3A2205; }
+</style>
+
+<div class="card card-outline card-primary shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-pen-to-square me-1"></i> @ViewData["Title"]</h3>
+    </div>
+    <form asp-action="Edit" method="post" id="frmOcop">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="ProductType" />
+        <input type="hidden" asp-for="Code" />
+        <input type="hidden" asp-for="StatusId" />
+        <input type="hidden" asp-for="SiteId" />
+        <input type="hidden" asp-for="MaTruyXuat" />
+
+        <div class="card-body">
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle me-1"></i> Vui lòng kiểm tra lại thông tin bên dưới.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.MaTruyXuat))
+            {
+                <div class="alert alert-info d-flex align-items-center gap-2">
+                    <i class="fas fa-qrcode"></i>
+                    <div>Mã truy xuất: <strong>@Model.MaTruyXuat</strong> — xem trang truy xuất tại <a href="/ocop/@(Html.MakeURLFriendly(Model.Name))-@Model.ID" target="_blank">/ocop/@(Html.MakeURLFriendly(Model.Name))-@Model.ID</a></div>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">1. Tên sản phẩm OCOP <span class="text-danger">*</span></label>
+                <input asp-for="Name" class="form-control" placeholder="VD: Mật ong hoa nhãn Phong Điền" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">2. Ảnh đại diện <span class="text-danger">*</span></label>
+                <span asp-validation-for="QuyTrinhHinhAnh" class="text-danger small d-block mb-2"></span>
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <input asp-for="QuyTrinhHinhAnh" class="form-control" id="txtImageUrl" placeholder="URL ảnh đại diện..." />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="btn btn-outline-primary w-100" id="btnUploadImage">
+                            <i class="fas fa-upload me-1"></i> Upload
+                            <input type="file" accept="image/*" id="fileUploadImage" class="d-none" />
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <div id="imgPreview" class="border rounded text-center p-1" style="min-height:80px; background:#f8f9fa;">
+                            @if (!string.IsNullOrEmpty(Model.QuyTrinhHinhAnh))
+                            {
+                                <img src="@Model.QuyTrinhHinhAnh" class="img-fluid rounded" style="max-height:80px;" />
+                            }
+                            else
+                            {
+                                <small class="text-muted"><i class="fas fa-image"></i> Preview</small>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">3. Xuất xứ / Vùng nguyên liệu <span class="text-danger">*</span></label>
+                    <span asp-validation-for="XuatXu" class="text-danger small d-block mb-2"></span>
+                    <input asp-for="XuatXu" class="form-control" placeholder="VD: Phong Điền, Cần Thơ" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">4. Đơn vị / HTX sản xuất</label>
+                    <input asp-for="HoTen" class="form-control" placeholder="VD: HTX Ong mật Phong Điền" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">5. Địa chỉ sản xuất</label>
+                <input asp-for="DiaChi" class="form-control" placeholder="Địa chỉ cụ thể của đơn vị sản xuất..." />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">6. Hạng sao OCOP <span class="text-danger">*</span></label>
+                <span asp-validation-for="SoSaoOCOP" class="text-danger small d-block mb-2"></span>
+                <div class="star-picker btn-group" role="group">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        var isChecked = Model.SoSaoOCOP == i;
+                        <input type="radio" class="btn-check" name="SoSaoOCOP" id="sao@(i)" value="@i" @(isChecked ? "checked" : "") autocomplete="off" />
+                        <label class="btn btn-outline-warning" for="sao@(i)">@i <i class="fas fa-star"></i></label>
+                    }
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">7. Mô tả ngắn</label>
+                <textarea asp-for="MoTaNgan" class="form-control" rows="2" placeholder="Mô tả ngắn gọn hiển thị ở danh sách/thẻ sản phẩm..."></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">8. Mô tả chi tiết</label>
+                <textarea asp-for="MoTa" id="editorMoTa" class="form-control ck-editor-field" rows="15"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">9. Chứng nhận</label>
+                <div class="form-check mb-2">
+                    <input asp-for="ChungNhanKhac" class="form-check-input" type="checkbox" id="chkCNKhac" />
+                    <label class="form-check-label" for="chkCNKhac">Có chứng nhận (OCOP / VietGAP / ISO...)</label>
+                </div>
+                <div id="cnKhacTextBox" style="display:none;">
+                    <input asp-for="ChungNhanKhacText" class="form-control" placeholder="VD: OCOP 4 sao, VietGAP" />
+                </div>
+            </div>
+
+        </div><!-- /card-body -->
+
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-save me-1"></i> Lưu sản phẩm
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+<script>
+$(function(){
+
+    $('#chkCNKhac').on('change', function(){
+        $('#cnKhacTextBox').toggle(this.checked);
+        if (!this.checked) $('#ChungNhanKhacText').val('');
+    });
+    if ($('#chkCNKhac').is(':checked')) $('#cnKhacTextBox').show();
+
+    // Image upload
+    $('#fileUploadImage').on('change', function(){
+        var file = this.files[0];
+        if (!file) return;
+        var fd = new FormData();
+        fd.append('upload', file);
+        $.ajax({
+            url: '/cms/Upload/UploadImage',
+            type: 'POST',
+            data: fd,
+            processData: false,
+            contentType: false,
+            success: function(res) {
+                if (res && res.url) {
+                    $('#txtImageUrl').val(res.url);
+                    $('#imgPreview').html('<img src="' + res.url + '" class="img-fluid rounded" style="max-height:80px;" />');
+                } else if (res && res.error) {
+                    alert(res.error.message);
+                }
+            },
+            error: function() { alert('Upload thất bại. Vui lòng thử lại.'); }
+        });
+    });
+
+    // CKEditor for MoTa
+    var ckInstances = {};
+    CKEDITOR.ClassicEditor.create(document.getElementById('editorMoTa'), {
+        simpleUpload: { uploadUrl: '/cms/Upload/Upload', withCredentials: true },
+        toolbar: ['heading', '|', 'bold', 'italic', '|', 'link', 'bulletedList', 'numberedList', '|', 'imageUpload', 'blockQuote', 'insertTable', 'undo', 'redo'],
+        removePlugins: [
+            'ExportPdf','ExportWord','AIAssistant','CKBox','CKFinder','EasyImage',
+            'MultiLevelList','RealTimeCollaborativeComments','RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory','PresenceList','Comments','TrackChanges',
+            'TrackChangesData','RevisionHistory','Pagination','WProofreader','MathType',
+            'SlashCommand','Template','DocumentOutline','FormatPainter','TableOfContents',
+            'PasteFromOfficeEnhanced','CaseChange'
+        ]
+    }).then(function(editor){ ckInstances['editorMoTa'] = editor; }).catch(function(err){ console.error(err); });
+
+    $('#frmOcop').on('submit', function(){
+        Object.keys(ckInstances).forEach(function(id){
+            document.getElementById(id).value = ckInstances[id].getData();
+        });
+    });
+
+});
+</script>
+}

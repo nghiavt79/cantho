@@ -38,6 +38,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         private const int TypeCongNghe = 1;
         private const int TypeThietBi = 2;
         private const int TypeSanPhamTriTue = 3;
+        private const int TypeOcop = 4;
         private const int LogFunctionId = 2; // SanPhamCNTB
 
         private async Task WriteLog(int eventId, string content)
@@ -93,6 +94,18 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             int page = 1, int pageSize = 15)
             => ListByType(TypeSanPhamTriTue, "SanPhamTriTue", "Quản lý Sản phẩm trí tuệ",
                 keyword, statusId, ncuId, xuatXuId, siteId, creator, linhVuc, null, categoryId, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
+
+        // ─────────────────────────────────────────
+        // LIST: OCOP
+        // ─────────────────────────────────────────
+        [HttpGet]
+        public Task<IActionResult> Ocop(string? keyword, int? statusId, int? siteId,
+            string? creator,
+            DateTime? createdFrom, DateTime? createdTo,
+            string? sortBy, string? sortDir,
+            int page = 1, int pageSize = 15)
+            => ListByType(TypeOcop, "Ocop", "Quản lý OCOP",
+                keyword, statusId, null, null, siteId, creator, null, null, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
 
         // ─────────────────────────────────────────
         // EXPORT EXCEL: Công nghệ
@@ -387,7 +400,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             var pt = productType ?? TypeCongNghe;
 
             // Auto-generate Code
-            var prefix = pt switch { TypeThietBi => "TB", TypeSanPhamTriTue => "TT", _ => "CN" };
+            var prefix = pt switch { TypeThietBi => "TB", TypeSanPhamTriTue => "TT", TypeOcop => "OCOP", _ => "CN" };
             var maxId = await _context.SanPhamCNTBs
                 .Where(x => x.ProductType == pt)
                 .MaxAsync(x => (int?)x.ID) ?? 0;
@@ -434,11 +447,25 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 // Auto-generate Code if empty
                 if (string.IsNullOrWhiteSpace(entity.Code))
                 {
-                    var prefix = model.ProductType switch { 2 => "TB", 3 => "TT", _ => "CN" };
+                    var prefix = model.ProductType switch { 2 => "TB", 3 => "TT", TypeOcop => "OCOP", _ => "CN" };
                     var maxId = await _context.SanPhamCNTBs
                         .Where(x => x.ProductType == model.ProductType)
                         .MaxAsync(x => (int?)x.ID) ?? 0;
                     entity.Code = $"{prefix}-{(maxId + 1):D5}";
+                }
+
+                // Auto-generate MaTruyXuat for OCOP if empty
+                if (model.ProductType == TypeOcop && string.IsNullOrWhiteSpace(entity.MaTruyXuat))
+                {
+                    var existingSuffixes = await _context.SanPhamCNTBs
+                        .Where(x => x.ProductType == TypeOcop && x.MaTruyXuat != null && x.MaTruyXuat.StartsWith("OCOP-CT-"))
+                        .Select(x => x.MaTruyXuat!.Substring(8))
+                        .ToListAsync();
+                    var nextNum = existingSuffixes
+                        .Select(s => int.TryParse(s, out var n) ? n : 0)
+                        .DefaultIfEmpty(0)
+                        .Max() + 1;
+                    entity.MaTruyXuat = $"OCOP-CT-{nextNum:D3}";
                 }
 
                 // Auto-generate QueryString (slug) from Name
@@ -668,6 +695,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 case TypeSanPhamTriTue:
                     // SoBang is no longer required — removed from SanPhamTriTue form
                     break;
+                case TypeOcop:
+                    if (!model.SoSaoOCOP.HasValue)
+                        ModelState.AddModelError("SoSaoOCOP", "Hạng sao OCOP là bắt buộc.");
+                    break;
             }
         }
 
@@ -742,6 +773,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         {
             TypeThietBi => "CreateThietBi",
             TypeSanPhamTriTue => "CreateSanPhamTriTue",
+            TypeOcop => "CreateOcop",
             _ => "CreateCongNghe"
         };
 
@@ -749,6 +781,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         {
             TypeThietBi => "EditThietBi",
             TypeSanPhamTriTue => "EditSanPhamTriTue",
+            TypeOcop => "EditOcop",
             _ => "EditCongNghe"
         };
 
@@ -756,6 +789,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         {
             TypeThietBi => "DetailThietBi",
             TypeSanPhamTriTue => "DetailSanPhamTriTue",
+            TypeOcop => "DetailOcop",
             _ => "Detail"
         };
 
@@ -763,6 +797,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         {
             TypeThietBi => RedirectToAction(nameof(ThietBi)),
             TypeSanPhamTriTue => RedirectToAction(nameof(SanPhamTriTue)),
+            TypeOcop => RedirectToAction(nameof(Ocop)),
             _ => RedirectToAction(nameof(CongNghe))
         };
 
@@ -825,7 +860,9 @@ ChungNhanKhac = m.ChungNhanKhac,
 ChungNhanKhacText = m.ChungNhanKhacText,
 DevelopmentStageValue = m.DevelopmentStageValue,
 InvestmentGoal = m.InvestmentGoal,
-InvestmentGoalKhac = m.InvestmentGoalKhac
+InvestmentGoalKhac = m.InvestmentGoalKhac,
+SoSaoOCOP = m.SoSaoOCOP,
+MaTruyXuat = m.MaTruyXuat
     };
         internal static void ApplyEdit(SanPhamCNTB e, SanPhamCNTBFormVm m)
     {
@@ -886,6 +923,8 @@ e.ChungNhanKhacText = m.ChungNhanKhacText;
 e.DevelopmentStageValue = m.DevelopmentStageValue;
 e.InvestmentGoal = m.InvestmentGoal;
 e.InvestmentGoalKhac = m.InvestmentGoalKhac;
+e.SoSaoOCOP = m.SoSaoOCOP;
+if (!string.IsNullOrWhiteSpace(m.MaTruyXuat)) e.MaTruyXuat = m.MaTruyXuat;
     }
         internal static SanPhamCNTBFormVm BuildFormVm(SanPhamCNTB p) => new()
     {
@@ -948,7 +987,9 @@ ChungNhanKhac = p.ChungNhanKhac ?? false,
 ChungNhanKhacText = p.ChungNhanKhacText,
 DevelopmentStageValue = p.DevelopmentStageValue,
 InvestmentGoal = p.InvestmentGoal,
-InvestmentGoalKhac = p.InvestmentGoalKhac
+InvestmentGoalKhac = p.InvestmentGoalKhac,
+SoSaoOCOP = p.SoSaoOCOP,
+MaTruyXuat = p.MaTruyXuat
     };
     }
 
@@ -1061,5 +1102,9 @@ InvestmentGoalKhac = p.InvestmentGoalKhac
         public int? DevelopmentStageValue { get; set; }
         public string? InvestmentGoal { get; set; }
         public string? InvestmentGoalKhac { get; set; }
+
+        // ── OCOP dedicated fields ──
+        public int? SoSaoOCOP { get; set; }
+        public string? MaTruyXuat { get; set; }
     }
 }

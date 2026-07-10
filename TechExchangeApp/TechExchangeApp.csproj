@@ -32,6 +32,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
     <PackageReference Include="System.Text.Json" Version="10.0.3" />
     <!-- Twilio removed: use StubSmsSender. Re-add when SMS is needed: <PackageReference Include="Twilio" Version="7.4.0" /> -->

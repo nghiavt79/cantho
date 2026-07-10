@@ -130,7 +130,13 @@ namespace TechExchangeApp.Entities
         public string? InvestmentGoal { get; set; }
         public string? InvestmentGoalKhac { get; set; }
 
-        /// <summary>1 = CongNghe, 2 = ThietBi, 3 = SanPhamTriTue</summary>
+        /// <summary>1 = CongNghe, 2 = ThietBi, 3 = SanPhamTriTue, 4 = SanPhamOCOP</summary>
         public int ProductType { get; set; } = 1;
+
+        // ── Góc trưng bày OCOP & Truy xuất nguồn gốc ──
+        /// <summary>Hạng sao OCOP (1-5), chỉ áp dụng khi ProductType == 4</summary>
+        public int? SoSaoOCOP { get; set; }
+        public string? MaTruyXuat { get; set; }
+        public string? QRCodeUrl { get; set; }
     }
 }

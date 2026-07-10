@@ -197,6 +197,37 @@
     font-weight: 800;
 }
 
+.site-header-v2__ocop-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #3A2205 !important;
+    background: var(--te-warning);
+    font-weight: 800;
+    padding: 7px 14px !important;
+    border-radius: 999px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.site-header-v2__ocop-link:hover {
+    color: #3A2205 !important;
+    background: #E08E0B;
+}
+
+.site-header-v2__ocop-link i {
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.site-menu-offcanvas__nav .site-menu-offcanvas__ocop {
+    color: #3A2205;
+    background: var(--te-warning);
+    border-radius: 8px;
+    font-weight: 800;
+    padding: 10px 12px !important;
+}
+
 .site-header-v2__menu-item {
     position: relative;
 }

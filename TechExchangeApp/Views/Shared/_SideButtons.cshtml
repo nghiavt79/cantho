@@ -10,9 +10,9 @@
             <button type="button" class="action-dock__btn" data-ai-chat-toggle data-tooltip="@T("Chat hỗ trợ", "Support chat")">
                 <i class="bi bi-chat-dots-fill"></i>
             </button>
-            <button type="button" class="action-dock__btn" data-bs-toggle="modal" data-bs-target="#vrTourModal" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")">
+            <a class="action-dock__btn" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")">
                 <i class="bi bi-badge-vr"></i>
-            </button>
+            </a>
         </div>
 
         <div class="action-dock__divider" aria-hidden="true"></div>
@@ -32,23 +32,9 @@
     </button>
 </div>
 
-<button type="button" class="action-dock-vr-shortcut" data-bs-toggle="modal" data-bs-target="#vrTourModal" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")" aria-label="@T("Trải nghiệm VR360°", "VR360° experience")">
+<a class="action-dock-vr-shortcut" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")" aria-label="@T("Trải nghiệm VR360°", "VR360° experience")">
     <i class="bi bi-badge-vr"></i>
-</button>
-
-<div class="modal fade" id="vrTourModal" tabindex="-1" aria-labelledby="vrTourModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="vrTourModalLabel">@T("Trải nghiệm VR360° - Sàn Giao Dịch Công Nghệ", "VR360° Experience - Technology Exchange Floor")</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@T("Đóng", "Close")"></button>
-            </div>
-            <div class="modal-body p-0">
-                <div id="vrTourFrameWrap" class="vr-tour-frame-wrap"></div>
-            </div>
-        </div>
-    </div>
-</div>
+</a>
 
 <script>
     (function () {
@@ -64,29 +50,5 @@
             toggleVisibility();
             window.addEventListener('scroll', toggleVisibility, { passive: true });
         }
-
-        var modal = document.getElementById('vrTourModal');
-        if (!modal) return;
-        var wrap = document.getElementById('vrTourFrameWrap');
-        var vrUrl = '@vrTourUrl';
-
-        modal.addEventListener('shown.bs.modal', function () {
-            if (!wrap.querySelector('iframe')) {
-                var iframe = document.createElement('iframe');
-                iframe.title = 'Sàn Giao Dịch Công Nghệ';
-                iframe.src = vrUrl;
-                iframe.width = '100%';
-                iframe.height = '400';
-                iframe.frameBorder = '0';
-                iframe.scrolling = 'no';
-                iframe.allow = 'vr; gyroscope; accelerometer';
-                iframe.loading = 'eager';
-                wrap.appendChild(iframe);
-            }
-        });
-
-        modal.addEventListener('hidden.bs.modal', function () {
-            wrap.innerHTML = '';
-        });
     })();
 </script>

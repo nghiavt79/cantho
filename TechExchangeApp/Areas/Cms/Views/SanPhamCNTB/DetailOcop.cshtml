@@ -1,0 +1,75 @@
+@model TechExchangeApp.Entities.SanPhamCNTB
+@{
+    ViewData["Title"] = ViewData["Title"] ?? $"Chi tiết: {Model.Name}";
+    string Stars(int? soSao)
+    {
+        var n = Math.Clamp(soSao ?? 0, 0, 5);
+        return new string('★', n) + new string('☆', 5 - n);
+    }
+}
+
+<div class="card card-outline card-info shadow-sm">
+    <div class="card-header d-flex align-items-center">
+        <h3 class="card-title mb-0"><i class="fas fa-info-circle me-1"></i> @ViewData["Title"]</h3>
+        <div class="ms-auto">
+            <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-sm btn-primary">
+                <i class="fas fa-pen-to-square me-1"></i> Sửa
+            </a>
+            <a href="javascript:history.back()" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Quay lại
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-4">
+                @if (!string.IsNullOrEmpty(Model.QuyTrinhHinhAnh))
+                {
+                    <img src="@Html.CookedImageURL("400-300", Model.QuyTrinhHinhAnh)" class="img-fluid rounded border" alt="@Model.Name" />
+                }
+                else
+                {
+                    <div class="border rounded d-flex align-items-center justify-content-center text-muted" style="height:220px;background:#f8f9fa;">
+                        <i class="fas fa-image fa-2x"></i>
+                    </div>
+                }
+            </div>
+            <div class="col-md-8">
+                <h4 class="mb-1">@Model.Name</h4>
+                <div class="text-warning mb-2" style="letter-spacing:2px;">@Stars(Model.SoSaoOCOP) <span class="text-muted small">(OCOP @(Model.SoSaoOCOP ?? 0) sao)</span></div>
+
+                <table class="table table-sm table-borderless mb-3">
+                    <tbody>
+                        <tr><td class="text-muted" style="width:180px;">Mã sản phẩm</td><td class="fw-semibold">@Model.Code</td></tr>
+                        <tr><td class="text-muted">Mã truy xuất</td><td class="fw-semibold">@(Model.MaTruyXuat ?? "—")</td></tr>
+                        <tr><td class="text-muted">Xuất xứ / Vùng nguyên liệu</td><td>@(Model.XuatXu ?? "—")</td></tr>
+                        <tr><td class="text-muted">Đơn vị / HTX sản xuất</td><td>@(Model.HoTen ?? "—")</td></tr>
+                        <tr><td class="text-muted">Địa chỉ</td><td>@(Model.DiaChi ?? "—")</td></tr>
+                        <tr><td class="text-muted">Chứng nhận</td><td>@(Model.ChungNhanKhac == true ? (Model.ChungNhanKhacText ?? "Có") : "—")</td></tr>
+                    </tbody>
+                </table>
+
+                @if (!string.IsNullOrWhiteSpace(Model.MaTruyXuat))
+                {
+                    <a href="/ocop/@(Html.MakeURLFriendly(Model.Name))-@Model.ID" target="_blank" class="btn btn-sm btn-outline-info mb-3">
+                        <i class="fas fa-qrcode me-1"></i> Xem trang truy xuất nguồn gốc
+                    </a>
+                }
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.MoTaNgan))
+        {
+            <hr />
+            <h6 class="fw-bold text-primary">Mô tả ngắn</h6>
+            <p>@Model.MoTaNgan</p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.MoTa))
+        {
+            <hr />
+            <h6 class="fw-bold text-primary">Mô tả chi tiết</h6>
+            <div>@Html.Raw(Model.MoTa)</div>
+        }
+    </div>
+</div>

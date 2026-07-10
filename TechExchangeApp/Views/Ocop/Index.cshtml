@@ -1,0 +1,106 @@
+@model TechExchangeApp.ViewModel.OcopIndexViewModel
+@{
+    ViewData["Title"] = "Góc trưng bày Sản phẩm OCOP & Truy xuất nguồn gốc";
+
+    string ProductImage(TechExchangeApp.Entities.SanPhamCNTB p) => Html.CookedImageURL("254-170", p.QuyTrinhHinhAnh);
+
+    string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
+        $"{Html.MainDomain()}ocop/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
+
+    string Stars(int? soSao)
+    {
+        var n = Math.Clamp(soSao ?? 0, 0, 5);
+        return new string('★', n) + new string('☆', 5 - n);
+    }
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ocop.css" asp-append-version="true" />
+}
+
+<div class="columns-container tech-page">
+    <div class="container" id="columns">
+        <div class="center_column" id="center_column">
+            <div class="ocop-page">
+                <div class="ocop-hero">
+                    <div class="container">
+                        <nav class="tech-breadcrumb" aria-label="breadcrumb">
+                            <a href="@Html.MainDomain()">Trang chủ</a>
+                            <span>/</span>
+                            <strong>OCOP</strong>
+                        </nav>
+                        <div class="ocop-eyebrow">Góc trưng bày</div>
+                        <h1>Sản phẩm OCOP &amp; Truy xuất nguồn gốc</h1>
+                        <p>Đặc sản, nông sản và sản phẩm thủ công đạt chứng nhận OCOP của Cần Thơ — mỗi sản phẩm gắn một mã truy xuất riêng để xác thực đơn vị sản xuất, vùng nguyên liệu và chứng nhận chất lượng.</p>
+                        <div class="ocop-stats">
+                            <span><strong>@Model.TotalProducts</strong>Sản phẩm OCOP</span>
+                            <span><strong>@Model.TotalTraceable</strong>Có mã truy xuất</span>
+                            <span><strong>@Model.TotalOrigins</strong>Vùng nguyên liệu</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="ocop-howto">
+                        <div class="step">
+                            <span class="n">1</span>
+                            <h3>Quét mã QR</h3>
+                            <p>Quét mã QR trên bao bì hoặc tại quầy trưng bày sản phẩm.</p>
+                        </div>
+                        <div class="step">
+                            <span class="n">2</span>
+                            <h3>Xem hồ sơ nguồn gốc</h3>
+                            <p>Xem thông tin đơn vị sản xuất, vùng nguyên liệu, ngày đóng gói.</p>
+                        </div>
+                        <div class="step">
+                            <span class="n">3</span>
+                            <h3>Xác thực chứng nhận</h3>
+                            <p>Đối chiếu chứng nhận OCOP, VietGAP và các tiêu chuẩn liên quan.</p>
+                        </div>
+                    </div>
+
+                    <div class="ocop-section-head">
+                        <h2>Sản phẩm OCOP nổi bật</h2>
+                    </div>
+
+                    <div class="ocop-grid">
+                        @if (Model.Products.Any())
+                        {
+                            @foreach (var p in Model.Products)
+                            {
+                                <a class="ocop-card" href="@ProductUrl(p)">
+                                    <div class="thumb">
+                                        <img src="@ProductImage(p)" alt="@p.Name" />
+                                        @if (p.SoSaoOCOP is > 0)
+                                        {
+                                            <span class="stars">@Stars(p.SoSaoOCOP)</span>
+                                        }
+                                    </div>
+                                    <div class="body">
+                                        <div class="name">@p.Name</div>
+                                        @if (!string.IsNullOrWhiteSpace(p.XuatXu))
+                                        {
+                                            <div class="origin"><i class="bi bi-geo-alt-fill"></i> @p.XuatXu</div>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(p.MaTruyXuat))
+                                        {
+                                            <div class="trace-tag"><i class="bi bi-upc-scan"></i> Có mã truy xuất</div>
+                                        }
+                                    </div>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <div class="ocop-empty">
+                                <i class="bi bi-basket"></i>
+                                Chưa có sản phẩm OCOP nào được đăng tải.<br />
+                                Đơn vị sản xuất có thể liên hệ sàn để đăng ký trưng bày sản phẩm.
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
