@@ -48,7 +48,7 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var product = await _context.SanPhamCNTBs.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.ID == id && x.ProductType == OcopProductType);
+                .FirstOrDefaultAsync(x => x.ID == id && x.ProductType == OcopProductType && x.StatusId == 3);
 
             if (product == null)
                 return Redirect($"{_mainDomain}ocop");
@@ -68,6 +68,17 @@ namespace TechExchangeApp.Controllers
                 QrDataUri = BuildQrDataUri(traceUrl),
                 RelatedProducts = relatedProducts
             };
+
+            if (product.NCUId.HasValue)
+            {
+                var supplier = await _context.NhaCungUngs.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.CungUngId == product.NCUId.Value);
+                if (supplier != null)
+                {
+                    model.SupplierName = supplier.FullName;
+                    model.SupplierUrl = $"{_mainDomain}nha-cung-ung/{ProductController.MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
+                }
+            }
 
             return View(model);
         }

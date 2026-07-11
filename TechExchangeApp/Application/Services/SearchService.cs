@@ -358,7 +358,7 @@ namespace TechExchangeApp.Application.Services
                             {
                                 ProductId = product.ID,
                                 ProductName = product.Name ?? string.Empty,
-                                ProductUrl = $"2-cong-nghe-thiet-bi/{product.TypeId}/{Controllers.ProductController.MakeURLFriendly(product.Name)}-{product.ID}",
+                                ProductUrl = $"san-pham/chi-tiet/{Controllers.ProductController.MakeURLFriendly(product.Name)}-{product.ID}",
                                 RelevancePercentage = CalculateRelevancePercentage(searchItem, keyword)
                             };
                         }).ToList();

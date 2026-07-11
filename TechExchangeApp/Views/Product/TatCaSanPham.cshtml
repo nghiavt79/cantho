@@ -1,0 +1,127 @@
+@model TechExchangeApp.ViewModel.AllProductsViewModel
+@{
+    ViewData["Title"] = "Sản phẩm";
+
+    string ProductImage(TechExchangeApp.Entities.SanPhamCNTB p)
+    {
+        if (!string.IsNullOrEmpty(p.QuyTrinhHinhAnh))
+        {
+            return Html.CookedImageURL("254-170", p.QuyTrinhHinhAnh);
+        }
+        return Html.MainDomain() + "images/research.jpg";
+    }
+
+    string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
+        $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
+
+    string TypeLabel(int t) => t switch { 2 => "Thiết bị", 3 => "Sản phẩm trí tuệ", _ => "Công nghệ" };
+
+    string PlainText(string? value)
+    {
+        var text = System.Text.RegularExpressions.Regex.Replace(value ?? "", "<.*?>", " ");
+        return System.Net.WebUtility.HtmlDecode(text).Trim();
+    }
+
+    string ProductDescription(TechExchangeApp.Entities.SanPhamCNTB p)
+    {
+        var text = PlainText(!string.IsNullOrWhiteSpace(p.MoTaNgan) ? p.MoTaNgan : p.MoTa);
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return "Sản phẩm công nghệ, thiết bị hoặc tài sản trí tuệ sẵn sàng kết nối chuyển giao.";
+        }
+        return text.Length > 110 ? text.Substring(0, 107).Trim() + "..." : text;
+    }
+}
+
+<div class="columns-container tech-page">
+    <div class="container" id="columns">
+        <div class="row">
+            <div class="center_column col-xs-12 col-sm-9 cntb" id="center_column">
+                <div class="tech-page-hero">
+                    <nav class="tech-breadcrumb" aria-label="breadcrumb">
+                        <a href="@Html.MainDomain()">Trang chủ</a>
+                        <span>/</span>
+                        <strong>Sản phẩm</strong>
+                    </nav>
+                    <h1>Sản phẩm Công nghệ, Thiết bị &amp; Tài sản trí tuệ</h1>
+                    <p>Toàn bộ sản phẩm đang có trên sàn — công nghệ, thiết bị và tài sản trí tuệ sẵn sàng kết nối, chuyển giao cho doanh nghiệp, hợp tác xã và tổ chức tại Cần Thơ.</p>
+
+                    <div class="tech-hero-stats" aria-label="Thống kê sản phẩm">
+                        <span><strong>@Model.TotalCongNghe</strong>Công nghệ</span>
+                        <span><strong>@Model.TotalThietBi</strong>Thiết bị</span>
+                        <span><strong>@Model.TotalTaiSanTriTue</strong>Tài sản trí tuệ</span>
+                    </div>
+                </div>
+
+                <div class="san-pham-type-filter" role="group" aria-label="Lọc theo loại sản phẩm">
+                    <button type="button" class="is-active" data-filter="all">Tất cả (@Model.TotalProducts)</button>
+                    <button type="button" data-filter="1">Công nghệ (@Model.TotalCongNghe)</button>
+                    <button type="button" data-filter="2">Thiết bị (@Model.TotalThietBi)</button>
+                    <button type="button" data-filter="3">Sản phẩm trí tuệ (@Model.TotalTaiSanTriTue)</button>
+                </div>
+
+                @if (Model.Products.Any())
+                {
+                    <div class="tech-grid" id="sanPhamGrid">
+                        @foreach (var p in Model.Products)
+                        {
+                            <article class="tech-card" data-type="@p.ProductType">
+                                <a class="tech-card__image" href="@ProductUrl(p)">
+                                    <img src="@ProductImage(p)" alt="@p.Name" />
+                                </a>
+                                <div class="tech-card__body">
+                                    <span class="tech-card__badge tech-card__badge--type-@p.ProductType">@TypeLabel(p.ProductType)</span>
+                                    <h3 class="tech-card__title">
+                                        <a href="@ProductUrl(p)" title="@p.Name">@p.Name</a>
+                                    </h3>
+                                    <p class="tech-card__desc">@ProductDescription(p)</p>
+                                    <a href="@ProductUrl(p)" class="tech-card__btn">Chi tiết <i class="bi bi-arrow-right"></i></a>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-inbox" style="font-size:32px;"></i>
+                        <p class="mt-2">Chưa có sản phẩm nào được đăng tải.</p>
+                    </div>
+                }
+
+                <section class="tech-transfer-cta">
+                    <div>
+                        <span>Kết nối chuyển giao</span>
+                        <h2>Bạn có công nghệ, thiết bị hoặc tài sản trí tuệ cần giới thiệu?</h2>
+                        <p>Gửi thông tin để trung tâm hỗ trợ đánh giá, kết nối doanh nghiệp và đề xuất lộ trình thương mại hóa phù hợp.</p>
+                    </div>
+                    <div class="tech-transfer-cta__actions">
+                        <a class="tech-transfer-cta__primary" href="@($"{Html.MainDomain()}dang-ky-tu-van")">Gửi yêu cầu tư vấn</a>
+                        <a class="tech-transfer-cta__secondary" href="@($"{Html.MainDomain()}feedback")">Liên hệ trung tâm</a>
+                    </div>
+                </section>
+            </div>
+
+            <div class="column col-xs-12 col-sm-3" id="left_column">
+                @await Html.PartialAsync("_ServiceSidebarBanners")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var buttons = document.querySelectorAll('.san-pham-type-filter button');
+        var cards = document.querySelectorAll('#sanPhamGrid .tech-card');
+        buttons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                buttons.forEach(function (b) { b.classList.remove('is-active'); });
+                btn.classList.add('is-active');
+                var filter = btn.getAttribute('data-filter');
+                cards.forEach(function (card) {
+                    card.style.display = (filter === 'all' || card.getAttribute('data-type') === filter) ? '' : 'none';
+                });
+            });
+        });
+    })();
+</script>

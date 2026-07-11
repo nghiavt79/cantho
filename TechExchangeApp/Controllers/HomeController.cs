@@ -303,7 +303,7 @@ namespace TechExchangeApp.Controllers
                     Title = x.Name ?? "Công nghệ đang cập nhật",
                     Description = CleanSummary(x.MoTaNgan ?? x.MoTa, 120),
                     ImageUrl = ProductController.CookedImageURL("254-170", x.QuyTrinhHinhAnh, _mainDomain),
-                    Url = $"{_mainDomain}2-cong-nghe-thiet-bi/{x.ProductType}/{x.QueryString}-{x.ID}",
+                    Url = $"{_mainDomain}san-pham/chi-tiet/{x.QueryString}-{x.ID}",
                     Category = x.ProductType == 2 ? "Thiết bị" : x.ProductType == 3 ? "Tài sản trí tuệ" : "Công nghệ",
                     Company = ProductCompany(x),
                     Badge = badge,

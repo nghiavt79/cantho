@@ -262,6 +262,12 @@ app.MapAreaControllerRoute(
 
 // 1. Product Routes — each URL maps to its own dedicated action
 app.MapControllerRoute(
+    name: "product_tat_ca",
+    pattern: "san-pham",
+    defaults: new { controller = "Product", action = "TatCaSanPham" }
+);
+
+app.MapControllerRoute(
     name: "product_cong_nghe",
     pattern: "cong-nghe",
     defaults: new { controller = "Product", action = "CongNghe" }
@@ -282,13 +288,20 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "product_detail",
-    pattern: "{menu:int}-cong-nghe-thiet-bi/{typeId:int}/{slug}-{id:int}",
+    pattern: "san-pham/chi-tiet/{slug}-{id:int}",
     defaults: new { controller = "Product", action = "Detail" }
+);
+
+// Legacy URL — 301-redirects to the new san-pham/chi-tiet/... route to preserve SEO/bookmarks
+app.MapControllerRoute(
+    name: "product_detail_legacy",
+    pattern: "{menu:int}-cong-nghe-thiet-bi/{typeId:int}/{slug}-{id:int}",
+    defaults: new { controller = "Product", action = "DetailLegacyRedirect" }
 );
 
 app.MapControllerRoute(
     name: "product_category",
-    pattern: "2-ds-cong-nghe-thiet-bi/{slug}-{cateId:int}",
+    pattern: "san-pham/{slug}-{cateId:int}",
     defaults: new { controller = "Product", action = "ProductByCate" }
 );
 

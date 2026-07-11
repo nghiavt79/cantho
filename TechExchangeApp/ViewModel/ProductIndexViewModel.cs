@@ -31,4 +31,14 @@ namespace TechExchangeApp.ViewModel
         public string? Url { get; set; }
         public int Star { get; set; }
     }
+
+    /// <summary>Unified "Sản phẩm" listing across all 3 product types (Công nghệ / Thiết bị / Sản phẩm trí tuệ).</summary>
+    public class AllProductsViewModel
+    {
+        public List<SanPhamCNTB> Products { get; set; } = new();
+        public int TotalCongNghe { get; set; }
+        public int TotalThietBi { get; set; }
+        public int TotalTaiSanTriTue { get; set; }
+        public int TotalProducts => TotalCongNghe + TotalThietBi + TotalTaiSanTriTue;
+    }
 }

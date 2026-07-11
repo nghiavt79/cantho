@@ -19,7 +19,7 @@
         <nav class="catalog-breadcrumb" aria-label="breadcrumb">
             <a href="@mainDomain">Trang chủ</a>
             <span>/</span>
-            <a href="@($"{mainDomain}cong-nghe")">Công nghệ</a>
+            <a href="@($"{mainDomain}san-pham")">Sản phẩm</a>
             <span>/</span>
             <strong>@Model.CateTitle</strong>
         </nav>
@@ -170,7 +170,7 @@
                             {
                                 var isActive = cat.CatId == Model.CateId;
                                 <li class="@(isActive ? "active" : "")">
-                                    <a href="@($"{mainDomain}2-ds-cong-nghe-thiet-bi/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
+                                    <a href="@($"{mainDomain}san-pham/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
                                         @cat.Title
                                         @if (isActive) { <i class="bi bi-check2"></i> }
                                     </a>

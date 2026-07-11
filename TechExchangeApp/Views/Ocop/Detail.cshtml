@@ -65,6 +65,12 @@
                                     <span class="ocop-cert-badge"><i class="bi bi-patch-check-fill"></i> Quatest</span>
                                 }
                             </div>
+
+                            <div class="d-flex gap-2 mt-3 flex-wrap">
+                                <a href="@(Html.MainDomain())TechTransfer/Create?fromId=@p.ID&typeData=1" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-file-signature me-1"></i> Liên hệ báo giá
+                                </a>
+                            </div>
                         </div>
 
                         <div class="ocop-trace-panel">
@@ -79,7 +85,11 @@
                             {
                                 <div class="ocop-trace-row"><span class="k">Mã truy xuất</span><span class="v">@p.MaTruyXuat</span></div>
                             }
-                            @if (!string.IsNullOrWhiteSpace(p.HoTen))
+                            @if (!string.IsNullOrWhiteSpace(Model.SupplierName))
+                            {
+                                <div class="ocop-trace-row"><span class="k">Đơn vị sản xuất</span><span class="v"><a href="@Model.SupplierUrl">@Model.SupplierName</a></span></div>
+                            }
+                            else if (!string.IsNullOrWhiteSpace(p.HoTen))
                             {
                                 <div class="ocop-trace-row"><span class="k">Đơn vị sản xuất</span><span class="v">@p.HoTen</span></div>
                             }

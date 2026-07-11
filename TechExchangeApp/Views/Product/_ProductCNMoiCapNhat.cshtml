@@ -26,7 +26,7 @@
         };
     }
 
-    string DetailUrl(SanPhamCNTB p) => $"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}";
+    string DetailUrl(SanPhamCNTB p) => $"{Html.MainDomain()}san-pham/chi-tiet/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}";
 
     string PlainText(string? value)
     {

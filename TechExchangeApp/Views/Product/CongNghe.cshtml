@@ -19,7 +19,7 @@
     }
 
     string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
-        $"{Html.MainDomain()}2-cong-nghe-thiet-bi/{p.ProductType}/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
+        $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
 
     string PlainText(string? value)
     {
@@ -86,7 +86,7 @@
                 <div class="category-filter tech-filter" aria-label="Lĩnh vực công nghệ">
                     @foreach (var cat in Model.AllCategories)
                     {
-                        <a href="@($"{Html.MainDomain()}2-ds-cong-nghe-thiet-bi/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
+                        <a href="@($"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
                             @cat.Title
                         </a>
                     }
@@ -96,7 +96,7 @@
 
                 @foreach (var block in Model.Categories)
                 {
-                    var categoryUrl = $"{Html.MainDomain()}2-ds-cong-nghe-thiet-bi/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}";
+                    var categoryUrl = $"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}";
 
                     <section class="tech-section">
                         <div class="section-heading section-heading--plain">

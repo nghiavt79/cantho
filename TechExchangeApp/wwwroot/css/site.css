@@ -4872,6 +4872,52 @@ header {
     text-decoration: none;
 }
 
+/* Type label badges — unified "Sản phẩm" listing (Công nghệ / Thiết bị / Sản phẩm trí tuệ) */
+.tech-card__badge--type-1 {
+    background: var(--accent-soft);
+    color: var(--primary);
+}
+
+.tech-card__badge--type-2 {
+    background: #E6FBF5;
+    color: #0F7A66;
+}
+
+.tech-card__badge--type-3 {
+    background: #FEF3E2;
+    color: #9A5B0A;
+}
+
+.san-pham-type-filter {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 18px 0 22px;
+}
+
+.san-pham-type-filter button {
+    border: 1.5px solid #DCECF4;
+    background: #fff;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all .15s ease;
+}
+
+.san-pham-type-filter button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.san-pham-type-filter button.is-active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
 .tech-transfer-cta {
     display: flex;
     align-items: center;

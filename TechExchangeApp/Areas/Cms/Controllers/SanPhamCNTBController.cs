@@ -181,7 +181,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             foreach (var item in items)
             {
                 var slug = ProductController.MakeURLFriendly(item.Name);
-                item.PublicUrl = $"{baseUrl}/2-cong-nghe-thiet-bi/{item.ProductType}/{slug}-{item.ID}";
+                item.PublicUrl = $"{baseUrl}/san-pham/chi-tiet/{slug}-{item.ID}";
             }
 
             var typeName = productType switch
@@ -698,6 +698,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 case TypeOcop:
                     if (!model.SoSaoOCOP.HasValue)
                         ModelState.AddModelError("SoSaoOCOP", "Hạng sao OCOP là bắt buộc.");
+                    if (!model.NCUId.HasValue)
+                        ModelState.AddModelError("NCUId", "Nhà cung ứng là bắt buộc.");
                     break;
             }
         }

@@ -216,7 +216,7 @@ namespace TechExchangeApp.Controllers
                     PriceText   = p.OriginalPrice == null ? ""
                         : string.Format("{0:N0} {1}", p.OriginalPrice, p.Currency),
                     ImageUrl    = ProductController.CookedImageURL("254-170", p.QuyTrinhHinhAnh, _mainDomain),
-                    Url         = $"/2-cong-nghe-thiet-bi/{p.ProductType}/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}"
+                    Url         = $"/san-pham/chi-tiet/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}"
                 })
                 .ToList();
 

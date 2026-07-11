@@ -40,7 +40,7 @@
                 <nav class="site-header-v2__menu" aria-label="Menu chính">
                     <a class="nav-link" href="/gioi-thieu-chung-3">@T("Giới thiệu", "About")</a>
                     <div class="site-header-v2__menu-item">
-                        <a class="nav-link site-header-v2__has-submenu" href="/cong-nghe">
+                        <a class="nav-link site-header-v2__has-submenu" href="/san-pham">
                             <span>@T("Sản phẩm", "Products")</span>
                             @if (productCategories.Any())
                             {
@@ -53,7 +53,7 @@
                             <div class="site-header-v2__submenu site-header-v2__submenu--cols" style="grid-template-rows: repeat(@productSubmenuRows, auto);">
                                 @foreach (var category in productCategories)
                                 {
-                                    <a href="/2-ds-cong-nghe-thiet-bi/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                                    <a href="/san-pham/@CategorySlug(category)-@category.CatId">@category.Title</a>
                                 }
                             </div>
                         }
@@ -180,10 +180,10 @@
             <nav class="site-menu-offcanvas__nav">
                 <a href="/">@T("Trang chủ", "Home")</a>
                 <a href="/gioi-thieu-chung-3">@T("Giới thiệu", "About")</a>
-                <a href="/cong-nghe">@T("Sản phẩm", "Products")</a>
+                <a href="/san-pham">@T("Sản phẩm", "Products")</a>
                 @foreach (var category in productCategories)
                 {
-                    <a class="site-menu-offcanvas__child" href="/2-ds-cong-nghe-thiet-bi/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                    <a class="site-menu-offcanvas__child" href="/san-pham/@CategorySlug(category)-@category.CatId">@category.Title</a>
                 }
                 <a href="/dich-vu-tu-van">@T("Dịch vụ", "Services")</a>
                 @foreach (var category in serviceCategories)

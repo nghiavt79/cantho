@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -61,6 +62,25 @@ namespace TechExchangeApp.Controllers
         }
 
         // ================== SPLIT INDEX ACTIONS BY PRODUCT TYPE ==================
+
+        // Route: /san-pham — unified listing across all 3 product types, with a type label per card
+        public async Task<IActionResult> TatCaSanPham()
+        {
+            var products = await _context.SanPhamCNTBs
+                .Where(x => x.StatusId == 3 && (x.ProductType == 1 || x.ProductType == 2 || x.ProductType == 3))
+                .OrderByDescending(x => x.Modified ?? x.Created)
+                .ToListAsync();
+
+            var model = new AllProductsViewModel
+            {
+                Products = products,
+                TotalCongNghe = products.Count(x => x.ProductType == ProductTypeConstants.CongNghe),
+                TotalThietBi = products.Count(x => x.ProductType == ProductTypeConstants.ThietBi),
+                TotalTaiSanTriTue = products.Count(x => x.ProductType == ProductTypeConstants.TaiSanTriTue),
+            };
+
+            return View(model);
+        }
 
         // Route: /cong-nghe.html
         public Task<IActionResult> CongNghe()
@@ -152,6 +172,17 @@ namespace TechExchangeApp.Controllers
         // ================== DETAIL (GIỮ NGUYÊN) ==================
 
 
+        // Legacy route {menu}-cong-nghe-thiet-bi/{typeId}/{slug}-{id} — 301-redirect to the new san-pham/chi-tiet/... URL
+        public async Task<IActionResult> DetailLegacyRedirect(int id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return Redirect($"{_mainDomain}san-pham");
+
+            var slug = MakeURLFriendly(product.Name);
+            return RedirectPermanent($"{_mainDomain}san-pham/chi-tiet/{slug}-{id}");
+        }
+
         public async Task<IActionResult> Detail(int id)
         {
             // Legacy redirects, could also use _mainDomain if they were internal, but seem specific. Keeping hardcoded external redirects as is for safety unless user wants all converted.
@@ -164,7 +195,7 @@ namespace TechExchangeApp.Controllers
             var product = await _productService.GetProductByIdAsync(id);
 
             if (product == null)
-                return Redirect($"{_mainDomain}cong-nghe");
+                return Redirect($"{_mainDomain}san-pham");
 
             var model = new ProductDetailViewModel
             {
@@ -282,7 +313,7 @@ namespace TechExchangeApp.Controllers
                     CategoryName = catName,
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
-                    Url = _mainDomain + "2-cong-nghe-thiet-bi/" + row.ProductType + "/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
+                    Url = _mainDomain + "san-pham/chi-tiet/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
                 };
                 vm.Products.Add(item);
             }
@@ -303,7 +334,7 @@ namespace TechExchangeApp.Controllers
         private void LoadCategories(ProductByCateViewModel vm)
         {
              var list = _context.Categories.Where(x => x.ParentId == vm.CateId && x.MainCate == true).OrderBy(x => x.Sort).ToList();
-            foreach (var row in list) { vm.Categories.Add(new CategoryItemVm { Title = row.Title, Url = _mainDomain + "2-ds-cong-nghe-thiet-bi/" + MakeURLFriendly(row.QueryString) + "-" + row.CatId + "" }); }
+            foreach (var row in list) { vm.Categories.Add(new CategoryItemVm { Title = row.Title, Url = _mainDomain + "san-pham/" + MakeURLFriendly(row.QueryString) + "-" + row.CatId + "" }); }
         }
         private void BuildPager(ProductByCateViewModel vm)
         {
@@ -348,7 +379,7 @@ namespace TechExchangeApp.Controllers
                     Star = row.Rating ?? 0,
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
-                    Url = _mainDomain + "2-cong-nghe-thiet-bi/" + row.TypeId + "/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
+                    Url = _mainDomain + "san-pham/chi-tiet/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
                 })
                 .ToList();
 

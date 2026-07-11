@@ -38,14 +38,7 @@
             <div class="tech-detail-page">
                 <nav class="tech-breadcrumb" aria-label="breadcrumb">
                     <a href="/">Trang chủ</a><span>/</span>
-                    @if (Model.Product.ProductType == (int)ProductTypeEnum.ThietBi)
-                    {
-                        <a href="/thiet-bi">Thiết bị</a>
-                    }
-                    else
-                    {
-                        <a href="/tai-san-tri-tue">Tài sản trí tuệ</a>
-                    }
+                    <a href="/san-pham">Sản phẩm</a>
                     @if (!string.IsNullOrWhiteSpace(Model.CategoryTitle))
                     {
                         <span>/</span><span>@Model.CategoryTitle</span>
@@ -162,7 +155,7 @@
                                 <ul class="tech-category-list">
                                     @foreach (var cat in categories.Take(6))
                                     {
-                                        <li><a href="/2-ds-cong-nghe-thiet-bi/@cat.QueryString-@cat.CatId">@cat.Title</a></li>
+                                        <li><a href="/san-pham/@cat.QueryString-@cat.CatId">@cat.Title</a></li>
                                     }
                                 </ul>
                             </section>

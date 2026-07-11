@@ -107,8 +107,7 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
                 : ProductController.FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
 
             Url = _mainDomain +
-                  "2-cong-nghe-thiet-bi/" +
-                  row.TypeId + "/" +
+                  "san-pham/chi-tiet/" +
                   ProductController.MakeURLFriendly(row.Name) +
                   "-" + row.ID
         }).ToList();

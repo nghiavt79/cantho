@@ -295,7 +295,7 @@ namespace TechExchangeApp.Services
             }
 
             var slug = string.IsNullOrWhiteSpace(product.QueryString) ? "san-pham" : product.QueryString;
-            return $"/2-cong-nghe-thiet-bi/{product.TypeId ?? product.ProductType}/{slug}-{product.ID}";
+            return $"/san-pham/chi-tiet/{slug}-{product.ID}";
         }
 
         private static string SlugOrDefault(string? slug, string fallback)
