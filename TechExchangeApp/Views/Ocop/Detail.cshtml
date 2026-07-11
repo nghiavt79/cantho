@@ -3,7 +3,7 @@
     var p = Model.Product;
     ViewData["Title"] = p.Name;
 
-    string ProductImage(TechExchangeApp.Entities.SanPhamCNTB x) => Html.CookedImageURL("600-400", x.QuyTrinhHinhAnh);
+    string ProductImage(TechExchangeApp.Entities.SanPhamCNTB x) => Html.CookedImageURL("org", x.QuyTrinhHinhAnh);
     string ThumbImage(TechExchangeApp.Entities.SanPhamCNTB x) => Html.CookedImageURL("254-170", x.QuyTrinhHinhAnh);
 
     string RelatedUrl(TechExchangeApp.Entities.SanPhamCNTB x) =>

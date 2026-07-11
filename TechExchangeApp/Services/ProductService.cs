@@ -14,13 +14,20 @@ namespace TechExchangeApp.Services
             _context = context;
         }
 
-        public async Task<List<SanPhamCNTB>> GetNewProductsAsync(int take)
+        public async Task<List<SanPhamCNTB>> GetNewProductsAsync(int take, bool excludeOcop = false)
         {
             // NOTE: bEffectiveDate/eEffectiveDate range filter removed — it caused a full table scan
             // (no index on those columns). StatusId + LanguageId filter is sufficient for homepage.
-            return await _context.SanPhamCNTBs
+            var query = _context.SanPhamCNTBs
                 .AsNoTracking()
-                .Where(x => x.StatusId == 3 && x.LanguageId == 1)
+                .Where(x => x.StatusId == 3 && x.LanguageId == 1);
+
+            if (excludeOcop)
+            {
+                query = query.Where(x => x.ProductType != 4);
+            }
+
+            return await query
                 .OrderByDescending(x => x.Modified)
                 .ThenByDescending(x => x.Created)
                 .Take(take)

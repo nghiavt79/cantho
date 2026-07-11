@@ -1091,12 +1091,15 @@
     border-bottom: 1px solid #dce8f3;
 }
 
-.home-v2-search-tabs button {
+.home-v2-search-tabs button,
+.home-v2-search-tabs a {
     border: 0;
     background: transparent;
     color: #5c7088;
     font-weight: 700;
     padding: 0 4px 12px;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .home-v2-search-tabs button.active {

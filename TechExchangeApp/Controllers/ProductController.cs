@@ -180,6 +180,10 @@ namespace TechExchangeApp.Controllers
                 return Redirect($"{_mainDomain}san-pham");
 
             var slug = MakeURLFriendly(product.Name);
+
+            if (product.ProductType == 4)
+                return RedirectPermanent($"{_mainDomain}ocop/{slug}-{id}");
+
             return RedirectPermanent($"{_mainDomain}san-pham/chi-tiet/{slug}-{id}");
         }
 
@@ -313,7 +317,9 @@ namespace TechExchangeApp.Controllers
                     CategoryName = catName,
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
-                    Url = _mainDomain + "san-pham/chi-tiet/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
+                    Url = row.ProductType == 4
+                        ? _mainDomain + "ocop/" + MakeURLFriendly(row.Name) + "-" + row.ID
+                        : _mainDomain + "san-pham/chi-tiet/" + MakeURLFriendly(row.Name) + "-" + row.ID
                 };
                 vm.Products.Add(item);
             }
@@ -379,7 +385,9 @@ namespace TechExchangeApp.Controllers
                     Star = row.Rating ?? 0,
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
-                    Url = _mainDomain + "san-pham/chi-tiet/" + MakeURLFriendly(row.Name) + "-" + row.ID + ""
+                    Url = row.ProductType == 4
+                        ? _mainDomain + "ocop/" + MakeURLFriendly(row.Name) + "-" + row.ID
+                        : _mainDomain + "san-pham/chi-tiet/" + MakeURLFriendly(row.Name) + "-" + row.ID
                 })
                 .ToList();
 

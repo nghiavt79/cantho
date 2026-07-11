@@ -5,7 +5,7 @@ namespace TechExchangeApp.Interfaces
 {
     public interface IProductService
     {
-        Task<List<SanPhamCNTB>> GetNewProductsAsync(int take);
+        Task<List<SanPhamCNTB>> GetNewProductsAsync(int take, bool excludeOcop = false);
         Task<List<SanPhamCNTB>> GetProductsByCategoryAsync(int catId, int languageId, int take);
         Task<SanPhamCNTB?> GetProductByIdAsync(int id);
         Task<List<SanPhamCNTB>> GetRelatedProductsAsync(int productId, int languageId, int take);

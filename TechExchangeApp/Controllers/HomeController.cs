@@ -47,7 +47,7 @@ namespace TechExchangeApp.Controllers
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3);
                 entry.SlidingExpiration = TimeSpan.FromMinutes(1);
-                var newProducts = await _productService.GetNewProductsAsync(12);
+                var newProducts = await _productService.GetNewProductsAsync(12, excludeOcop: true);
 
                 return new HomeIndexCacheVm
                 {

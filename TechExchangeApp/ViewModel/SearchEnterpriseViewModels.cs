@@ -13,7 +13,8 @@ namespace TechExchangeApp.ViewModel
         IntellectualProperty = 3,
         Supplier = 4,
         Expert = 5,
-        Article = 6
+        Article = 6,
+        Ocop = 7
     }
 
     /// <summary>
@@ -30,6 +31,7 @@ namespace TechExchangeApp.ViewModel
             { "Nhà cung ứng", SearchEntityType.Supplier },
             { "Chuyên gia", SearchEntityType.Expert },
             { "Tin bài", SearchEntityType.Article },
+            { "OCOP", SearchEntityType.Ocop },
         };
 
         // ── Must match DB values exactly for SQL WHERE clause ──
@@ -41,6 +43,7 @@ namespace TechExchangeApp.ViewModel
             { SearchEntityType.Supplier, "Nhà cung ứng" },
             { SearchEntityType.Expert, "Chuyên gia" },
             { SearchEntityType.Article, "Tin bài" },
+            { SearchEntityType.Ocop, "OCOP" },
         };
 
         private static readonly Dictionary<SearchEntityType, string> EnumToLabel = new()
@@ -52,6 +55,7 @@ namespace TechExchangeApp.ViewModel
             { SearchEntityType.Supplier, "Nhà cung ứng" },
             { SearchEntityType.Expert, "Chuyên gia" },
             { SearchEntityType.Article, "Tin bài" },
+            { SearchEntityType.Ocop, "OCOP" },
         };
 
         private static readonly Dictionary<SearchEntityType, string> EnumToIcon = new()
@@ -63,6 +67,7 @@ namespace TechExchangeApp.ViewModel
             { SearchEntityType.Supplier, "bi-building" },
             { SearchEntityType.Expert, "bi-person-badge" },
             { SearchEntityType.Article, "bi-newspaper" },
+            { SearchEntityType.Ocop, "bi-patch-check" },
         };
 
         /// <summary>

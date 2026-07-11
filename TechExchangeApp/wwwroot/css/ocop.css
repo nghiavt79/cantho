@@ -154,7 +154,6 @@
 
 .ocop-card .thumb {
     position: relative;
-    height: 130px;
     background: linear-gradient(135deg, var(--te-mint), var(--te-cyan-500));
 }
 
@@ -246,7 +245,10 @@
 }
 
 .ocop-detail__gallery {
-    height: 280px;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 600 / 400;
+    margin: 0 auto;
     border-radius: 14px;
     background: linear-gradient(135deg, var(--te-mint), var(--te-cyan-500));
     position: relative;
@@ -256,7 +258,8 @@
 .ocop-detail__gallery img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
 }
 
 .ocop-detail__stars {
