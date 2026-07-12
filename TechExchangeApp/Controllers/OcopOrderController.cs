@@ -119,6 +119,13 @@ namespace TechExchangeApp.Controllers
                 .FirstOrDefaultAsync(p => p.ID == order.ProductId);
 
             ViewBag.Product = product;
+
+            if (order.HinhThucThanhToan == 2 && order.SupplierId.HasValue)
+            {
+                ViewBag.Supplier = await _context.NhaCungUngs.AsNoTracking()
+                    .FirstOrDefaultAsync(n => n.CungUngId == order.SupplierId.Value);
+            }
+
             return View(order);
         }
 
@@ -133,6 +140,8 @@ namespace TechExchangeApp.Controllers
                 where o.NguoiTao == userId
                 join p in _context.SanPhamCNTBs.AsNoTracking() on o.ProductId equals p.ID into products
                 from p in products.DefaultIfEmpty()
+                join n in _context.NhaCungUngs.AsNoTracking() on o.SupplierId equals n.CungUngId into suppliers
+                from n in suppliers.DefaultIfEmpty()
                 orderby o.NgayTao descending
                 select new OcopOrderVm
                 {
@@ -146,7 +155,10 @@ namespace TechExchangeApp.Controllers
                     GhiChu = o.GhiChu,
                     StatusId = o.StatusId,
                     HinhThucThanhToan = o.HinhThucThanhToan,
-                    NgayTao = o.NgayTao
+                    NgayTao = o.NgayTao,
+                    SoTaiKhoan = n != null ? n.SoTaiKhoan : null,
+                    TenNganHang = n != null ? n.TenNganHang : null,
+                    ChuTaiKhoan = n != null ? n.ChuTaiKhoan : null
                 }).ToListAsync();
 
             return View(orders);

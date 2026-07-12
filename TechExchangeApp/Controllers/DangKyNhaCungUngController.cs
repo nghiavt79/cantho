@@ -129,6 +129,9 @@ namespace TechExchangeApp.Controllers
                 entity.VideoUrl       = vm.VideoUrl;
                 entity.ChungNhan      = vm.ChungNhan;
                 entity.Keywords       = vm.Keywords;
+                entity.SoTaiKhoan     = vm.SoTaiKhoan;
+                entity.TenNganHang    = vm.TenNganHang;
+                entity.ChuTaiKhoan    = vm.ChuTaiKhoan;
                 entity.Modified       = DateTime.Now;
                 entity.Modifier       = User.Identity?.Name;
                 entity.StatusId       = 2; // Reset về "Đang duyệt" để admin xét lại
@@ -161,6 +164,9 @@ namespace TechExchangeApp.Controllers
                     VideoUrl       = vm.VideoUrl,
                     ChungNhan      = vm.ChungNhan,
                     Keywords       = vm.Keywords,
+                    SoTaiKhoan     = vm.SoTaiKhoan,
+                    TenNganHang    = vm.TenNganHang,
+                    ChuTaiKhoan    = vm.ChuTaiKhoan,
                     IsActivated    = false,
                     StatusId       = 1,
                     LanguageId     = 1,
@@ -230,6 +236,9 @@ namespace TechExchangeApp.Controllers
             VideoUrl       = e.VideoUrl,
             ChungNhan      = e.ChungNhan,
             Keywords       = e.Keywords,
+            SoTaiKhoan     = e.SoTaiKhoan,
+            TenNganHang    = e.TenNganHang,
+            ChuTaiKhoan    = e.ChuTaiKhoan,
             IsActivated    = e.IsActivated ?? false,
             StatusId       = e.StatusId,
             LanguageId     = e.LanguageId,

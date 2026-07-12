@@ -80,7 +80,13 @@
                                         <td data-label="Sản phẩm">@order.ProductName</td>
                                         <td data-label="Số lượng">@order.SoLuong</td>
                                         <td data-label="Địa chỉ giao">@order.DiaChiGiao</td>
-                                        <td data-label="Thanh toán">@PaymentText(order.HinhThucThanhToan)</td>
+                                        <td data-label="Thanh toán">
+                                            @PaymentText(order.HinhThucThanhToan)
+                                            @if (order.HinhThucThanhToan == 2 && !string.IsNullOrWhiteSpace(order.SoTaiKhoan))
+                                            {
+                                                <div class="small text-muted">@order.TenNganHang - @order.SoTaiKhoan (@order.ChuTaiKhoan)</div>
+                                            }
+                                        </td>
                                         <td data-label="Trạng thái"><span class="badge @StatusBadge(order.StatusId)">@StatusText(order.StatusId)</span></td>
                                         <td data-label="Ngày đặt">@order.NgayTao.ToString("dd/MM/yyyy HH:mm")</td>
                                         <td data-label="Thao tác">

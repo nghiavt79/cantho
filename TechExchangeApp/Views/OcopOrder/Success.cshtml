@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Đặt mua thành công";
     var product = ViewBag.Product as TechExchangeApp.Entities.SanPhamCNTB;
+    var supplier = ViewBag.Supplier as TechExchangeApp.Entities.NhaCungUng;
+    var hasBankInfo = supplier != null && !string.IsNullOrWhiteSpace(supplier.SoTaiKhoan);
 }
 
 <div class="container mt-5 text-center">
@@ -18,9 +20,27 @@
             <p class="card-text text-muted mb-1">
                 Hình thức thanh toán: <strong>@(Model.HinhThucThanhToan == 2 ? "Chuyển khoản" : "Thanh toán khi nhận hàng (COD)")</strong>
             </p>
-            <p class="card-text text-muted mb-4">
-                Nhà cung ứng sẽ liên hệ với bạn qua số điện thoại <strong>@Model.DienThoai</strong> để xác nhận và giao hàng.
-            </p>
+            @if (Model.HinhThucThanhToan == 2 && hasBankInfo)
+            {
+                <div class="alert alert-light border text-start mb-4">
+                    <div class="fw-semibold mb-2"><i class="fa fa-university me-1"></i> Thông tin chuyển khoản</div>
+                    <div>Ngân hàng: <strong>@supplier!.TenNganHang</strong></div>
+                    <div>Số tài khoản: <strong>@supplier.SoTaiKhoan</strong></div>
+                    <div>Chủ tài khoản: <strong>@supplier.ChuTaiKhoan</strong></div>
+                </div>
+            }
+            else if (Model.HinhThucThanhToan == 2)
+            {
+                <p class="card-text text-muted mb-4">
+                    Nhà cung ứng chưa cập nhật thông tin tài khoản — sẽ gửi cho bạn qua số điện thoại <strong>@Model.DienThoai</strong> sau khi xác nhận đơn.
+                </p>
+            }
+            else
+            {
+                <p class="card-text text-muted mb-4">
+                    Nhà cung ứng sẽ liên hệ với bạn qua số điện thoại <strong>@Model.DienThoai</strong> để xác nhận và giao hàng.
+                </p>
+            }
             <a asp-controller="OcopOrder" asp-action="Index" class="btn btn-outline-primary me-2">
                 <i class="fas fa-list me-2"></i>Xem đơn hàng của tôi
             </a>

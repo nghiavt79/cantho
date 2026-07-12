@@ -65,6 +65,11 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public string? Logo { get; set; }
         public string? VideoUrl { get; set; }
         public string? ChungNhan { get; set; }
+
+        // Thông tin nhận chuyển khoản
+        public string? SoTaiKhoan { get; set; }
+        public string? TenNganHang { get; set; }
+        public string? ChuTaiKhoan { get; set; }
     }
 
     // ── Controller ──

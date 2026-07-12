@@ -13,5 +13,8 @@ namespace TechExchangeApp.ViewModel
         public int StatusId { get; set; }
         public int HinhThucThanhToan { get; set; }
         public DateTime NgayTao { get; set; }
+        public string? SoTaiKhoan { get; set; }
+        public string? TenNganHang { get; set; }
+        public string? ChuTaiKhoan { get; set; }
     }
 }

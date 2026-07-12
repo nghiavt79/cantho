@@ -102,5 +102,15 @@ namespace TechExchangeApp.Entities
 
         /// <summary>HTML or file paths for certificates</summary>
         public string? ChungNhan { get; set; }
+
+        // ── Thông tin nhận chuyển khoản (dùng cho đơn OCOP thanh toán qua chuyển khoản) ──
+        [MaxLength(50)]
+        public string? SoTaiKhoan { get; set; }
+
+        [MaxLength(200)]
+        public string? TenNganHang { get; set; }
+
+        [MaxLength(200)]
+        public string? ChuTaiKhoan { get; set; }
     }
 }
