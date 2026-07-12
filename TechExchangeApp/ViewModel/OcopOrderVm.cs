@@ -11,6 +11,7 @@ namespace TechExchangeApp.ViewModel
         public int SoLuong { get; set; }
         public string? GhiChu { get; set; }
         public int StatusId { get; set; }
+        public int HinhThucThanhToan { get; set; }
         public DateTime NgayTao { get; set; }
     }
 }

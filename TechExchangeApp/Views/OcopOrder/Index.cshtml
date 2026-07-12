@@ -18,6 +18,7 @@
         1 => "bg-secondary",
         2 => "bg-info",
         3 => "bg-success",
+        4 => "bg-danger",
         _ => "bg-secondary"
     };
 
@@ -26,8 +27,11 @@
         1 => "Mới đặt",
         2 => "Đã xác nhận",
         3 => "Hoàn tất",
+        4 => "Đã huỷ",
         _ => "Không xác định"
     };
+
+    string PaymentText(int hinhThuc) => hinhThuc == 2 ? "Chuyển khoản" : "COD";
 }
 
 <div class="container-fluid py-4 user-portal">
@@ -63,8 +67,10 @@
                                     <th>Sản phẩm</th>
                                     <th>Số lượng</th>
                                     <th>Địa chỉ giao</th>
+                                    <th>Thanh toán</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày đặt</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,8 +80,19 @@
                                         <td data-label="Sản phẩm">@order.ProductName</td>
                                         <td data-label="Số lượng">@order.SoLuong</td>
                                         <td data-label="Địa chỉ giao">@order.DiaChiGiao</td>
+                                        <td data-label="Thanh toán">@PaymentText(order.HinhThucThanhToan)</td>
                                         <td data-label="Trạng thái"><span class="badge @StatusBadge(order.StatusId)">@StatusText(order.StatusId)</span></td>
                                         <td data-label="Ngày đặt">@order.NgayTao.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td data-label="Thao tác">
+                                            @if (order.StatusId == 1)
+                                            {
+                                                <form asp-action="Cancel" method="post" class="d-inline" onsubmit="return confirm('Bạn chắc chắn muốn huỷ đơn này?');">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@order.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">Huỷ đơn</button>
+                                                </form>
+                                            }
+                                        </td>
                                     </tr>
                                 }
                             </tbody>

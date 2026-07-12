@@ -145,6 +145,7 @@ namespace TechExchangeApp.Controllers
                     SoLuong = o.SoLuong,
                     GhiChu = o.GhiChu,
                     StatusId = o.StatusId,
+                    HinhThucThanhToan = o.HinhThucThanhToan,
                     NgayTao = o.NgayTao
                 }).ToListAsync();
 
@@ -180,13 +181,14 @@ namespace TechExchangeApp.Controllers
                     SoLuong = o.SoLuong,
                     GhiChu = o.GhiChu,
                     StatusId = o.StatusId,
+                    HinhThucThanhToan = o.HinhThucThanhToan,
                     NgayTao = o.NgayTao
                 }).ToListAsync();
 
             return View(orders);
         }
 
-        // POST: /OcopOrder/UpdateStatus — nhà cung ứng cập nhật trạng thái đơn
+        // POST: /OcopOrder/UpdateStatus — nhà cung ứng xác nhận / hoàn tất / huỷ đơn
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int id, int statusId)
@@ -203,14 +205,63 @@ namespace TechExchangeApp.Controllers
                 .FirstOrDefaultAsync(o => o.Id == id && o.SupplierId == supplierId.Value);
 
             if (order == null) return NotFound();
-            if (statusId < 1 || statusId > 3) return BadRequest();
+            if (statusId < 1 || statusId > 4) return BadRequest();
+            if (order.StatusId == 3 || order.StatusId == 4) return RedirectToAction("Manage"); // already final
 
             order.StatusId = statusId;
             order.NguoiSua = userId;
             order.NgaySua = DateTime.Now;
             await _context.SaveChangesAsync();
 
+            if (statusId == 4)
+            {
+                var product = await _context.SanPhamCNTBs.AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.ID == order.ProductId);
+                if (order.NguoiTao.HasValue)
+                {
+                    await _notifQueue.QueueAsync(order.NguoiTao.Value, null,
+                        "Đơn đặt mua OCOP đã bị huỷ",
+                        $"Nhà cung ứng đã huỷ đơn đặt mua \"{product?.Name}\". Vui lòng liên hệ nhà cung ứng nếu cần biết thêm chi tiết.");
+                }
+            }
+
             return RedirectToAction("Manage");
+        }
+
+        // POST: /OcopOrder/Cancel — người mua tự huỷ đơn khi còn "Mới đặt"
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var userId = GetCurrentUserId();
+            var order = await _context.OcopOrderRequests
+                .FirstOrDefaultAsync(o => o.Id == id && o.NguoiTao == userId);
+
+            if (order == null) return NotFound();
+
+            if (order.StatusId == 1)
+            {
+                order.StatusId = 4; // Đã huỷ
+                order.NguoiSua = userId;
+                order.NgaySua = DateTime.Now;
+                await _context.SaveChangesAsync();
+
+                if (order.SupplierId.HasValue)
+                {
+                    var supplier = await _context.NhaCungUngs.AsNoTracking()
+                        .FirstOrDefaultAsync(x => x.CungUngId == order.SupplierId.Value);
+                    var product = await _context.SanPhamCNTBs.AsNoTracking()
+                        .FirstOrDefaultAsync(p => p.ID == order.ProductId);
+                    if (supplier?.UserId.HasValue == true)
+                    {
+                        await _notifQueue.QueueAsync(supplier.UserId.Value, null,
+                            "Khách hàng đã huỷ đơn đặt mua OCOP",
+                            $"{order.HoTen} đã huỷ đơn đặt mua \"{product?.Name}\".");
+                    }
+                }
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

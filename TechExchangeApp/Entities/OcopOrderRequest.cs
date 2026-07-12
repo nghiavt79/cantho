@@ -36,8 +36,11 @@ namespace TechExchangeApp.Entities
 
         public string? GhiChu { get; set; }
 
-        /// <summary>1=Mới đặt, 2=Đã xác nhận, 3=Hoàn tất</summary>
+        /// <summary>1=Mới đặt, 2=Đã xác nhận, 3=Hoàn tất, 4=Đã huỷ</summary>
         public int StatusId { get; set; } = 1;
+
+        /// <summary>1=Thanh toán khi nhận hàng (COD), 2=Chuyển khoản</summary>
+        public int HinhThucThanhToan { get; set; } = 1;
 
         public int? NguoiTao { get; set; } // Users.UserId
 
