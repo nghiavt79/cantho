@@ -387,6 +387,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.Logo = vm.Logo;
             entity.VideoUrl = vm.VideoUrl;
             entity.ChungNhan = vm.ChungNhan;
+            entity.SoTaiKhoan = vm.SoTaiKhoan;
+            entity.TenNganHang = vm.TenNganHang;
+            entity.ChuTaiKhoan = vm.ChuTaiKhoan;
             entity.Modified = DateTime.Now;
             entity.Modifier = User.Identity?.Name;
 
@@ -595,7 +598,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             MaSoThue = vm.MaSoThue,
             Logo = vm.Logo,
             VideoUrl = vm.VideoUrl,
-            ChungNhan = vm.ChungNhan
+            ChungNhan = vm.ChungNhan,
+            SoTaiKhoan = vm.SoTaiKhoan,
+            TenNganHang = vm.TenNganHang,
+            ChuTaiKhoan = vm.ChuTaiKhoan
         };
 
         private NhaCungUngFormVm MapToVm(NhaCungUng e) => new()
@@ -630,7 +636,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             MaSoThue = e.MaSoThue,
             Logo = e.Logo,
             VideoUrl = e.VideoUrl,
-            ChungNhan = e.ChungNhan
+            ChungNhan = e.ChungNhan,
+            SoTaiKhoan = e.SoTaiKhoan,
+            TenNganHang = e.TenNganHang,
+            ChuTaiKhoan = e.ChuTaiKhoan
         };
     }
 }

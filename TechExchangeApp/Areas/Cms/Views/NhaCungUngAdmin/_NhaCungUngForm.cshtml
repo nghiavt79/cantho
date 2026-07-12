@@ -105,6 +105,25 @@
                     </div>
                 </fieldset>
 
+                <fieldset class="border rounded p-3 mb-3">
+                    <legend class="float-none w-auto px-2 fs-6 fw-semibold">Thông tin nhận chuyển khoản</legend>
+                    <p class="text-muted small mb-3">Tự động hiện cho khách khi họ chọn thanh toán "Chuyển khoản" khi đặt mua sản phẩm OCOP.</p>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="SoTaiKhoan" class="form-label fw-semibold">Số tài khoản</label>
+                            <input asp-for="SoTaiKhoan" class="form-control form-control-sm" placeholder="Số tài khoản ngân hàng..." />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="TenNganHang" class="form-label fw-semibold">Ngân hàng</label>
+                            <input asp-for="TenNganHang" class="form-control form-control-sm" placeholder="Ví dụ: Vietcombank..." />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="ChuTaiKhoan" class="form-label fw-semibold">Chủ tài khoản</label>
+                            <input asp-for="ChuTaiKhoan" class="form-control form-control-sm" placeholder="Tên chủ tài khoản..." />
+                        </div>
+                    </div>
+                </fieldset>
+
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label asp-for="NguoiDaiDien" class="form-label fw-semibold">5. Người đại diện pháp luật <span class="text-danger">*</span></label>
