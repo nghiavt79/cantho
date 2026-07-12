@@ -1,0 +1,30 @@
+@model List<TechExchangeApp.ViewModel.HuongDanMenuVm>
+
+<nav class="docs-sidebar">
+    <a href="@Url.Action("Index", "HuongDan")" class="docs-sidebar__home">
+        <i class="fa fa-book"></i> Hướng dẫn sử dụng
+    </a>
+    @foreach (var role in Model)
+    {
+        <div class="docs-nav-section">
+            <a href="@Url.Action("Category", "HuongDan", new { queryString = role.QueryString, menuId = role.MenuId })"
+               class="docs-nav-title @(role.IsActive ? "active" : "")">
+                @role.Title
+            </a>
+            @if (role.Articles.Any())
+            {
+                <ul class="docs-nav-list">
+                    @foreach (var article in role.Articles)
+                    {
+                        <li>
+                            <a href="@Url.Action("Detail", "HuongDan", new { queryString = article.QueryString, id = article.Id })"
+                               class="docs-nav-link @(article.IsActive ? "active" : "")">
+                                @article.Title
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+</nav>

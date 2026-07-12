@@ -1,0 +1,48 @@
+@model TechExchangeApp.ViewModel.HuongDanIndexVm
+@using TechExchangeApp.Web.Helpers
+@{
+    ViewData["Title"] = "Hướng dẫn sử dụng";
+    var mainDomain = Html.MainDomain();
+}
+
+<div class="docs-page">
+    <div class="container-fluid">
+        <nav class="docs-breadcrumb" aria-label="breadcrumb">
+            <a href="@mainDomain">Trang chủ</a>
+            <span>/</span>
+            <strong>Hướng dẫn sử dụng</strong>
+        </nav>
+
+        <div class="docs-layout docs-layout--landing">
+            <div class="docs-sidebar-col">
+                @await Html.PartialAsync("_HuongDanSidebar", Model.Roles)
+            </div>
+
+            <div class="docs-content-col">
+                <h1 class="docs-title">Hướng dẫn sử dụng Sàn Giao dịch Công nghệ</h1>
+                <p class="docs-lead">Chọn vai trò của bạn để xem hướng dẫn chi tiết từng bước sử dụng sàn.</p>
+
+                @if (!Model.Roles.Any())
+                {
+                    <div class="alert alert-light border">Nội dung hướng dẫn đang được cập nhật.</div>
+                }
+                else
+                {
+                    <div class="docs-role-grid">
+                        @foreach (var role in Model.Roles)
+                        {
+                            <a class="docs-role-card" href="@Url.Action("Category", "HuongDan", new { queryString = role.QueryString, menuId = role.MenuId })">
+                                <div class="docs-role-card__title">@role.Title</div>
+                                <div class="docs-role-card__count">@role.Articles.Count bài viết</div>
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/huong-dan.css" asp-append-version="true" />
+}

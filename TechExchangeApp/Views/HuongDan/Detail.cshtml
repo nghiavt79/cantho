@@ -1,0 +1,80 @@
+@model TechExchangeApp.ViewModel.HuongDanDetailVm
+@using TechExchangeApp.Web.Helpers
+@{
+    ViewData["Title"] = Model.Title;
+    var mainDomain = Html.MainDomain();
+    var activeRole = Model.Sidebar.FirstOrDefault(r => r.MenuId == Model.MenuId);
+}
+
+<div class="docs-page">
+    <div class="container-fluid">
+        <nav class="docs-breadcrumb" aria-label="breadcrumb">
+            <a href="@mainDomain">Trang chủ</a>
+            <span>/</span>
+            <a href="@Url.Action("Index", "HuongDan")">Hướng dẫn sử dụng</a>
+            @if (activeRole != null)
+            {
+                <span>/</span>
+                <a href="@Url.Action("Category", "HuongDan", new { queryString = activeRole.QueryString, menuId = activeRole.MenuId })">@activeRole.Title</a>
+            }
+            <span>/</span>
+            <strong>@Model.Title</strong>
+        </nav>
+
+        <div class="docs-layout docs-layout--article">
+            <div class="docs-sidebar-col">
+                @await Html.PartialAsync("_HuongDanSidebar", Model.Sidebar)
+            </div>
+
+            <div class="docs-content-col">
+                <h1 class="docs-title">@Model.Title</h1>
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="docs-lead">@Model.Description</p>
+                }
+                <div class="docs-article-body" id="docsArticleBody">
+                    @Html.Raw(Model.Content)
+                </div>
+            </div>
+
+            <div class="docs-toc-col">
+                <div class="docs-toc">
+                    <div class="docs-toc__title">Trên trang này</div>
+                    <ul id="docsToc" class="docs-toc__list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/huong-dan.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script>
+        (function () {
+            var body = document.getElementById('docsArticleBody');
+            var tocList = document.getElementById('docsToc');
+            if (!body || !tocList) return;
+
+            var headings = body.querySelectorAll('h2, h3');
+            if (!headings.length) {
+                var tocBox = document.querySelector('.docs-toc');
+                if (tocBox) tocBox.style.display = 'none';
+                return;
+            }
+
+            headings.forEach(function (h, i) {
+                if (!h.id) h.id = 'docs-heading-' + i;
+                var li = document.createElement('li');
+                li.className = 'docs-toc__item docs-toc__item--' + h.tagName.toLowerCase();
+                var a = document.createElement('a');
+                a.href = '#' + h.id;
+                a.textContent = h.textContent;
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        })();
+    </script>
+}

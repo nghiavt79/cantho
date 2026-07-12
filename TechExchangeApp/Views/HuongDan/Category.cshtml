@@ -1,0 +1,53 @@
+@model TechExchangeApp.ViewModel.HuongDanCategoryVm
+@using TechExchangeApp.Web.Helpers
+@{
+    ViewData["Title"] = Model.CategoryTitle;
+    var mainDomain = Html.MainDomain();
+    var activeRole = Model.Sidebar.FirstOrDefault(r => r.MenuId == Model.MenuId);
+}
+
+<div class="docs-page">
+    <div class="container-fluid">
+        <nav class="docs-breadcrumb" aria-label="breadcrumb">
+            <a href="@mainDomain">Trang chủ</a>
+            <span>/</span>
+            <a href="@Url.Action("Index", "HuongDan")">Hướng dẫn sử dụng</a>
+            <span>/</span>
+            <strong>@Model.CategoryTitle</strong>
+        </nav>
+
+        <div class="docs-layout">
+            <div class="docs-sidebar-col">
+                @await Html.PartialAsync("_HuongDanSidebar", Model.Sidebar)
+            </div>
+
+            <div class="docs-content-col">
+                <h1 class="docs-title">@Model.CategoryTitle</h1>
+                @if (!string.IsNullOrWhiteSpace(Model.CategoryDescription))
+                {
+                    <p class="docs-lead">@Model.CategoryDescription</p>
+                }
+
+                @if (activeRole == null || !activeRole.Articles.Any())
+                {
+                    <div class="alert alert-light border">Nội dung hướng dẫn cho mục này đang được cập nhật.</div>
+                }
+                else
+                {
+                    <div class="docs-article-list">
+                        @foreach (var article in activeRole.Articles)
+                        {
+                            <a class="docs-article-list__item" href="@Url.Action("Detail", "HuongDan", new { queryString = article.QueryString, id = article.Id })">
+                                <i class="fa fa-file-lines"></i> @article.Title
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/huong-dan.css" asp-append-version="true" />
+}

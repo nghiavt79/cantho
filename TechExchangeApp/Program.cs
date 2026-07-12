@@ -536,6 +536,23 @@ app.MapControllerRoute(
     defaults: new { controller = "QuanLySanPham", action = "Xoa" }
 );
 
+// Hướng dẫn sử dụng (docs) Routes
+app.MapControllerRoute(
+    name: "huongdan_index",
+    pattern: "huong-dan",
+    defaults: new { controller = "HuongDan", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "huongdan_detail",
+    pattern: "huong-dan/bai-viet/{queryString}-{id:long}",
+    defaults: new { controller = "HuongDan", action = "Detail" }
+);
+app.MapControllerRoute(
+    name: "huongdan_category",
+    pattern: "huong-dan/{queryString}-{menuId:int}",
+    defaults: new { controller = "HuongDan", action = "Category" }
+);
+
 // ROUTE MẶC ĐỊNH
 
 app.MapControllerRoute(
