@@ -129,6 +129,7 @@ namespace TechExchangeApp.Data
         public DbSet<AiKnowledgeDocument> AiKnowledgeDocuments { get; set; } = null!;
         public DbSet<Likepage> Likepages { get; set; }
         public DbSet<TechTransferRequest> TechTransferRequests { get; set; } = null!;
+        public DbSet<OcopOrderRequest> OcopOrderRequests { get; set; } = null!;
         public DbSet<NDAAgreement> NDAAgreements { get; set; } = null!;
         public DbSet<RFQRequest> RFQRequests { get; set; } = null!;
         public DbSet<ProposalSubmission> ProposalSubmissions { get; set; } = null!;

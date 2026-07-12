@@ -1,0 +1,100 @@
+@using TechExchangeApp.Interfaces
+@using Microsoft.AspNetCore.Identity
+@using TechExchangeApp.Entities
+@inject IAccountService AccountService
+@inject UserManager<ApplicationUser> UserManager
+
+@model TechExchangeApp.Entities.OcopOrderRequest
+
+@{
+    ViewData["Title"] = "ĐẶT MUA SẢN PHẨM OCOP";
+    ViewData["AuthWorkspace"] = true;
+    var product = ViewBag.Product as TechExchangeApp.Entities.SanPhamCNTB;
+
+    var userId = int.Parse(UserManager.GetUserId(User)!);
+    var sidebarData = await AccountService.GetSidebarDataAsync(userId);
+}
+
+<div class="container-fluid py-4 user-portal">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2">
+      @await Html.PartialAsync("_AccountSidebar", sidebarData)
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 user-portal-main">
+<div class="container user-tech-transfer-form" style="max-width:900px;">
+    <div class="card shadow">
+        <div class="card-header">
+            <h2 class="h4 mb-0"><i class="fas fa-shopping-cart me-2"></i>@ViewData["Title"]</h2>
+        </div>
+        <div class="card-body">
+            @if (product != null)
+            {
+                <div class="alert alert-light border d-flex align-items-center gap-3 mb-4">
+                    <i class="fa fa-box text-success fa-2x"></i>
+                    <div>
+                        <div class="fw-semibold">@product.Name</div>
+                        <div class="text-muted small">Sản phẩm OCOP — đơn đặt mua sẽ được gửi trực tiếp đến nhà cung ứng.</div>
+                    </div>
+                </div>
+            }
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="ProductId" />
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="HoTen" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                        <input asp-for="HoTen" class="form-control" placeholder="Nhập họ và tên" />
+                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DienThoai" class="form-label">Điện thoại <span class="text-danger">*</span></label>
+                        <input asp-for="DienThoai" class="form-control" />
+                        <span asp-validation-for="DienThoai" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <input asp-for="Email" class="form-control" type="email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="SoLuong" class="form-label">Số lượng <span class="text-danger">*</span></label>
+                        <input asp-for="SoLuong" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="SoLuong" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="DiaChiGiao" class="form-label">Địa chỉ giao hàng <span class="text-danger">*</span></label>
+                        <input asp-for="DiaChiGiao" class="form-control" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" />
+                        <span asp-validation-for="DiaChiGiao" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="GhiChu" class="form-label">Ghi chú</label>
+                        <textarea asp-for="GhiChu" class="form-control" rows="3" placeholder="Ghi chú thêm cho nhà cung ứng (nếu có)"></textarea>
+                        <span asp-validation-for="GhiChu" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a asp-controller="Projects" asp-action="MyProjects" class="btn btn-secondary me-md-2">Quay lại</a>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane me-2"></i>Đặt mua</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+    </div><!-- End Main Content -->
+  </div><!-- End row -->
+</div><!-- End container-fluid -->
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
