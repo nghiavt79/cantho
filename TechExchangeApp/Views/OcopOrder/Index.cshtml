@@ -77,7 +77,9 @@
                                 @foreach (var order in Model)
                                 {
                                     <tr>
-                                        <td data-label="Sản phẩm">@order.ProductName</td>
+                                        <td data-label="Sản phẩm">
+                                            <a href="@(Html.MainDomain())ocop/@(Html.MakeURLFriendly(order.ProductName))-@order.ProductId" target="_blank">@order.ProductName</a>
+                                        </td>
                                         <td data-label="Số lượng">@order.SoLuong</td>
                                         <td data-label="Địa chỉ giao">@order.DiaChiGiao</td>
                                         <td data-label="Thanh toán">
