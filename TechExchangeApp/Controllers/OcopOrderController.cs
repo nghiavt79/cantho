@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.ViewModel;
 
 namespace TechExchangeApp.Controllers
 {
@@ -119,6 +120,97 @@ namespace TechExchangeApp.Controllers
 
             ViewBag.Product = product;
             return View(order);
+        }
+
+        // GET: /OcopOrder/Index — "Đơn hàng OCOP của tôi" (buyer)
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var userId = GetCurrentUserId();
+
+            var orders = await (
+                from o in _context.OcopOrderRequests.AsNoTracking()
+                where o.NguoiTao == userId
+                join p in _context.SanPhamCNTBs.AsNoTracking() on o.ProductId equals p.ID into products
+                from p in products.DefaultIfEmpty()
+                orderby o.NgayTao descending
+                select new OcopOrderVm
+                {
+                    Id = o.Id,
+                    ProductId = o.ProductId,
+                    ProductName = p != null ? p.Name ?? "" : "",
+                    HoTen = o.HoTen,
+                    DienThoai = o.DienThoai,
+                    DiaChiGiao = o.DiaChiGiao,
+                    SoLuong = o.SoLuong,
+                    GhiChu = o.GhiChu,
+                    StatusId = o.StatusId,
+                    NgayTao = o.NgayTao
+                }).ToListAsync();
+
+            return View(orders);
+        }
+
+        // GET: /OcopOrder/Manage — quản lý đơn khách đặt (nhà cung ứng)
+        [HttpGet]
+        public async Task<IActionResult> Manage()
+        {
+            var userId = GetCurrentUserId();
+            var supplierId = await _context.NhaCungUngs.AsNoTracking()
+                .Where(n => n.UserId == userId)
+                .Select(n => (int?)n.CungUngId)
+                .FirstOrDefaultAsync();
+
+            if (!supplierId.HasValue) return Forbid();
+
+            var orders = await (
+                from o in _context.OcopOrderRequests.AsNoTracking()
+                where o.SupplierId == supplierId.Value
+                join p in _context.SanPhamCNTBs.AsNoTracking() on o.ProductId equals p.ID into products
+                from p in products.DefaultIfEmpty()
+                orderby o.NgayTao descending
+                select new OcopOrderVm
+                {
+                    Id = o.Id,
+                    ProductId = o.ProductId,
+                    ProductName = p != null ? p.Name ?? "" : "",
+                    HoTen = o.HoTen,
+                    DienThoai = o.DienThoai,
+                    DiaChiGiao = o.DiaChiGiao,
+                    SoLuong = o.SoLuong,
+                    GhiChu = o.GhiChu,
+                    StatusId = o.StatusId,
+                    NgayTao = o.NgayTao
+                }).ToListAsync();
+
+            return View(orders);
+        }
+
+        // POST: /OcopOrder/UpdateStatus — nhà cung ứng cập nhật trạng thái đơn
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateStatus(int id, int statusId)
+        {
+            var userId = GetCurrentUserId();
+            var supplierId = await _context.NhaCungUngs.AsNoTracking()
+                .Where(n => n.UserId == userId)
+                .Select(n => (int?)n.CungUngId)
+                .FirstOrDefaultAsync();
+
+            if (!supplierId.HasValue) return Forbid();
+
+            var order = await _context.OcopOrderRequests
+                .FirstOrDefaultAsync(o => o.Id == id && o.SupplierId == supplierId.Value);
+
+            if (order == null) return NotFound();
+            if (statusId < 1 || statusId > 3) return BadRequest();
+
+            order.StatusId = statusId;
+            order.NguoiSua = userId;
+            order.NgaySua = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Manage");
         }
     }
 }

@@ -35,6 +35,13 @@
                     <span class="badge bg-danger float-end">@Model.InvitationCount</span>
                 </a>
             }
+            <a class="nav-link @(Context.Request.Path.StartsWithSegments("/OcopOrder/Index") ? "active" : "")" href="@Url.Action("Index", "OcopOrder")">
+                <i class="fas fa-shopping-cart me-2"></i> Đơn hàng OCOP của tôi
+                @if (Model.OcopOrderCount > 0)
+                {
+                    <span class="badge bg-primary float-end">@Model.OcopOrderCount</span>
+                }
+            </a>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/chat") ? "active" : "")" href="/chat">
                 <i class="fas fa-comments me-2"></i> Tin nhắn
                 <span id="chatUnreadBadge" class="badge bg-danger float-end" style="display:none;"></span>
@@ -58,6 +65,16 @@
             <a class="nav-link" href="/dang-ky-tu-van">
                 <i class="fas fa-user-graduate me-2"></i> Hồ sơ chuyên gia
             </a>
+            @if (Model.IsSeller)
+            {
+                <a class="nav-link @(Context.Request.Path.StartsWithSegments("/OcopOrder/Manage") ? "active" : "")" href="@Url.Action("Manage", "OcopOrder")">
+                    <i class="fas fa-clipboard-list me-2"></i> Đơn OCOP khách đặt
+                    @if (Model.PendingOcopOrderCount > 0)
+                    {
+                        <span class="badge bg-danger float-end">@Model.PendingOcopOrderCount</span>
+                    }
+                </a>
+            }
 
             <hr>
 

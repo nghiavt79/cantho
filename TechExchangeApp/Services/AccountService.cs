@@ -172,15 +172,28 @@ namespace TechExchangeApp.Services
 
             // Count pending invitations for sellers
             var invitationCount = 0;
+            var pendingOcopOrderCount = 0;
             if (isSeller)
             {
                 invitationCount = await _context.RFQInvitations
-                    .Where(i => i.SellerId == userId && 
-                               i.IsActive && 
+                    .Where(i => i.SellerId == userId &&
+                               i.IsActive &&
                                i.StatusId != 4 && // Not Declined
                                i.StatusId != 5)   // Not Expired
                     .CountAsync();
+
+                var supplierId = await _context.NhaCungUngs
+                    .Where(n => n.UserId == userId)
+                    .Select(n => (int?)n.CungUngId)
+                    .FirstOrDefaultAsync();
+                if (supplierId.HasValue)
+                {
+                    pendingOcopOrderCount = await _context.OcopOrderRequests
+                        .CountAsync(o => o.SupplierId == supplierId.Value && o.StatusId == 1);
+                }
             }
+
+            var ocopOrderCount = await _context.OcopOrderRequests.CountAsync(o => o.NguoiTao == userId);
 
             return new AccountSidebarVm
             {
@@ -189,7 +202,9 @@ namespace TechExchangeApp.Services
                 AvatarUrl = string.IsNullOrEmpty(user.Img) ? "/images/default-avatar.png" : user.Img,
                 ProjectCount = projectCount,
                 InvitationCount = invitationCount,
-                IsSeller = isSeller
+                IsSeller = isSeller,
+                OcopOrderCount = ocopOrderCount,
+                PendingOcopOrderCount = pendingOcopOrderCount
             };
         }
     }

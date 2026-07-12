@@ -8,5 +8,7 @@ namespace TechExchangeApp.ViewModel
         public int ProjectCount { get; set; }
         public int InvitationCount { get; set; }
         public bool IsSeller { get; set; }
+        public int OcopOrderCount { get; set; }
+        public int PendingOcopOrderCount { get; set; }
     }
 }
