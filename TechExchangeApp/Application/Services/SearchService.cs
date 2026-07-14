@@ -727,6 +727,171 @@ namespace TechExchangeApp.Application.Services
             }
         }
 
+        /// <summary>
+        /// See ISearchService.SearchByPhrasesAsync. Each phrase is quoted as its own CONTAINSTABLE
+        /// term and OR-combined, so a garbage pairing (two unrelated filler-adjacent words) simply
+        /// fails to match anything instead of falsely matching via loose substring/word overlap.
+        /// </summary>
+        public async Task<SearchResult> SearchByPhrasesAsync(
+            IReadOnlyList<string> phrases,
+            int take,
+            CancellationToken cancellationToken = default)
+        {
+            if (phrases == null || phrases.Count == 0)
+                return new SearchResult();
+
+            try
+            {
+                // Strip quote characters so each phrase stays a well-formed CONTAINSTABLE term.
+                var searchTerm = string.Join(" OR ", phrases
+                    .Select(p => p.Replace("\"", " ").Trim())
+                    .Where(p => p.Length > 0)
+                    .Select(p => $"\"{p}\""));
+
+                if (string.IsNullOrWhiteSpace(searchTerm))
+                    return new SearchResult();
+
+                var sql = @"
+                    SELECT TOP (@Take) s.Id, s.Title, s.[Description], s.Contents, s.FutherIndex,
+                           s.RemovedUnicode, s.RefId, s.ImgPreview, s.TypeName,
+                           s.MimeType, s.URL, s.AbsPath, s.Created, s.Modified,
+                           s.IndexTime, s.Noted, s.Creator, s.LanguageId, s.SiteId
+                    FROM dbo.SearchIndexContents s
+                    INNER JOIN CONTAINSTABLE(dbo.SearchIndexContents, (Title, RemovedUnicode, Contents), @SearchTerm) AS KEY_TBL
+                        ON s.Id = KEY_TBL.[KEY]
+                    ORDER BY KEY_TBL.RANK DESC;";
+
+                var items = new List<SearchIndexContent>();
+
+                var conn = _context.Database.GetDbConnection();
+                var needClose = conn.State != ConnectionState.Open;
+                if (needClose) await conn.OpenAsync(cancellationToken);
+
+                try
+                {
+                    using var cmd = conn.CreateCommand();
+                    cmd.CommandText = sql;
+                    cmd.Parameters.Add(new SqlParameter("@SearchTerm", searchTerm));
+                    cmd.Parameters.Add(new SqlParameter("@Take", take));
+
+                    using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
+                    while (await reader.ReadAsync(cancellationToken))
+                    {
+                        items.Add(new SearchIndexContent
+                        {
+                            Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                            Title = reader.IsDBNull(reader.GetOrdinal("Title")) ? null : reader.GetString(reader.GetOrdinal("Title")),
+                            Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                            Contents = reader.IsDBNull(reader.GetOrdinal("Contents")) ? null : reader.GetString(reader.GetOrdinal("Contents")),
+                            RefId = reader.IsDBNull(reader.GetOrdinal("RefId")) ? null : reader.GetInt64(reader.GetOrdinal("RefId")),
+                            ImgPreview = reader.IsDBNull(reader.GetOrdinal("ImgPreview")) ? null : reader.GetString(reader.GetOrdinal("ImgPreview")),
+                            TypeName = reader.IsDBNull(reader.GetOrdinal("TypeName")) ? null : reader.GetString(reader.GetOrdinal("TypeName")),
+                            URL = reader.IsDBNull(reader.GetOrdinal("URL")) ? null : reader.GetString(reader.GetOrdinal("URL")),
+                            Created = reader.IsDBNull(reader.GetOrdinal("Created")) ? null : reader.GetDateTime(reader.GetOrdinal("Created")),
+                            Modified = reader.IsDBNull(reader.GetOrdinal("Modified")) ? null : reader.GetDateTime(reader.GetOrdinal("Modified")),
+                            Creator = reader.IsDBNull(reader.GetOrdinal("Creator")) ? null : reader.GetString(reader.GetOrdinal("Creator")),
+                        });
+                    }
+                }
+                finally
+                {
+                    if (needClose) await conn.CloseAsync();
+                }
+
+                return new SearchResult
+                {
+                    Items = items,
+                    TotalCount = items.Count,
+                    PageNumber = 1,
+                    PageSize = take
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in SearchByPhrasesAsync for phrases: {Phrases}", string.Join(", ", phrases));
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// See ISearchService.GetRecentByTypeAsync — a plain category browse, no full-text
+        /// index involved at all.
+        /// </summary>
+        public async Task<SearchResult> GetRecentByTypeAsync(
+            IReadOnlyList<string> typeNames,
+            int take,
+            CancellationToken cancellationToken = default)
+        {
+            if (typeNames == null || typeNames.Count == 0)
+                return new SearchResult();
+
+            try
+            {
+                var typeParams = typeNames.Select((_, i) => $"@Type{i}").ToList();
+                var sql = $@"
+                    SELECT TOP (@Take) s.Id, s.Title, s.[Description], s.Contents, s.FutherIndex,
+                           s.RemovedUnicode, s.RefId, s.ImgPreview, s.TypeName,
+                           s.MimeType, s.URL, s.AbsPath, s.Created, s.Modified,
+                           s.IndexTime, s.Noted, s.Creator, s.LanguageId, s.SiteId
+                    FROM dbo.SearchIndexContents s
+                    WHERE s.TypeName IN ({string.Join(", ", typeParams)})
+                    ORDER BY s.Modified DESC, s.Id DESC;";
+
+                var items = new List<SearchIndexContent>();
+
+                var conn = _context.Database.GetDbConnection();
+                var needClose = conn.State != ConnectionState.Open;
+                if (needClose) await conn.OpenAsync(cancellationToken);
+
+                try
+                {
+                    using var cmd = conn.CreateCommand();
+                    cmd.CommandText = sql;
+                    cmd.Parameters.Add(new SqlParameter("@Take", take));
+                    for (var i = 0; i < typeNames.Count; i++)
+                    {
+                        cmd.Parameters.Add(new SqlParameter($"@Type{i}", typeNames[i]));
+                    }
+
+                    using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
+                    while (await reader.ReadAsync(cancellationToken))
+                    {
+                        items.Add(new SearchIndexContent
+                        {
+                            Id = reader.GetInt64(reader.GetOrdinal("Id")),
+                            Title = reader.IsDBNull(reader.GetOrdinal("Title")) ? null : reader.GetString(reader.GetOrdinal("Title")),
+                            Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString(reader.GetOrdinal("Description")),
+                            Contents = reader.IsDBNull(reader.GetOrdinal("Contents")) ? null : reader.GetString(reader.GetOrdinal("Contents")),
+                            RefId = reader.IsDBNull(reader.GetOrdinal("RefId")) ? null : reader.GetInt64(reader.GetOrdinal("RefId")),
+                            ImgPreview = reader.IsDBNull(reader.GetOrdinal("ImgPreview")) ? null : reader.GetString(reader.GetOrdinal("ImgPreview")),
+                            TypeName = reader.IsDBNull(reader.GetOrdinal("TypeName")) ? null : reader.GetString(reader.GetOrdinal("TypeName")),
+                            URL = reader.IsDBNull(reader.GetOrdinal("URL")) ? null : reader.GetString(reader.GetOrdinal("URL")),
+                            Created = reader.IsDBNull(reader.GetOrdinal("Created")) ? null : reader.GetDateTime(reader.GetOrdinal("Created")),
+                            Modified = reader.IsDBNull(reader.GetOrdinal("Modified")) ? null : reader.GetDateTime(reader.GetOrdinal("Modified")),
+                            Creator = reader.IsDBNull(reader.GetOrdinal("Creator")) ? null : reader.GetString(reader.GetOrdinal("Creator")),
+                        });
+                    }
+                }
+                finally
+                {
+                    if (needClose) await conn.CloseAsync();
+                }
+
+                return new SearchResult
+                {
+                    Items = items,
+                    TotalCount = items.Count,
+                    PageNumber = 1,
+                    PageSize = take
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetRecentByTypeAsync for types: {Types}", string.Join(", ", typeNames));
+                throw;
+            }
+        }
+
         // =============================================
         // Private Helper Methods
         // =============================================

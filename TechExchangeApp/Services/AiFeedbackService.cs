@@ -32,7 +32,7 @@ namespace TechExchangeApp.Services
                 FullName = request.FullName,
                 Email = request.Email,
                 Phone = request.Phone,
-                Title = "Yeu cau ho tro tu AI Chat Box",
+                Title = "Yêu cầu hỗ trợ từ AI Chat Box",
                 Content = BuildContent(request),
                 Created = DateTime.Now,
                 StatusId = 2,
@@ -49,7 +49,7 @@ namespace TechExchangeApp.Services
         {
             var lines = new List<string>
             {
-                "Nguon: AI Support Chat Box"
+                "Nguồn: AI Support Chat Box"
             };
 
             if (!string.IsNullOrWhiteSpace(request.SessionKey))
@@ -59,7 +59,7 @@ namespace TechExchangeApp.Services
 
             if (!string.IsNullOrWhiteSpace(request.Message))
             {
-                lines.Add("Noi dung:");
+                lines.Add("Nội dung:");
                 lines.Add(request.Message.Trim());
             }
 

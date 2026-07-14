@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using TechExchangeApp.Configuration;
 using TechExchangeApp.Models;
 using TechExchangeApp.Services;
 
@@ -25,7 +27,14 @@ namespace TechExchangeApp.Controllers.Api
         [HttpGet("suggestions")]
         public IActionResult Suggestions()
         {
-            return Ok(_chatService.GetSuggestions());
+            return Ok(AiQuickActions.All.Select(a => new { a.Id, a.Title }));
+        }
+
+        [HttpGet("history")]
+        public async Task<ActionResult<IReadOnlyList<AiChatHistoryItem>>> History(string sessionKey, CancellationToken cancellationToken)
+        {
+            var items = await _chatService.GetHistoryAsync(sessionKey, cancellationToken);
+            return Ok(items);
         }
 
         [HttpPost("message")]
@@ -41,7 +50,8 @@ namespace TechExchangeApp.Controllers.Api
 
             try
             {
-                var response = await _chatService.ReplyAsync(request, cancellationToken);
+                var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : (int?)null;
+                var response = await _chatService.ReplyAsync(request, userId, cancellationToken);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -52,7 +62,7 @@ namespace TechExchangeApp.Controllers.Api
                     Success = false,
                     SessionKey = string.IsNullOrWhiteSpace(request.SessionKey) ? Guid.NewGuid().ToString("N") : request.SessionKey,
                     NeedsContactInfo = true,
-                    Message = "He thong AI chat dang gap loi khi xu ly yeu cau. Anh/chi vui long de lai thong tin de trung tam lien he ho tro."
+                    Message = "Hệ thống AI chat đang gặp lỗi khi xử lý yêu cầu. Anh/chị vui lòng để lại thông tin để trung tâm liên hệ hỗ trợ."
                 });
             }
         }
@@ -68,7 +78,7 @@ namespace TechExchangeApp.Controllers.Api
                 return BadRequest(new AiChatFeedbackResponse
                 {
                     Success = false,
-                    Message = "Vui long nhap so dien thoai hoac email de trung tam lien he."
+                    Message = "Vui lòng nhập số điện thoại hoặc email để trung tâm liên hệ."
                 });
             }
 
@@ -78,7 +88,7 @@ namespace TechExchangeApp.Controllers.Api
                 return Ok(new AiChatFeedbackResponse
                 {
                     Success = true,
-                    Message = "Thong tin cua anh/chi da duoc ghi nhan. Trung tam se lien he ho tro trong thoi gian som nhat."
+                    Message = "Thông tin của anh/chị đã được ghi nhận. Trung tâm sẽ liên hệ hỗ trợ trong thời gian sớm nhất."
                 });
             }
             catch (Exception ex)
@@ -87,7 +97,7 @@ namespace TechExchangeApp.Controllers.Api
                 return StatusCode(StatusCodes.Status500InternalServerError, new AiChatFeedbackResponse
                 {
                     Success = false,
-                    Message = "Chua the luu thong tin. Anh/chi vui long thu lai sau."
+                    Message = "Chưa thể lưu thông tin. Anh/chị vui lòng thử lại sau."
                 });
             }
         }

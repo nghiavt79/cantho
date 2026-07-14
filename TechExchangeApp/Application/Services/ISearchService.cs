@@ -61,5 +61,28 @@ namespace TechExchangeApp.Application.Services
             string keyword,
             SearchOptions options,
             CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Full-text search where each entry in <paramref name="phrases"/> is OR-combined as its
+        /// own quoted CONTAINSTABLE phrase, so a multi-word entry like "chuyên gia" must appear
+        /// as an adjacent phrase. Unlike SearchByTypeAsync (which ANDs individual words — "chuyên"
+        /// AND "gia" — and can match unrelated documents that merely contain both syllables
+        /// somewhere), this keeps compound Vietnamese terms intact. Used by the AI chatbox.
+        /// </summary>
+        Task<SearchResult> SearchByPhrasesAsync(
+            IReadOnlyList<string> phrases,
+            int take,
+            CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Plain category browse — no CONTAINSTABLE, no ranking. Used when the caller's intent
+        /// is unambiguous (e.g. a chatbox quick-action button like "Tìm công nghệ"), where
+        /// running a fuzzy text search would be both slower and less correct than just listing
+        /// the most recent items of that type.
+        /// </summary>
+        Task<SearchResult> GetRecentByTypeAsync(
+            IReadOnlyList<string> typeNames,
+            int take,
+            CancellationToken cancellationToken = default);
     }
 }

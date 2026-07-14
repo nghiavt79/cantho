@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using TechExchangeApp.Configuration;
 using TechExchangeApp.Data;
@@ -17,23 +18,30 @@ namespace TechExchangeApp.Controllers
         private readonly AppDbContext _context;
         private readonly IProductService _productService;
         private readonly IMemoryCache _cache;
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
         private readonly string _mainDomain;
         private readonly SiteBrandingOptions _branding;
 
         private static readonly int[] TinSuKienMenus = { 44, 72, 83, 46 };
         private const int VideoMenuId = 71;
         private const int YeuCauMenuId = 67;
+        private const string HeroStatsDataPath = "js/hero-stats-data.json";
 
         public HomeController(
             AppDbContext context,
             IProductService productService,
             IMemoryCache cache,
+            IWebHostEnvironment env,
+            IConfiguration configuration,
             IOptions<AppSettings> appSettings,
             IOptions<SiteBrandingOptions> branding)
         {
             _context = context;
             _productService = productService;
             _cache = cache;
+            _env = env;
+            _configuration = configuration;
             _mainDomain = appSettings.Value.MainDomain;
             _branding = branding.Value;
         }
@@ -45,8 +53,8 @@ namespace TechExchangeApp.Controllers
             var cacheKey = $"home:index:{lang}:{_mainDomain}";
             var data = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(3);
-                entry.SlidingExpiration = TimeSpan.FromMinutes(1);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:AbsoluteSeconds", 180));
+                entry.SlidingExpiration = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:SlidingSeconds", 60));
                 var newProducts = await _productService.GetNewProductsAsync(12, excludeOcop: true);
 
                 return new HomeIndexCacheVm
@@ -119,15 +127,45 @@ namespace TechExchangeApp.Controllers
             var technologies = await _context.SanPhamCNTBs.AsNoTracking().CountAsync(x => x.StatusId == 3);
             var partners = await _context.NhaCungUngs.AsNoTracking().CountAsync();
             var labs = await _context.Categories.AsNoTracking().CountAsync();
+            var floors = ReadHeroStatsFloors();
 
             return new List<HomeStatVm>
             {
-                new() { Icon = "bi-people", Value = FormatCount(Math.Max(experts, 1000)), Label = "Nhà khoa học & chuyên gia" },
-                new() { Icon = "bi-building-gear", Value = FormatCount(Math.Max(labs, 70)), Label = "Cơ sở & phòng thí nghiệm" },
-                new() { Icon = "bi-person-workspace", Value = FormatCount(Math.Max(experts, 1000)), Label = "Chuyên gia tư vấn" },
-                new() { Icon = "bi-diagram-3", Value = FormatCount(Math.Max(partners, 2400)), Label = "Đối tác doanh nghiệp" },
-                new() { Icon = "bi-bank", Value = "20+", Label = "Năm hoạt động & phát triển" }
+                new() { Icon = "bi-people", Value = FormatCount(Math.Max(experts, floors.ExpertsFloor)), Label = "Nhà khoa học & chuyên gia" },
+                new() { Icon = "bi-building-gear", Value = FormatCount(Math.Max(labs, floors.LabsFloor)), Label = "Cơ sở & phòng thí nghiệm" },
+                new() { Icon = "bi-person-workspace", Value = FormatCount(Math.Max(experts, floors.ExpertsFloor)), Label = "Chuyên gia tư vấn" },
+                new() { Icon = "bi-diagram-3", Value = FormatCount(Math.Max(partners, floors.PartnersFloor)), Label = "Đối tác doanh nghiệp" },
+                new() { Icon = "bi-bank", Value = floors.YearsLabel, Label = "Năm hoạt động & phát triển" }
             };
+        }
+
+        private record HeroStatsFloors(int ExpertsFloor, int LabsFloor, int PartnersFloor, string YearsLabel);
+
+        private HeroStatsFloors ReadHeroStatsFloors()
+        {
+            var defaults = new HeroStatsFloors(1000, 70, 2400, "20+");
+
+            try
+            {
+                var filePath = Path.Combine(_env.WebRootPath, HeroStatsDataPath);
+                if (!System.IO.File.Exists(filePath))
+                {
+                    return defaults;
+                }
+
+                using var doc = JsonDocument.Parse(System.IO.File.ReadAllText(filePath));
+                var root = doc.RootElement;
+
+                return new HeroStatsFloors(
+                    root.TryGetProperty("expertsFloor", out var e) && e.TryGetInt32(out var ev) ? ev : defaults.ExpertsFloor,
+                    root.TryGetProperty("labsFloor", out var l) && l.TryGetInt32(out var lv) ? lv : defaults.LabsFloor,
+                    root.TryGetProperty("partnersFloor", out var p) && p.TryGetInt32(out var pv) ? pv : defaults.PartnersFloor,
+                    root.TryGetProperty("yearsLabel", out var y) && y.GetString() is { Length: > 0 } yv ? yv : defaults.YearsLabel);
+            }
+            catch
+            {
+                return defaults;
+            }
         }
 
         private static string FormatCount(int value)

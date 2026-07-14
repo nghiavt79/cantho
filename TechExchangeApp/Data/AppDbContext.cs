@@ -111,6 +111,11 @@ namespace TechExchangeApp.Data
             // EntityViewCounter — composite PK
             modelBuilder.Entity<EntityViewCounter>()
                 .HasKey(v => new { v.EntityType, v.EntityId });
+
+            // AI chat history — tables are created/altered via Create_AiChatSupport_Tables.sql,
+            // not EF migrations, so exclude them from migration scaffolding.
+            modelBuilder.Entity<AiChatSession>().ToTable("AiChatSessions", t => t.ExcludeFromMigrations());
+            modelBuilder.Entity<AiChatMessage>().ToTable("AiChatMessages", t => t.ExcludeFromMigrations());
         }
 
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -127,6 +132,8 @@ namespace TechExchangeApp.Data
         public DbSet<SearchIndexContent> SearchIndexContents { get; set; }
         public DbSet<SearchQueryLog> SearchQueryLogs { get; set; }
         public DbSet<AiKnowledgeDocument> AiKnowledgeDocuments { get; set; } = null!;
+        public DbSet<AiChatSession> AiChatSessions { get; set; } = null!;
+        public DbSet<AiChatMessage> AiChatMessages { get; set; } = null!;
         public DbSet<Likepage> Likepages { get; set; }
         public DbSet<TechTransferRequest> TechTransferRequests { get; set; } = null!;
         public DbSet<OcopOrderRequest> OcopOrderRequests { get; set; } = null!;

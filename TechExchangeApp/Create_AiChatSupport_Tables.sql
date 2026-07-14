@@ -33,6 +33,13 @@ BEGIN
     CREATE INDEX [IX_AiChatSessions_SessionKey] ON [dbo].[AiChatSessions] ([SessionKey]);
 END;
 
+-- Ties an anonymous chat session to a logged-in account once the visitor signs in;
+-- stays NULL for guests so history keeps working per-browser without an account.
+IF COL_LENGTH('dbo.AiChatSessions', 'UserId') IS NULL
+BEGIN
+    ALTER TABLE [dbo].[AiChatSessions] ADD [UserId] INT NULL;
+END;
+
 IF OBJECT_ID(N'[dbo].[AiChatMessages]', N'U') IS NULL
 BEGIN
     CREATE TABLE [dbo].[AiChatMessages] (

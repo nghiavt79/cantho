@@ -10,6 +10,13 @@ namespace TechExchangeApp.Models
 
         [MaxLength(100)]
         public string? SessionKey { get; set; }
+
+        /// <summary>
+        /// Stable id of a chatbox quick-action button (see AiQuickActions), if this message
+        /// was sent by clicking one rather than typed. Null for free-typed messages.
+        /// </summary>
+        [MaxLength(100)]
+        public string? ActionId { get; set; }
     }
 
     public class AiChatMessageResponse
@@ -19,6 +26,9 @@ namespace TechExchangeApp.Models
         public string SessionKey { get; set; } = string.Empty;
         public IReadOnlyList<AiKnowledgeItem> Sources { get; set; } = Array.Empty<AiKnowledgeItem>();
         public bool NeedsContactInfo { get; set; }
+
+        /// <summary>How this reply was produced: "browse", "search", or "action".</summary>
+        public string Mode { get; set; } = "search";
     }
 
     public class AiChatFeedbackRequest
@@ -51,5 +61,12 @@ namespace TechExchangeApp.Models
         public string Title { get; set; } = string.Empty;
         public string? Url { get; set; }
         public string Summary { get; set; } = string.Empty;
+    }
+
+    public class AiChatHistoryItem
+    {
+        public string Role { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
     }
 }

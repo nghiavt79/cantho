@@ -55,7 +55,7 @@
                     <div class="tech-thumbs">
                         @foreach (var img in Model.Images.Take(6))
                         {
-                            <img src="@Html.CookedImageURL("68-68", img.ToString())" alt="@p.Name" />
+                            <img src="@Html.CookedImageURL("68-68", img.FileURL)" alt="@p.Name" />
                         }
                     </div>
                 }
