@@ -25,23 +25,25 @@ namespace TechExchangeApp.Configuration
     {
         public static readonly IReadOnlyList<AiQuickAction> All = new[]
         {
-            new AiQuickAction("browse-congnghe", "Tìm công nghệ", AiQuickActionKind.Browse,
+            new AiQuickAction("browse-congnghe", "Công nghệ", AiQuickActionKind.Browse,
                 TypeNames: new[] { "Công nghệ" },
                 ResultsHeader: "Đây là một số công nghệ mới nhất trên website:"),
 
-            new AiQuickAction("browse-cntb", "Tìm sản phẩm CNTB", AiQuickActionKind.Browse,
+            new AiQuickAction("browse-cntb", "Thiết bị & sản phẩm", AiQuickActionKind.Browse,
                 TypeNames: new[] { "Công nghệ", "Thiết bị", "Tài sản trí tuệ" },
-                ResultsHeader: "Đây là một số sản phẩm CNTB mới nhất trên website:"),
+                ResultsHeader: "Đây là một số sản phẩm mới nhất trên website:"),
 
-            new AiQuickAction("action-tuvan", "Dịch vụ tư vấn", AiQuickActionKind.Action,
-                ReplyText: "Anh/chị có thể xem chi tiết các dịch vụ tư vấn tại: /dich-vu-tu-van"),
+            new AiQuickAction("browse-chuyengia", "Chuyên gia", AiQuickActionKind.Browse,
+                TypeNames: new[] { "Chuyên gia" },
+                ResultsHeader: "Đây là một số chuyên gia tư vấn mới nhất trên website:"),
 
-            new AiQuickAction("action-hotro", "Gửi yêu cầu hỗ trợ", AiQuickActionKind.Action,
+            new AiQuickAction("browse-nhacungung", "Nhà cung ứng", AiQuickActionKind.Browse,
+                TypeNames: new[] { "Nhà cung ứng" },
+                ResultsHeader: "Đây là một số nhà cung ứng mới nhất trên website:"),
+
+            new AiQuickAction("action-hotro", "Gửi yêu cầu tư vấn", AiQuickActionKind.Action,
                 ReplyText: "Anh/chị vui lòng để lại họ tên, số điện thoại hoặc email bên dưới, trung tâm sẽ liên hệ hỗ trợ sớm nhất.",
                 NeedsContactInfo: true),
-
-            new AiQuickAction("action-lienhe", "Liên hệ trung tâm", AiQuickActionKind.Action,
-                ReplyText: "Anh/chị có thể để lại họ tên, số điện thoại hoặc email trong khung chat. Trung tâm sẽ ghi nhận và liên hệ hỗ trợ trong thời gian sớm nhất."),
         };
 
         public static AiQuickAction? FindById(string? id) =>

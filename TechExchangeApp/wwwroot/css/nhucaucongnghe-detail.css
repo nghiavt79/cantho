@@ -1,0 +1,306 @@
+/* =====================================================================
+   Trang chi tiết Yêu cầu công nghệ (Views/Nhucaucongnghe/Detail.cshtml)
+   Scope trong .nhucau-detail-page. Không sửa .content-text toàn cục
+   hay markup của _PhieuYeuCauCN/_PortletYeuCauMoi (dùng chung, có logic
+   captcha/JS riêng) — chỉ bọc thêm khoảng cách/khung cho phần hiển thị.
+   ===================================================================== */
+
+.nhucau-detail-page,
+.nhucau-detail-page * {
+    box-sizing: border-box;
+}
+
+.nhucau-detail-page {
+    --nc-navy: #07547A;
+    --nc-navy-dark: #063B59;
+    --nc-cyan: #08A8C4;
+    --nc-bg: #F5F8FA;
+    --nc-card-bg: #FFFFFF;
+    --nc-border: #E2E8EE;
+    --nc-text: #1F2937;
+    --nc-text-muted: #64748B;
+
+    background-color: var(--nc-bg);
+    padding: 24px 0 56px;
+}
+
+.nhucau-detail-page .nhucau-detail-container {
+    width: min(1240px, calc(100% - 40px));
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nhucau-detail-page .nhucau-detail-breadcrumb {
+    margin-bottom: 18px;
+    font-size: 13.5px;
+    color: var(--nc-text-muted);
+}
+
+.nhucau-detail-page .nhucau-detail-breadcrumb a {
+    color: var(--nc-text-muted);
+    text-decoration: none;
+}
+
+.nhucau-detail-page .nhucau-detail-breadcrumb a:hover {
+    color: var(--nc-cyan);
+}
+
+.nhucau-detail-page .nhucau-detail-breadcrumb span {
+    margin: 0 6px;
+}
+
+.nhucau-detail-page .nhucau-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 28px;
+    align-items: start;
+}
+
+.nhucau-detail-page .nhucau-detail-content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Khoảng cách cho form "Yêu cầu công nghệ" (_PhieuYeuCauCN) khi hiện */
+.nhucau-detail-page .nhucau-detail-content > .row {
+    margin: 0 0 4px;
+}
+
+/* ── Card nội dung yêu cầu ────────────────────────────────────────── */
+.nhucau-detail-page .nhucau-detail-card {
+    background-color: var(--nc-card-bg);
+    border: 1px solid var(--nc-border);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 1px 3px rgba(15, 42, 67, 0.06);
+}
+
+.nhucau-detail-page .nhucau-detail-card__title {
+    margin: 0 0 12px;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--nc-navy-dark);
+}
+
+.nhucau-detail-page .nhucau-detail-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--nc-border);
+    font-size: 13.5px;
+    color: var(--nc-text-muted);
+}
+
+.nhucau-detail-page .nhucau-detail-card__meta i {
+    color: var(--nc-cyan);
+    margin-right: 5px;
+}
+
+.nhucau-detail-page .nhucau-detail-card__summary {
+    margin: 0 0 18px;
+    padding: 12px 16px;
+    background-color: var(--nc-bg);
+    border-left: 3px solid var(--nc-cyan);
+    border-radius: 0 8px 8px 0;
+    font-size: 14.5px;
+    color: var(--nc-text);
+}
+
+.nhucau-detail-page .content-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--nc-text);
+}
+
+.nhucau-detail-page .content-text p {
+    text-align: left;
+    margin: 0 0 16px;
+    font-size: 15px;
+    color: var(--nc-text);
+}
+
+.nhucau-detail-page .content-text h1,
+.nhucau-detail-page .content-text h2,
+.nhucau-detail-page .content-text h3,
+.nhucau-detail-page .content-text h4 {
+    color: var(--nc-navy);
+    font-weight: 700;
+    margin: 22px 0 10px;
+}
+
+.nhucau-detail-page .content-text ul,
+.nhucau-detail-page .content-text ol {
+    padding-left: 20px;
+    margin: 0 0 16px;
+}
+
+.nhucau-detail-page .content-text li {
+    margin-bottom: 6px;
+}
+
+.nhucau-detail-page .content-text a {
+    color: var(--nc-navy);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--nc-border);
+    text-underline-offset: 2px;
+}
+
+.nhucau-detail-page .content-text a:hover {
+    color: var(--nc-cyan);
+}
+
+.nhucau-detail-page .content-text img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 12px 0;
+}
+
+.nhucau-detail-page .nhucau-detail-card__author {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--nc-border);
+    text-align: right;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--nc-navy);
+}
+
+.nhucau-detail-page #myCarousel {
+    margin-top: 18px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.nhucau-detail-page #myCarousel img {
+    width: 100%;
+    border-radius: 0;
+}
+
+/* ── Liên hệ CTA ──────────────────────────────────────────────────── */
+.nhucau-detail-page .nhucau-detail-cta {
+    background-color: var(--nc-navy);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+/* ── Tin khác ─────────────────────────────────────────────────────── */
+.nhucau-detail-page .nhucau-detail-related {
+    background-color: var(--nc-card-bg);
+    border: 1px solid var(--nc-border);
+    border-radius: 12px;
+    padding: 22px 28px;
+    box-shadow: 0 1px 3px rgba(15, 42, 67, 0.06);
+}
+
+.nhucau-detail-page .nhucau-detail-related__title {
+    margin: 0 0 14px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--nc-navy-dark);
+}
+
+.nhucau-detail-page .nhucau-detail-related__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nhucau-detail-page .nhucau-detail-related__list li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--nc-border);
+}
+
+.nhucau-detail-page .nhucau-detail-related__list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.nhucau-detail-page .nhucau-detail-related__list a {
+    color: var(--nc-text);
+    text-decoration: none;
+    font-size: 14.5px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nhucau-detail-page .nhucau-detail-related__list a:hover {
+    color: var(--nc-cyan);
+}
+
+.nhucau-detail-page .nhucau-detail-related__list span {
+    flex: 0 0 auto;
+    font-size: 12.5px;
+    color: var(--nc-text-muted);
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────── */
+.nhucau-detail-page .nhucau-detail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 90px;
+}
+
+.nhucau-detail-page .nhucau-detail-sidebar .box-adv.NhuCauCN {
+    background-color: var(--nc-navy);
+    border-radius: 10px;
+    height: auto !important;
+    padding: 14px 10px !important;
+}
+
+.nhucau-detail-page .nhucau-detail-sidebar .box-adv.NhuCauCN a {
+    text-decoration: none;
+}
+
+.nhucau-detail-page .nhucau-detail-sidebar .TitleNhuCauCN {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 991px) {
+    .nhucau-detail-page .nhucau-detail-layout {
+        grid-template-columns: minmax(0, 1fr) 220px;
+    }
+}
+
+@media (max-width: 767px) {
+    .nhucau-detail-page .nhucau-detail-container {
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    .nhucau-detail-page .nhucau-detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .nhucau-detail-page .nhucau-detail-card,
+    .nhucau-detail-page .nhucau-detail-related {
+        padding: 20px;
+    }
+
+    .nhucau-detail-page .nhucau-detail-sidebar {
+        position: static;
+    }
+}

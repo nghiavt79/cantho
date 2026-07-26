@@ -20,6 +20,10 @@ namespace TechExchangeApp.ViewModel
         public int CurPage { get; set; }
         public int CateId { get; set; }
         public int StoreId { get; set; }
+
+        // Lọc & sắp xếp (server-side)
+        public string? Keyword { get; set; }
+        public string Sort { get; set; } = "newest";
     }
     public class CategoryItemVm
     {

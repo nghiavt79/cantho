@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.Helpers;
 
 namespace TechExchangeApp.Areas.Cms.Controllers
 {
@@ -197,6 +199,102 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             await WriteLog(2, $"ToggleActivate PhieuYeuCauCNTB: ID={id} -> {status}");
 
             return Json(new { success = true, message = $"Đã {status.ToLower()} phiếu yêu cầu #{id}", activated = entity.IsActivated });
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> PublishToMarket(int id, string? title)
+        {
+            var entity = await _context.PhieuYeuCauCNTBs.FindAsync(id);
+            if (entity == null)
+                return Json(new { success = false, message = "Không tìm thấy phiếu tìm mua." });
+
+            var cleanTitle = string.IsNullOrWhiteSpace(title)
+                ? BuildDefaultTitle(entity)
+                : title.Trim();
+
+            var slug = SlugHelper.Slugify(cleanTitle);
+            if (string.IsNullOrWhiteSpace(slug))
+                slug = $"tim-mua-cong-nghe-{id}";
+
+            var existingSlug = slug;
+            var suffix = 2;
+            while (await _context.ContentsYeuCaus.AnyAsync(c => c.QueryString == existingSlug && c.MenuId == 67))
+            {
+                existingSlug = $"{slug}-{suffix++}";
+            }
+
+            var description = BuildDescription(entity.NoiDung);
+            var contents = BuildContents(entity);
+
+            var content = new ContentsYeuCau
+            {
+                Title = cleanTitle,
+                QueryString = existingSlug,
+                Description = description,
+                Contents = contents,
+                Author = User.Identity?.Name ?? "Biên tập",
+                StatusId = 3,
+                MenuId = 67,
+                TypeId = 7,
+                Created = DateTime.Now,
+                Creator = User.Identity?.Name,
+                PublishedDate = DateTime.Now,
+                bEffectiveDate = DateTime.Now,
+                LanguageId = entity.LanguageId ?? 1,
+                Domain = entity.Domain,
+                SiteId = entity.SiteId ?? GetSiteId(),
+                Viewed = 0,
+                Like = 0
+            };
+
+            _context.ContentsYeuCaus.Add(content);
+            entity.Title = cleanTitle;
+            entity.StatusId = 3;
+            entity.IsActivated = true;
+            await _context.SaveChangesAsync();
+
+            await WriteLog(2, $"Publish PhieuYeuCauCNTB #{id} to ContentsYeuCau #{content.Id}");
+
+            return Json(new
+            {
+                success = true,
+                message = "Đã đưa nhu cầu tìm mua lên sàn.",
+                url = $"/67/yeu-cau/{content.QueryString}-{content.Id}"
+            });
+        }
+
+        private static string BuildDefaultTitle(PhieuYeuCauCNTB entity)
+        {
+            var text = entity.NoiDung?.Trim();
+            if (string.IsNullOrWhiteSpace(text))
+                return $"Tìm mua công nghệ #{entity.PhieuYeuCauId}";
+
+            return text.Length <= 90 ? text : text[..90].Trim() + "...";
+        }
+
+        private static string BuildDescription(string? text)
+        {
+            var value = text?.Trim() ?? "";
+            if (value.Length > 220)
+                value = value[..220].Trim() + "...";
+            return WebUtility.HtmlEncode(value);
+        }
+
+        private static string BuildContents(PhieuYeuCauCNTB entity)
+        {
+            static string E(string? value) => WebUtility.HtmlEncode(value?.Trim() ?? "");
+
+            var lines = new List<string>
+            {
+                $"<p>{E(entity.NoiDung).Replace("\r\n", "<br>").Replace("\n", "<br>")}</p>"
+            };
+
+            if (!string.IsNullOrWhiteSpace(entity.TenDonVi))
+                lines.Add($"<p><strong>Đơn vị:</strong> {E(entity.TenDonVi)}</p>");
+            if (!string.IsNullOrWhiteSpace(entity.FullName))
+                lines.Add($"<p><strong>Người liên hệ:</strong> {E(entity.FullName)}</p>");
+
+            return string.Join(Environment.NewLine, lines);
         }
     }
 }

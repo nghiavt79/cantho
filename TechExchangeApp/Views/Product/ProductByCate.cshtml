@@ -7,6 +7,10 @@
     int startItem = Model.Total > 0 ? (curPage - 1) * Model.PageSize + 1 : 0;
     int endItem = Math.Min(curPage * Model.PageSize, Model.Total);
 
+    // Giữ trạng thái lọc/sắp xếp khi phân trang & đổi tuỳ chọn
+    string kw = Uri.EscapeDataString(Model.Keyword ?? "");
+    string sortParam = Model.Sort ?? "newest";
+
     string categoryDesc = !string.IsNullOrWhiteSpace(Model.Description)
         ? Model.Description
         : $"Tổng hợp các thiết bị, phần mềm, giải pháp và công nghệ thuộc lĩnh vực {Model.CateTitle}, phục vụ kết nối, giới thiệu và chuyển giao công nghệ.";
@@ -39,18 +43,20 @@
             <div class="category-header-bottom">
                 <p class="category-desc">@categoryDesc</p>
                 <div class="category-actions">
-                    <div class="category-search input-group input-group-sm">
-                        <input type="search" class="form-control" name="keyword" placeholder="Tìm theo tên sản phẩm, thiết bị, giải pháp..." aria-label="Tìm kiếm" />
-                        <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
-                    </div>
-                    <select class="form-select form-select-sm category-sort" onchange="location.href='?sort=' + this.value + '&pageSize=@Model.PageSize'" aria-label="Sắp xếp">
-                        <option value="newest" selected>Mới cập nhật</option>
-                        <option value="name-asc">Tên A–Z</option>
-                        <option value="name-desc">Tên Z–A</option>
-                        <option value="price-asc">Giá tăng dần</option>
-                        <option value="price-desc">Giá giảm dần</option>
+                    <form method="get" class="category-search input-group input-group-sm" role="search">
+                        <input type="hidden" name="sort" value="@sortParam" />
+                        <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                        <input type="search" class="form-control" name="keyword" value="@Model.Keyword" placeholder="Tìm theo tên sản phẩm, thiết bị, giải pháp..." aria-label="Tìm kiếm" />
+                        <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                    <select class="form-select form-select-sm category-sort" onchange="location.href='?sort=' + this.value + '&pageSize=@Model.PageSize&keyword=@kw'" aria-label="Sắp xếp">
+                        <option value="newest" selected="@(sortParam == "newest")">Mới cập nhật</option>
+                        <option value="name-asc" selected="@(sortParam == "name-asc")">Tên A–Z</option>
+                        <option value="name-desc" selected="@(sortParam == "name-desc")">Tên Z–A</option>
+                        <option value="price-asc" selected="@(sortParam == "price-asc")">Giá tăng dần</option>
+                        <option value="price-desc" selected="@(sortParam == "price-desc")">Giá giảm dần</option>
                     </select>
-                    <select class="form-select form-select-sm category-page-size" onchange="location.href='?page=1&pageSize=' + this.value" aria-label="Số sản phẩm/trang">
+                    <select class="form-select form-select-sm category-page-size" onchange="location.href='?page=1&pageSize=' + this.value + '&sort=@sortParam&keyword=@kw'" aria-label="Số sản phẩm/trang">
                         @foreach (var size in new[] { 12, 24, 36 })
                         {
                             if (size == Model.PageSize)
@@ -130,16 +136,16 @@
                     <nav class="catalog-pagination" aria-label="Phân trang">
                         <ul>
                             <li class="@(curPage == 1 ? "disabled" : "")">
-                                <a href="?page=@(curPage - 1)&pageSize=@Model.PageSize" aria-label="Trang trước"><i class="bi bi-chevron-left"></i></a>
+                                <a href="?page=@(curPage - 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="Trang trước"><i class="bi bi-chevron-left"></i></a>
                             </li>
                             @foreach (var pg in Model.Pages)
                             {
                                 <li class="@(pg.IsActive ? "active" : "")">
-                                    <a href="?page=@pg.Page&pageSize=@Model.PageSize">@pg.Page</a>
+                                    <a href="?page=@pg.Page&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw">@pg.Page</a>
                                 </li>
                             }
                             <li class="@(curPage == totalPages ? "disabled" : "")">
-                                <a href="?page=@(curPage + 1)&pageSize=@Model.PageSize" aria-label="Trang sau"><i class="bi bi-chevron-right"></i></a>
+                                <a href="?page=@(curPage + 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="Trang sau"><i class="bi bi-chevron-right"></i></a>
                             </li>
                         </ul>
                     </nav>
@@ -148,12 +154,11 @@
                 <!-- ===== CTA ===== -->
                 <section class="catalog-cta">
                     <div>
-                        <h2>Bạn cần tìm sản phẩm công nghệ phù hợp?</h2>
-                        <p>Trung tâm hỗ trợ kết nối, tư vấn và chuyển giao công nghệ theo nhu cầu thực tế của doanh nghiệp, hợp tác xã và tổ chức.</p>
+                        <h2>Bạn chưa tìm thấy công nghệ, thiết bị hoặc giải pháp phù hợp trên Sàn?</h2>
+                        <p>Hãy gửi thông tin về nhu cầu tìm mua. Trung tâm sẽ hỗ trợ tiếp nhận yêu cầu, tìm kiếm sản phẩm phù hợp và kết nối bạn với các doanh nghiệp, tổ chức hoặc chuyên gia có khả năng cung cấp.</p>
                     </div>
                     <div class="catalog-cta__actions">
-                        <a class="catalog-cta__primary" href="@($"{mainDomain}dang-ky-tu-van")">Gửi yêu cầu tư vấn</a>
-                        <a class="catalog-cta__secondary" href="@($"{mainDomain}lien-he-74")">Liên hệ trung tâm</a>
+                        <a class="catalog-cta__primary" href="@($"{mainDomain}tim-mua-cong-nghe")">Gửi yêu cầu tìm mua</a>
                     </div>
                 </section>
             </div>

@@ -68,6 +68,7 @@ builder.Services.Configure<TechExchangeApp.Configuration.FeatureFlags>(builder.C
 builder.Services.Configure<TechExchangeApp.Configuration.DashboardJobOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.DashboardJobOptions.SectionName));
 builder.Services.Configure<TechExchangeApp.Configuration.OtpSettings>(builder.Configuration.GetSection(TechExchangeApp.Configuration.OtpSettings.SectionName));
 builder.Services.Configure<TechExchangeApp.Configuration.AiChatOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.AiChatOptions.SectionName));
+builder.Services.Configure<TechExchangeApp.Configuration.WorkflowOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.WorkflowOptions.SectionName));
 
 // In-process memory cache (used by HomeAnalyticsService)
 builder.Services.AddMemoryCache();
@@ -145,6 +146,7 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.IProjectService, TechExcha
 // Chat System
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IChatService, TechExchangeApp.Services.ChatService>();
 builder.Services.AddScoped<TechExchangeApp.Services.IAiChatService, TechExchangeApp.Services.AiChatService>();
+builder.Services.AddSingleton<TechExchangeApp.Services.IHomeCacheSignal, TechExchangeApp.Services.HomeCacheSignal>();
 builder.Services.AddScoped<TechExchangeApp.Services.IAiKnowledgeService, TechExchangeApp.Services.AiKnowledgeService>();
 builder.Services.AddScoped<TechExchangeApp.Services.IAiFeedbackService, TechExchangeApp.Services.AiFeedbackService>();
 builder.Services.AddHttpClient<TechExchangeApp.Services.IOpenAiClientService, TechExchangeApp.Services.OpenAiClientService>();
@@ -237,6 +239,7 @@ app.UseStaticFiles(new StaticFileOptions
         ctx.Context.Response.Headers.CacheControl = $"public,max-age={cacheSeconds}";
     }
 });
+app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
 app.UseRouting();
 
@@ -357,6 +360,12 @@ app.MapControllerRoute(
 
 // 4. NhuCauCongNghe Routes
 app.MapControllerRoute(
+    name: "nhucau_tim_mua",
+    pattern: "tim-mua-cong-nghe",
+    defaults: new { controller = "Nhucaucongnghe", action = "CateTechNeeds", menuId = 67 }
+);
+
+app.MapControllerRoute(
     name: "nhucau_dang",
     pattern: "yeu-cau-cong-nghe-67",
     defaults: new { controller = "Nhucaucongnghe", action = "CateTechNeeds", menuId = 67 }
@@ -369,10 +378,27 @@ app.MapControllerRoute(
 );
 
 // 5. News Routes
+
+// Pretty URL cho danh mục "Tin tức" (menuId=44): /tin-su-kien (không còn hậu tố -44)
+app.MapControllerRoute(
+    name: "news_menu_tinsukien",
+    pattern: "tin-su-kien",
+    defaults: new { controller = "News", action = "Category", menuId = 44 }
+);
+
 app.MapControllerRoute(
     name: "news_menu",
     pattern: "{queryString:regex(^(tin-su-kien|hoi-thao-trinh-dien-cong-nghe|bao-cao-phan-tich-xu-huong-cong-nghe|giai-phap-cong-nghe|mo-hinh-cong-nghe)$)}-{menuId:int}",
     defaults: new { controller = "News", action = "Category" }
+);
+
+// Pretty URL cho tin tức thuộc menuId=44 ("Tin tức"): /tin-tuc-su-kien/{slug}-{id}
+// menuId=44 được cấp qua route default (không nằm trên URL) nên
+// NewsController.Detail nhận menuId=44 y hệt như route số cũ.
+app.MapControllerRoute(
+    name: "news_detail_tintuc",
+    pattern: "tin-tuc-su-kien/{queryString}-{id:long}",
+    defaults: new { controller = "News", action = "Detail", menuId = 44 }
 );
 
 app.MapControllerRoute(
@@ -409,9 +435,16 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "feedback_index",
-    pattern: "lien-he-74",
+    pattern: "lien-he",
     defaults: new { controller = "Feedback", action = "Index" }
 );
+
+// Giữ URL cũ /lien-he-74 → 301 redirect sang /lien-he (SEO/bookmark)
+app.MapGet("lien-he-74", ctx =>
+{
+    ctx.Response.Redirect("/lien-he", permanent: true);
+    return Task.CompletedTask;
+});
 
 // 8. Auth Routes
 app.MapControllerRoute(
@@ -554,6 +587,18 @@ app.MapControllerRoute(
 );
 
 // ROUTE MẶC ĐỊNH
+
+app.MapControllerRoute(
+    name: "legacy_404_aspx",
+    pattern: "Errors/404.aspx",
+    defaults: new { controller = "Errors", action = "NotFoundPage" }
+);
+
+app.MapControllerRoute(
+    name: "errors_status_code",
+    pattern: "Errors/{statusCode:int}",
+    defaults: new { controller = "Errors", action = "StatusCodePage" }
+);
 
 app.MapControllerRoute(
     name: "default",

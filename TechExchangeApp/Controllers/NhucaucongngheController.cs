@@ -19,6 +19,8 @@ namespace TechExchangeApp.Controllers.FrontEnd
         private readonly ILogger<NhucaucongngheController> _logger;
         private readonly IConfiguration _configuration;
 
+        private const string CaptchaSessionKey = "TechNeedCaptchaAnswer";
+
         public NhucaucongngheController(
             AppDbContext context,
             IOptions<AppSettings> appSettings,
@@ -36,23 +38,51 @@ namespace TechExchangeApp.Controllers.FrontEnd
         private int GetSiteId() =>
             int.TryParse(_configuration["AppSettings:SiteId"], out var id) ? id : 1;
 
+        // Sinh math captcha (kiểu trang liên hệ), lưu đáp án vào Session, trả câu hỏi.
+        private string GenerateCaptcha()
+        {
+            var rng = new Random();
+            int a = rng.Next(2, 12);
+            int b = rng.Next(1, 10);
+            bool useAdd = rng.Next(0, 2) == 0;
+            int bigger = Math.Max(a, b);
+            int smaller = Math.Min(a, b);
+
+            int answer;
+            string question;
+            if (useAdd) { answer = a + b; question = $"{a} + {b}"; }
+            else { answer = bigger - smaller; question = $"{bigger} - {smaller}"; }
+
+            HttpContext.Session.SetString(CaptchaSessionKey, answer.ToString());
+            return question;
+        }
+
 
         public IActionResult CateTechNeeds(
             int menuId,
             string? linhvuc,
+            string? keyword,
+            string sort = "newest",
             int page = 1)
         {
+            ViewData["TechNeedPageTitle"] = "Tìm mua công nghệ";
+            ViewData["TechNeedFormTitle"] = "TÌM MUA CÔNG NGHỆ";
+            ViewData["TechNeedFormIntro"] = "Vui lòng mô tả nhu cầu tìm mua công nghệ, thiết bị hoặc giải pháp để Sàn tiếp nhận và hỗ trợ kết nối.";
+
             var vm = new CateTechNeedsViewModel
             {
                 MenuId = menuId,
-                SelectedLinhVuc = linhvuc ?? HttpContext.Session.GetString("Linhvucyeucau"),
+                SelectedLinhVuc = linhvuc,
+                Keyword = string.IsNullOrWhiteSpace(keyword) ? null : keyword.Trim(),
+                Sort = string.IsNullOrWhiteSpace(sort) ? "newest" : sort,
                 CurrentPage = page
             };
 
             LoadLinhVuc(vm);
             BindToGrid(vm, page);
 
-            HttpContext.Session.SetString("Linhvucyeucau", vm.SelectedLinhVuc ?? "");
+            // Math captcha cho form gửi nhu cầu
+            vm.PhieuYeuCau.CaptchaQuestion = GenerateCaptcha();
 
             return View("~/Views/Nhucaucongnghe/TechNeedsByMenu.cshtml", vm);
 
@@ -87,25 +117,11 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
             var subMenus = _context.UspSelectSubMenu(vm.MenuId);
 
-            var first = _context.ContentsYeuCaus
-                .Where(q =>
-                    q.MenuId == vm.MenuId ||
-                    subMenus.Contains(q.MenuId ?? 0))
-                .Where(q =>
-                    q.LanguageId == lang &&
-                    q.StatusId == 3 &&
-                    q.PublishedDate <= DateTime.Now &&
-                    (q.eEffectiveDate >= DateTime.Now || q.eEffectiveDate == null))
-                .OrderByDescending(q => q.PublishedDate)
-                .FirstOrDefault();
+            // Map lĩnh vực (CatId -> Title) để dựng badge trên card
+            var lvMap = _context.Categories
+                .Where(c => c.ParentId == 1)
+                .ToDictionary(c => c.CatId, c => c.Title);
 
-
-
-            if (first == null) return;
-
-            vm.FirstItem = MapItem(first);
-
-            // danh sách
             var query = _context.ContentsYeuCaus.Where(q =>
                 (q.MenuId == vm.MenuId || subMenus.Contains(q.MenuId ?? 0)) &&
                 q.LanguageId == lang &&
@@ -113,22 +129,56 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 q.PublishedDate <= DateTime.Now &&
                 (q.eEffectiveDate >= DateTime.Now || q.eEffectiveDate == null));
 
+            // Lọc lĩnh vực
             if (!string.IsNullOrEmpty(vm.SelectedLinhVuc) && vm.SelectedLinhVuc != ";;")
             {
-                query = query.Where(q => q.LinhVucId.Contains(vm.SelectedLinhVuc));
+                query = query.Where(q => q.LinhVucId != null && q.LinhVucId.Contains(vm.SelectedLinhVuc));
+            }
+
+            // Tìm kiếm từ khóa (Title / Description / Keyword)
+            if (!string.IsNullOrWhiteSpace(vm.Keyword))
+            {
+                var kw = vm.Keyword;
+                query = query.Where(q =>
+                    (q.Title != null && q.Title.Contains(kw)) ||
+                    (q.Description != null && q.Description.Contains(kw)) ||
+                    (q.Keyword != null && q.Keyword.Contains(kw)));
             }
 
             int total = query.Count();
+            vm.TotalCount = total;
 
-            vm.Items = query
-                .OrderByDescending(q => q.PublishedDate)
-                .Skip(((page - 1) * pageSize) + 1)
+            // Sắp xếp
+            query = vm.Sort == "oldest"
+                ? query.OrderBy(q => q.PublishedDate)
+                : query.OrderByDescending(q => q.PublishedDate);
+
+            var rows = query
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .AsEnumerable()
-                .Select(q => MapItem(q))
                 .ToList();
 
+            vm.Items = rows.Select(q =>
+            {
+                var it = MapItem(q);
+                it.Author = q.Author;
+                it.LinhVucText = ResolveLinhVucBadge(q.LinhVucId, lvMap);
+                return it;
+            }).ToList();
+
             CreatePager(vm, total, page, pageSize, 10);
+        }
+
+        // Lấy tên lĩnh vực đầu tiên từ chuỗi LinhVucId (vd ";4;12;") để làm badge
+        private static string? ResolveLinhVucBadge(string? linhVucId, Dictionary<int, string?> map)
+        {
+            if (string.IsNullOrWhiteSpace(linhVucId)) return null;
+            foreach (var part in linhVucId.Split(new[] { ';', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (int.TryParse(part, out var id) && map.TryGetValue(id, out var title) && !string.IsNullOrWhiteSpace(title))
+                    return title;
+            }
+            return null;
         }
 
         private TechNeedItemVm MapItem(dynamic q)
@@ -182,6 +232,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GuiPhieuYeuCau(PhieuYeuCauCNViewModel model)
         {
+            bool isAjax = string.Equals(Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
             try
             {
                 // ── Anti-spam: honeypot field ──
@@ -202,6 +253,19 @@ namespace TechExchangeApp.Controllers.FrontEnd
                         _logger.LogWarning("[AntiSpam] Too fast submission ({Sec}s). IP={IP}", elapsed, HttpContext.Connection.RemoteIpAddress);
                         return Redirect(_mainDomain + "page/thanks");
                     }
+                }
+
+                // ── Math captcha (server-side, one-time; regenerate cho lần sau) ──
+                var correctCaptcha = HttpContext.Session.GetString(CaptchaSessionKey);
+                var userCaptcha = model.CaptchaAnswer?.Trim() ?? "";
+                bool captchaOk = !string.IsNullOrEmpty(correctCaptcha) && userCaptcha == correctCaptcha;
+                var newCaptcha = GenerateCaptcha();
+                if (!captchaOk)
+                {
+                    if (isAjax)
+                        return Json(new { success = false, message = "Mã xác thực không đúng.", captcha = newCaptcha });
+                    TempData["Error"] = "Mã xác thực không đúng.";
+                    return RedirectToAction(nameof(CateTechNeeds));
                 }
 
                 // ── Anti-spam: basic content checks ──
@@ -255,9 +319,9 @@ namespace TechExchangeApp.Controllers.FrontEnd
                     try
                     {
                         var adminEmail = _configuration["AppSettings:AdminEmail"] ?? "admin@techport.vn";
-                        var subject = $"[TechPort] Phiếu yêu cầu công nghệ mới #{p.PhieuYeuCauId}";
+                        var subject = $"[TechPort] Nhu cầu tìm mua công nghệ mới #{p.PhieuYeuCauId}";
                         var body = $@"
-<h3>Phiếu yêu cầu công nghệ mới</h3>
+<h3>Nhu cầu tìm mua công nghệ mới</h3>
 <table style='border-collapse:collapse;width:100%;max-width:600px;'>
   <tr><td style='padding:8px;border:1px solid #ddd;font-weight:bold;width:140px;'>Họ và tên</td><td style='padding:8px;border:1px solid #ddd;'>{p.FullName}</td></tr>
   <tr><td style='padding:8px;border:1px solid #ddd;font-weight:bold;'>Email</td><td style='padding:8px;border:1px solid #ddd;'>{p.Email}</td></tr>
@@ -281,10 +345,16 @@ namespace TechExchangeApp.Controllers.FrontEnd
                     _logger.LogWarning("[AntiSpam] Spam detected, email skipped. PhieuYeuCauId={Id}, IP={IP}", p.PhieuYeuCauId, p.IPAddress);
                 }
 
+                if (isAjax)
+                    return Json(new { success = true, message = "Đã tiếp nhận nhu cầu của bạn.", captcha = newCaptcha });
+
                 return Redirect(_mainDomain + "page/thanks");
             }
             catch
             {
+                if (isAjax)
+                    return Json(new { success = false, message = "Gửi thất bại, vui lòng kiểm tra lại đường truyền hoặc thử lại sau." });
+
                 TempData["Error"] =
                     "Gửi thất bại hãy kiểm tra lại đường truyền hoặc liên hệ với quản lý.";
                 return RedirectToAction(nameof(CateTechNeeds));
@@ -394,7 +464,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
             ViewData["Title"] = p.Title;
             ViewData["MetaDescription"] = p.Description;
-            ViewData["BackLink"] = _mainDomain + "yeu-cau-cong-nghe-67";
+            ViewData["BackLink"] = _mainDomain + "tim-mua-cong-nghe";
 
             return View("Detail", vm);
         }

@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace TechExchangeApp.Areas.Cms.Controllers
 {
     /// <summary>
-    /// Quản trị số liệu Hero trang chủ (Techport trong con số)
+    /// Quản trị số liệu Hero trang chủ (SGD trong con số)
     /// </summary>
     [Area("Cms")]
     [Authorize(Policy = "CmsAccess")]

@@ -146,8 +146,11 @@
         {
             @await Html.PartialAsync("_Footer")
         }
-        <!-- Side Buttons -->
-        @await Html.PartialAsync("_SideButtons")
+        <!-- Side Buttons (có thể tắt theo trang: ViewData["HideSideButtons"] = true) -->
+        @if (ViewData["HideSideButtons"] as bool? != true)
+        {
+            @await Html.PartialAsync("_SideButtons")
+        }
         @await Component.InvokeAsync("AiChatBox")
     </div>
 

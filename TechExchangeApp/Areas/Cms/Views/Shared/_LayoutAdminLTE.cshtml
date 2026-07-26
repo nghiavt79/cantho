@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@ViewData["Title"] – CMS TechPort</title>
+    <title>@ViewData["Title"] – CMS</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -63,7 +63,7 @@
         <div class="sidebar-brand">
             <a href="/cms" class="brand-link">
                 <span class="brand-text fw-light">
-                    <i class="fas fa-cogs"></i> <strong>TechPort CMS</strong>
+                    <i class="fas fa-cogs"></i> <strong>CMS</strong>
                 </span>
             </a>
         </div>
@@ -235,9 +235,13 @@
 
         <!-- Sidebar Bottom: Notification + User -->
         <div class="sidebar-bottom">
-            <div class="sidebar-notify" title="Thông báo">
-                <i class="bi bi-bell"></i>
-                <span class="badge bg-danger">3</span>
+            <div class="sidebar-notify" id="btnReindexSearch" role="button" title="Cập nhật chỉ mục tìm kiếm"
+                 style="background:rgba(16,185,129,.22);">
+                <i class="bi bi-search" style="color:#34d399;"></i>
+            </div>
+            <div class="sidebar-notify" id="btnClearHomeCache" role="button" title="Xóa cache trang chủ"
+                 style="background:rgba(139,92,246,.22);">
+                <i class="bi bi-arrow-clockwise" style="color:#b794f6;"></i>
             </div>
             <div class="sidebar-user">
                 <div class="avatar">@(User.Identity?.Name?.Substring(0, 1).ToUpper() ?? "U")</div>
@@ -281,9 +285,44 @@
 
     <!-- ─── Footer ─── -->
     <footer class="app-footer">
-        <strong>&copy; @DateTime.Now.Year TechPort.</strong> CMS Admin Panel.
+        <strong>&copy; @DateTime.Now.Year SGD.</strong> CMS Admin Panel.
     </footer>
 </div>
+
+@* Token cho AJAX xóa cache trang chủ (nút nằm trong .sidebar-bottom) *@
+@Html.AntiForgeryToken()
+
+<!-- Popup: cập nhật chỉ mục tìm kiếm — chọn ngôn ngữ -->
+<div class="modal fade" id="reindexModal" tabindex="-1" aria-labelledby="reindexModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reindexModalLabel"><i class="bi bi-search me-2"></i>Cập nhật chỉ mục tìm kiếm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <label for="reindexLang" class="form-label">Ngôn ngữ</label>
+                <select id="reindexLang" class="form-select form-select-sm">
+                    <option value="1" selected>Tiếng Việt</option>
+                    <option value="2">English</option>
+                </select>
+                <p class="text-muted small mt-2 mb-0">Thao tác dựng lại chỉ mục có thể mất vài giây.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnReindexConfirm">
+                    <i class="bi bi-arrow-repeat"></i> Cập nhật
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@keyframes cmsCacheSpin { to { transform: rotate(360deg); } }
+    #btnClearHomeCache.spinning i,
+    #btnReindexSearch.spinning i { animation: cmsCacheSpin .8s linear infinite; }
+</style>
 
 <!-- jQuery (for Select2, Toastr, AJAX) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -298,6 +337,66 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    (function () {
+        var btn = document.getElementById('btnClearHomeCache');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            if (btn.dataset.busy === '1') return;
+            var token = (document.querySelector('input[name="__RequestVerificationToken"]') || {}).value || '';
+            btn.dataset.busy = '1'; btn.classList.add('spinning');
+            fetch('/cms/Cache/ClearHomeCache', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
+                body: '__RequestVerificationToken=' + encodeURIComponent(token)
+            })
+            .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+            .then(function (d) {
+                if (window.toastr) { d.success ? toastr.success(d.message) : toastr.error(d.message || 'Không xóa được cache.'); }
+            })
+            .catch(function () { if (window.toastr) toastr.error('Không xóa được cache trang chủ.'); })
+            .finally(function () { btn.dataset.busy = '0'; btn.classList.remove('spinning'); });
+        });
+    })();
+
+    // Cập nhật chỉ mục tìm kiếm — mở popup chọn ngôn ngữ rồi gọi uspReIndexSearchContents
+    (function () {
+        var btn = document.getElementById('btnReindexSearch');
+        var modalEl = document.getElementById('reindexModal');
+        var confirmBtn = document.getElementById('btnReindexConfirm');
+        if (!btn || !modalEl || !confirmBtn || !window.bootstrap) return;
+
+        var modal = new bootstrap.Modal(modalEl);
+        btn.addEventListener('click', function () { modal.show(); });
+
+        confirmBtn.addEventListener('click', function () {
+            if (confirmBtn.dataset.busy === '1') return;
+            var lang = (document.getElementById('reindexLang') || {}).value || '1';
+            var token = (document.querySelector('input[name="__RequestVerificationToken"]') || {}).value || '';
+            var oldHtml = confirmBtn.innerHTML;
+            confirmBtn.dataset.busy = '1'; confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Đang cập nhật...';
+            btn.classList.add('spinning');
+            fetch('/cms/SearchIndex/Reindex', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' },
+                body: '__RequestVerificationToken=' + encodeURIComponent(token) + '&languageId=' + encodeURIComponent(lang)
+            })
+            .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+            .then(function (d) {
+                if (window.toastr) { d.success ? toastr.success(d.message) : toastr.error(d.message || 'Không cập nhật được chỉ mục.'); }
+                if (d.success) modal.hide();
+            })
+            .catch(function () { if (window.toastr) toastr.error('Không cập nhật được chỉ mục tìm kiếm.'); })
+            .finally(function () {
+                confirmBtn.dataset.busy = '0'; confirmBtn.disabled = false;
+                confirmBtn.innerHTML = oldHtml;
+                btn.classList.remove('spinning');
+            });
+        });
+    })();
+</script>
 
 @RenderSection("Scripts", required: false)
 </body>

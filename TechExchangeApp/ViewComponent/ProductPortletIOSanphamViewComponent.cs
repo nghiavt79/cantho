@@ -17,6 +17,11 @@ using TechExchangeApp.ViewModel;
 /// </summary>
 public class ProductPortletIOSanphamViewComponent : ViewComponent
 {
+    // Widget này chỉ dành cho sản phẩm Công nghệ/Thiết bị/Sản phẩm trí tuệ.
+    // OCOP có khối "Sản phẩm OCOP khác" riêng (Views/Ocop/Detail.cshtml) nên
+    // phải loại trừ ở đây, kể cả khi rơi vào nhánh fallback không lọc category.
+    private const int OcopProductType = 4;
+
     private readonly AppDbContext _context;
     private readonly string _mainDomain;
 
@@ -61,6 +66,7 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
                 p.LanguageId == 1 &&
                 p.StatusId   == 3 &&
                 p.ID         != productId &&
+                p.ProductType != OcopProductType &&
                 (!productType.HasValue || p.TypeId == productType.Value) &&
                 _context.SanPhamCNTBCategories
                     .Any(m => m.SanPhamCNTBId == p.ID && categoryIds.Contains(m.CatId))
@@ -77,7 +83,7 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
     {
         var q = _context.SanPhamCNTBs
             .AsNoTracking()
-            .Where(p => p.LanguageId == 1 && p.StatusId == 3);
+            .Where(p => p.LanguageId == 1 && p.StatusId == 3 && p.ProductType != OcopProductType);
 
         if (productType.HasValue) q = q.Where(p => p.TypeId == productType.Value);
         if (excludeId.HasValue)   q = q.Where(p => p.ID != excludeId.Value);

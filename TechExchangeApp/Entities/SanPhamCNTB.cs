@@ -130,6 +130,12 @@ namespace TechExchangeApp.Entities
         public string? InvestmentGoal { get; set; }
         public string? InvestmentGoalKhac { get; set; }
 
+        /// <summary>Người bán yêu cầu ký thỏa thuận bảo mật trước khi trao đổi chi tiết sản phẩm/công nghệ.</summary>
+        public bool? RequiresNDA { get; set; }
+
+        /// <summary>Nội dung/mẫu điều khoản bảo mật do người bán cấu hình cho sản phẩm/công nghệ.</summary>
+        public string? NDAContent { get; set; }
+
         /// <summary>1 = CongNghe, 2 = ThietBi, 3 = SanPhamTriTue, 4 = SanPhamOCOP</summary>
         public int ProductType { get; set; } = 1;
 

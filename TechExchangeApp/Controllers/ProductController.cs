@@ -64,22 +64,69 @@ namespace TechExchangeApp.Controllers
         // ================== SPLIT INDEX ACTIONS BY PRODUCT TYPE ==================
 
         // Route: /san-pham — unified listing across all 3 product types, with a type label per card
-        public async Task<IActionResult> TatCaSanPham()
+        public async Task<IActionResult> TatCaSanPham(int type = 0, int page = 1, int pageSize = 12)
         {
-            var products = await _context.SanPhamCNTBs
-                .Where(x => x.StatusId == 3 && (x.ProductType == 1 || x.ProductType == 2 || x.ProductType == 3))
-                .OrderByDescending(x => x.Modified ?? x.Created)
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 12;
+
+            var baseQuery = _context.SanPhamCNTBs
+                .AsNoTracking()
+                .Where(x => x.StatusId == 3 && (x.ProductType == 1 || x.ProductType == 2 || x.ProductType == 3));
+
+            // Tổng theo từng loại cho nhãn tab (độc lập với bộ lọc đang chọn)
+            var totalCongNghe = await baseQuery.CountAsync(x => x.ProductType == ProductTypeConstants.CongNghe);
+            var totalThietBi = await baseQuery.CountAsync(x => x.ProductType == ProductTypeConstants.ThietBi);
+            var totalTaiSanTriTue = await baseQuery.CountAsync(x => x.ProductType == ProductTypeConstants.TaiSanTriTue);
+
+            // Lọc theo loại nếu chọn tab cụ thể (1/2/3); type = 0 là tất cả
+            var filtered = baseQuery;
+            if (type == 1 || type == 2 || type == 3)
+                filtered = filtered.Where(x => x.ProductType == type);
+
+            var total = await filtered.CountAsync();
+
+            var products = await filtered
+                .OrderByDescending(x => x.PublishedDate ?? x.Modified ?? x.Created)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(x => new SanPhamCNTB
+                {
+                    ID = x.ID,
+                    Name = x.Name,
+                    ProductType = x.ProductType,
+                    QuyTrinhHinhAnh = x.QuyTrinhHinhAnh,
+                    // MoTaNgan phủ ~4.302/4.314 SP → không kéo cột LOB MoTa ở listing (tránh đọc LOB, 233ms→28ms).
+                    MoTaNgan = x.MoTaNgan
+                })
                 .ToListAsync();
 
             var model = new AllProductsViewModel
             {
                 Products = products,
-                TotalCongNghe = products.Count(x => x.ProductType == ProductTypeConstants.CongNghe),
-                TotalThietBi = products.Count(x => x.ProductType == ProductTypeConstants.ThietBi),
-                TotalTaiSanTriTue = products.Count(x => x.ProductType == ProductTypeConstants.TaiSanTriTue),
+                TotalCongNghe = totalCongNghe,
+                TotalThietBi = totalThietBi,
+                TotalTaiSanTriTue = totalTaiSanTriTue,
+                CurrentType = type,
+                CurPage = page,
+                PageSize = pageSize,
+                Total = total
             };
 
+            BuildAllProductsPager(model);
+
             return View(model);
+        }
+
+        // Dựng danh sách số trang cho /san-pham (cửa sổ ±5 quanh trang hiện tại)
+        private static void BuildAllProductsPager(AllProductsViewModel vm)
+        {
+            int totalPage = vm.PageSize > 0 ? (int)Math.Ceiling((double)vm.Total / vm.PageSize) : 1;
+            if (totalPage < 1) totalPage = 1;
+
+            int start = Math.Max(1, vm.CurPage - 5);
+            int end = Math.Min(totalPage, vm.CurPage + 5);
+            for (int p = start; p <= end; p++)
+                vm.Pages.Add(new PageItemVm { Page = p, IsActive = p == vm.CurPage });
         }
 
         // Route: /cong-nghe.html
@@ -256,13 +303,15 @@ namespace TechExchangeApp.Controllers
         // View counter is now handled by _EntityRating widget JS via /api/entity/.../view/increase
 
 
-        public async Task<IActionResult> ProductByCate(int cateId, int page = 1, int pageSize = 12)
+        public async Task<IActionResult> ProductByCate(int cateId, int page = 1, int pageSize = 12, string? keyword = null, string sort = "newest")
         {
             var model = new ProductByCateViewModel
             {
                 CateId = cateId,
                 CurPage = page,
                 PageSize = pageSize,
+                Keyword = string.IsNullOrWhiteSpace(keyword) ? null : keyword.Trim(),
+                Sort = string.IsNullOrWhiteSpace(sort) ? "newest" : sort,
                 MainDomain = _mainDomain
             };
 
@@ -280,29 +329,42 @@ namespace TechExchangeApp.Controllers
 
         private async Task LoadProductsAsync(ProductByCateViewModel vm)
         {
-            vm.Total = await _productService.GetProductCountByCategoryAsync(vm.CateId);
-            var list = await _productService.GetPagedProductsByCategoryAsync(vm.CateId, vm.CurPage, vm.PageSize);
+            vm.Total = await _productService.GetProductCountByCategoryAsync(vm.CateId, vm.Keyword);
+            var list = await _productService.GetPagedProductsByCategoryAsync(vm.CateId, vm.CurPage, vm.PageSize, vm.Keyword, vm.Sort);
+
+            // Nạp trước supplier & category theo mẻ (1 query mỗi loại) — tránh N+1 trong vòng lặp.
+            var ncuIds = list.Where(r => r.NCUId != null).Select(r => r.NCUId!.Value).Distinct().ToList();
+            var supplierMap = ncuIds.Count == 0
+                ? new Dictionary<int, string?>()
+                : await _context.NhaCungUngs.AsNoTracking()
+                    .Where(x => ncuIds.Contains(x.CungUngId))
+                    .ToDictionaryAsync(x => x.CungUngId, x => x.FullName);
+
+            var catIds = list
+                .Select(r => int.TryParse(r.CategoryId, out var v) ? v : 0)
+                .Where(v => v != 0).Distinct().ToList();
+            var catMap = catIds.Count == 0
+                ? new Dictionary<int, string?>()
+                : await _context.Categories.AsNoTracking()
+                    .Where(c => catIds.Contains(c.CatId))
+                    .ToDictionaryAsync(c => c.CatId, c => c.Title);
 
             foreach (var row in list)
             {
-                // Supplier: lookup via NCUId → NhaCungUng.FullName (same logic as Detail page)
+                // Supplier: lookup via NCUId → NhaCungUng.FullName (từ map đã nạp sẵn)
                 string supplierName = "Đang cập nhật";
-                if (row.NCUId != null)
-                {
-                    var ncu = _context.NhaCungUngs.FirstOrDefault(x => x.CungUngId == row.NCUId);
-                    if (ncu != null && !string.IsNullOrWhiteSpace(ncu.FullName))
-                        supplierName = ncu.FullName;
-                }
+                if (row.NCUId != null && supplierMap.TryGetValue(row.NCUId.Value, out var fullName)
+                    && !string.IsNullOrWhiteSpace(fullName))
+                    supplierName = fullName;
 
-                // Description: strip HTML, truncate
-                var descRaw = Regex.Replace(!string.IsNullOrWhiteSpace(row.MoTaNgan) ? row.MoTaNgan : (row.MoTa ?? ""), "<.*?>", " ").Trim();
+                // Description: strip HTML, truncate (listing chỉ dùng MoTaNgan)
+                var descRaw = Regex.Replace(row.MoTaNgan ?? "", "<.*?>", " ").Trim();
                 descRaw = System.Net.WebUtility.HtmlDecode(descRaw).Trim();
                 var desc = descRaw.Length > 110 ? descRaw.Substring(0, 107).Trim() + "..." : descRaw;
 
-                // Category name
-                var catName = int.TryParse(row.CategoryId, out var catIdParsed)
-                    ? _context.Categories.Where(c => c.CatId == catIdParsed).Select(c => c.Title).FirstOrDefault()
-                    : null;
+                // Category name (từ map đã nạp sẵn)
+                string? catName = int.TryParse(row.CategoryId, out var catIdParsed)
+                    && catMap.TryGetValue(catIdParsed, out var t) ? t : null;
 
                 var item = new ProductItemVm
                 {

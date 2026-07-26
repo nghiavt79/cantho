@@ -27,6 +27,10 @@
     var techCode = string.IsNullOrWhiteSpace(p.Code) ? p.ID.ToString("D5") : p.Code;
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/product-detail.css" asp-append-version="true" />
+}
+
 <div class="columns-container">
     <div class="container">
         @if (Model.Product.ProductType == (int)ProductTypeEnum.CongNghe)

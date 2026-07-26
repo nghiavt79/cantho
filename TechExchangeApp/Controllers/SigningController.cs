@@ -6,6 +6,7 @@ using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using TechExchangeApp.Enums;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 
 namespace TechExchangeApp.Controllers
 {
@@ -74,7 +75,7 @@ namespace TechExchangeApp.Controllers
 
             if (contract == null || contract.StatusId < (int)ContractStatus.ReadyToSign)
             {
-                TempData["Error"] = "Hợp đồng chưa ở trạng thái ReadyToSign.";
+                TempData["Error"] = I18n.T(HttpContext, "contract.message.notReadyToSign");
                 return RedirectToAction("Index", "Contract", new { projectId });
             }
 
@@ -701,4 +702,3 @@ namespace TechExchangeApp.Controllers
         public string? CertIssuer { get; set; }
     }
 }
-

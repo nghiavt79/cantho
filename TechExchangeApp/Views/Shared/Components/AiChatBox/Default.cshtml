@@ -13,7 +13,7 @@
                     <span class="ai-chatbox__avatar"><i class="bi bi-robot" aria-hidden="true"></i></span>
                     <div>
                         <strong>@Model.BotName</strong>
-                        <span><span class="ai-chatbox__status-dot" aria-hidden="true"></span>Trợ lý Công nghệ · Trực tuyến</span>
+                        <span><span class="ai-chatbox__status-dot" aria-hidden="true"></span>Sẵn sàng hỗ trợ</span>
                     </div>
                 </div>
                 <button type="button" class="ai-chatbox__close" aria-label="Đóng" data-ai-chat-toggle>
@@ -22,18 +22,11 @@
             </header>
 
             <div class="ai-chatbox__messages" data-ai-chat-messages>
-                <div class="ai-chatbox__message ai-chatbox__message--bot ai-chatbox__welcome">
-                    <span class="ai-chatbox__welcome-icon"><i class="bi bi-robot" aria-hidden="true"></i></span>
-                    <p class="ai-chatbox__welcome-text">@Model.WelcomeMessage</p>
-                    <p class="ai-chatbox__welcome-lead">Tôi có thể hỗ trợ</p>
-                    <ul class="ai-chatbox__welcome-list">
-                        <li><i class="bi bi-cpu" aria-hidden="true"></i> Tìm công nghệ &amp; thiết bị</li>
-                        <li><i class="bi bi-person-badge" aria-hidden="true"></i> Gợi ý chuyên gia tư vấn</li>
-                        <li><i class="bi bi-box-seam" aria-hidden="true"></i> Tra cứu sản phẩm OCOP</li>
-                        <li><i class="bi bi-shop" aria-hidden="true"></i> Kết nối nhà cung ứng</li>
-                    </ul>
-                    <p class="ai-chatbox__welcome-lead">Bạn có thể chọn nhanh</p>
+                <div class="ai-chatbox__welcome">
+                    <div class="ai-chatbox__message ai-chatbox__message--bot">@Model.WelcomeMessage</div>
+                    <p class="ai-chatbox__welcome-heading">Bạn muốn bắt đầu với nội dung nào?</p>
                     <div class="ai-chatbox__quick-actions" data-ai-chat-suggestions></div>
+                    <button type="button" class="ai-chatbox__cta-link" data-ai-chat-cta hidden></button>
                 </div>
             </div>
 
@@ -47,8 +40,8 @@
             </form>
 
             <form class="ai-chatbox__composer" data-ai-chat-form>
-                <input type="text" name="message" autocomplete="off" maxlength="2000" placeholder="Hỏi AI về công nghệ, sản phẩm, chuyên gia..." required />
-                <button type="submit" aria-label="Gửi">
+                <input type="text" name="message" class="ai-chatbox__input" autocomplete="off" maxlength="2000" placeholder="Nhập câu hỏi của anh/chị..." required />
+                <button type="submit" class="ai-chatbox__send" aria-label="Gửi">
                     <i class="bi bi-send-fill" aria-hidden="true"></i>
                 </button>
             </form>

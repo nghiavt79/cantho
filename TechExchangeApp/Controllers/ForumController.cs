@@ -564,7 +564,7 @@ namespace TechExchangeApp.Controllers
                     ImageUrl = CookedImageURL("254-170", q.Image, _mainDomain),
                     Tooltip = q.Title,
                     DateText = DateToString(q.PublishedDate, "mm/dd/yyyy"),
-                    Url = $"{_mainDomain}{q.MenuId}/{q.QueryString}-{q.Id}"
+                    Url = $"{_mainDomain}tin-tuc-su-kien/{q.QueryString}-{q.Id}"
                 })
                 .ToList();
 

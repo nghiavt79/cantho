@@ -24,9 +24,10 @@ namespace TechExchangeApp.ViewModel
         public string? QueryString { get; set; }
         public DateTime? PublishedDate { get; set; }
 
-        /// <summary>Builds the canonical URL: {domain}{MenuId}/{QueryString}-{Id}</summary>
+        /// <summary>Builds the canonical URL: {domain}{MenuId}/{QueryString}-{Id}
+        /// (menuId=44 "Tin tức" dùng prefix chữ tin-tuc-su-kien thay vì số)</summary>
         public string DetailUrl(string domain) =>
-            $"{domain}{MenuId}/{QueryString}-{Id}";
+            $"{domain}{(MenuId == 44 ? "tin-tuc-su-kien" : MenuId?.ToString())}/{QueryString}-{Id}";
     }
 
     public class NewsCategoryVm
@@ -61,7 +62,8 @@ namespace TechExchangeApp.ViewModel
 
         public string DetailUrl(string domain)
         {
-            return $"{domain}{MenuId}/{QueryString}-{Id}";
+            var prefix = MenuId == 44 ? "tin-tuc-su-kien" : MenuId?.ToString();
+            return $"{domain}{prefix}/{QueryString}-{Id}";
         }
 
         public string PublishedDateText =>

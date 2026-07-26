@@ -82,7 +82,8 @@
                   <div class="mb-3">
                     <label class="form-label fw-semibold">1. Tên đơn vị chủ sở hữu <span class="text-danger">*</span></label>
                     <span asp-validation-for="NCUId" class="text-danger small d-block mb-1"></span>
-                    <select asp-for="NCUId" class="form-select" asp-items="@((List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.NhaCungUngList)">
+                    <input type="hidden" name="NCUId" value="@Model.NCUId" />
+                    <select asp-for="NCUId" class="form-select" asp-items="@((List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)ViewBag.NhaCungUngList)" disabled>
                       <option value="">-- Chọn --</option>
                     </select>
                   </div>

@@ -42,4 +42,13 @@
     <Folder Include="wwwroot\FrontEnd\assets\" />
   </ItemGroup>
 
+  <!--
+    User-uploaded / generated media (product images…). Được phục vụ lúc runtime bởi UseStaticFiles
+    trực tiếp từ thư mục vật lý wwwroot. Loại khỏi Static Web Assets để MSBuild KHÔNG phải liệt kê
+    ~24.000 file mỗi lần build (trước đây khiến build mất nhiều phút). Ảnh vẫn hiển thị bình thường.
+  -->
+  <ItemGroup>
+    <Content Remove="wwwroot\uploads\**" />
+  </ItemGroup>
+
 </Project>

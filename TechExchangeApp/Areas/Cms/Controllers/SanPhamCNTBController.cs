@@ -863,6 +863,8 @@ ChungNhanKhacText = m.ChungNhanKhacText,
 DevelopmentStageValue = m.DevelopmentStageValue,
 InvestmentGoal = m.InvestmentGoal,
 InvestmentGoalKhac = m.InvestmentGoalKhac,
+RequiresNDA = m.RequiresNDA,
+NDAContent = m.NDAContent,
 SoSaoOCOP = m.SoSaoOCOP,
 MaTruyXuat = m.MaTruyXuat
     };
@@ -925,6 +927,8 @@ e.ChungNhanKhacText = m.ChungNhanKhacText;
 e.DevelopmentStageValue = m.DevelopmentStageValue;
 e.InvestmentGoal = m.InvestmentGoal;
 e.InvestmentGoalKhac = m.InvestmentGoalKhac;
+e.RequiresNDA = m.RequiresNDA;
+e.NDAContent = m.NDAContent;
 e.SoSaoOCOP = m.SoSaoOCOP;
 if (!string.IsNullOrWhiteSpace(m.MaTruyXuat)) e.MaTruyXuat = m.MaTruyXuat;
     }
@@ -990,6 +994,8 @@ ChungNhanKhacText = p.ChungNhanKhacText,
 DevelopmentStageValue = p.DevelopmentStageValue,
 InvestmentGoal = p.InvestmentGoal,
 InvestmentGoalKhac = p.InvestmentGoalKhac,
+RequiresNDA = p.RequiresNDA ?? false,
+NDAContent = p.NDAContent,
 SoSaoOCOP = p.SoSaoOCOP,
 MaTruyXuat = p.MaTruyXuat
     };
@@ -1104,6 +1110,8 @@ MaTruyXuat = p.MaTruyXuat
         public int? DevelopmentStageValue { get; set; }
         public string? InvestmentGoal { get; set; }
         public string? InvestmentGoalKhac { get; set; }
+        public bool RequiresNDA { get; set; }
+        public string? NDAContent { get; set; }
 
         // ── OCOP dedicated fields ──
         public int? SoSaoOCOP { get; set; }

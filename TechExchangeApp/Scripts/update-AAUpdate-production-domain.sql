@@ -30,7 +30,8 @@ AS
 	UPDATE dbo.NhaCungUng
 	SET HinhDaiDien = REPLACE(HinhDaiDien, @Old, @New),
 	    Logo = REPLACE(Logo, @Old, @New),
-	    VideoUrl = REPLACE(VideoUrl, @Old, @New)
+	    VideoUrl = REPLACE(VideoUrl, @Old, @New),
+	    ChungNhan = REPLACE(ChungNhan, @Old, @New)
 
 	UPDATE dbo.Contents
 	SET [Image] = REPLACE([Image], @Old, @New),
@@ -40,6 +41,8 @@ AS
 	    Contents = REPLACE(Contents, @Old, @New)
 
 	UPDATE dbo.SanPhamCNTB
-	SET [QuyTrinhHinhAnh] = REPLACE([QuyTrinhHinhAnh], @Old, @New)
+	SET [QuyTrinhHinhAnh] = REPLACE([QuyTrinhHinhAnh], @Old, @New),
+	    URL = REPLACE(URL, @Old, @New),
+	    BrochureUrl = REPLACE(BrochureUrl, @Old, @New)
 
 GO

@@ -14,15 +14,15 @@
     bool isLocked  = Model?.StatusId >= (int)ContractStatus.ReadyToSign;
 
     string StatusLabel(int s) => s switch {
-        0 => "Bản nháp", 1 => "Đang review", 2 => "Đã sửa",
-        3 => "ReadyToSign", 4 => "Đang ký", 5 => "Đã ký đầy đủ", _ => "Lưu trữ"
+        0 => Html.Text("contract.status.draft"), 1 => Html.Text("contract.status.reviewing"), 2 => Html.Text("contract.status.revised"),
+        3 => Html.Text("contract.status.readyToSign"), 4 => Html.Text("contract.status.signing"), 5 => Html.Text("contract.status.signed"), _ => Html.Text("contract.status.archived")
     };
     string StatusClass(int s) => s switch {
         0 => "bg-secondary", 1 => "bg-info", 2 => "bg-warning text-dark",
         3 => "bg-primary", 4 => "bg-warning text-dark", 5 => "bg-success", _ => "bg-dark"
     };
     string ApprovalLabel(int s) => s switch { 1 => "✅ Đã duyệt", 2 => "❌ Từ chối", _ => "⏳ Chờ" };
-    string RoleName(int r)      => r switch { 1 => "Buyer", 2 => "Seller", 3 => "Tư vấn", _ => "?" };
+    string RoleName(int r)      => r switch { 1 => Html.Text("common.buyer"), 2 => Html.Text("common.supplier"), 3 => Html.Text("common.consultant"), _ => "?" };
 }
 
 <div id="contract-dashboard" class="p-3">
@@ -160,7 +160,7 @@
                         <div class="card-body text-center">
                             <p class="text-success fw-bold"><i class="fas fa-check-circle me-1"></i>Tất cả các bên đã duyệt!</p>
                             <button class="btn btn-primary w-100 py-2" onclick="cm_setReadyToSign(@Model.Id)">
-                                <i class="fas fa-lock me-1"></i>Chốt hợp đồng – ReadyToSign
+                                <i class="fas fa-lock me-1"></i>@Html.Tr("contract.action.finalizeReadyToSign")
                             </button>
                             <small class="text-muted d-block mt-2">Sau khi chốt, hợp đồng sẽ không thể chỉnh sửa</small>
                         </div>

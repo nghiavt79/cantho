@@ -16,17 +16,20 @@ namespace TechExchangeApp.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly Services.IWorkflowService _workflowService;
         private readonly Interfaces.IESignGateway _eSignGateway;
+        private readonly Configuration.WorkflowOptions _workflowOptions;
 
         public ProjectController(
-            AppDbContext context, 
-            UserManager<ApplicationUser> userManager, 
+            AppDbContext context,
+            UserManager<ApplicationUser> userManager,
             Services.IWorkflowService workflowService,
-            Interfaces.IESignGateway eSignGateway)
+            Interfaces.IESignGateway eSignGateway,
+            Microsoft.Extensions.Options.IOptions<Configuration.WorkflowOptions> workflowOptions)
         {
             _context = context;
             _userManager = userManager;
             _workflowService = workflowService;
             _eSignGateway = eSignGateway;
+            _workflowOptions = workflowOptions.Value;
         }
 
         // Helper method to get current user ID as int
@@ -536,14 +539,21 @@ namespace TechExchangeApp.Controllers
                 new() { StepNumber = 5, StepName = "Đàm phán thương mại", StatusId = statuses["Negotiation"], ControllerName = "Negotiation", ActionName = "Create", IsAccessible = statuses["Proposal"] > 0 },
                 new() { StepNumber = 6, StepName = "Kiểm tra pháp lý", StatusId = statuses["LegalReview"], ControllerName = "LegalReview", ActionName = "Create", IsAccessible = statuses["Negotiation"] > 0 },
                 new() { StepNumber = 7, StepName = "Ký hợp đồng điện tử", StatusId = statuses["Signing"], ControllerName = "Signing", ActionName = "Index", IsAccessible = statuses["LegalReview"] > 0 },
-                new() { StepNumber = 8, StepName = "Xác nhận tạm ứng", StatusId = statuses["AdvancePayment"], ControllerName = "AdvancePayment", ActionName = "Create", IsAccessible = statuses["Signing"] >= 5, IsVisible = false },
-                new() { StepNumber = 9, StepName = "Thử nghiệm Pilot", StatusId = statuses["PilotTest"], ControllerName = "PilotTest", ActionName = "Create", IsAccessible = statuses["AdvancePayment"] > 0, IsVisible = false },
-                new() { StepNumber = 10, StepName = "Bàn giao & triển khai thiết bị", StatusId = statuses["Handover"], ControllerName = "Handover", ActionName = "Create", IsAccessible = statuses["PilotTest"] > 0, IsVisible = false },
-                new() { StepNumber = 11, StepName = "Đào tạo & chuyển giao vận hành", StatusId = statuses["Training"], ControllerName = "Training", ActionName = "Create", IsAccessible = statuses["Handover"] > 0, IsVisible = false },
-                new() { StepNumber = 12, StepName = "Bàn giao hồ sơ kỹ thuật", StatusId = statuses["TechDoc"], ControllerName = "TechDoc", ActionName = "Create", IsAccessible = statuses["Training"] > 0, IsVisible = false },
-                new() { StepNumber = 13, StepName = "Nghiệm thu", StatusId = statuses["Acceptance"], ControllerName = "Acceptance", ActionName = "Create", IsAccessible = statuses["TechDoc"] > 0, IsVisible = false },
-                new() { StepNumber = 14, StepName = "Thanh lý hợp đồng", StatusId = statuses["Liquidation"], ControllerName = "Liquidation", ActionName = "Create", IsAccessible = statuses["Acceptance"] > 0, IsVisible = false }
+                new() { StepNumber = 8, StepName = "Xác nhận tạm ứng", StatusId = statuses["AdvancePayment"], ControllerName = "AdvancePayment", ActionName = "Create", IsAccessible = statuses["Signing"] >= 5 },
+                new() { StepNumber = 9, StepName = "Thử nghiệm Pilot", StatusId = statuses["PilotTest"], ControllerName = "PilotTest", ActionName = "Create", IsAccessible = statuses["AdvancePayment"] > 0 },
+                new() { StepNumber = 10, StepName = "Bàn giao & triển khai thiết bị", StatusId = statuses["Handover"], ControllerName = "Handover", ActionName = "Create", IsAccessible = statuses["PilotTest"] > 0 },
+                new() { StepNumber = 11, StepName = "Đào tạo & chuyển giao vận hành", StatusId = statuses["Training"], ControllerName = "Training", ActionName = "Create", IsAccessible = statuses["Handover"] > 0 },
+                new() { StepNumber = 12, StepName = "Bàn giao hồ sơ kỹ thuật", StatusId = statuses["TechDoc"], ControllerName = "TechDoc", ActionName = "Create", IsAccessible = statuses["Training"] > 0 },
+                new() { StepNumber = 13, StepName = "Nghiệm thu", StatusId = statuses["Acceptance"], ControllerName = "Acceptance", ActionName = "Create", IsAccessible = statuses["TechDoc"] > 0 },
+                new() { StepNumber = 14, StepName = "Thanh lý hợp đồng", StatusId = statuses["Liquidation"], ControllerName = "Liquidation", ActionName = "Create", IsAccessible = statuses["Acceptance"] > 0 }
             };
+
+            // Chủ đầu tư quyết định số bước hiển thị qua cấu hình "Workflow:VisibleStepCount" (ví dụ 7, 10 hoặc 14).
+            // Các bước vượt quá số hiển thị vẫn giữ trong danh sách (lưu vết đầy đủ) nhưng ẩn trên giao diện.
+            foreach (var s in steps)
+            {
+                s.IsVisible = _workflowOptions.IsStepVisible(s.StepNumber);
+            }
 
             return steps;
         }

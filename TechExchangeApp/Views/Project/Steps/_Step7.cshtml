@@ -221,7 +221,7 @@
                 <i class="fas fa-lock fa-2x mt-1"></i>
                 <div>
                     <strong>Bước này chưa được mở khóa.</strong><br/>
-                    Vui lòng hoàn thành Bước 6 (tất cả 3 bên đã duyệt và chốt ReadyToSign).
+                    @Html.Tr("contract.message.mustCompleteStep6")
                 </div>
             </div>
         }
@@ -240,7 +240,7 @@
             <div class="alert alert-warning d-flex gap-2 align-items-center">
                 <i class="fas fa-exclamation-triangle fa-2x"></i>
                 <div>
-                    <strong>Hợp đồng chưa ở trạng thái ReadyToSign.</strong><br/>
+                    <strong>@Html.Tr("contract.message.notReadyToSign")</strong><br/>
                     Quay về Bước 6 để hoàn tất phê duyệt 3 bên.
                 </div>
             </div>
@@ -278,7 +278,7 @@
                                 <dd class="col-7">
                                     @{
                                         var (lbl, cls) = contract.StatusId switch {
-                                            3 => ("ReadyToSign", "bg-primary"),
+                                            3 => (Html.Text("contract.status.readyToSign"), "bg-primary"),
                                             4 => ("Đang ký", "bg-warning text-dark"),
                                             5 => ("Đã ký đầy đủ","bg-success"),
                                             _ => ("Đang xử lý","bg-secondary")

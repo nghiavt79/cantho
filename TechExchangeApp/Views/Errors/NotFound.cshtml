@@ -1,0 +1,289 @@
+@{
+    ViewData["Title"] = "404";
+    ViewData["HideSideButtons"] = true;
+}
+
+@section Styles {
+    <style>
+        .error404 {
+            min-height: 68vh;
+            background:
+                linear-gradient(135deg, rgba(15, 118, 110, .08), transparent 34%),
+                linear-gradient(315deg, rgba(14, 165, 233, .08), transparent 32%),
+                #f6f8fb;
+        }
+
+        .error404__wrap {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 72px 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+            gap: 36px;
+            align-items: center;
+        }
+
+        .error404__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            padding: 7px 12px;
+            color: #0f766e;
+            background: #e6fffb;
+            border: 1px solid #99f6e4;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .error404__title {
+            margin: 0;
+            color: #102033;
+            font-size: clamp(36px, 5vw, 64px);
+            line-height: 1.05;
+            font-weight: 900;
+        }
+
+        .error404__lead {
+            max-width: 680px;
+            margin: 18px 0 0;
+            color: #4b5f73;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .error404__search {
+            max-width: 620px;
+            margin-top: 28px;
+            display: flex;
+            gap: 10px;
+            padding: 8px;
+            background: #fff;
+            border: 1px solid #dbe4ee;
+            border-radius: 8px;
+            box-shadow: 0 18px 42px rgba(15, 23, 42, .08);
+        }
+
+        .error404__search input {
+            flex: 1;
+            min-width: 0;
+            height: 46px;
+            padding: 0 14px;
+            border: 0;
+            outline: 0;
+            color: #172033;
+            font-size: 15px;
+        }
+
+        .error404__search button,
+        .error404__button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 46px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 6px;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .error404__search button,
+        .error404__button--primary {
+            color: #fff;
+            background: #0f766e;
+        }
+
+        .error404__search button:hover,
+        .error404__button--primary:hover {
+            color: #fff;
+            background: #115e59;
+        }
+
+        .error404__button--light {
+            color: #0f766e;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+        }
+
+        .error404__button--light:hover {
+            color: #115e59;
+            background: #f8fafc;
+        }
+
+        .error404__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .error404__panel {
+            background: #fff;
+            border: 1px solid #dbe4ee;
+            border-radius: 8px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, .10);
+            overflow: hidden;
+        }
+
+        .error404__code {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 28px;
+            color: #fff;
+            background: linear-gradient(135deg, #0f766e, #0f4f65);
+        }
+
+        .error404__code strong {
+            display: block;
+            font-size: 84px;
+            line-height: .9;
+            letter-spacing: 0;
+        }
+
+        .error404__code span {
+            color: rgba(255, 255, 255, .82);
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: right;
+        }
+
+        .error404__links {
+            padding: 22px;
+        }
+
+        .error404__links h2 {
+            margin: 0 0 14px;
+            color: #172033;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .error404__link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0;
+            color: #172033;
+            border-top: 1px solid #edf2f7;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .error404__link:first-of-type {
+            border-top: 0;
+        }
+
+        .error404__link:hover {
+            color: #0f766e;
+        }
+
+        .error404__link i {
+            color: #0f766e;
+        }
+
+        @@media (max-width: 991.98px) {
+            .error404__wrap {
+                grid-template-columns: 1fr;
+                padding: 48px 0;
+            }
+        }
+
+        @@media (max-width: 575.98px) {
+            .error404__wrap {
+                width: min(100% - 24px, 1180px);
+                padding: 34px 0;
+            }
+
+            .error404__search {
+                flex-direction: column;
+            }
+
+            .error404__search button,
+            .error404__button {
+                width: 100%;
+            }
+
+            .error404__code {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .error404__code span {
+                text-align: left;
+            }
+        }
+    </style>
+}
+
+<section class="error404" aria-labelledby="error404-title">
+    <div class="error404__wrap">
+        <div>
+            <div class="error404__eyebrow">
+                <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                HTTP 404
+            </div>
+            <h1 id="error404-title" class="error404__title">Kh&ocirc;ng t&igrave;m th&#7845;y trang</h1>
+            <p class="error404__lead">
+                &#272;&#432;&#7901;ng d&#7851;n b&#7841;n truy c&#7853;p kh&ocirc;ng t&#7891;n t&#7841;i, &#273;&atilde; thay &#273;&#7893;i ho&#7863;c t&#7841;m th&#7901;i kh&ocirc;ng kh&#7843; d&#7909;ng.
+                H&atilde;y t&igrave;m ki&#7871;m n&#7897;i dung ho&#7863;c ch&#7885;n m&#7897;t khu v&#7921;c ph&ugrave; h&#7907;p tr&ecirc;n S&agrave;n giao d&#7883;ch c&ocirc;ng ngh&#7879;.
+            </p>
+
+            <form class="error404__search" action="/Search" method="get" role="search">
+                <input type="search" name="q" placeholder="T&igrave;m c&ocirc;ng ngh&#7879;, thi&#7871;t b&#7883;, nh&agrave; cung &#7913;ng..." aria-label="T&igrave;m ki&#7871;m" />
+                <button type="submit">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    T&igrave;m ki&#7871;m
+                </button>
+            </form>
+
+            <div class="error404__actions">
+                <a class="error404__button error404__button--primary" href="/">
+                    <i class="bi bi-house-door" aria-hidden="true"></i>
+                    V&#7873; trang ch&#7911;
+                </a>
+                <a class="error404__button error404__button--light" href="/lien-he">
+                    <i class="bi bi-headset" aria-hidden="true"></i>
+                    Li&ecirc;n h&#7879; h&#7895; tr&#7907;
+                </a>
+            </div>
+        </div>
+
+        <aside class="error404__panel" aria-label="Lien ket goi y">
+            <div class="error404__code">
+                <strong>404</strong>
+                <span>Trang &#273;&#432;&#7907;c y&ecirc;u c&#7847;u kh&ocirc;ng c&oacute; tr&ecirc;n h&#7879; th&#7889;ng</span>
+            </div>
+            <div class="error404__links">
+                <h2>C&oacute; th&#7875; b&#7841;n &#273;ang c&#7847;n</h2>
+                <a class="error404__link" href="/san-pham">
+                    <span>Danh m&#7909;c s&#7843;n ph&#7849;m c&ocirc;ng ngh&#7879;</span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a class="error404__link" href="/cong-nghe">
+                    <span>C&ocirc;ng ngh&#7879;</span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a class="error404__link" href="/thiet-bi">
+                    <span>Thi&#7871;t b&#7883;</span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a class="error404__link" href="/nha-cung-ung">
+                    <span>Nh&agrave; cung &#7913;ng</span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a class="error404__link" href="/tin-su-kien">
+                    <span>Tin t&#7913;c v&agrave; s&#7921; ki&#7879;n</span>
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </aside>
+    </div>
+</section>

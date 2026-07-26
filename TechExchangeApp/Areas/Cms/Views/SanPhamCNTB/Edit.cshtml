@@ -233,9 +233,17 @@
                             <label class="form-label">Giấy CN Đăng ký Quyền tác giả (phần mềm) số</label>
                             <input asp-for="ApplicationNumber" class="form-control" />
                         </div>
-                        <div>
-                            <label class="form-label">Bí mật công nghệ</label>
-                            <input asp-for="CoQuanChuTri" class="form-control" />
+                        <div class="border rounded p-3 bg-light">
+                            <div class="form-check form-switch mb-2">
+                                <input asp-for="RequiresNDA" class="form-check-input" type="checkbox" />
+                                <label asp-for="RequiresNDA" class="form-check-label fw-semibold">
+                                    Yêu cầu ký thỏa thuận bảo mật (NDA) trước khi trao đổi chi tiết
+                                </label>
+                            </div>
+                            <label asp-for="NDAContent" class="form-label">Nội dung thỏa thuận bảo mật</label>
+                            <textarea asp-for="NDAContent" class="form-control" rows="4"
+                                      placeholder="Nhập nội dung/mẫu điều khoản bảo mật do người bán đề xuất..."></textarea>
+                            <small class="text-muted">Nếu bật yêu cầu NDA, nội dung này sẽ là căn cứ để tạo/tham chiếu thỏa thuận bảo mật khi phát sinh giao dịch.</small>
                         </div>
                     </div>
 

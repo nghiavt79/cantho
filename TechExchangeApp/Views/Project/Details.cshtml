@@ -9,6 +9,7 @@
 @{
     ViewData["Title"] = "Chi tiết dự án: " + Model.Project.ProjectName;
     ViewData["AuthWorkspace"] = true;
+    ViewData["HideSideButtons"] = true; // Ẩn thanh action-dock nổi trên trang chi tiết dự án
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);

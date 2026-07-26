@@ -92,7 +92,7 @@
                                 <div class="product-image">
                                     <div class="product-full">
                                         <a class="simpleLens-lens-image" href="javascript:void(0);">
-                                            <img src="@Model.HinhDaiDien" class="simpleLens-big-image img-responsive" style="max-width:100%"/>
+                                            <img src="@Html.ResolveImage(Model.HinhDaiDien)" class="simpleLens-big-image img-responsive" style="max-width:100%"/>
                                         </a>
                                     </div>
                                 </div>
@@ -181,7 +181,7 @@
                                                     <div class="product-containerYC">
                                                         <div class="left-block">
                                                             <a href="@item.Url">
-                                                                <img src="@item.HinhDaiDien" class="img-responsive" alt="@item.Title" style="width:100%; height:auto;" />
+                                                                <img src="@Html.ResolveImage(item.HinhDaiDien)" class="img-responsive" alt="@item.Title" style="width:100%; height:auto;" />
                                                             </a>
                                                         </div>
                                                         <div class="right-block">

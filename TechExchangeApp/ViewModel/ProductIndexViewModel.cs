@@ -40,5 +40,12 @@ namespace TechExchangeApp.ViewModel
         public int TotalThietBi { get; set; }
         public int TotalTaiSanTriTue { get; set; }
         public int TotalProducts => TotalCongNghe + TotalThietBi + TotalTaiSanTriTue;
+
+        // Phân trang + lọc theo loại (server-side)
+        public int CurrentType { get; set; }          // 0 = tất cả, 1/2/3 = loại sản phẩm
+        public int CurPage { get; set; } = 1;
+        public int PageSize { get; set; } = 12;
+        public int Total { get; set; }                // tổng SP khớp bộ lọc hiện tại (để dựng pager)
+        public List<PageItemVm> Pages { get; set; } = new();
     }
 }

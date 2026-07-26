@@ -28,8 +28,7 @@ namespace TechExchangeApp.Services
             }
 
             return await query
-                .OrderByDescending(x => x.Modified)
-                .ThenByDescending(x => x.Created)
+                .OrderByDescending(x => x.PublishedDate ?? x.Modified ?? x.Created)
                 .Take(take)
                 .ToListAsync();
         }
@@ -79,27 +78,62 @@ namespace TechExchangeApp.Services
                           .ToListAsync();
         }
 
-        public async Task<int> GetProductCountByCategoryAsync(int catId)
+        public async Task<int> GetProductCountByCategoryAsync(int catId, string? keyword = null)
         {
-            return await (from p in _context.SanPhamCNTBs
-                          join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
-                          where c.CatId == catId && p.StatusId == 3
-                          select p.ID)
-                          .Distinct()
-                          .CountAsync();
+            var q = from p in _context.SanPhamCNTBs
+                    join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
+                    where c.CatId == catId && p.StatusId == 3
+                    select p;
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+                q = q.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{keyword}%"));
+
+            return await q.Select(p => p.ID).Distinct().CountAsync();
         }
 
-        public async Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int page, int pageSize)
+        public async Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int page, int pageSize, string? keyword = null, string? sort = null)
         {
-            return await (from p in _context.SanPhamCNTBs
-                          join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
-                          where c.CatId == catId && p.StatusId == 3
-                          orderby p.Created descending
-                          select p)
-                          .Distinct()
-                          .Skip((page - 1) * pageSize)
-                          .Take(pageSize)
-                          .ToListAsync();
+            var q = from p in _context.SanPhamCNTBs
+                    join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
+                    where c.CatId == catId && p.StatusId == 3
+                    select p;
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+                q = q.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{keyword}%"));
+
+            // Chỉ lấy đúng các cột listing cần — KHÔNG kéo cột LOB (MoTa/ThongSo/Keywords).
+            var proj = q.Select(p => new SanPhamCNTB
+            {
+                ID = p.ID,
+                Name = p.Name,
+                Code = p.Code,
+                ProductType = p.ProductType,
+                TypeId = p.TypeId,
+                QuyTrinhHinhAnh = p.QuyTrinhHinhAnh,
+                MoTaNgan = p.MoTaNgan,
+                NCUId = p.NCUId,
+                CategoryId = p.CategoryId,
+                OriginalPrice = p.OriginalPrice,
+                Currency = p.Currency,
+                Rating = p.Rating,
+                PublishedDate = p.PublishedDate,
+                Modified = p.Modified,
+                Created = p.Created
+            }).Distinct();
+
+            proj = sort switch
+            {
+                "name-asc" => proj.OrderBy(p => p.Name),
+                "name-desc" => proj.OrderByDescending(p => p.Name),
+                "price-asc" => proj.OrderBy(p => p.OriginalPrice ?? 0),
+                "price-desc" => proj.OrderByDescending(p => p.OriginalPrice ?? 0),
+                _ => proj.OrderByDescending(p => p.PublishedDate ?? p.Modified ?? p.Created) // newest
+            };
+
+            return await proj
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         // ── ProductType-scoped queries ─────────────────────────────────────────────

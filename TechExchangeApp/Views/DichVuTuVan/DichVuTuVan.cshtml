@@ -25,9 +25,7 @@ else
             var rating = row.Rating ?? 0;
             var star = Math.Clamp(rating, 0, 5);
             var stars = new string('★', star) + new string('☆', 5 - star);
-            var avatarUrl = !string.IsNullOrEmpty(row.HinhDaiDien)
-                ? $"{Model.MainDomain}{row.HinhDaiDien}"
-                : "/image/NoAvarta.jpg";
+            var avatarUrl = Html.ResolveImage(row.HinhDaiDien, "image/NoAvarta.jpg");
 
             <article class="dvtv-card dvtv-card--expert">
                 <div class="dvtv-card__header">

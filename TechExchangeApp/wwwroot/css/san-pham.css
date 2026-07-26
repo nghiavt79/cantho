@@ -1,0 +1,32 @@
+/* =====================================================================
+   Trang "/san-pham" (Views/Product/TatCaSanPham.cshtml)
+   Đổi style nút "Chi tiết" sang dạng text-link + mũi tên, đồng bộ với
+   .home-v2-carousel-card__btn (trang chủ) và .expert-card__btn (trang
+   Chuyên gia tư vấn). Scope riêng trong .san-pham-page vì .tech-card__btn
+   là class dùng chung với /cong-nghe, /san-pham/{danh-mục}, /thiet-bi,
+   /tai-san-tri-tue... nên không được sửa trực tiếp trong site.css.
+   ===================================================================== */
+
+.san-pham-page .tech-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    color: #006BB6;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0;
+    border-radius: 0;
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.san-pham-page .tech-card__btn i {
+    transition: transform 0.2s ease;
+}
+
+.san-pham-page .tech-card__btn:hover,
+.san-pham-page .tech-card:hover .tech-card__btn {
+    gap: 10px;
+    color: #00A6D6;
+}

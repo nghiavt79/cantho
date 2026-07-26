@@ -1,0 +1,134 @@
+{
+  "common.unknown": {
+    "vi": "Chưa xác định",
+    "en": "Unknown"
+  },
+  "common.consultant": {
+    "vi": "Tư vấn",
+    "en": "Consultant"
+  },
+  "common.supplier": {
+    "vi": "Nhà cung ứng",
+    "en": "Supplier"
+  },
+  "common.buyer": {
+    "vi": "Bên mua",
+    "en": "Buyer"
+  },
+  "common.actions": {
+    "vi": "Thao tác",
+    "en": "Actions"
+  },
+  "common.score": {
+    "vi": "Điểm",
+    "en": "Score"
+  },
+  "proposal.review.consultantComments": {
+    "vi": "Nhận xét của tư vấn",
+    "en": "Consultant comments"
+  },
+  "proposal.review.noComment": {
+    "vi": "Không có nhận xét",
+    "en": "No comments"
+  },
+  "proposal.review.cardTitle": {
+    "vi": "Hồ sơ báo giá",
+    "en": "Proposal"
+  },
+  "proposal.review.copyCode": {
+    "vi": "Sao chép mã",
+    "en": "Copy code"
+  },
+  "proposal.review.downloadTechnical": {
+    "vi": "Tải giải pháp kỹ thuật",
+    "en": "Download technical proposal"
+  },
+  "proposal.review.downloadCapability": {
+    "vi": "Tải hồ sơ năng lực",
+    "en": "Download capability profile"
+  },
+  "proposal.review.yourReviewConsultant": {
+    "vi": "ĐÁNH GIÁ CỦA BẠN (Tư vấn)",
+    "en": "YOUR REVIEW (Consultant)"
+  },
+  "proposal.review.technicalScore": {
+    "vi": "Điểm kỹ thuật",
+    "en": "Technical score"
+  },
+  "proposal.review.priceScore": {
+    "vi": "Điểm giá",
+    "en": "Price score"
+  },
+  "proposal.review.timelineScore": {
+    "vi": "Điểm tiến độ",
+    "en": "Timeline score"
+  },
+  "proposal.review.overallScore": {
+    "vi": "Điểm tổng thể",
+    "en": "Overall score"
+  },
+  "proposal.review.commentLabel": {
+    "vi": "Nhận xét",
+    "en": "Comment"
+  },
+  "proposal.review.alreadyScored": {
+    "vi": "Bạn đã chấm điểm hồ sơ báo giá này",
+    "en": "You have scored this proposal"
+  },
+  "contract.status.draft": {
+    "vi": "Bản nháp",
+    "en": "Draft"
+  },
+  "contract.status.reviewing": {
+    "vi": "Đang rà soát",
+    "en": "Under review"
+  },
+  "contract.status.revised": {
+    "vi": "Đã sửa",
+    "en": "Revised"
+  },
+  "contract.status.readyToSign": {
+    "vi": "Sẵn sàng ký",
+    "en": "Ready to sign"
+  },
+  "contract.status.signing": {
+    "vi": "Đang ký",
+    "en": "Signing"
+  },
+  "contract.status.signed": {
+    "vi": "Đã ký đầy đủ",
+    "en": "Fully signed"
+  },
+  "contract.status.archived": {
+    "vi": "Lưu trữ",
+    "en": "Archived"
+  },
+  "contract.action.finalizeReadyToSign": {
+    "vi": "Chốt hợp đồng - sẵn sàng ký",
+    "en": "Finalize contract - ready to sign"
+  },
+  "contract.message.mustCompleteStep6": {
+    "vi": "Vui lòng hoàn thành Bước 6 (tất cả 3 bên đã duyệt và chốt sẵn sàng ký).",
+    "en": "Please complete Step 6 (all 3 parties approved and finalized as ready to sign)."
+  },
+  "contract.message.notReadyToSign": {
+    "vi": "Hợp đồng chưa ở trạng thái sẵn sàng ký.",
+    "en": "The contract is not ready to sign."
+  },
+  "legalReview.comment.empty": {
+    "vi": "Nội dung nhận xét không được để trống.",
+    "en": "Comment content cannot be empty."
+  },
+  "legalReview.comment.added": {
+    "vi": "Nhận xét đã được thêm.",
+    "en": "Comment added."
+  },
+  "legalReview.comment.resolved": {
+    "vi": "Nhận xét đã được đánh dấu đã xử lý.",
+    "en": "Comment marked as resolved."
+  },
+  "legalReview.comment.notFound": {
+    "vi": "Không tìm thấy nhận xét.",
+    "en": "Comment not found."
+  }
+}

@@ -27,6 +27,21 @@ namespace TechExchangeApp.Web.Helpers
         }
 
         // ===============================
+        // VIEW HELPER: resolve URL ảnh + fallback (dùng chung cho mọi <img>)
+        // @Html.ResolveImage(Model.HinhDaiDien) — tự đọc MainDomain, xử lý absolute/relative/rỗng.
+        // ===============================
+        public static string ResolveImage(
+            this IHtmlHelper html,
+            string? imageUrl,
+            string fallback = "image/NoImages.jpg")
+        {
+            var mainDomain = (html.ViewContext.HttpContext
+                .RequestServices
+                .GetService(typeof(IConfiguration)) as IConfiguration)?["AppSettings:MainDomain"] ?? "";
+            return ResolveImageUrl(imageUrl, mainDomain, fallback);
+        }
+
+        // ===============================
         // IMAGE URL (giữ logic WebForms)
         // ===============================
         public static string CookedImageURL(

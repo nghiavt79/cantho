@@ -29,7 +29,7 @@ namespace TechExchangeApp.Controllers
         }
 
         // ──────────────────────────────────────────────────────
-        // GET: /lien-he-74.html
+        // GET: /lien-he
         // ──────────────────────────────────────────────────────
         [HttpGet]
         public IActionResult Index()
@@ -63,7 +63,7 @@ namespace TechExchangeApp.Controllers
         }
 
         // ──────────────────────────────────────────────────────
-        // POST: /lien-he-74.html
+        // POST: /lien-he
         // ──────────────────────────────────────────────────────
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -100,7 +100,7 @@ namespace TechExchangeApp.Controllers
                     ? "Ý kiến của bạn trước đó đang được xử lý. Vui lòng đợi ít phút trước khi gửi tiếp!"
                     : "Your comments are being processed. Please wait a few minutes.";
 
-                return Redirect("/lien-he-74");
+                return Redirect("/lien-he");
             }
 
             try
@@ -129,7 +129,7 @@ namespace TechExchangeApp.Controllers
                     ? "Ý kiến của bạn đã được gửi. Cám ơn bạn đã đóng góp!"
                     : "Your comment has been submitted. Thanks!";
 
-                return Redirect("/lien-he-74");
+                return Redirect("/lien-he");
             }
             catch (Exception ex)
             {
@@ -139,7 +139,7 @@ namespace TechExchangeApp.Controllers
                     ? "Lưu thất bại. Vui lòng kiểm tra lại."
                     : "Save failed. Please try again.";
 
-                return Redirect("/lien-he-74");
+                return Redirect("/lien-he");
             }
         }
 

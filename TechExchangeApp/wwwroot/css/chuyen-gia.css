@@ -1,0 +1,385 @@
+/* =====================================================================
+   Trang "CHUYÊN GIA TƯ VẤN" (public) — /chuyen-gia
+   Toàn bộ selector scope trong .expert-page. Trang này KHÔNG tái sử dụng
+   bất kỳ class cũ nào (#left_column, .tree-menu, .card, .card-img-top...)
+   nên không có CSS toàn cục nào của site.css/home-redesign.css áp dụng
+   lên các phần tử bên trong .expert-page. Khối reset dưới đây chỉ để
+   phòng ngừa (defensive), không phải để sửa lỗi từ class dùng chung.
+   ===================================================================== */
+
+.expert-page,
+.expert-page * {
+    box-sizing: border-box;
+}
+
+.expert-page {
+    --expert-navy: #07547A;
+    --expert-navy-dark: #063B59;
+    --expert-cyan: #08A8C4;
+    --expert-orange: #F5A623;
+    --expert-bg: #F5F8FA;
+    --expert-card-bg: #FFFFFF;
+    --expert-border: #E2E8EE;
+    --expert-text: #1F2937;
+    --expert-text-muted: #64748B;
+
+    background-color: var(--expert-bg);
+    padding-bottom: 56px;
+    width: 100%;
+    float: none;
+    display: block;
+}
+
+/* ── Container dùng chung cho hero và nội dung chính ─────────────────
+   width theo công thức bắt buộc: rộng, không co hẹp trên desktop lớn. */
+.expert-page .expert-container {
+    width: min(1240px, calc(100% - 40px));
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+}
+
+/* ── Hero / tiêu đề trang ─────────────────────────────────────────── */
+.expert-page .expert-hero {
+    width: 100%;
+    padding: 34px 0;
+    margin-bottom: 32px;
+    background: linear-gradient(180deg, #EEF6FA 0%, #F5F8FA 100%);
+    border-bottom: 1px solid var(--expert-border);
+}
+
+.expert-page .expert-hero__title {
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--expert-navy-dark);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.expert-page .expert-hero__subtitle {
+    margin: 14px 0 0;
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--expert-text-muted);
+}
+
+.expert-page .expert-hero__accent {
+    display: block;
+    width: 60px;
+    height: 4px;
+    margin-top: 18px;
+    background-color: var(--expert-cyan);
+    border-radius: 2px;
+}
+
+/* ── Layout 2 cột (grid, không dùng flex để tránh co giãn sai) ──────── */
+.expert-page .expert-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+    width: 100%;
+}
+
+/* ── Sidebar lĩnh vực tư vấn ──────────────────────────────────────── */
+.expert-page .expert-sidebar {
+    width: 100%;
+    background-color: var(--expert-card-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(7, 84, 122, 0.06);
+    position: sticky;
+    top: 90px;
+}
+
+.expert-page .expert-sidebar__title {
+    margin: 0;
+    padding: 4px 8px 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--expert-navy-dark);
+}
+
+.expert-page .expert-sidebar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.expert-page .expert-sidebar__item {
+    border-left: 3px solid transparent;
+    border-radius: 6px;
+}
+
+.expert-page .expert-sidebar__item a {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--expert-text);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.expert-page .expert-sidebar__item a:hover {
+    background-color: rgba(8, 168, 196, 0.08);
+    color: var(--expert-navy-dark);
+}
+
+.expert-page .expert-sidebar__item.is-active {
+    border-left-color: var(--expert-cyan);
+    background-color: #EAF7FB;
+}
+
+.expert-page .expert-sidebar__item.is-active a {
+    color: var(--expert-navy);
+    font-weight: 600;
+}
+
+/* ── Nội dung phải ────────────────────────────────────────────────── */
+.expert-page .expert-content {
+    width: 100%;
+    min-width: 0;
+}
+
+.expert-page .expert-content__header {
+    margin-bottom: 20px;
+}
+
+.expert-page .expert-content__title {
+    margin: 0 0 6px;
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--expert-navy-dark);
+    text-transform: uppercase;
+}
+
+.expert-page .expert-content__subtitle {
+    margin: 0;
+    font-size: 14px;
+    color: var(--expert-text-muted);
+}
+
+.expert-page .expert-empty {
+    background-color: var(--expert-card-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 10px;
+    padding: 24px;
+    color: var(--expert-text-muted);
+}
+
+/* ── Grid chuyên gia: 3 card / hàng, mỗi card rộng thực (280–320px) ── */
+.expert-page .expert-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+/* ── Card chuyên gia ──────────────────────────────────────────────── */
+.expert-page .expert-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: var(--expert-card-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(15, 42, 67, 0.06);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.expert-page .expert-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(8, 168, 196, 0.45);
+    box-shadow: 0 8px 20px rgba(7, 84, 122, 0.12);
+}
+
+/* Vùng ảnh: chiều cao cố định, ảnh là avatar cố định bên trong,
+   KHÔNG để ảnh quyết định chiều cao card, KHÔNG chiếm toàn bộ card. */
+.expert-page .expert-card__media {
+    height: 180px;
+    flex: 0 0 180px;
+    background: #F2F7FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+.expert-page .expert-card__media img {
+    width: 142px;
+    height: 142px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 10px;
+    border: 4px solid #FFFFFF;
+    box-shadow: 0 4px 14px rgba(7, 84, 122, 0.12);
+    background-color: #E2E8EE;
+}
+
+.expert-page .expert-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    padding: 18px;
+}
+
+.expert-page .expert-card__name {
+    margin: 0 0 7px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--expert-navy-dark);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.expert-page .expert-card__name a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.expert-page .expert-card__name a:hover {
+    color: var(--expert-cyan);
+}
+
+.expert-page .expert-card__title {
+    margin: 0 0 5px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #334155;
+}
+
+.expert-page .expert-card__organization {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--expert-text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.expert-page .expert-card__rating {
+    margin-top: 10px;
+}
+
+.expert-page .expert-card__star {
+    color: #D8DEE4;
+    font-size: 15px;
+}
+
+.expert-page .expert-card__star.is-filled {
+    color: var(--expert-orange);
+}
+
+.expert-page .expert-card__actions {
+    margin-top: auto;
+    padding-top: 16px;
+}
+
+.expert-page .expert-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #006BB6;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.expert-page .expert-card__btn::after {
+    content: "\2192";
+    transition: transform 0.2s ease;
+}
+
+.expert-page .expert-card__btn:hover,
+.expert-page .expert-card:hover .expert-card__btn {
+    gap: 10px;
+    color: #00A6D6;
+}
+
+/* ── Phân trang ───────────────────────────────────────────────────── */
+.expert-page .expert-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+}
+
+.expert-page .expert-pagination__info {
+    font-size: 13.5px;
+    color: var(--expert-text-muted);
+}
+
+.expert-page .expert-pagination__list .page-link {
+    color: var(--expert-navy-dark);
+}
+
+.expert-page .expert-pagination__list .page-item.active .page-link {
+    background-color: var(--expert-navy);
+    border-color: var(--expert-navy);
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+    .expert-page .expert-layout {
+        grid-template-columns: 220px minmax(0, 1fr);
+    }
+
+    .expert-page .expert-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .expert-page .expert-hero {
+        padding: 26px 0;
+        margin-bottom: 20px;
+    }
+
+    .expert-page .expert-hero__title {
+        font-size: 22px;
+    }
+
+    .expert-page .expert-hero__subtitle {
+        font-size: 14.5px;
+    }
+
+    .expert-page .expert-container {
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    .expert-page .expert-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .expert-page .expert-sidebar {
+        position: static;
+    }
+
+    .expert-page .expert-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

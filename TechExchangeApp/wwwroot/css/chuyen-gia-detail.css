@@ -1,0 +1,566 @@
+/* =====================================================================
+   Trang chi tiết Chuyên gia (Views/ChuyenGia/Detail.cshtml) — /chuyen-gia/{slug}-{id}
+   Đồng bộ theme CASTA navy/cyan với trang danh sách Chuyên gia
+   (wwwroot/css/chuyen-gia.css). Toàn bộ selector scope trong
+   .expert-detail-page. Markup không còn dùng class Bootstrap utility
+   màu (.text-primary, .bg-light, .card, .badge...) nên không cần
+   !important để ghi đè.
+   ===================================================================== */
+
+.expert-detail-page,
+.expert-detail-page * {
+    box-sizing: border-box;
+}
+
+.expert-detail-page {
+    --expert-navy: #07547A;
+    --expert-navy-dark: #063B59;
+    --expert-cyan: #08A8C4;
+    --expert-orange: #F5A623;
+    --expert-bg: #F5F8FA;
+    --expert-card-bg: #FFFFFF;
+    --expert-border: #E2E8EE;
+    --expert-text: #1F2937;
+    --expert-text-muted: #64748B;
+
+    background-color: var(--expert-bg);
+    padding: 24px 0 56px;
+}
+
+.expert-detail-page .expert-detail-container {
+    width: min(1240px, calc(100% - 40px));
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ── Breadcrumb ───────────────────────────────────────────────────── */
+.expert-detail-page .expert-detail-breadcrumb {
+    margin-bottom: 18px;
+    font-size: 13.5px;
+    color: var(--expert-text-muted);
+}
+
+.expert-detail-page .expert-detail-breadcrumb a {
+    color: var(--expert-text-muted);
+    text-decoration: none;
+}
+
+.expert-detail-page .expert-detail-breadcrumb a:hover {
+    color: var(--expert-cyan);
+}
+
+.expert-detail-page .expert-detail-breadcrumb span {
+    margin: 0 6px;
+}
+
+.expert-detail-page .expert-detail-breadcrumb strong {
+    color: var(--expert-navy-dark);
+    font-weight: 600;
+}
+
+/* ── Layout 2 cột ─────────────────────────────────────────────────── */
+.expert-detail-page .expert-detail-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────── */
+.expert-detail-page .expert-detail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 90px;
+}
+
+.expert-detail-page .expert-detail-sidebar__block {
+    background-color: var(--expert-card-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(7, 84, 122, 0.06);
+}
+
+.expert-detail-page .expert-detail-sidebar__title {
+    margin: 0;
+    padding: 4px 8px 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--expert-navy-dark);
+    text-transform: uppercase;
+}
+
+.expert-detail-page .expert-detail-sidebar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.expert-detail-page .expert-detail-sidebar__list a {
+    display: block;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--expert-text);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.expert-detail-page .expert-detail-sidebar__list a:hover {
+    background-color: rgba(8, 168, 196, 0.08);
+    color: var(--expert-navy-dark);
+}
+
+.expert-detail-page .expert-detail-other-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.expert-detail-page .expert-detail-other-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.expert-detail-page .expert-detail-other-item:hover {
+    background-color: rgba(8, 168, 196, 0.08);
+}
+
+.expert-detail-page .expert-detail-other-item img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    flex: 0 0 auto;
+    background-color: #EEF3F6;
+}
+
+.expert-detail-page .expert-detail-other-item__info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.expert-detail-page .expert-detail-other-item__name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--expert-navy-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.expert-detail-page .expert-detail-other-item__org {
+    font-size: 12.5px;
+    color: var(--expert-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Nội dung phải ────────────────────────────────────────────────── */
+.expert-detail-page .expert-detail-content {
+    min-width: 0;
+}
+
+/* ── Header profile card ──────────────────────────────────────────── */
+.expert-detail-page .expert-detail-header {
+    display: flex;
+    gap: 24px;
+    background-color: var(--expert-card-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(15, 42, 67, 0.06);
+}
+
+.expert-detail-page .expert-detail-header__avatar {
+    flex: 0 0 140px;
+    width: 140px;
+    height: 140px;
+}
+
+.expert-detail-page .expert-detail-header__avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 4px solid #FFFFFF;
+    box-shadow: 0 4px 14px rgba(7, 84, 122, 0.16);
+    background-color: #EEF3F6;
+}
+
+.expert-detail-page .expert-detail-header__info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.expert-detail-page .expert-detail-header__name {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--expert-navy-dark);
+}
+
+.expert-detail-page .expert-detail-header__title,
+.expert-detail-page .expert-detail-header__org {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0 0 4px;
+    font-size: 14.5px;
+}
+
+.expert-detail-page .expert-detail-header__title {
+    color: var(--expert-navy);
+    font-weight: 600;
+}
+
+.expert-detail-page .expert-detail-header__org {
+    color: var(--expert-text-muted);
+}
+
+.expert-detail-page .expert-detail-header__title i,
+.expert-detail-page .expert-detail-header__org i {
+    color: var(--expert-cyan);
+    width: 14px;
+    text-align: center;
+}
+
+.expert-detail-page .expert-detail-header__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0 16px;
+    padding: 10px 14px;
+    background-color: var(--expert-bg);
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--expert-text);
+}
+
+.expert-detail-page .expert-detail-header__meta i {
+    color: var(--expert-orange);
+    margin-right: 4px;
+}
+
+.expert-detail-page .expert-detail-header__meta-dot {
+    color: var(--expert-border);
+}
+
+.expert-detail-page .expert-detail-header__meta-muted {
+    color: var(--expert-text-muted);
+}
+
+.expert-detail-page .expert-detail-contact {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.expert-detail-page .expert-detail-contact td {
+    padding: 5px 0;
+    color: var(--expert-text);
+}
+
+.expert-detail-page .expert-detail-contact td:first-child {
+    width: 110px;
+    color: var(--expert-text-muted);
+    white-space: nowrap;
+}
+
+.expert-detail-page .expert-detail-contact td i {
+    color: var(--expert-cyan);
+    width: 16px;
+    margin-right: 6px;
+}
+
+.expert-detail-page .expert-detail-contact a {
+    color: var(--expert-navy);
+    text-decoration: none;
+}
+
+.expert-detail-page .expert-detail-contact a:hover {
+    color: var(--expert-cyan);
+}
+
+/* ── Tabs card ────────────────────────────────────────────────────── */
+.expert-detail-page .expert-detail-tabs {
+    background-color: var(--expert-card-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(15, 42, 67, 0.06);
+}
+
+.expert-detail-page .nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0 8px;
+    background-color: var(--expert-bg);
+    border-bottom: 1px solid var(--expert-border);
+}
+
+.expert-detail-page .nav-tabs .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--expert-text-muted);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.expert-detail-page .nav-tabs .nav-link:hover {
+    color: var(--expert-navy);
+}
+
+.expert-detail-page .nav-tabs .nav-link.active {
+    color: var(--expert-navy-dark);
+    border-bottom-color: var(--expert-cyan);
+}
+
+.expert-detail-page .tab-content {
+    padding: 22px 24px;
+}
+
+/* ── Bảng thông tin (tab 1) ───────────────────────────────────────── */
+.expert-detail-page .expert-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.expert-detail-page .expert-detail-table tr {
+    border-bottom: 1px solid var(--expert-border);
+}
+
+.expert-detail-page .expert-detail-table tr:last-child {
+    border-bottom: none;
+}
+
+.expert-detail-page .expert-detail-table td {
+    padding: 10px 8px;
+    vertical-align: top;
+}
+
+.expert-detail-page .expert-detail-table td:first-child {
+    width: 220px;
+    font-weight: 600;
+    color: var(--expert-navy-dark);
+}
+
+.expert-detail-page .expert-detail-table td:last-child {
+    color: var(--expert-text);
+}
+
+.expert-detail-page .expert-detail-table a {
+    color: var(--expert-navy);
+}
+
+.expert-detail-page .expert-detail-table a:hover {
+    color: var(--expert-cyan);
+}
+
+/* ── Thẻ chỉ số (tab 2) ───────────────────────────────────────────── */
+.expert-detail-page .expert-detail-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.expert-detail-page .expert-detail-stat-card {
+    text-align: center;
+    padding: 18px;
+    background-color: var(--expert-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 10px;
+}
+
+.expert-detail-page .expert-detail-stat-card h3 {
+    margin: 0 0 4px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--expert-navy);
+}
+
+.expert-detail-page .expert-detail-stat-card span {
+    font-size: 13px;
+    color: var(--expert-text-muted);
+}
+
+/* ── Tiêu đề phụ + nội dung HTML trong tab ────────────────────────── */
+.expert-detail-page .expert-detail-subheading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--expert-navy-dark);
+}
+
+.expert-detail-page .expert-detail-subheading i {
+    color: var(--expert-cyan);
+}
+
+.expert-detail-page .expert-detail-subheading--accent i {
+    color: var(--expert-orange);
+}
+
+.expert-detail-page .expert-detail-richtext {
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--expert-text);
+}
+
+.expert-detail-page .expert-detail-empty {
+    margin: 0;
+    font-size: 14px;
+    color: var(--expert-text-muted);
+    font-style: italic;
+}
+
+/* ── Hồ sơ đính kèm (tab 6) ───────────────────────────────────────── */
+.expert-detail-page .expert-detail-files {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.expert-detail-page .expert-detail-file {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background-color: var(--expert-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--expert-text);
+    font-size: 13.5px;
+    transition: border-color 0.2s ease;
+}
+
+.expert-detail-page .expert-detail-file:hover {
+    border-color: var(--expert-cyan);
+}
+
+.expert-detail-page .expert-detail-file i:first-child {
+    color: var(--expert-navy);
+}
+
+.expert-detail-page .expert-detail-file span {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.expert-detail-page .expert-detail-file i:last-child {
+    color: var(--expert-text-muted);
+    font-size: 12px;
+}
+
+.expert-detail-page .expert-detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.expert-detail-page .expert-detail-tag {
+    display: inline-block;
+    padding: 5px 12px;
+    background-color: rgba(8, 168, 196, 0.1);
+    color: var(--expert-navy-dark);
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 999px;
+}
+
+/* ── Widget rating / tiện ích ─────────────────────────────────────── */
+.expert-detail-page .expert-detail-block {
+    background-color: var(--expert-card-bg);
+    border: 1px solid var(--expert-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 991px) {
+    .expert-detail-page .expert-detail-layout {
+        grid-template-columns: 220px minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .expert-detail-page .expert-detail-container {
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    .expert-detail-page .expert-detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .expert-detail-page .expert-detail-sidebar {
+        position: static;
+    }
+
+    .expert-detail-page .expert-detail-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .expert-detail-page .expert-detail-header__title,
+    .expert-detail-page .expert-detail-header__org {
+        justify-content: center;
+    }
+
+    .expert-detail-page .expert-detail-header__meta {
+        justify-content: center;
+    }
+
+    .expert-detail-page .expert-detail-contact td:first-child {
+        width: auto;
+    }
+
+    .expert-detail-page .nav-tabs .nav-link {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .expert-detail-page .tab-content {
+        padding: 18px 16px;
+    }
+}

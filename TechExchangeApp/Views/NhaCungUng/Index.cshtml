@@ -5,78 +5,91 @@
     ViewData["Title"] = Model.PageTitle;
 }
 
-<div class="columns-container">
-    <div class="container" id="columns">
-        <div class="row">
+@section Styles {
+    <link rel="stylesheet" href="~/css/chuyen-gia.css" asp-append-version="true" />
+}
+
+<div class="expert-page">
+
+    @* =============== PAGE HEADING =============== *@
+    <section class="expert-hero">
+        <div class="expert-container">
+            <h1 class="expert-hero__title">@Model.PageTitle</h1>
+            <p class="expert-hero__subtitle">
+                Kết nối với các nhà cung ứng công nghệ, thiết bị và giải pháp phục vụ sản xuất, kinh doanh và chuyển giao công nghệ.
+            </p>
+            <span class="expert-hero__accent"></span>
+        </div>
+    </section>
+
+    <div class="expert-container">
+        <div class="expert-layout">
 
             @* =============== LEFT: CATEGORY SIDEBAR =============== *@
-            <div class="column col-xs-12 col-sm-3" id="left_column">
-                <div class="block left-module">
-                    <p class="title_block">Lĩnh vực cung ứng</p>
-                    <div class="block_content">
-                        <ul class="tree-menu">
-                            <li class="@(Model.CateId == 0 ? "active" : "")">
-                                <span></span>
-                                <a href="/nha-cung-ung">Tất cả</a>
-                            </li>
-                            @foreach (var c in Model.Categories)
-                            {
-                                <li class="@(Model.CateId == c.Id ? "active" : "")">
-                                    <span></span>
-                                    <a href="/nha-cung-ung?cateId=@c.Id">@c.Title</a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
+            <aside class="expert-sidebar">
+                <p class="expert-sidebar__title">Lĩnh vực cung ứng</p>
+                <ul class="expert-sidebar__list">
+                    <li class="expert-sidebar__item @(Model.CateId == 0 ? "is-active" : "")">
+                        <a href="/nha-cung-ung">Tất cả</a>
+                    </li>
+                    @foreach (var c in Model.Categories)
+                    {
+                        <li class="expert-sidebar__item @(Model.CateId == c.Id ? "is-active" : "")">
+                            <a href="/nha-cung-ung?cateId=@c.Id">@c.Title</a>
+                        </li>
+                    }
+                </ul>
+            </aside>
+
+            @* =============== RIGHT: SUPPLIER LIST =============== *@
+            <section class="expert-content">
+
+                <div class="expert-content__header">
+                    <h2 class="expert-content__title">Danh sách nhà cung ứng</h2>
+                    @if (Model.TotalCount > 0)
+                    {
+                        <p class="expert-content__subtitle">@Model.TotalCount nhà cung ứng đang tham gia</p>
+                    }
                 </div>
-            </div>
-
-            @* =============== CENTER: LIST =============== *@
-            <div class="center_column col-xs-12 col-sm-9" id="center_column">
-
-                <h2 class="page-heading view-product-list">
-                    <span class="page-heading-title text-uppercase">@Model.PageTitle</span>
-                </h2>
 
                 @if (!Model.Items.Any())
                 {
-                    <div class="alert alert-info mt-3">Không có nhà cung ứng nào.</div>
+                    <div class="expert-empty">Không có nhà cung ứng nào.</div>
                 }
                 else
                 {
-                    <div class="row mt-3">
+                    <div class="expert-grid">
                         @foreach (var item in Model.Items)
                         {
-                            <div class="col-xs-12 col-sm-6 col-md-3 mb-4">
-                                <div class="card h-100 shadow-sm">
+                            <div class="expert-card">
+                                <div class="expert-card__media">
                                     <a href="@item.DetailUrl">
-                                        <img src="@item.ImageUrl"
-                                             class="card-img-top"
-                                             alt="@item.FullName"
-                                             style="height:160px;object-fit:contain;padding:8px;background:#f8f8f8;" />
+                                        <img src="@item.ImageUrl" alt="@item.FullName" />
                                     </a>
-                                    <div class="card-body p-2">
-                                        <h5 class="card-title" style="font-size:14px;">
-                                            <a href="@item.DetailUrl">@item.FullName</a>
-                                        </h5>
-                                        @if (!string.IsNullOrEmpty(item.DiaChi))
-                                        {
-                                            <p class="card-text small text-muted mb-1">
-                                                <i class="fas fa-map-marker-alt"></i> @item.DiaChi
-                                            </p>
-                                        }
-                                        @if (!string.IsNullOrEmpty(item.Phone))
-                                        {
-                                            <p class="card-text small mb-1">
-                                                <i class="fas fa-phone"></i> @item.Phone
-                                            </p>
-                                        }
-                                        <div>
+                                </div>
+                                <div class="expert-card__body">
+                                    <h3 class="expert-card__name">
+                                        <a href="@item.DetailUrl">@item.FullName</a>
+                                    </h3>
+                                    @if (!string.IsNullOrEmpty(item.DiaChi))
+                                    {
+                                        <div class="expert-card__organization"><i class="fas fa-map-marker-alt"></i> @item.DiaChi</div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(item.Phone))
+                                    {
+                                        <div class="expert-card__organization"><i class="fas fa-phone"></i> @item.Phone</div>
+                                    }
+                                    @if (item.Rating > 0)
+                                    {
+                                        <div class="expert-card__rating">
                                             @for (int i = 1; i <= 5; i++)
                                             {
-                                                <span style="color:gold">@(i <= item.Rating ? "★" : "☆")</span>
+                                                <span class="expert-card__star @(i <= item.Rating ? "is-filled" : "")">★</span>
                                             }
                                         </div>
+                                    }
+                                    <div class="expert-card__actions">
+                                        <a href="@item.DetailUrl" class="expert-card__btn">Xem chi tiết</a>
                                     </div>
                                 </div>
                             </div>
@@ -86,12 +99,12 @@
                     @* ── PAGINATION (CMS style) ─────────────────────────── *@
                     @if (Model.TotalPage > 1)
                     {
-                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
-                            <div class="small text-muted">
+                        <div class="expert-pagination">
+                            <div class="expert-pagination__info">
                                 Trang <strong>@Model.CurrentPage</strong> / <strong>@Model.TotalPage</strong>
                                 &nbsp;·&nbsp; Tổng <strong>@Model.TotalCount</strong> nhà cung ứng
                             </div>
-                            <ul class="pagination pagination-sm mb-0">
+                            <ul class="pagination pagination-sm mb-0 expert-pagination__list">
                                 <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
                                     <a class="page-link" href="/nha-cung-ung?cateId=@Model.CateId&page=1">
                                         <i class="fas fa-angles-left"></i>
@@ -123,7 +136,7 @@
                     }
                 }
 
-            </div>
+            </section>
         </div>
     </div>
 </div>

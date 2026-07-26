@@ -22,6 +22,7 @@ namespace TechExchangeApp.Controllers
         private readonly IConfiguration _configuration;
         private readonly string _mainDomain;
         private readonly SiteBrandingOptions _branding;
+        private readonly Services.IHomeCacheSignal _homeCacheSignal;
 
         private static readonly int[] TinSuKienMenus = { 44, 72, 83, 46 };
         private const int VideoMenuId = 71;
@@ -35,7 +36,8 @@ namespace TechExchangeApp.Controllers
             IWebHostEnvironment env,
             IConfiguration configuration,
             IOptions<AppSettings> appSettings,
-            IOptions<SiteBrandingOptions> branding)
+            IOptions<SiteBrandingOptions> branding,
+            Services.IHomeCacheSignal homeCacheSignal)
         {
             _context = context;
             _productService = productService;
@@ -44,6 +46,7 @@ namespace TechExchangeApp.Controllers
             _configuration = configuration;
             _mainDomain = appSettings.Value.MainDomain;
             _branding = branding.Value;
+            _homeCacheSignal = homeCacheSignal;
         }
 
         public async Task<IActionResult> Index()
@@ -55,6 +58,7 @@ namespace TechExchangeApp.Controllers
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:AbsoluteSeconds", 180));
                 entry.SlidingExpiration = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:SlidingSeconds", 60));
+                entry.AddExpirationToken(_homeCacheSignal.GetChangeToken()); // cho phép CMS xóa cache trang chủ tức thì
                 var newProducts = await _productService.GetNewProductsAsync(12, excludeOcop: true);
 
                 return new HomeIndexCacheVm
@@ -376,7 +380,7 @@ namespace TechExchangeApp.Controllers
                     Title = x.Title ?? "Tin tức - sự kiện",
                     Description = CleanSummary(x.Description ?? x.Contents, 120),
                     ImageUrl = ProductController.CookedImageURL("254-170", x.Image, _mainDomain),
-                    Url = _mainDomain + x.MenuId + "/" + x.QueryString + "-" + x.Id + "",
+                    Url = _mainDomain + (x.MenuId == 44 ? "tin-tuc-su-kien" : x.MenuId.ToString()) + "/" + x.QueryString + "-" + x.Id + "",
                     PublishedDate = x.PublishedDate
                 })
                 .ToList();
@@ -442,7 +446,7 @@ namespace TechExchangeApp.Controllers
                         Title = x.Title,
                         Description = x.Description,
                         ImageUrl = ProductController.CookedImageURL("460-275", x.Image, _mainDomain),
-                        Link = $"{_mainDomain}{x.MenuId}/{x.QueryString}-{x.Id}"
+                        Link = $"{_mainDomain}{(x.MenuId == 44 ? "tin-tuc-su-kien" : x.MenuId.ToString())}/{x.QueryString}-{x.Id}"
                     })
                     .ToList();
 

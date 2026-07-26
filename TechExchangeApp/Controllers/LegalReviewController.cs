@@ -6,6 +6,7 @@ using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using TechExchangeApp.Enums;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 
 namespace TechExchangeApp.Controllers
 {
@@ -145,7 +146,7 @@ namespace TechExchangeApp.Controllers
                 if (!canAccess) return Json(new { success = false, message = "Không có quyền truy cập." });
 
                 if (string.IsNullOrWhiteSpace(dto.Text))
-                    return Json(new { success = false, message = "Nội dung comment không được để trống." });
+                    return Json(new { success = false, message = I18n.T(HttpContext, "legalReview.comment.empty") });
 
                 var user = await _context.Users.FindAsync(userId);
                 var authorName = user?.FullName ?? user?.UserName ?? "Người dùng";
@@ -162,7 +163,7 @@ namespace TechExchangeApp.Controllers
                 return Json(new
                 {
                     success    = true,
-                    message    = "Comment đã được thêm.",
+                    message    = I18n.T(HttpContext, "legalReview.comment.added"),
                     commentId  = comment.Id,
                     authorName = comment.AuthorName,
                     text       = comment.CommentText,
@@ -189,8 +190,8 @@ namespace TechExchangeApp.Controllers
                 var userId = GetCurrentUserId();
                 bool ok = await _legalReviewService.ResolveCommentAsync(dto.CommentId, userId);
                 return Json(ok
-                    ? new { success = true,  message = "Comment đã được đánh dấu đã xử lý." }
-                    : new { success = false, message = "Không tìm thấy comment." });
+                    ? new { success = true,  message = I18n.T(HttpContext, "legalReview.comment.resolved") }
+                    : new { success = false, message = I18n.T(HttpContext, "legalReview.comment.notFound") });
             }
             catch (Exception ex)
             {

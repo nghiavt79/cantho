@@ -1,0 +1,39 @@
+/* =====================================================================
+   Trang chi tiết Sản phẩm (Views/Product/Detail.cshtml + partial
+   _DetailCongNghe.cshtml). Đổi style nút "Xem chi tiết" trong khối
+   "Sản phẩm tương tự" sang dạng text-link + mũi tên, đồng bộ với trang
+   chủ (.home-v2-carousel-card__btn), trang /san-pham (.tech-card__btn)
+   và trang Chuyên gia tư vấn (.expert-card__btn).
+
+   .related-tech-link là markup của ViewComponent dùng chung
+   (ProductPortletIOSanpham), cũng được include ở
+   DichVuTuVan/ChiTietNhaCungUng.cshtml — trang đó KHÔNG bọc component
+   trong .tech-related-wrap nên không bị ảnh hưởng bởi scope dưới đây.
+   ===================================================================== */
+
+.tech-related-wrap .related-tech-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    background: none;
+    color: #006BB6;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0;
+    border-radius: 0;
+    text-align: left;
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.tech-related-wrap .related-tech-link::after {
+    content: "\2192";
+    transition: transform 0.2s ease;
+}
+
+.tech-related-wrap .related-tech-link:hover,
+.tech-related-wrap .related-tech-card:hover .related-tech-link {
+    gap: 10px;
+    color: #00A6D6;
+}

@@ -34,12 +34,34 @@ namespace TechExchangeApp.Controllers
         private int GetSiteId() =>
             int.TryParse(_configuration["AppSettings:SiteId"], out var id) ? id : 1;
 
-        private async Task LoadFormSelectListsAsync()
+        private async Task<NhaCungUng?> GetCurrentUserSupplierAsync()
+        {
+            var userIdText = _userManager.GetUserId(User);
+            if (!int.TryParse(userIdText, out var userId))
+                return null;
+
+            return await _context.NhaCungUngs.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderBy(x => x.CungUngId)
+                .FirstOrDefaultAsync();
+        }
+
+        private async Task LoadFormSelectListsAsync(SanPhamCNTBFormVm? model = null)
         {
             ViewBag.XuatXuList     = ToSelectList(await _masterService.GetXuatXuAsync(),    "--- Chọn xuất xứ ---");
             ViewBag.MucDoList      = ToSelectList(await _masterService.GetMucDoAsync(),     "--- Chọn mức độ ---");
             ViewBag.LinhVucList    = ToSelectList(await _masterService.GetLinhVucAsync(),   "--- Chọn lĩnh vực ---");
-            ViewBag.NhaCungUngList = ToSelectList(await _masterService.GetNhaCungUngAsync(), "--- Chọn nhà cung ứng ---");
+            var supplier = await GetCurrentUserSupplierAsync();
+            if (supplier != null && model != null)
+                model.NCUId = supplier.CungUngId;
+
+            ViewBag.CurrentNhaCungUng = supplier;
+            ViewBag.NhaCungUngList = supplier == null
+                ? new List<SelectListItem> { new SelectListItem("--- Chon nha cung ung ---", "") }
+                : new List<SelectListItem>
+                {
+                    new SelectListItem(supplier.FullName ?? $"NCC #{supplier.CungUngId}", supplier.CungUngId.ToString(), true)
+                };
         }
 
         private static List<SelectListItem> ToSelectList(
@@ -145,7 +167,7 @@ namespace TechExchangeApp.Controllers
             var maxId = await _context.SanPhamCNTBs.Where(x => x.ProductType == 1).MaxAsync(x => (int?)x.ID) ?? 0;
             var vm = new SanPhamCNTBFormVm { ProductType = 1, Code = $"CN-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId() };
             ViewData["Title"] = "Đăng ký Công nghệ mới";
-            await LoadFormSelectListsAsync();
+            await LoadFormSelectListsAsync(vm);
             return View(vm);
         }
 
@@ -158,7 +180,7 @@ namespace TechExchangeApp.Controllers
             var maxId = await _context.SanPhamCNTBs.Where(x => x.ProductType == 2).MaxAsync(x => (int?)x.ID) ?? 0;
             var vm = new SanPhamCNTBFormVm { ProductType = 2, Code = $"TB-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId() };
             ViewData["Title"] = "Đăng ký Thiết bị mới";
-            await LoadFormSelectListsAsync();
+            await LoadFormSelectListsAsync(vm);
             return View(vm);
         }
 
@@ -171,7 +193,7 @@ namespace TechExchangeApp.Controllers
             var maxId = await _context.SanPhamCNTBs.Where(x => x.ProductType == 3).MaxAsync(x => (int?)x.ID) ?? 0;
             var vm = new SanPhamCNTBFormVm { ProductType = 3, Code = $"TT-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId() };
             ViewData["Title"] = "Đăng ký Sở hữu trí tuệ mới";
-            await LoadFormSelectListsAsync();
+            await LoadFormSelectListsAsync(vm);
             return View(vm);
         }
 
@@ -185,13 +207,22 @@ namespace TechExchangeApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await LoadFormSelectListsAsync();
+                await LoadFormSelectListsAsync(model);
                 return View(GetCreateViewName(model.ProductType), model);
             }
 
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                var supplier = await GetCurrentUserSupplierAsync();
+                if (supplier == null)
+                {
+                    ModelState.AddModelError("NCUId", "Tai khoan chua co nha cung ung de dang san pham.");
+                    await LoadFormSelectListsAsync(model);
+                    return View(GetCreateViewName(model.ProductType), model);
+                }
+                model.NCUId = supplier.CungUngId;
+
                 var entity = SanPhamCNTBController.BuildEntity(model);
                 entity.Created     = DateTime.Now;
                 entity.SiteId      = GetSiteId();
@@ -219,7 +250,7 @@ namespace TechExchangeApp.Controllers
             catch
             {
                 await transaction.RollbackAsync();
-                await LoadFormSelectListsAsync();
+                await LoadFormSelectListsAsync(model);
                 return View(GetCreateViewName(model.ProductType), model);
             }
         }
@@ -236,7 +267,7 @@ namespace TechExchangeApp.Controllers
 
             var vm = SanPhamCNTBController.BuildFormVm(entity);
             ViewData["Title"] = $"Chỉnh sửa: {entity.Name}";
-            await LoadFormSelectListsAsync();
+            await LoadFormSelectListsAsync(vm);
             return View(GetEditViewName(entity.ProductType), vm);
         }
 
@@ -250,7 +281,7 @@ namespace TechExchangeApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await LoadFormSelectListsAsync();
+                await LoadFormSelectListsAsync(model);
                 return View(GetEditViewName(model.ProductType), model);
             }
 
@@ -261,6 +292,15 @@ namespace TechExchangeApp.Controllers
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                var supplier = await GetCurrentUserSupplierAsync();
+                if (supplier == null)
+                {
+                    ModelState.AddModelError("NCUId", "Tai khoan chua co nha cung ung de cap nhat san pham.");
+                    await LoadFormSelectListsAsync(model);
+                    return View(GetEditViewName(model.ProductType), model);
+                }
+                model.NCUId = supplier.CungUngId;
+
                 var oldStatusId = entity.StatusId;
                 SanPhamCNTBController.ApplyEdit(entity, model);
                 entity.Modified    = DateTime.Now;
@@ -279,7 +319,7 @@ namespace TechExchangeApp.Controllers
             catch
             {
                 await transaction.RollbackAsync();
-                await LoadFormSelectListsAsync();
+                await LoadFormSelectListsAsync(model);
                 return View(GetEditViewName(model.ProductType), model);
             }
         }

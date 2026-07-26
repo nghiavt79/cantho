@@ -204,6 +204,38 @@ $(function(){
             });
     });
 
+    $(document).on('click', '.btn-publish-market', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        var defaultTitle = $(this).data('title') || ('Tìm mua công nghệ #' + id);
+
+        Swal.fire({
+            title: 'Đưa nhu cầu tìm mua lên sàn',
+            input: 'text',
+            inputValue: defaultTitle,
+            inputLabel: 'Tiêu đề hiển thị',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-upload"></i> Đưa lên sàn',
+            cancelButtonText: 'Hủy',
+            inputValidator: function(value) {
+                if (!value || !value.trim()) return 'Vui lòng nhập tiêu đề.';
+            }
+        }).then(function(result) {
+            if (!result.isConfirmed) return;
+
+            $.post('@Url.Action("PublishToMarket", "PhieuYeuCauCNTBAdmin", new { area = "Cms" })',
+                { id: id, title: result.value, __RequestVerificationToken: token },
+                function(r) {
+                    if (r.success) {
+                        toastr.success(r.message);
+                        loadList(currentPage);
+                    } else {
+                        toastr.error(r.message);
+                    }
+                });
+        });
+    });
+
     // ── BULK DELETE ──
     $('#btnBulkDelete').on('click', function() {
         var ids = $('.chkRow:checked').map(function() { return $(this).val(); }).get();

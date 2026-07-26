@@ -245,12 +245,12 @@ namespace TechExchangeApp.Services
 
             if (greetings.Any(x => normalized == x || normalized.StartsWith(x + " ")))
             {
-                return "Xin chào anh/chị. Tôi có thể hỗ trợ tìm công nghệ, sản phẩm CNTB, nhà cung ứng, chuyên gia tư vấn hoặc ghi nhận yêu cầu liên hệ. Anh/chị muốn tìm thông tin nào?";
+                return "Xin chào anh/chị. Tôi có thể hỗ trợ tìm công nghệ, sản phẩm, nhà cung ứng, chuyên gia tư vấn hoặc ghi nhận yêu cầu liên hệ. Anh/chị muốn tìm thông tin nào?";
             }
 
             if (normalized is "cam on" or "thanks" or "thank you")
             {
-                return "Rất vui được hỗ trợ anh/chị. Nếu cần thêm thông tin về công nghệ, sản phẩm CNTB hoặc dịch vụ tư vấn, anh/chị cứ nhắn tin tại đây.";
+                return "Rất vui được hỗ trợ anh/chị. Nếu cần thêm thông tin về công nghệ, sản phẩm hoặc dịch vụ tư vấn, anh/chị cứ nhắn tin tại đây.";
             }
 
             if (normalized.Contains("lien he") || normalized.Contains("so dien thoai") || normalized.Contains("dia chi"))
@@ -330,11 +330,8 @@ namespace TechExchangeApp.Services
                 lines.Add(x.Summary);
             }
 
-            if (!string.IsNullOrWhiteSpace(x.Url))
-            {
-                lines.Add($"➡ {x.Url}");
-            }
-
+            // Raw URLs are no longer inlined here — the client renders Sources as
+            // clickable result rows instead (see ai-chatbox.js renderResultList).
             return string.Join(Environment.NewLine, lines);
         }
 

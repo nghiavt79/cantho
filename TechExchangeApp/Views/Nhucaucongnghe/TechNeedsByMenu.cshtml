@@ -1,201 +1,299 @@
-﻿@model TechExchangeApp.ViewModel.CateTechNeedsViewModel
-@section Scripts {
-    @await Html.PartialAsync("_ReportViolationModal")
-    <script>
-        const btn = document.getElementById("DangYCCN");
-        const box = document.getElementById("DangYCCNRegion");
+@model TechExchangeApp.ViewModel.CateTechNeedsViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Tìm mua máy móc, công nghệ và dây chuyền sản xuất";
 
-        if (btn && box) {
-            btn.addEventListener("click", function (e) {
-                console.log("nut da duoc an");
-                e.preventDefault();
-                box.style.display =
-                    (box.style.display === "none" || box.style.display === "")
-                        ? "block"
-                        : "none";
-            });
-        }
-    </script>
+    string kw = Model.Keyword ?? "";
+    string kwEnc = Uri.EscapeDataString(kw);
+    string lv = Model.SelectedLinhVuc ?? "";
+    string lvEnc = Uri.EscapeDataString(lv);
+    string sortParam = string.IsNullOrWhiteSpace(Model.Sort) ? "newest" : Model.Sort;
+
+    // Bỏ HTML để hiển thị mô tả ngắn gọn trên card
+    string PlainText(string? html)
+    {
+        if (string.IsNullOrWhiteSpace(html)) return "";
+        var text = System.Text.RegularExpressions.Regex.Replace(html, "<.*?>", " ");
+        return System.Net.WebUtility.HtmlDecode(text).Trim();
+    }
+
+    // Thời gian đăng dạng "x giờ trước"
+    string RelTime(DateTime d)
+    {
+        var diff = DateTime.Now - d;
+        if (diff.TotalMinutes < 1) return "vừa đăng";
+        if (diff.TotalMinutes < 60) return $"{(int)diff.TotalMinutes} phút trước";
+        if (diff.TotalHours < 24) return $"{(int)diff.TotalHours} giờ trước";
+        if (diff.TotalDays < 30) return $"{(int)diff.TotalDays} ngày trước";
+        return d.ToString("dd/MM/yyyy");
+    }
+
+    var popularKeywords = new[] { "Dây chuyền chế biến", "Máy đóng gói", "Tự động hóa", "Năng lượng", "Công nghệ sinh học" };
 }
 
-<div class="columns-container">
-    <div class="container" id="columns">
-        <div class="row">
-            @await Html.PartialAsync("~/Views/QuangCao/_BannerTechNeed.cshtml")
-            <!-- CENTER COLUMN -->
-            <div class="center_column col-xs-12 col-sm-9 yccn"
-                 id="center_column"
-                 style="margin-bottom:200px;">
+@section Styles {
+    <link rel="stylesheet" href="~/css/tech-request.css" asp-append-version="true" />
+}
 
-                <!-- Phiếu yêu cầu công nghệ -->
-                @await Html.PartialAsync("_PhieuYeuCauCN", Model.PhieuYeuCau )
+<main class="tech-request-page">
 
-                @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
-                {
-                    TargetDataType = "Yeu cau chuyen giao cong nghe",
-                    TargetId = Model.MenuId,
-                    TargetTitle = "Yeu cau chuyen giao cong nghe",
-                    ShareTitle = "Yeu cau chuyen giao cong nghe"
-                })
+    @* ============ HERO ============ *@
+    <section class="tech-search-hero">
+        <div class="tech-page-container">
+            <nav class="tech-request-breadcrumb" aria-label="breadcrumb">
+                <a href="/">Trang chủ</a>
+                <span>/</span>
+                <strong>Tìm mua công nghệ</strong>
+            </nav>
+            <div class="tech-search-hero__inner">
+                <div>
+                    <h1 class="tech-search-hero__title">Tìm mua máy móc, công nghệ<br />và dây chuyền sản xuất</h1>
+                    <p class="tech-search-hero__subtitle">Kết nối nhu cầu của doanh nghiệp với các đơn vị cung cấp giải pháp công nghệ phù hợp.</p>
+                </div>
+                <button type="button" class="tech-search-hero__cta" data-bs-toggle="modal" data-bs-target="#techRequestModal">
+                    <i class="bi bi-upload"></i> Đăng nhu cầu tìm mua
+                </button>
+            </div>
+        </div>
+    </section>
 
-                <!-- ITEM NỔI BẬT (tương đương block đầu trong WebForms) -->
-                @if (Model.FirstItem != null)
-                {
-                    <div class="row yccn-box" style="background:#eaeaea;">
-                        <div class="col-sm-5" style="margin:10px 0;">
-                            <div class="entry-thumb image-hover2">
-                                <a href="@Model.FirstItem.DetailUrl">
-                                    <img src="@Model.FirstItem.Image" />
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-7" style="margin:10px 0 20px;">
-                            <div class="entry-ci">
-                                <div class="row"></div>
-                                <div class="row">&nbsp;</div>
-
-                                <h3 class="entry-title-big"
-                                    style="font-size:20px;font-weight:bold;">
-                                    <a href="@Model.FirstItem.DetailUrl">
-                                        @Model.FirstItem.Title
-                                    </a>
-                                </h3>
-
-                                <br />
-
-                                <div class="entry-excerpt" style="font-size:14px;">
-                                    @Html.Raw(Model.FirstItem.Description)
-                                </div>
-
-                                <br />
-
-                                <div class="entry-more">
-                                    <a href="@Model.FirstItem.DetailUrl">Đọc thêm</a>
-                                </div>
-                            </div>
-                        </div>
+    @* ============ SEARCH / FILTER PANEL ============ *@
+    <section class="tech-search-section">
+        <div class="tech-page-container">
+            <div class="tech-filter-panel">
+                <form method="get" class="tech-filter-row" role="search">
+                    <input type="hidden" name="sort" value="@sortParam" />
+                    <div class="tech-filter-field">
+                        <i class="bi bi-search"></i>
+                        <label class="visually-hidden" for="techKeyword">Từ khóa tìm kiếm</label>
+                        <input id="techKeyword" class="tech-filter-input" type="search" name="keyword" value="@kw"
+                               placeholder="Nhập tên công nghệ, máy móc, thiết bị hoặc giải pháp cần tìm..." />
                     </div>
-                }
-
-                <div class="subContainer">
-
-                    <form method="get">
-                        <select name="SelectedLinhVuc"
-                                class="DropDownList"
-                                onchange="this.form.submit()">
-                            @foreach (var lv in Model.LinhVucs)
+                    <div class="tech-filter-field--select">
+                        <label class="visually-hidden" for="techLinhVuc">Lĩnh vực công nghệ</label>
+                        <select id="techLinhVuc" class="tech-filter-select" name="linhvuc">
+                            @foreach (var opt in Model.LinhVucs)
                             {
-                                <option value="@lv.Value"
-                                        selected="@lv.Selected">
-                                    @lv.Text
-                                </option>
+                                <option value="@opt.Value" selected="@(opt.Value == lv)">@opt.Text</option>
                             }
                         </select>
-                    </form>
-
-                    <!-- Paging -->
-                    <div style="float:right;margin-top:-20px;">
-                        <div class="sortPagiBar clearfix">
-                            <div class="bottom-pagination" style="margin-top:-15px">
-                                <nav>
-                                    <ul class="pagination">
-
-                                        <!-- First -->
-                                        <li>
-                                            <a class="first"
-                                               href="?page=1&SelectedLinhVuc=@Model.SelectedLinhVuc">
-                                                &lt;
-                                            </a>
-                                        </li>
-
-                                        @foreach (var p in Model.Pages)
-                                        {
-                                            <li class="@(p == Model.CurrentPage ? "active" : "")">
-                                                <a class="phantrang"
-                                                   href="?page=@p&SelectedLinhVuc=@Model.SelectedLinhVuc">
-                                                    @p
-                                                </a>
-                                            </li>
-                                        }
-
-                                        <!-- Last -->
-                                        <li>
-                                            <a class="first"
-                                               href="?page=@Model.TotalPage&SelectedLinhVuc=@Model.SelectedLinhVuc">
-                                                &gt;
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
                     </div>
+                    <button type="submit" class="tech-filter-submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                </form>
 
-                </div>
-
-                <!-- DANH SÁCH TIN -->
-                <ul class="blog-posts TechNeedBlock row">
-
-                    @foreach (var item in Model.Items)
+                <div class="tech-chips">
+                    <span class="tech-chips__label">Từ khóa phổ biến:</span>
+                    @foreach (var k in popularKeywords)
                     {
-                        <li class="col-sm-4"
-                            style="border-right:1px solid #eaeaea;
-                                       border-bottom:1px solid #eaeaea">
-
-                            <article class="entry">
-                                <div class="row">
-
-                                    <div class="col-sm-6" style="margin:10px 0 20px;">
-                                        <div class="entry-thumb image-hover2">
-                                            <a href="@item.DetailUrl">
-                                                <img src="@item.Image" />
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6"
-                                         style="margin:10px 0 20px;
-                                                    padding-left:1px;
-                                                    padding-right:8px;
-                                                    height:150px;
-                                                    overflow:hidden;">
-                                        <div class="entry-ci">
-                                            <h3 class="entry-title">
-                                                <a href="@item.DetailUrl">
-                                                    @item.Title
-                                                </a>
-                                            </h3>
-
-                                            <div class="DescriptionYCCN"
-                                                 style="height:72px;
-                                                            line-height:15px;
-                                                            overflow:hidden;">
-                                                @Html.Raw(item.Description)
-                                            </div>
-
-                                            <div class="entry-more">
-                                                <a href="@item.DetailUrl">Đọc thêm</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </article>
-                        </li>
+                        <a class="tech-chip" href="?keyword=@Uri.EscapeDataString(k)">@k</a>
                     }
+                </div>
+            </div>
+        </div>
+    </section>
 
-                </ul>
+    @* ============ RESULTS ============ *@
+    <section class="tech-results-section">
+        <div class="tech-page-container">
 
+            <div class="tech-results-toolbar">
+                <div class="tech-results-count">Có <strong>@Model.TotalCount</strong> nhu cầu phù hợp</div>
+                <div class="tech-results-sort">
+                    <label for="techSort">Sắp xếp:</label>
+                    <select id="techSort" onchange="location.href='?sort=' + this.value + '&keyword=@kwEnc&linhvuc=@lvEnc'">
+                        <option value="newest" selected="@(sortParam == "newest")">Mới nhất</option>
+                        <option value="oldest" selected="@(sortParam == "oldest")">Cũ nhất</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- LEFT COLUMN -->
-            <div class="column col-xs-12 col-sm-3" id="left_column">
-                @await Html.PartialAsync("_PortletYeuCauMoi", Model.YeuCauMoi)
+            <div class="tech-request-grid">
+                @if (!Model.Items.Any())
+                {
+                    <div class="tech-request-empty">
+                        <i class="bi bi-inbox"></i>
+                        <p>Không tìm thấy nhu cầu phù hợp. Vui lòng thử từ khóa hoặc lĩnh vực khác.</p>
+                    </div>
+                }
+                else
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        var desc = PlainText(item.Description);
+                        <article class="tech-request-card">
+                            <a class="tech-request-card__media" href="@item.DetailUrl">
+                                <img src="@Html.ResolveImage(item.Image, "images/research.jpg")" alt="@item.Title"
+                                     loading="lazy" onerror="this.onerror=null;this.src='/images/research.jpg';" />
+                                @if (!string.IsNullOrWhiteSpace(item.LinhVucText))
+                                {
+                                    <span class="tech-request-card__badge">@item.LinhVucText</span>
+                                }
+                            </a>
+                            <div class="tech-request-card__body">
+                                <h2 class="tech-request-card__title">
+                                    <a href="@item.DetailUrl" style="color:inherit;text-decoration:none;">@item.Title</a>
+                                </h2>
+                                @if (!string.IsNullOrWhiteSpace(desc))
+                                {
+                                    <p class="tech-request-card__desc">@desc</p>
+                                }
+                                <div class="tech-request-card__meta">
+                                    @if (!string.IsNullOrWhiteSpace(item.Author))
+                                    {
+                                        <span><i class="bi bi-building"></i> @item.Author</span>
+                                    }
+                                    <span><i class="bi bi-clock"></i> @RelTime(item.PublishedDate)</span>
+                                </div>
+                                <div class="tech-request-card__footer">
+                                    <a class="tech-request-card__link" href="@item.DetailUrl">Xem chi tiết <i class="bi bi-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                }
             </div>
 
+            @* ============ PAGINATION ============ *@
+            @if (Model.TotalPage > 1)
+            {
+                <nav class="tech-pagination" aria-label="Phân trang">
+                    <a class="@(Model.CurrentPage <= 1 ? "is-disabled" : "")" aria-label="Trang trước"
+                       href="?page=@(Model.CurrentPage - 1)&keyword=@kwEnc&linhvuc=@lvEnc&sort=@sortParam"><i class="bi bi-chevron-left"></i></a>
+                    @foreach (var p in Model.Pages)
+                    {
+                        if (p == Model.CurrentPage)
+                        {
+                            <span class="is-active">@p</span>
+                        }
+                        else
+                        {
+                            <a href="?page=@p&keyword=@kwEnc&linhvuc=@lvEnc&sort=@sortParam">@p</a>
+                        }
+                    }
+                    <a class="@(Model.CurrentPage >= Model.TotalPage ? "is-disabled" : "")" aria-label="Trang sau"
+                       href="?page=@(Model.CurrentPage + 1)&keyword=@kwEnc&linhvuc=@lvEnc&sort=@sortParam"><i class="bi bi-chevron-right"></i></a>
+                </nav>
+            }
+
+            @* ============ CTA CUỐI TRANG ============ *@
+            <div class="tech-request-cta">
+                <i class="bi bi-lightbulb tech-request-cta__icon"></i>
+                <div class="tech-request-cta__text">
+                    <h2>Không tìm thấy công nghệ phù hợp với nhu cầu?</h2>
+                    <p>Gửi yêu cầu của bạn, chúng tôi sẽ kết nối và hỗ trợ tìm kiếm giải pháp phù hợp nhất.</p>
+                </div>
+                <button type="button" class="tech-request-cta__btn" data-bs-toggle="modal" data-bs-target="#techRequestModal">Gửi nhu cầu tìm mua ngay <i class="bi bi-arrow-right"></i></button>
+            </div>
 
         </div>
+    </section>
+
+    @* ============ MODAL GỬI NHU CẦU ============ *@
+    <div class="modal fade tech-request-modal" id="techRequestModal" tabindex="-1" aria-labelledby="techRequestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable tech-request-modal__dialog">
+            <div class="modal-content tech-request-modal__content">
+                <div class="modal-header tech-request-modal__header">
+                    <div>
+                        <h2 class="tech-request-modal__title" id="techRequestModalLabel">Gửi nhu cầu tìm mua công nghệ</h2>
+                        <p class="tech-request-modal__subtitle">Cung cấp thông tin về máy móc, thiết bị hoặc giải pháp bạn đang cần. CASTA sẽ hỗ trợ kết nối với đơn vị phù hợp.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body tech-request-modal__body">
+                    @* Form (dùng chung partial) *@
+                    <div id="techRequestFormWrap">
+                        @await Html.PartialAsync("_PhieuYeuCauCN", Model.PhieuYeuCau)
+                    </div>
+                    @* Thông báo thành công (ẩn tới khi gửi xong) *@
+                    <div id="techRequestSuccess" class="tech-request-success" hidden>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <h3>Đã tiếp nhận nhu cầu của bạn</h3>
+                        <p>CASTA sẽ kiểm tra thông tin và liên hệ hỗ trợ trong thời gian sớm nhất.</p>
+                        <button type="button" class="tech-form-btn-submit" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</main>
+
+@section Scripts {
+    <script>
+        (function () {
+            var $ = window.jQuery;
+
+            // ---- Select2 lĩnh vực ----
+            if ($ && $.fn && $.fn.select2) {
+                var current = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(lv));
+                var $lv = $('#techLinhVuc');
+                $lv.select2({ theme: 'bootstrap-5', width: '100%', placeholder: '--- Chọn lĩnh vực ---', allowClear: true });
+                $lv.val(current && current.length ? current : '').trigger('change.select2');
+            }
+
+            // ---- Modal gửi nhu cầu ----
+            var modalEl = document.getElementById('techRequestModal');
+            var form = document.getElementById('techRequestForm');
+            if (!modalEl || !form) return;
+
+            var btn = document.getElementById('btnSave');
+            var btnDefault = btn ? btn.innerHTML : 'Gửi nhu cầu tìm mua';
+            var errBox = document.getElementById('techFormError');
+            var formWrap = document.getElementById('techRequestFormWrap');
+            var successBox = document.getElementById('techRequestSuccess');
+            var captchaQ = document.getElementById('techCaptchaQuestion');
+            var codeInput = document.getElementById('txtCode');
+            var tsEl = document.getElementById('_formTs');
+            var submitted = false;
+
+            function showError(msg, focusEl) {
+                errBox.textContent = msg;
+                errBox.hidden = false;
+                if (focusEl) focusEl.focus();
+            }
+            function refreshCaptcha(q) {
+                if (q && captchaQ) captchaQ.textContent = q + ' = ?';
+                if (codeInput) codeInput.value = '';
+            }
+
+            // Sau khi gửi thành công, đóng modal thì reset về form mới cho lần sau
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                if (!submitted) return;
+                submitted = false;
+                form.reset();
+                errBox.hidden = true;
+                formWrap.hidden = false;
+                successBox.hidden = true;
+                if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; }
+                if (tsEl) tsEl.value = Math.floor(Date.now() / 1000);
+            });
+
+            // Submit bằng AJAX (captcha verify phía server; giữ nguyên trạng thái trang phía sau)
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                errBox.hidden = true;
+                if (btn) { btn.disabled = true; btn.innerHTML = 'Đang gửi...'; }
+                fetch(form.getAttribute('action'), {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    body: new FormData(form)
+                })
+                .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                .then(function (d) {
+                    if (d && d.captcha) refreshCaptcha(d.captcha);
+                    if (d && d.success) {
+                        submitted = true;
+                        formWrap.hidden = true;
+                        successBox.hidden = false;
+                    } else {
+                        showError((d && d.message) || 'Gửi thất bại, vui lòng thử lại.', codeInput);
+                        if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; }
+                    }
+                })
+                .catch(function () {
+                    showError('Gửi thất bại, vui lòng kiểm tra kết nối và thử lại.', null);
+                    if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; }
+                });
+            });
+        })();
+    </script>
+}

@@ -79,6 +79,18 @@
                                             title="@(isActive ? "Hủy kích hoạt" : "Kích hoạt")">
                                         <i class="fas @(isActive ? "fa-toggle-on text-success" : "fa-toggle-off")"></i>
                                     </button>
+                                    @if (item.StatusId != 3)
+                                    {
+                                        var publishTitle = !string.IsNullOrWhiteSpace(item.NoiDung)
+                                            ? (item.NoiDung!.Length > 90 ? item.NoiDung[..90] + "..." : item.NoiDung)
+                                            : $"Tìm mua công nghệ #{item.PhieuYeuCauId}";
+                                        <button type="button" class="btn btn-outline-success btn-publish-market"
+                                                data-id="@item.PhieuYeuCauId"
+                                                data-title="@publishTitle"
+                                                title="Đưa lên sàn">
+                                            <i class="fas fa-upload"></i>
+                                        </button>
+                                    }
                                     <button type="button" class="btn btn-outline-danger btn-del"
                                             data-id="@item.PhieuYeuCauId" title="Xóa">
                                         <i class="fas fa-trash"></i>

@@ -90,6 +90,13 @@
                 <div class="tech-actions">
                     <a href="/TechTransfer/Create?fromId=@p.ID&typeData=1" class="tech-btn tech-btn-primary"><i class="fa fa-file-signature"></i>Liên hệ báo giá</a>
                 </div>
+                @if (p.RequiresNDA == true)
+                {
+                    <div class="alert alert-warning mt-3 mb-0 py-2">
+                        <i class="fa fa-shield-alt me-1"></i>
+                        C&ocirc;ng ngh&#7879; n&agrave;y y&ecirc;u c&#7847;u k&yacute; th&#7887;a thu&#7853;n b&#7843;o m&#7853;t (NDA) tr&#432;&#7899;c khi trao &#273;&#7893;i th&ocirc;ng tin chi ti&#7871;t.
+                    </div>
+                }
             </div>
         </div>
     </section>
@@ -154,6 +161,22 @@
 
                     <div class="tab-pane fade" id="transfer" role="tabpanel">
                         <h3 class="tech-section-title">Phương thức chuyển giao</h3>
+                        @if (p.RequiresNDA == true)
+                        {
+                            <div class="tech-info-grid mb-3">
+                                <div class="tech-info-row">
+                                    <span class="tech-info-label">Y&ecirc;u c&#7847;u b&#7843;o m&#7853;t</span>
+                                    <span class="tech-info-value">C&oacute; y&ecirc;u c&#7847;u k&yacute; th&#7887;a thu&#7853;n b&#7843;o m&#7853;t (NDA)</span>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(p.NDAContent))
+                            {
+                                <div class="mb-3">
+                                    <h4 class="tech-subsection-title">N&#7897;i dung th&#7887;a thu&#7853;n b&#7843;o m&#7853;t</h4>
+                                    <div class="tech-content" style="white-space: pre-line">@p.NDAContent</div>
+                                </div>
+                            }
+                        }
                         @if (!string.IsNullOrWhiteSpace(p.TransferMethod) || !string.IsNullOrWhiteSpace(p.TransferMethodKhac) || !string.IsNullOrWhiteSpace(p.GiaBanDuKien) || !string.IsNullOrWhiteSpace(p.BaoHanhHoTro))
                         {
                             <div class="tech-content">

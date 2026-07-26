@@ -4872,6 +4872,33 @@ header {
     text-decoration: none;
 }
 
+/* Trang category (san-pham/{cat}): nút "Chi tiết" theo kiểu link + mũi tên giống trang /san-pham */
+.catalog-grid .tech-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    color: #006BB6;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0;
+    border-radius: 0;
+    text-align: left;
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.catalog-grid .tech-card__btn i {
+    transition: transform 0.2s ease;
+}
+
+.catalog-grid .tech-card__btn:hover,
+.catalog-grid .tech-card:hover .tech-card__btn {
+    background: none;
+    gap: 10px;
+    color: #00A6D6;
+}
+
 /* Type label badges — unified "Sản phẩm" listing (Công nghệ / Thiết bị / Sản phẩm trí tuệ) */
 .tech-card__badge--type-1 {
     background: var(--accent-soft);
