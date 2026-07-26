@@ -1,0 +1,65 @@
+@model TechExchangeApp.Areas.Cms.Models.RoleCreateVm
+@{
+    ViewData["Title"] = "Thêm nhóm quyền";
+}
+
+<div class="card card-outline card-primary shadow-sm">
+    <div class="card-header d-flex align-items-center">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-plus me-1"></i> Thêm nhóm quyền
+        </h3>
+        <div class="ms-auto">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Quay lại
+            </a>
+        </div>
+    </div>
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row g-3">
+                <div class="col-12">
+                    <label asp-for="Title" class="form-label fw-semibold small mb-1">Tên nhóm quyền</label>
+                    <input asp-for="Title" class="form-control form-control-sm" maxlength="500" placeholder="VD: Biên tập viên" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label fw-semibold small mb-1">Mô tả</label>
+                    <textarea asp-for="Description" class="form-control form-control-sm" rows="3" maxlength="2000"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="Domain" class="form-label fw-semibold small mb-1">Domain</label>
+                    <input asp-for="Domain" class="form-control form-control-sm" maxlength="500" />
+                    <span asp-validation-for="Domain" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="ParentId" class="form-label fw-semibold small mb-1">ParentId</label>
+                    <input asp-for="ParentId" type="number" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="SiteId" class="form-label fw-semibold small mb-1">SiteId</label>
+                    <input asp-for="SiteId" type="number" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="LanguageId" class="form-label fw-semibold small mb-1">LanguageId</label>
+                    <input asp-for="LanguageId" type="number" class="form-control form-control-sm" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fas fa-save me-1"></i> Lưu
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Hủy</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

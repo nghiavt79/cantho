@@ -117,6 +117,13 @@ namespace TechExchangeApp.Data
             modelBuilder.Entity<AiChatSession>().ToTable("AiChatSessions", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<AiChatMessage>().ToTable("AiChatMessages", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<SysFunction>().ToTable("SysFunction", t => t.ExcludeFromMigrations());
+
+            // Legacy permission table (đã có sẵn trong DB) — composite key, không scaffold migration.
+            modelBuilder.Entity<SysFuncRolePermission>(e =>
+            {
+                e.ToTable("SysFuncRolesStatusPermission", t => t.ExcludeFromMigrations());
+                e.HasKey(p => new { p.FunctionId, p.RoleId, p.StatusId });
+            });
         }
 
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -203,6 +210,7 @@ namespace TechExchangeApp.Data
         // CMS Lookup Tables
         public DbSet<CmsRole> CmsRoles { get; set; } = null!;
         public DbSet<CmsUserRole> CmsUserRoles { get; set; } = null!;
+        public DbSet<SysFuncRolePermission> SysFuncRolePermissions { get; set; } = null!;
         public DbSet<RootSite> RootSites { get; set; } = null!;
         public DbSet<VAccountType> VAccountTypes { get; set; } = null!;
         public DbSet<Status> Statuses { get; set; } = null!;
