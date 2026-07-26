@@ -66,12 +66,13 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     .ToDictionary(g => g.Key, g => g.Select(x => (int)x.StatusId).ToHashSet());
 
                 vm.Rows = await _context.SysFunctions.AsNoTracking()
-                    .Where(f => f.IsShow)
+                    .Where(f => f.IsMenu == true)
                     .OrderBy(f => f.ParentId).ThenBy(f => f.Sort).ThenBy(f => f.FunctionId)
                     .Select(f => new SysFuncPermissionRowVm
                     {
                         FunctionId = f.FunctionId,
                         FunctionName = f.FunctionName,
+                        HrefName = f.HrefName,
                         URL = f.URL,
                         IsStatusBased = f.IsStatus == true,
                         ParentId = f.ParentId
@@ -113,10 +114,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 }
             }
 
-            // Chỉ xử lý trong phạm vi các function đang hiển thị (IsShow=true) — giữ nguyên
-            // quyền của các function bị ẩn, không đụng tới khi lưu.
+            // Chỉ xử lý trong phạm vi các function là menu (IsMenu=true) — giữ nguyên
+            // quyền của các function không phải menu, không đụng tới khi lưu.
             var visibleFuncIds = await _context.SysFunctions.AsNoTracking()
-                .Where(f => f.IsShow)
+                .Where(f => f.IsMenu == true)
                 .Select(f => f.FunctionId)
                 .ToListAsync();
             var visibleSet = visibleFuncIds.ToHashSet();

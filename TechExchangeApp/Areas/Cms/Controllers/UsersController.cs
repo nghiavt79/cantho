@@ -249,7 +249,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 Email = user.Email ?? "",
                 FullName = user.FullName ?? "",
                 IsActivated = user.IsActivated ?? false,
-                SelectedAccountTypeId = user.UserTypeId?.ToString(),
+                // Ưu tiên cờ IsAdmin để loại tài khoản luôn đúng (tránh làm mất quyền admin khi lưu)
+                SelectedAccountTypeId = user.IsAdmin == true ? "1" : user.UserTypeId?.ToString(),
                 SelectedSiteId = user.SiteId,
                 SelectedRoleIds = await _context.CmsUserRoles
                     .Where(r => r.UserId == id)

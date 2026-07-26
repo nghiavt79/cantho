@@ -12,6 +12,7 @@ namespace TechExchangeApp.Areas.Cms.Models
     {
         public int FunctionId { get; set; }
         public string? FunctionName { get; set; }
+        public string? HrefName { get; set; }
         public string? URL { get; set; }
         public bool IsStatusBased { get; set; }
         public int? ParentId { get; set; }

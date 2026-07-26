@@ -71,11 +71,14 @@
                         <tr>
                             <td class="text-muted">#@row.FunctionId</td>
                             <td>
-                                <div class="fw-semibold">@row.FunctionName</div>
-                                @if (!string.IsNullOrWhiteSpace(row.URL))
-                                {
-                                    <div class="small text-muted font-monospace">@row.URL</div>
-                                }
+                                <div class="fw-semibold">@(string.IsNullOrWhiteSpace(row.HrefName) ? row.FunctionName : row.HrefName)</div>
+                                <div class="small text-muted">
+                                    <span class="font-monospace">@row.FunctionName</span>
+                                    @if (!string.IsNullOrWhiteSpace(row.URL))
+                                    {
+                                        <span class="font-monospace"> · @row.URL</span>
+                                    }
+                                </div>
                             </td>
                             @foreach (var col in Model.StatusColumns)
                             {

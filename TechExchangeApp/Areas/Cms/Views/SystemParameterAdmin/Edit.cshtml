@@ -13,14 +13,6 @@
         : "text";
 }
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle me-1"></i> @TempData["Success"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 <div class="card card-outline card-primary shadow-sm">
     <div class="card-header d-flex align-items-center">
         <h3 class="card-title mb-0">

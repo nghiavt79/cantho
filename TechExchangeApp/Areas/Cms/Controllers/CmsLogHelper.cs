@@ -29,15 +29,20 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             var functionId = functions.FirstOrDefault(f => f.FunctionName == functionName)?.FunctionId
                 ?? functions.FirstOrDefault()?.FunctionId;
 
+            // Cắt cho vừa độ dài cột (ký tự) để không dính "String or binary data would be truncated".
+            static string? Trunc(string? s, int max) =>
+                string.IsNullOrEmpty(s) || s.Length <= max ? s : s[..max];
+
             context.Logs.Add(new Log
             {
-                FunctionID = functionId,
+                // Log.FunctionID là NOT NULL; nếu không map được tên → 0 (không có FK ràng buộc).
+                FunctionID = functionId ?? 0,
                 ActTime = DateTime.Now,
                 EventID = eventId,
-                Content = content,
-                ClientIP = httpContext.Connection.RemoteIpAddress?.ToString(),
-                UserName = httpContext.User.Identity?.Name,
-                Domain = httpContext.Request.Host.Value,
+                Content = Trunc(content, 2000),         // nvarchar(2000)
+                ClientIP = Trunc(httpContext.Connection.RemoteIpAddress?.ToString(), 50),   // nvarchar(100)
+                UserName = Trunc(httpContext.User.Identity?.Name, 50),                       // nvarchar(100)
+                Domain = Trunc(httpContext.Request.Host.Value, 500) ?? "",                   // nvarchar(1000) NOT NULL
                 LanguageId = 1,
                 ParentId = 0,
                 SiteId = siteId

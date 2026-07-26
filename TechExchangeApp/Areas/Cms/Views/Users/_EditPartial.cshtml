@@ -36,7 +36,7 @@
                     <option value="">-- Chọn --</option>
                     @foreach (var at in accountTypes)
                     {
-                        <option value="@at.Id" selected="@(Model.SelectedAccountTypeId == at.Id)">@at.Name</option>
+                        <option value="@at.Id">@at.Name</option>
                     }
                 </select>
             </div>
