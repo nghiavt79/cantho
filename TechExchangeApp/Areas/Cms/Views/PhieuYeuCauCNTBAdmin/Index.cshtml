@@ -126,6 +126,7 @@ $(function(){
         currentPage = page || 1;
         var params = $('#searchForm').serialize()
             + '&page=' + currentPage
+            + '&pageSize=' + encodeURIComponent($('.ajax-page-size').val() || '20')
             + '&sortBy=' + encodeURIComponent(currentSortBy)
             + '&sortDir=' + encodeURIComponent(currentSortDir);
         $('#listContainer').css('opacity', '0.5');
@@ -165,6 +166,10 @@ $(function(){
         e.preventDefault();
         if ($(this).closest('.page-item').hasClass('disabled') || $(this).closest('.page-item').hasClass('active')) return;
         loadList($(this).data('page'));
+    });
+
+    $(document).on('change', '.ajax-page-size', function() {
+        loadList(1);
     });
 
     $(document).on('change', '#chkAll', function() { $('.chkRow:not(:disabled)').prop('checked', this.checked); toggleBulk(); });

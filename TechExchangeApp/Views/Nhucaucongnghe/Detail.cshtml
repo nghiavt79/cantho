@@ -1,148 +1,353 @@
 @model TechExchangeApp.ViewModel.NhuCauCongNgheDetailViewModel
+@{
+    var d = Model.Detail;
+    Layout = "_Layout";
+
+    string PlainText(string? html)
+    {
+        if (string.IsNullOrWhiteSpace(html)) return "";
+        var t = System.Text.RegularExpressions.Regex.Replace(html, "<.*?>", " ");
+        return System.Net.WebUtility.HtmlDecode(t).Trim();
+    }
+    string RelTime(DateTime? dt)
+    {
+        if (dt == null) return "";
+        var diff = DateTime.Now - dt.Value;
+        if (diff.TotalMinutes < 60) return $"{(int)Math.Max(1, diff.TotalMinutes)} phút trước";
+        if (diff.TotalHours < 24) return $"{(int)diff.TotalHours} giờ trước";
+        if (diff.TotalDays < 30) return $"{(int)diff.TotalDays} ngày trước";
+        return dt.Value.ToString("dd/MM/yyyy");
+    }
+    (string cls, string text) StatusInfo(int? s) => s switch
+    {
+        2 => ("tech-demand-status--processing", "Đang xử lý"),
+        3 => ("tech-demand-status--closed", "Đã kết thúc"),
+        _ => ("tech-demand-status--open", "Đang tiếp nhận")
+    };
+
+    bool hasStructured = d != null && (
+        !string.IsNullOrWhiteSpace(d.MucTieu) || !string.IsNullOrWhiteSpace(d.HienTrang) ||
+        !string.IsNullOrWhiteSpace(d.YeuCauKyThuat) || !string.IsNullOrWhiteSpace(d.QuyMoTrienKhai) ||
+        !string.IsNullOrWhiteSpace(d.TieuChiChonDoiTac));
+    var hopTacList = string.IsNullOrWhiteSpace(d?.HinhThucHopTac)
+        ? new string[0]
+        : d.HinhThucHopTac.Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    var status = StatusInfo(d?.TrangThaiNhuCau);
+    bool dangTiepNhan = d?.DangTiepNhan ?? true;
+}
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/nhucaucongnghe-detail.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tech-demand-detail.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tech-request.css" asp-append-version="true" />
+}
+
+@if (d == null)
+{
+    <div class="tech-demand-detail-page"><div class="tech-demand-container"><p style="padding:40px 0;">Không tìm thấy nhu cầu.</p></div></div>
+}
+else
+{
+    <main class="tech-demand-detail-page">
+        <div class="tech-demand-container">
+
+            <nav class="tech-demand-breadcrumb" aria-label="breadcrumb">
+                <a href="/">Trang chủ</a><span>/</span>
+                <a href="/tim-mua-cong-nghe">Tìm mua công nghệ</a><span>/</span>
+                <strong title="@d.Title">@d.Title</strong>
+            </nav>
+
+            @* ====== KHỐI TÓM TẮT HỒ SƠ ====== *@
+            <section class="tech-demand-summary">
+                <div class="tech-demand-badges">
+                    @if (!string.IsNullOrWhiteSpace(d.LinhVucText))
+                    {
+                        <span class="tech-demand-badge">@d.LinhVucText</span>
+                    }
+                    <span class="tech-demand-status @status.cls">@status.text</span>
+                </div>
+
+                <h1 class="tech-demand-summary__title">@d.Title</h1>
+
+                @if (!string.IsNullOrWhiteSpace(d.Description))
+                {
+                    <p class="tech-demand-summary__desc">@PlainText(d.Description)</p>
+                }
+
+                <div class="tech-demand-meta">
+                    @if (!string.IsNullOrWhiteSpace(d.DiaPhuong))
+                    {
+                        <span><i class="bi bi-geo-alt"></i>@d.DiaPhuong</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(d.Author))
+                    {
+                        <span><i class="bi bi-building"></i>@d.Author</span>
+                    }
+                    <span><i class="bi bi-clock"></i>Đăng @RelTime(d.PublishedDate)</span>
+                    @if (d.HanTiepNhan != null)
+                    {
+                        <span><i class="bi bi-calendar-check"></i>Hạn tiếp nhận: @d.HanTiepNhan.Value.ToString("dd/MM/yyyy")</span>
+                    }
+                </div>
+
+                @if (dangTiepNhan)
+                {
+                    <div class="tech-demand-actions">
+                        <button type="button" class="tech-demand-btn tech-demand-btn--primary" data-bs-toggle="modal" data-bs-target="#techRequestModal">
+                            <i class="bi bi-lightbulb"></i> Nhờ CASTA tư vấn kết nối
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <div class="tech-demand-closed-note">
+                        <i class="bi bi-info-circle"></i> Nhu cầu này hiện không còn tiếp nhận đề xuất.
+                        <a href="/tim-mua-cong-nghe">Xem các nhu cầu tương tự →</a>
+                    </div>
+                }
+            </section>
+
+            @* ====== NỘI DUNG CHÍNH + SIDEBAR ====== *@
+            <div class="tech-demand-layout">
+
+                <div class="tech-demand-content">
+
+                    @if (!string.IsNullOrWhiteSpace(d.MucTieu))
+                    {
+                        <section class="tech-demand-section">
+                            <h2 class="tech-demand-section__title"><i class="bi bi-bullseye"></i>Tổng quan nhu cầu</h2>
+                            <div class="tech-demand-richtext">@Html.Raw(d.MucTieu)</div>
+                        </section>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(d.HienTrang))
+                    {
+                        <section class="tech-demand-section">
+                            <h2 class="tech-demand-section__title"><i class="bi bi-exclamation-triangle"></i>Hiện trạng và vấn đề cần giải quyết</h2>
+                            <div class="tech-demand-richtext">@Html.Raw(d.HienTrang)</div>
+                        </section>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(d.YeuCauKyThuat))
+                    {
+                        <section class="tech-demand-section">
+                            <h2 class="tech-demand-section__title"><i class="bi bi-list-check"></i>Yêu cầu kỹ thuật</h2>
+                            <div class="tech-demand-richtext">@Html.Raw(d.YeuCauKyThuat)</div>
+                        </section>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(d.QuyMoTrienKhai))
+                    {
+                        <section class="tech-demand-section">
+                            <h2 class="tech-demand-section__title"><i class="bi bi-diagram-3"></i>Quy mô và điều kiện triển khai</h2>
+                            <div class="tech-demand-richtext">@Html.Raw(d.QuyMoTrienKhai)</div>
+                        </section>
+                    }
+                    @if (hopTacList.Length > 0)
+                    {
+                        <section class="tech-demand-section">
+                            <h2 class="tech-demand-section__title"><i class="bi bi-handshake"></i>Hình thức hợp tác mong muốn</h2>
+                            <div class="tech-demand-chips">
+                                @foreach (var h in hopTacList)
+                                {
+                                    <span class="tech-demand-chip">@h</span>
+                                }
+                            </div>
+                        </section>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(d.TieuChiChonDoiTac))
+                    {
+                        <section class="tech-demand-section">
+                            <h2 class="tech-demand-section__title"><i class="bi bi-award"></i>Tiêu chí lựa chọn đối tác</h2>
+                            <div class="tech-demand-richtext">@Html.Raw(d.TieuChiChonDoiTac)</div>
+                        </section>
+                    }
+
+                    @* Fallback: chưa có trường cấu trúc → hiển thị khối Contents *@
+                    @if (!hasStructured && !string.IsNullOrWhiteSpace(d.Contents))
+                    {
+                        <section class="tech-demand-section">
+                            <h2 class="tech-demand-section__title"><i class="bi bi-file-text"></i>Chi tiết nhu cầu</h2>
+                            <div class="tech-demand-richtext">@Html.Raw(d.Contents)</div>
+                        </section>
+                    }
+                </div>
+
+                @* ====== SIDEBAR ====== *@
+                <aside class="tech-demand-sidebar">
+                    <div class="tech-demand-card">
+                        <p class="tech-demand-card__title">Thông tin hồ sơ</p>
+                        <dl class="tech-demand-info">
+                            <div class="tech-demand-info__row"><dt>Mã nhu cầu</dt><dd>@d.MaNhuCau</dd></div>
+                            <div class="tech-demand-info__row"><dt>Ngày đăng</dt><dd>@d.PublishedDate?.ToString("dd/MM/yyyy")</dd></div>
+                            @if (d.Modified != null)
+                            {
+                                <div class="tech-demand-info__row"><dt>Cập nhật</dt><dd>@d.Modified.Value.ToString("dd/MM/yyyy")</dd></div>
+                            }
+                            @if (d.HanTiepNhan != null)
+                            {
+                                <div class="tech-demand-info__row"><dt>Hạn tiếp nhận</dt><dd>@d.HanTiepNhan.Value.ToString("dd/MM/yyyy")</dd></div>
+                            }
+                            <div class="tech-demand-info__row"><dt>Trạng thái</dt><dd>@status.text</dd></div>
+                            @if (!string.IsNullOrWhiteSpace(d.NganSach))
+                            {
+                                <div class="tech-demand-info__row"><dt>Ngân sách</dt><dd>@d.NganSach</dd></div>
+                            }
+                        </dl>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(d.Author))
+                    {
+                        <div class="tech-demand-card">
+                            <p class="tech-demand-card__title">Đơn vị đăng nhu cầu</p>
+                            <div class="tech-demand-org">
+                                <div class="tech-demand-org__avatar">@(d.Author!.Trim().Substring(0, 1).ToUpper())</div>
+                                <div class="tech-demand-org__name">@d.Author</div>
+                            </div>
+                            <div class="tech-demand-privacy">
+                                <i class="bi bi-shield-lock"></i>
+                                <span>Thông tin liên hệ được CASTA bảo mật và chỉ được chia sẻ khi hai bên đồng ý kết nối.</span>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="tech-demand-card tech-demand-card--support">
+                        <p class="tech-demand-card__title">Hỗ trợ từ CASTA</p>
+                        <p>Chưa chắc giải pháp của bạn có phù hợp? Gửi thông tin để chuyên viên CASTA hỗ trợ đánh giá sơ bộ và kết nối.</p>
+                        <button type="button" class="tech-demand-btn tech-demand-btn--primary" data-bs-toggle="modal" data-bs-target="#techRequestModal">
+                            <i class="bi bi-headset"></i> Nhờ CASTA tư vấn
+                        </button>
+                    </div>
+                </aside>
+            </div>
+
+            @* ====== NHU CẦU TƯƠNG TỰ ====== *@
+            @if (Model.Relations.Any())
+            {
+                <section class="tech-related-demands">
+                    <h2 class="tech-related-demands__title">Nhu cầu công nghệ tương tự</h2>
+                    <div class="tech-related-grid">
+                        @foreach (var r in Model.Relations)
+                        {
+                            var rst = StatusInfo(r.TrangThaiNhuCau);
+                            <a class="tech-related-card" href="@r.DetailUrl">
+                                <div class="tech-related-card__media">
+                                    <img src="@Html.ResolveImage(r.Image, "images/research.jpg")" alt="@r.Title" loading="lazy"
+                                         onerror="this.onerror=null;this.src='/images/research.jpg';" />
+                                </div>
+                                <div class="tech-related-card__body">
+                                    @if (!string.IsNullOrWhiteSpace(r.LinhVucText))
+                                    {
+                                        <span class="tech-related-card__badge">@r.LinhVucText</span>
+                                    }
+                                    <h3 class="tech-related-card__title">@r.Title</h3>
+                                    <div class="tech-related-card__meta"><i class="bi bi-clock"></i>@RelTime(r.PublishedDate)</div>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </section>
+            }
+
+            @* ====== CTA CUỐI ====== *@
+            @if (dangTiepNhan)
+            {
+                <div class="tech-demand-endcta">
+                    <div class="tech-demand-endcta__text">
+                        <h2>Bạn có công nghệ hoặc thiết bị phù hợp?</h2>
+                        <p>Gửi thông tin để CASTA hỗ trợ đánh giá và kết nối với đơn vị đang có nhu cầu.</p>
+                    </div>
+                    <button type="button" class="tech-demand-btn tech-demand-btn--primary" data-bs-toggle="modal" data-bs-target="#techRequestModal">
+                        Đề xuất giải pháp ngay <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            }
+        </div>
+
+        @* ====== MOBILE STICKY ACTION BAR ====== *@
+        @if (dangTiepNhan)
+        {
+            <div class="tech-demand-mobilebar">
+                <button type="button" class="tech-demand-btn tech-demand-btn--ghost" data-bs-toggle="modal" data-bs-target="#techRequestModal">Nhờ tư vấn</button>
+                <button type="button" class="tech-demand-btn tech-demand-btn--primary" data-bs-toggle="modal" data-bs-target="#techRequestModal">Đề xuất giải pháp</button>
+            </div>
+        }
+        else
+        {
+            <div class="tech-demand-mobilebar">
+                <a href="/tim-mua-cong-nghe" class="tech-demand-btn tech-demand-btn--primary" style="flex:1;justify-content:center;">Xem nhu cầu tương tự</a>
+            </div>
+        }
+    </main>
+
+    @* ====== MODAL (tái dùng form + math captcha) ====== *@
+    <div class="modal fade tech-request-modal" id="techRequestModal" tabindex="-1" aria-labelledby="techRequestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content tech-request-modal__content">
+                <div class="modal-header tech-request-modal__header">
+                    <div>
+                        <h2 class="tech-request-modal__title" id="techRequestModalLabel">Nhờ CASTA tư vấn kết nối</h2>
+                        <p class="tech-request-modal__subtitle">Gửi thông tin về giải pháp của bạn cho nhu cầu <strong>@d.MaNhuCau</strong>. CASTA sẽ hỗ trợ đánh giá và kết nối với đơn vị đăng nhu cầu.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body tech-request-modal__body">
+                    <div id="techRequestFormWrap">
+                        @await Html.PartialAsync("_PhieuYeuCauCN", Model.PhieuYeuCau)
+                    </div>
+                    <div id="techRequestSuccess" class="tech-request-success" hidden>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <h3>Đã tiếp nhận thông tin của bạn</h3>
+                        <p>CASTA sẽ kiểm tra và hỗ trợ kết nối trong thời gian sớm nhất.</p>
+                        <button type="button" class="tech-form-btn-submit" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 @section Scripts {
-    @await Html.PartialAsync("_ReportViolationModal")
     <script>
-        const btn = document.getElementById("DangYCCN");
-        const box = document.getElementById("DangYCCNRegion");
+        (function () {
+            var modalEl = document.getElementById('techRequestModal');
+            var form = document.getElementById('techRequestForm');
+            if (!modalEl || !form) return;
 
-        if (btn && box) {
-            btn.addEventListener("click", function (e) {
-                console.log("nut da duoc an");
-                e.preventDefault();
-                box.style.display =
-                    (box.style.display === "none" || box.style.display === "")
-                        ? "block"
-                        : "none";
+            var btn = document.getElementById('btnSave');
+            var btnDefault = btn ? btn.innerHTML : 'Gửi';
+            var errBox = document.getElementById('techFormError');
+            var formWrap = document.getElementById('techRequestFormWrap');
+            var successBox = document.getElementById('techRequestSuccess');
+            var captchaQ = document.getElementById('techCaptchaQuestion');
+            var codeInput = document.getElementById('txtCode');
+            var tsEl = document.getElementById('_formTs');
+            var submitted = false;
+
+            function showError(msg, focusEl) { errBox.textContent = msg; errBox.hidden = false; if (focusEl) focusEl.focus(); }
+            function refreshCaptcha(q) { if (q && captchaQ) captchaQ.textContent = q + ' = ?'; if (codeInput) codeInput.value = ''; }
+
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                if (!submitted) return;
+                submitted = false; form.reset(); errBox.hidden = true;
+                formWrap.hidden = false; successBox.hidden = true;
+                if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; }
+                if (tsEl) tsEl.value = Math.floor(Date.now() / 1000);
             });
-        }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                errBox.hidden = true;
+                if (btn) { btn.disabled = true; btn.innerHTML = 'Đang gửi...'; }
+                fetch(form.getAttribute('action'), {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    body: new FormData(form)
+                })
+                .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                .then(function (dd) {
+                    if (dd && dd.captcha) refreshCaptcha(dd.captcha);
+                    if (dd && dd.success) { submitted = true; formWrap.hidden = true; successBox.hidden = false; }
+                    else { showError((dd && dd.message) || 'Gửi thất bại, vui lòng thử lại.', codeInput); if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; } }
+                })
+                .catch(function () { showError('Gửi thất bại, vui lòng kiểm tra kết nối và thử lại.', null); if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; } });
+            });
+        })();
     </script>
 }
-
-<div class="nhucau-detail-page">
-    <div class="nhucau-detail-container">
-
-        <nav class="nhucau-detail-breadcrumb" aria-label="breadcrumb">
-            <a href="/">Trang chủ</a>
-            <span>/</span>
-            <a href="/tim-mua-cong-nghe">Tìm mua công nghệ</a>
-        </nav>
-
-        <div class="nhucau-detail-layout">
-
-            <div class="nhucau-detail-content">
-
-                <!-- ====== PHIẾU YÊU CẦU (PARTIAL) ====== -->
-                @await Html.PartialAsync("_PhieuYeuCauCN", Model.PhieuYeuCau )
-
-                <!-- ====== TITLE + CONTENT ====== -->
-                @if (Model.Detail != null)
-                {
-                    <article class="nhucau-detail-card">
-                        <h1 class="nhucau-detail-card__title">@Model.Detail.Title</h1>
-
-                        <div class="nhucau-detail-card__meta">
-                            <span><i class="fa fa-eye"></i>@(Model.Detail.Viewed ?? 0) lượt xem</span>
-                            <span><i class="fa fa-thumbs-up"></i>@(Model.Detail.Like ?? 0) lượt thích</span>
-                        </div>
-
-                        @if (!string.IsNullOrWhiteSpace(Model.Detail.Description))
-                        {
-                            <div class="nhucau-detail-card__summary">@Html.Raw(Model.Detail.Description)</div>
-                        }
-
-                        <div class="content-text clearfix">
-                            @Html.Raw(Model.Detail.Contents)
-                        </div>
-
-                        @if (!string.IsNullOrWhiteSpace(Model.Detail.Author))
-                        {
-                            <div class="nhucau-detail-card__author">@Model.Detail.Author</div>
-                        }
-
-                        @await Html.PartialAsync("_ContentUtilities", new TechExchangeApp.ViewModel.ContentUtilitiesVm
-                        {
-                            TargetDataType = "Yeu cau cong nghe",
-                            TargetId = Model.Detail.Id,
-                            TargetTitle = Model.Detail.Title,
-                            ShareTitle = Model.Detail.Title
-                        })
-
-                        <!-- ====== IMAGE CAROUSEL ====== -->
-                        @if (Model.Images.Any())
-                        {
-                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                <div class="carousel-inner" role="listbox">
-                                    @for (int i = 0; i < Model.Images.Count; i++)
-                                    {
-                                        var img = Model.Images[i];
-                                        <div class="item @(i == 0 ? "active" : "")">
-                                            <img src="@img.ImageUrl" alt="@img.Title" />
-                                            <div class="carousel-caption">
-                                                @img.Title
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-
-                                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
-                                </a>
-                                <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                                    <span class="glyphicon glyphicon-chevron-right"></span>
-                                </a>
-                            </div>
-                        }
-                    </article>
-                }
-
-                <!-- ====== CONTACT ====== -->
-                <div class="nhucau-detail-cta">Liên hệ để đáp ứng công nghệ</div>
-
-                <!-- ====== COMMENT ====== -->
-                @* @if (Model.TargetId > 0 && Model.CommentTypeId.HasValue)
-                {
-                    @await Html.PartialAsync(
-                        "_Comment",
-                        new
-                        {
-                            TargetId = Model.TargetId,
-                            CommentTypeId = Model.CommentTypeId.Value
-                        }
-                    )
-                } *@
-
-                <!-- ====== RELATED NEWS ====== -->
-                @if (Model.Relations.Any())
-                {
-                    <div class="nhucau-detail-related">
-                        <h2 class="nhucau-detail-related__title">Tin khác</h2>
-                        <ul class="nhucau-detail-related__list">
-                            @foreach (var item in Model.Relations)
-                            {
-                                <li>
-                                    <a href="@Html.MainDomain()@item.MenuId/yeu-cau/@item.QueryString-@(item.Id)">
-                                        @item.Title
-                                    </a>
-                                    <span>@item.PublishedDate?.ToString("dd/MM/yyyy")</span>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                }
-            </div>
-
-            <!-- ================= SIDEBAR ================= -->
-            <aside class="nhucau-detail-sidebar">
-                @await Html.PartialAsync("_PortletYeuCauMoi", Model.YeuCauMoi)
-
-                @* Left banner nếu cần *@
-                @* @await Html.PartialAsync("_Left") *@
-            </aside>
-        </div>
-    </div>
-</div>

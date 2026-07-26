@@ -1,0 +1,270 @@
+@model TechExchangeApp.Areas.Cms.Models.ContentsYeuCauEditVm
+@{
+    ViewData["Title"] = $"Sửa nhu cầu: {Model.Title}";
+}
+
+<form asp-action="Edit" method="post" id="contentForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="mb-0"><i class="fas fa-pen-to-square me-2 text-primary"></i> Sửa nhu cầu công khai</h4>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fas fa-save me-1"></i> Lưu
+            </button>
+            <a asp-action="Index" class="btn btn-secondary btn-sm">
+                <i class="fas fa-times me-1"></i> Hủy
+            </a>
+        </div>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-triangle me-1"></i>
+            <strong>Vui lòng kiểm tra lại:</strong>
+            <div asp-validation-summary="All" class="mt-1"></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-header p-0 border-bottom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabGeneral" type="button">
+                        <i class="fas fa-info-circle me-1"></i> Cơ bản
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStructured" type="button">
+                        <i class="fas fa-list-check me-1"></i> Dữ liệu cấu trúc
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPublish" type="button">
+                        <i class="fas fa-paper-plane me-1"></i> Xuất bản
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="tabGeneral">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label asp-for="Title" class="form-label fw-semibold">Tiêu đề <span class="text-danger">*</span></label>
+                                <input asp-for="Title" class="form-control" id="inputTitle" />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label fw-semibold">Mô tả ngắn</label>
+                                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Contents" class="form-label fw-semibold">Nội dung chi tiết</label>
+                                <textarea asp-for="Contents" id="editorContents" class="form-control" rows="16"></textarea>
+                                <span asp-validation-for="Contents" class="text-danger small"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="QueryString" class="form-label fw-semibold">Slug</label>
+                                <div class="input-group">
+                                    <input asp-for="QueryString" class="form-control" id="inputSlug" />
+                                    <button type="button" class="btn btn-outline-secondary" id="btnGenSlug" title="Tạo slug">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                                <span asp-validation-for="QueryString" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="LinhVucId" class="form-label fw-semibold">Lĩnh vực</label>
+                                <input asp-for="LinhVucId" class="form-control" placeholder="Ví dụ: ;4;12;" />
+                                <span asp-validation-for="LinhVucId" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Keyword" class="form-label fw-semibold">Từ khóa</label>
+                                <input asp-for="Keyword" class="form-control" />
+                                <span asp-validation-for="Keyword" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="Image" class="form-label fw-semibold">Hình ảnh</label>
+                                <input asp-for="Image" class="form-control" />
+                                <span asp-validation-for="Image" class="text-danger small"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tabStructured">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="TrangThaiNhuCau" class="form-label fw-semibold">Trạng thái nhu cầu</label>
+                            <select asp-for="TrangThaiNhuCau" class="form-select">
+                                <option value="">-- Chưa xác định --</option>
+                                <option value="1">Đang tiếp nhận</option>
+                                <option value="2">Đang xử lý</option>
+                                <option value="3">Đã kết thúc</option>
+                            </select>
+                            <span asp-validation-for="TrangThaiNhuCau" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="DiaPhuong" class="form-label fw-semibold">Tỉnh/thành hoặc khu vực</label>
+                            <input asp-for="DiaPhuong" class="form-control" />
+                            <span asp-validation-for="DiaPhuong" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="HanTiepNhan" class="form-label fw-semibold">Hạn tiếp nhận</label>
+                            <input asp-for="HanTiepNhan" class="form-control" type="date" />
+                            <span asp-validation-for="HanTiepNhan" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="NganSach" class="form-label fw-semibold">Ngân sách</label>
+                            <input asp-for="NganSach" class="form-control" />
+                            <span asp-validation-for="NganSach" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="HinhThucHopTac" class="form-label fw-semibold">Hình thức hợp tác</label>
+                            <input asp-for="HinhThucHopTac" class="form-control" />
+                            <span asp-validation-for="HinhThucHopTac" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="MucTieu" class="form-label fw-semibold">Mục tiêu</label>
+                            <textarea asp-for="MucTieu" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="MucTieu" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="HienTrang" class="form-label fw-semibold">Hiện trạng và vấn đề</label>
+                            <textarea asp-for="HienTrang" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="HienTrang" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="YeuCauKyThuat" class="form-label fw-semibold">Yêu cầu kỹ thuật</label>
+                            <textarea asp-for="YeuCauKyThuat" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="YeuCauKyThuat" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="QuyMoTrienKhai" class="form-label fw-semibold">Quy mô triển khai</label>
+                            <textarea asp-for="QuyMoTrienKhai" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="QuyMoTrienKhai" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="TieuChiChonDoiTac" class="form-label fw-semibold">Tiêu chí chọn đối tác</label>
+                            <textarea asp-for="TieuChiChonDoiTac" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="TieuChiChonDoiTac" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tabPublish">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="StatusId" class="form-label fw-semibold">Trạng thái đăng</label>
+                            <select asp-for="StatusId" asp-items="@(ViewBag.Statuses as Microsoft.AspNetCore.Mvc.Rendering.SelectList)" class="form-select">
+                                <option value="">-- Chọn --</option>
+                            </select>
+                            <span asp-validation-for="StatusId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="PublishedDate" class="form-label fw-semibold">Ngày đăng</label>
+                            <input asp-for="PublishedDate" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="PublishedDate" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Author" class="form-label fw-semibold">Tác giả/nguồn</label>
+                            <input asp-for="Author" class="form-control" />
+                            <span asp-validation-for="Author" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-8">
+                            <label asp-for="URL" class="form-label fw-semibold">URL liên kết</label>
+                            <input asp-for="URL" class="form-control" />
+                            <span asp-validation-for="URL" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Nguồn dữ liệu</label>
+                            <div class="form-control bg-light">@Model.SourceLabel</div>
+                        </div>
+                        <div class="col-md-12">
+                            <dl class="row mb-0 small">
+                                <dt class="col-sm-2">Phiếu nguồn</dt>
+                                <dd class="col-sm-10">@(Model.SourceDetail ?? "Không có hoặc chưa xác định")</dd>
+                                <dt class="col-sm-2">Menu</dt>
+                                <dd class="col-sm-10">@Model.MenuId</dd>
+                                <dt class="col-sm-2">Ngày tạo</dt>
+                                <dd class="col-sm-10">@(Model.Created?.ToString("dd/MM/yyyy HH:mm") ?? "—") bởi @(Model.Creator ?? "—")</dd>
+                                <dt class="col-sm-2">Cập nhật</dt>
+                                <dd class="col-sm-10">@(Model.Modified?.ToString("dd/MM/yyyy HH:mm") ?? "—") bởi @(Model.Modifier ?? "—")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end mt-3 gap-2">
+        <a href="@($"/tim-mua-cong-nghe/{Model.QueryString}-{Model.Id}")" target="_blank" class="btn btn-outline-secondary">
+            <i class="fas fa-eye me-1"></i> Xem public
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-1"></i> Lưu nhu cầu
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-times me-1"></i> Hủy
+        </a>
+    </div>
+</form>
+
+@section Styles {
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css" />
+}
+
+@section Scripts {
+<script src="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.umd.js"></script>
+<script>
+$(function () {
+    const { ClassicEditor, Essentials, Bold, Italic, Link, Paragraph,
+            Heading, List, BlockQuote, Table, TableToolbar, SourceEditing,
+            Alignment, Font, HtmlEmbed } = CKEDITOR;
+
+    ClassicEditor.create(document.querySelector('#editorContents'), {
+        plugins: [Essentials, Bold, Italic, Link, Paragraph, Heading, List, BlockQuote, Table, TableToolbar, SourceEditing, Alignment, Font, HtmlEmbed],
+        toolbar: {
+            items: ['heading', '|', 'bold', 'italic', 'link', '|', 'alignment', '|', 'fontSize', 'fontColor', '|', 'bulletedList', 'numberedList', '|', 'blockQuote', 'insertTable', '|', 'htmlEmbed', 'sourceEditing', '|', 'undo', 'redo']
+        },
+        table: {
+            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+        }
+    }).then(function (editor) {
+        window._editor = editor;
+        document.getElementById('contentForm').addEventListener('submit', function () {
+            document.getElementById('editorContents').value = editor.getData();
+        });
+    }).catch(function (err) { console.error('CKEditor init error:', err); });
+
+    $('#btnGenSlug').on('click', function () {
+        var title = $('#inputTitle').val();
+        if (title) $('#inputSlug').val(slugify(title));
+    });
+});
+
+function slugify(text) {
+    if (!text) return '';
+    var from = 'àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ';
+    var to = 'aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd';
+    for (var i = 0; i < from.length; i++) {
+        text = text.replace(new RegExp(from[i], 'g'), to[i]);
+        text = text.replace(new RegExp(from[i].toUpperCase(), 'g'), to[i]);
+    }
+    return text.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/[\s]+/g, '-')
+        .replace(/-{2,}/g, '-')
+        .replace(/^-|-$/g, '');
+}
+</script>
+}

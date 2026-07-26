@@ -1,0 +1,144 @@
+@model TechExchangeApp.Areas.Cms.Models.SystemParameterEditVm
+@{
+    ViewData["Title"] = "Sửa System Parameter";
+    var effectiveType = Model.IsSensitive ? 5 : Model.Type;
+    var nameUpper = Model.Name.ToUpperInvariant();
+    var inferredBool = nameUpper.Contains("ENABLE") || nameUpper.StartsWith("IS_") || nameUpper.EndsWith("_SSL");
+    var inferredNumber = nameUpper.Contains("MAX") || nameUpper.Contains("SECONDS") || nameUpper.Contains("PORT") || nameUpper.Contains("SIZE") || nameUpper.EndsWith("_HRS") || nameUpper.EndsWith("_MB");
+    var inferredJson = nameUpper.Contains("JSON");
+    var renderType = effectiveType == 3 || (effectiveType == null && inferredBool) ? "bool"
+        : effectiveType == 2 || (effectiveType == null && inferredNumber) ? "number"
+        : effectiveType == 4 || (effectiveType == null && inferredJson) ? "json"
+        : effectiveType == 5 ? "secret"
+        : "text";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-1"></i> @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card card-outline card-primary shadow-sm">
+    <div class="card-header d-flex align-items-center">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-pen me-1"></i> Sửa tham số
+        </h3>
+        <div class="ms-auto">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Quay lại
+            </a>
+        </div>
+    </div>
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input asp-for="ID" type="hidden" />
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold small mb-1">Name</label>
+                    <input value="@Model.Name" class="form-control form-control-sm" readonly />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold small mb-1">Domain</label>
+                    <input value="@Model.Domain" class="form-control form-control-sm" readonly />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold small mb-1">Site</label>
+                    <input value="@(Model.SiteId?.ToString() ?? "Global")" class="form-control form-control-sm" readonly />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold small mb-1">Language</label>
+                    <input value="@Model.LanguageId" class="form-control form-control-sm" readonly />
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label asp-for="Type" class="form-label fw-semibold small mb-1">Type</label>
+                    <select asp-for="Type" class="form-select form-select-sm" id="paramType">
+                        <option value="">Auto / Text</option>
+                        <option value="1">Text</option>
+                        <option value="2">Number</option>
+                        <option value="3">Boolean</option>
+                        <option value="4">JSON</option>
+                        <option value="5">Secret</option>
+                    </select>
+                    <div class="form-text">Hiện tại render dạng: @Model.TypeLabel.</div>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Activated" class="form-label fw-semibold small mb-1">Trạng thái</label>
+                    <select asp-for="Activated" class="form-select form-select-sm">
+                        <option value="true">Kích hoạt</option>
+                        <option value="false">Tắt</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Description" class="form-label fw-semibold small mb-1">Mô tả</label>
+                    <input asp-for="Description" class="form-control form-control-sm" maxlength="200" />
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Val" class="form-label fw-semibold small mb-1">Val</label>
+                    @if (renderType == "bool")
+                    {
+                        var boolVal = (Model.Val ?? "").Trim().ToLowerInvariant();
+                        <select asp-for="Val" class="form-select form-select-sm">
+                            <option value="true" selected="@(boolVal is "true" or "1" or "yes" or "on")">true</option>
+                            <option value="false" selected="@(boolVal is "false" or "0" or "no" or "off")">false</option>
+                        </select>
+                    }
+                    else if (renderType == "number")
+                    {
+                        <input asp-for="Val" type="number" step="1" class="form-control form-control-sm" maxlength="50" />
+                    }
+                    else if (renderType == "json")
+                    {
+                        <textarea asp-for="Val" class="form-control form-control-sm font-monospace" rows="7" maxlength="50"></textarea>
+                    }
+                    else if (renderType == "secret")
+                    {
+                        <input asp-for="Val" class="form-control form-control-sm font-monospace" maxlength="50" autocomplete="off" />
+                    }
+                    else
+                    {
+                        <input asp-for="Val" class="form-control form-control-sm" maxlength="50" />
+                    }
+                    <span asp-validation-for="Val" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Val2" class="form-label fw-semibold small mb-1">Val2</label>
+                    @if (renderType == "json")
+                    {
+                        <textarea asp-for="Val2" class="form-control form-control-sm font-monospace" rows="7" maxlength="50"></textarea>
+                    }
+                    else if (renderType == "secret")
+                    {
+                        <input asp-for="Val2" class="form-control form-control-sm font-monospace" maxlength="50" autocomplete="off" />
+                    }
+                    else
+                    {
+                        <input asp-for="Val2" class="form-control form-control-sm" maxlength="50" />
+                    }
+                    <span asp-validation-for="Val2" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fas fa-save me-1"></i> Lưu
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Hủy</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

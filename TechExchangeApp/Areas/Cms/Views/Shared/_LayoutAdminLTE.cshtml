@@ -101,7 +101,11 @@
                         bool isMenuAdmin = postsCtrl == "MenuAdmin";
                         bool isCategoryAdmin = postsCtrl == "CategoryAdmin";
                         bool isImageAdverAdmin = postsCtrl == "ImageAdverAdmin";
+                        bool isContentsYeuCauAdmin = postsCtrl == "ContentsYeuCauAdmin";
+                        bool isPhieuYeuCauCNTBAdmin = postsCtrl == "PhieuYeuCauCNTBAdmin";
+                        bool isSystemParameterAdmin = postsCtrl == "SystemParameterAdmin";
                         bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin;
+                        bool isTimMuaGroup = isContentsYeuCauAdmin || isPhieuYeuCauCNTBAdmin;
                     }
                     <li class="nav-item @(isContentGroup ? "menu-open" : "")">
                         <a href="#" class="nav-link @(isContentGroup ? "active" : "")">
@@ -204,12 +208,30 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a asp-area="Cms" asp-controller="PhieuYeuCauCNTBAdmin" asp-action="Index"
-                           class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "PhieuYeuCauCNTBAdmin" ? "active" : "")">
-                            <i class="nav-icon fas fa-file-alt"></i>
-                            <p>Phiếu yêu cầu CNTB</p>
+                    <li class="nav-item @(isTimMuaGroup ? "menu-open" : "")">
+                        <a href="#" class="nav-link @(isTimMuaGroup ? "active" : "")">
+                            <i class="nav-icon fas fa-cart-shopping"></i>
+                            <p>
+                                Tìm Mua
+                                <i class="nav-arrow fas fa-angle-right"></i>
+                            </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="PhieuYeuCauCNTBAdmin" asp-action="Index"
+                                   class="nav-link @(isPhieuYeuCauCNTBAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-file-alt"></i>
+                                    <p>Phiếu yêu cầu</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="ContentsYeuCauAdmin" asp-action="Index"
+                                   class="nav-link @(isContentsYeuCauAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-bullhorn"></i>
+                                    <p>Tìm mua công khai</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
@@ -225,6 +247,13 @@
                            class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "DashboardData" ? "active" : "")">
                             <i class="nav-icon fas fa-chart-bar"></i>
                             <p>Số liệu Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Cms" asp-controller="SystemParameterAdmin" asp-action="Index"
+                           class="nav-link @(isSystemParameterAdmin ? "active" : "")">
+                            <i class="nav-icon fas fa-sliders-h"></i>
+                            <p>System Parameter</p>
                         </a>
                     </li>
 

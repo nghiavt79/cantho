@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <CompressionEnabled>true</CompressionEnabled>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
   </PropertyGroup>
 
   <!-- Fix: normalize drive-letter casing (d:\ vs D:\) so StaticWebAssets doesn't flag duplicates -->

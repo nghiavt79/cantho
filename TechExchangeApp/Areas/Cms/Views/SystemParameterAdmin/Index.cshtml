@@ -1,0 +1,142 @@
+@model List<TechExchangeApp.Areas.Cms.Models.SystemParameterListItemVm>
+@{
+    ViewData["Title"] = "Quản lý System Parameter";
+    var domains = (IEnumerable<string>?)ViewBag.Domains ?? Enumerable.Empty<string>();
+    var sites = (IEnumerable<TechExchangeApp.Entities.RootSite>?)ViewBag.Sites;
+    var selectedDomain = ViewBag.Domain?.ToString() ?? "";
+    var selectedType = ViewBag.Type?.ToString() ?? "";
+    var selectedActivated = ViewBag.Activated?.ToString() ?? "";
+    var selectedSite = ViewBag.SiteId?.ToString() ?? "";
+    var currentSiteId = (int)(ViewBag.CurrentSiteId ?? 0);
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-sliders-h me-1"></i> Tìm kiếm tham số</h3>
+    </div>
+    <div class="card-body">
+        <form id="searchForm" method="get" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label fw-semibold small mb-1">Từ khóa</label>
+                <input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control form-control-sm" placeholder="Name, mô tả, domain..." />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Domain</label>
+                <select name="domain" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    @foreach (var d in domains)
+                    {
+                        <option value="@d" selected="@(selectedDomain == d)">@d</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Type</label>
+                <select name="type" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    <option value="1" selected="@(selectedType == "1")">Text</option>
+                    <option value="2" selected="@(selectedType == "2")">Number</option>
+                    <option value="3" selected="@(selectedType == "3")">Boolean</option>
+                    <option value="4" selected="@(selectedType == "4")">JSON</option>
+                    <option value="5" selected="@(selectedType == "5")">Secret</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Trạng thái</label>
+                <select name="activated" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    <option value="true" selected="@(selectedActivated.Equals("True", StringComparison.OrdinalIgnoreCase))">Kích hoạt</option>
+                    <option value="false" selected="@(selectedActivated.Equals("False", StringComparison.OrdinalIgnoreCase))">Tắt</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Site</label>
+                <select name="siteId" class="form-select form-select-sm" @(currentSiteId > 1 ? "disabled" : "")>
+                    <option value="">-- Tất cả --</option>
+                    @if (sites != null)
+                    {
+                        foreach (var s in sites)
+                        {
+                            <option value="@s.SiteId" selected="@(selectedSite == s.SiteId.ToString())">@s.SiteName</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-sm me-2" id="btnSearch">
+                    <i class="fas fa-search me-1"></i> Tìm kiếm
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnReset">
+                    <i class="fas fa-undo me-1"></i> Đặt lại
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card card-outline card-info shadow-sm">
+    <div class="card-header d-flex align-items-center">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-list me-1"></i> Danh sách tham số
+        </h3>
+    </div>
+    <div id="listContainer">
+        @await Html.PartialAsync("_ListPartial", Model)
+    </div>
+</div>
+
+@section Scripts {
+<script>
+$(function () {
+    toastr.options = { closeButton: true, progressBar: true, positionClass: 'toast-top-right', timeOut: 3000 };
+
+    var baseUrl = '@Url.Action("Index", "SystemParameterAdmin", new { area = "Cms" })';
+    var currentPage = 1;
+
+    function loadList(page) {
+        currentPage = page || 1;
+        var params = $('#searchForm').serialize()
+            + '&page=' + currentPage
+            + '&pageSize=' + encodeURIComponent($('.ajax-page-size').val() || '20');
+
+        $('#listContainer').css('opacity', '0.5');
+        $.ajax({
+            url: baseUrl,
+            data: params,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function (html) {
+                $('#listContainer').html(html).css('opacity', '1');
+            },
+            error: function () {
+                toastr.error('Không tải được dữ liệu.');
+                $('#listContainer').css('opacity', '1');
+            }
+        });
+    }
+
+    $('#searchForm').on('submit', function (e) {
+        e.preventDefault();
+        loadList(1);
+    });
+
+    $('#btnSearch').on('click', function () {
+        loadList(1);
+    });
+
+    $('#btnReset').on('click', function () {
+        $('#searchForm')[0].reset();
+        loadList(1);
+    });
+
+    $(document).on('change', '.ajax-page-size', function () {
+        loadList(1);
+    });
+
+    $(document).on('click', '.ajax-page', function (e) {
+        e.preventDefault();
+        if ($(this).closest('.page-item').hasClass('disabled') || $(this).closest('.page-item').hasClass('active')) return;
+        loadList($(this).data('page'));
+    });
+});
+</script>
+}

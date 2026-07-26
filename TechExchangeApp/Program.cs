@@ -373,8 +373,15 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "nhucau_detail",
-    pattern: "{menuId:int}/yeu-cau/{slug}-{id:int}",
+    pattern: "tim-mua-cong-nghe/{slug}-{id:int}",
     defaults: new { controller = "Nhucaucongnghe", action = "Detail" }
+);
+
+// Giữ URL cũ {menuId}/yeu-cau/{slug}-{id} → 301 redirect sang route mới
+app.MapControllerRoute(
+    name: "nhucau_detail_legacy",
+    pattern: "{menuId:int}/yeu-cau/{slug}-{id:int}",
+    defaults: new { controller = "Nhucaucongnghe", action = "DetailLegacyRedirect" }
 );
 
 // 5. News Routes

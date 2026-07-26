@@ -71,5 +71,19 @@ namespace TechExchangeApp.Entities
         public string? UserLink { get; set; }
 
         public int? SiteId { get; set; }
+
+        public int? PhieuYeuCauCNTBId { get; set; }
+
+        // === Trường cấu trúc cho hồ sơ nhu cầu (tách từ khối Contents) ===
+        public int? TrangThaiNhuCau { get; set; }      // 1 Đang tiếp nhận, 2 Đang xử lý, 3 Đã kết thúc
+        public string? DiaPhuong { get; set; }
+        public DateTime? HanTiepNhan { get; set; }
+        public string? NganSach { get; set; }
+        public string? HinhThucHopTac { get; set; }    // danh sách phân tách bằng ';'
+        public string? MucTieu { get; set; }
+        public string? HienTrang { get; set; }
+        public string? YeuCauKyThuat { get; set; }
+        public string? QuyMoTrienKhai { get; set; }
+        public string? TieuChiChonDoiTac { get; set; }
     }
 }

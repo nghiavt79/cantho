@@ -69,8 +69,11 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             int? siteId,
             DateTime? createdFrom, DateTime? createdTo,
             string? sortBy, string? sortDir,
-            int page = 1, int pageSize = 30)
+            int page = 1, int pageSize = 20)
         {
+            if (!new[] { 10, 20, 50, 100 }.Contains(pageSize))
+                pageSize = 20;
+
             var configSiteId = GetSiteId();
 
             var query = _context.PhieuYeuCauCNTBs.AsNoTracking()
@@ -208,6 +211,33 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (entity == null)
                 return Json(new { success = false, message = "Không tìm thấy phiếu tìm mua." });
 
+            var existingContent = await _context.ContentsYeuCaus
+                .FirstOrDefaultAsync(c => c.PhieuYeuCauCNTBId == id);
+
+            if (existingContent != null)
+            {
+                existingContent.StatusId = 3;
+                existingContent.MenuId ??= 67;
+                existingContent.TypeId ??= 7;
+                existingContent.PublishedDate ??= DateTime.Now;
+                existingContent.bEffectiveDate ??= DateTime.Now;
+                existingContent.Modified = DateTime.Now;
+                existingContent.Modifier = User.Identity?.Name;
+
+                entity.StatusId = 3;
+                entity.IsActivated = true;
+                await _context.SaveChangesAsync();
+
+                await WriteLog(2, $"Republish PhieuYeuCauCNTB #{id} to existing ContentsYeuCau #{existingContent.Id}");
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Da cap nhat trang thai dang, noi dung CMS duoc giu nguyen.",
+                    url = $"/tim-mua-cong-nghe/{existingContent.QueryString}-{existingContent.Id}"
+                });
+            }
+
             var cleanTitle = string.IsNullOrWhiteSpace(title)
                 ? BuildDefaultTitle(entity)
                 : title.Trim();
@@ -243,6 +273,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 LanguageId = entity.LanguageId ?? 1,
                 Domain = entity.Domain,
                 SiteId = entity.SiteId ?? GetSiteId(),
+                PhieuYeuCauCNTBId = entity.PhieuYeuCauId,
                 Viewed = 0,
                 Like = 0
             };
@@ -259,7 +290,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             {
                 success = true,
                 message = "Đã đưa nhu cầu tìm mua lên sàn.",
-                url = $"/67/yeu-cau/{content.QueryString}-{content.Id}"
+                url = $"/tim-mua-cong-nghe/{content.QueryString}-{content.Id}"
             });
         }
 

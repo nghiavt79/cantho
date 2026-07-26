@@ -195,7 +195,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 Image = q.Image,
                 Description = q.Description,
                 PublishedDate = q.PublishedDate,
-                DetailUrl = $"{_mainDomain}{menuId}/yeu-cau/{q.QueryString}-{id}"
+                DetailUrl = $"{_mainDomain}tim-mua-cong-nghe/{q.QueryString}-{id}"
             };
         }
 
@@ -378,40 +378,63 @@ namespace TechExchangeApp.Controllers.FrontEnd
         }
 
 
+        // URL cũ {menuId}/yeu-cau/{slug}-{id} → 301 sang /tim-mua-cong-nghe/{slug}-{id}
+        public IActionResult DetailLegacyRedirect(int id, string slug)
+        {
+            return RedirectPermanent($"{_mainDomain}tim-mua-cong-nghe/{slug}-{id}");
+        }
+
         public IActionResult Detail(int id)
         {
             var vm = new NhuCauCongNgheDetailViewModel();
 
             vm.TargetId = id;
 
+            // Map lĩnh vực (CatId -> Title) để dựng badge
+            var lvMap = _context.Categories
+                .Where(c => c.ParentId == 1)
+                .ToDictionary(c => c.CatId, c => c.Title);
+
             // === LoadData(intID) ===
-            var p = _context.ContentsYeuCaus
+            var raw = _context.ContentsYeuCaus
                 .Where(q => q.Id == id && q.StatusId == 3)
                 .OrderByDescending(q => q.PublishedDate)
-                .Select(q => new ContentYeucauDetailVm
-                {
-                    Id = (int)q.Id,
-                    Title = q.Title,
-                    Description = q.Description,
-                    Contents = q.Contents,
-                    Author = q.Author,
-                    QueryString = q.QueryString,
-                    MenuId = (int)q.MenuId,
-                    Viewed = q.Viewed,
-                    Like = q.Like,
-                    PublishedDate = q.PublishedDate,
-                    TypeId = (int)q.TypeId
-                })
                 .FirstOrDefault();
 
-            if (p == null)
+            if (raw == null)
                 return NotFound();
+
+            var p = new ContentYeucauDetailVm
+            {
+                Id = (int)raw.Id,
+                Title = raw.Title,
+                Description = raw.Description,
+                Contents = raw.Contents,
+                Author = raw.Author,
+                QueryString = raw.QueryString,
+                MenuId = (int)raw.MenuId,
+                Viewed = raw.Viewed,
+                Like = raw.Like,
+                PublishedDate = raw.PublishedDate,
+                Modified = raw.Modified,
+                TypeId = (int)raw.TypeId,
+                LinhVucText = ResolveLinhVucBadge(raw.LinhVucId, lvMap),
+                TrangThaiNhuCau = raw.TrangThaiNhuCau,
+                DiaPhuong = raw.DiaPhuong,
+                HanTiepNhan = raw.HanTiepNhan,
+                NganSach = raw.NganSach,
+                HinhThucHopTac = raw.HinhThucHopTac,
+                MucTieu = raw.MucTieu,
+                HienTrang = raw.HienTrang,
+                YeuCauKyThuat = raw.YeuCauKyThuat,
+                QuyMoTrienKhai = raw.QuyMoTrienKhai,
+                TieuChiChonDoiTac = raw.TieuChiChonDoiTac
+            };
 
             vm.Detail = p;
 
             // === Update Viewed (GIỮ LOGIC) ===
-            var entity = _context.ContentsYeuCaus.First(x => x.Id == id);
-            entity.Viewed = entity.Viewed == null ? 1 : entity.Viewed + 1;
+            raw.Viewed = raw.Viewed == null ? 1 : raw.Viewed + 1;
             _context.SaveChanges();
 
             // === CommentTypeID ===
@@ -439,7 +462,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 .Select(x => (long)x)
                 .ToArray();
 
-            vm.Relations = _context.ContentsYeuCaus
+            var relRaw = _context.ContentsYeuCaus
                 .Where(q =>
                     q.Id != id &&
                     q.StatusId == 3 &&
@@ -450,17 +473,26 @@ namespace TechExchangeApp.Controllers.FrontEnd
                     q.LanguageId == lang
                 )
                 .OrderByDescending(q => q.PublishedDate)
-                .Take(5)
-                .Select(q => new RelationItemVm
-                {
-                    Id = (int)q.Id,
-                    Title = q.Title,
-                    QueryString = q.QueryString,
-                    MenuId = (int)q.MenuId,
-                    PublishedDate = q.PublishedDate
-                })
+                .Take(4)
+                .Select(q => new { q.Id, q.Title, q.QueryString, q.MenuId, q.PublishedDate, q.Image, q.LinhVucId, q.TrangThaiNhuCau })
                 .ToList();
 
+            vm.Relations = relRaw.Select(q => new RelationItemVm
+            {
+                Id = (int)q.Id,
+                Title = q.Title,
+                QueryString = q.QueryString,
+                MenuId = (int)q.MenuId,
+                PublishedDate = q.PublishedDate,
+                Image = q.Image,
+                LinhVucText = ResolveLinhVucBadge(q.LinhVucId, lvMap),
+                TrangThaiNhuCau = q.TrangThaiNhuCau,
+                DetailUrl = $"{_mainDomain}tim-mua-cong-nghe/{q.QueryString}-{q.Id}"
+            }).ToList();
+
+
+            // Captcha cho modal liên hệ/tư vấn
+            vm.PhieuYeuCau.CaptchaQuestion = GenerateCaptcha();
 
             ViewData["Title"] = p.Title;
             ViewData["MetaDescription"] = p.Description;
