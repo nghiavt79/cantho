@@ -88,13 +88,13 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // LIST: OCOP
         // ─────────────────────────────────────────
         [HttpGet]
-        public Task<IActionResult> Ocop(string? keyword, int? statusId, int? siteId,
-            string? creator,
+        public Task<IActionResult> Ocop(string? keyword, int? statusId, int? ncuId, int? xuatXuId, int? siteId,
+            string? creator, string? linhVuc,
             DateTime? createdFrom, DateTime? createdTo,
             string? sortBy, string? sortDir,
             int page = 1, int pageSize = 15)
             => ListByType(TypeOcop, "Ocop", "Quản lý OCOP",
-                keyword, statusId, null, null, siteId, creator, null, null, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
+                keyword, statusId, ncuId, xuatXuId, siteId, creator, linhVuc, null, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
 
         // ─────────────────────────────────────────
         // EXPORT EXCEL: Công nghệ
@@ -136,7 +136,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (siteId.HasValue)
                 query = query.Where(p => p.SiteId == siteId.Value);
 
-            query = query.OrderByDescending(p => p.bEffectiveDate ?? p.Created);
+            query = query.OrderByDescending(p => p.bEffectiveDate).ThenByDescending(p => p.Created);
 
             var items = await query
                 .Select(p => new SanPhamCNTBListItem
@@ -239,9 +239,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 "code" => asc ? query.OrderBy(p => p.Code) : query.OrderByDescending(p => p.Code),
                 "status" => asc ? query.OrderBy(p => p.StatusId) : query.OrderByDescending(p => p.StatusId),
                 "creator" => asc ? query.OrderBy(p => p.Creator) : query.OrderByDescending(p => p.Creator),
-                "lastupdate" => asc ? query.OrderBy(p => p.Modified ?? p.Created) : query.OrderByDescending(p => p.Modified ?? p.Created),
+                "lastupdate" => asc ? query.OrderBy(p => p.Modified).ThenBy(p => p.Created) : query.OrderByDescending(p => p.Modified).ThenByDescending(p => p.Created),
                 "viewed" => asc ? query.OrderBy(p => p.Viewed) : query.OrderByDescending(p => p.Viewed),
-                _ => query.OrderByDescending(p => p.bEffectiveDate ?? p.Created)
+                _ => query.OrderByDescending(p => p.bEffectiveDate).ThenByDescending(p => p.Created)
             };
 
             // Projection — no Include, load only IsMain image URL
@@ -652,7 +652,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 return Json(new { success = false, message = "Không thể cấu hình sản phẩm thuộc sàn khác." });
 
             entity.StatusId = statusId;
-            if (productType.HasValue && productType.Value is TypeCongNghe or TypeThietBi or TypeSanPhamTriTue)
+            if (productType.HasValue && productType.Value is TypeCongNghe or TypeThietBi or TypeSanPhamTriTue or TypeOcop)
                 entity.ProductType = productType.Value;
             entity.bEffectiveDate = bEffectiveDate;
             entity.eEffectiveDate = eEffectiveDate;

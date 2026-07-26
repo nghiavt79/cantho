@@ -87,7 +87,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 "published" => asc ? query.OrderBy(c => c.PublishedDate) : query.OrderByDescending(c => c.PublishedDate),
                 "viewed" => asc ? query.OrderBy(c => c.Viewed) : query.OrderByDescending(c => c.Viewed),
                 "created" => asc ? query.OrderBy(c => c.Created) : query.OrderByDescending(c => c.Created),
-                _ => query.OrderByDescending(c => c.PublishedDate ?? c.Created)
+                _ => query.OrderByDescending(c => c.PublishedDate).ThenByDescending(c => c.Created)
             };
 
             // Projection
@@ -195,7 +195,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (siteId.HasValue)
                 query = query.Where(c => c.SiteId == siteId.Value);
 
-            query = query.OrderByDescending(c => c.PublishedDate ?? c.Created);
+            query = query.OrderByDescending(c => c.PublishedDate).ThenByDescending(c => c.Created);
 
             var items = await query
                 .Select(c => new ContentListItem
