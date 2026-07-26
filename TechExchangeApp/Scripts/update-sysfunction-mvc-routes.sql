@@ -37,8 +37,9 @@ VALUES
     (41, N'Feedback', N'cms/FeedbackAdmin', N'Phản hồi (Feedback)', 1, 1, 1, 0, 160, 1),
     (555, N'Feedback', N'cms/FeedbackAdmin', N'Phản hồi (Feedback)', 1, 1, 1, 0, 161, 1),
     (575, N'DashboardData', N'cms/DashboardData', N'Số liệu Dashboard', 1, 1, 1, 0, 170, 1),
-    (556, N'SysParam', N'cms/SystemParameterAdmin', N'Tham số hệ thống', 1, 1, 1, 0, 180, 1),
-    (51, N'SysFunction', N'cms/SysFunctionAdmin', N'SysFunction', 1, 1, 1, 0, 190, 1);
+    (21, N'Log', N'cms/LogAdmin', N'Nhật ký', 1, 1, 1, 0, 180, 1),
+    (556, N'SysParam', N'cms/SystemParameterAdmin', N'Tham số hệ thống', 1, 1, 1, 0, 190, 1),
+    (51, N'SysFunction', N'cms/SysFunctionAdmin', N'SysFunction', 1, 1, 1, 0, 200, 1);
 
 UPDATE target
 SET target.FunctionName = source.FunctionName,
@@ -64,9 +65,13 @@ WHERE NOT EXISTS
     WHERE target.FunctionId = source.FunctionId
 );
 
+UPDATE dbo.SysFunction
+SET IsMenu = 0
+WHERE FunctionId IN (12, 54, 562, 563, 564, 565);
+
 COMMIT;
 
 SELECT FunctionId, FunctionName, URL, HrefName, IsMenu, IsShow, Sort, SiteId
 FROM dbo.SysFunction
-WHERE FunctionId IN (16, 40, 41, 42, 46, 48, 50, 51, 53, 421, 422, 555, 556, 569, 570, 571, 572, 573, 574, 575)
+WHERE FunctionId IN (12, 16, 21, 40, 41, 42, 46, 48, 50, 51, 53, 54, 421, 422, 555, 556, 562, 563, 564, 565, 569, 570, 571, 572, 573, 574, 575)
 ORDER BY Sort, FunctionId;

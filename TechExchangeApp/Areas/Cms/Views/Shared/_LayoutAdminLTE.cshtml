@@ -105,6 +105,7 @@
                         bool isPhieuYeuCauCNTBAdmin = postsCtrl == "PhieuYeuCauCNTBAdmin";
                         bool isSystemParameterAdmin = postsCtrl == "SystemParameterAdmin";
                         bool isSysFunctionAdmin = postsCtrl == "SysFunctionAdmin";
+                        bool isLogAdmin = postsCtrl == "LogAdmin";
                         bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin;
                         bool isTimMuaGroup = isContentsYeuCauAdmin || isPhieuYeuCauCNTBAdmin;
                     }
@@ -248,6 +249,13 @@
                            class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "DashboardData" ? "active" : "")">
                             <i class="nav-icon fas fa-chart-bar"></i>
                             <p>Số liệu Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="Cms" asp-controller="LogAdmin" asp-action="Index"
+                           class="nav-link @(isLogAdmin ? "active" : "")">
+                            <i class="nav-icon fas fa-clipboard-list"></i>
+                            <p>Nhật ký</p>
                         </a>
                     </li>
                     <li class="nav-item">

@@ -1,0 +1,110 @@
+@model List<TechExchangeApp.Areas.Cms.Models.LogListItemVm>
+@{
+    var page = (int)(ViewBag.Page ?? 1);
+    var totalPages = (int)(ViewBag.TotalPages ?? 1);
+    var pageSize = (int)(ViewBag.PageSize ?? 20);
+    var totalCount = (int)(ViewBag.TotalCount ?? 0);
+    var fromRecord = totalCount == 0 ? 0 : ((page - 1) * pageSize) + 1;
+    var toRecord = Math.Min(page * pageSize, totalCount);
+}
+
+<span id="partialTotalCount" class="d-none">@totalCount</span>
+
+<div class="card-body table-responsive p-0">
+    <table class="table table-hover table-sm align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th style="width:90px">ID</th>
+                <th style="width:150px">Thời gian</th>
+                <th style="width:210px">Tính năng</th>
+                <th style="width:95px">Thao tác</th>
+                <th>Nội dung</th>
+                <th style="width:130px">User</th>
+                <th style="width:120px">IP</th>
+                <th style="width:80px">Site</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="8" class="text-center text-muted py-4">Không có nhật ký phù hợp.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-muted">#@item.LogID</td>
+                    <td>@(item.ActTime?.ToString("dd/MM/yyyy HH:mm:ss") ?? "")</td>
+                    <td>
+                        <div class="fw-semibold">@(!string.IsNullOrWhiteSpace(item.FunctionName) ? item.FunctionName : "N/A")</div>
+                        @if (item.FunctionID.HasValue)
+                        {
+                            <div class="small text-muted">FunctionID: @item.FunctionID</div>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(item.EventName))
+                        {
+                            <span class="badge bg-secondary">@item.EventName</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">@item.EventID</span>
+                        }
+                    </td>
+                    <td class="text-break" style="min-width:320px">@item.Content</td>
+                    <td>@item.UserName</td>
+                    <td class="text-muted">@item.ClientIP</td>
+                    <td>@(item.SiteId?.ToString() ?? "")</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+<div class="card-footer d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <small class="text-muted">
+            Hiển thị <strong>@fromRecord</strong>-<strong>@toRecord</strong> / <strong>@totalCount</strong> bản ghi
+        </small>
+        <div class="d-flex align-items-center gap-1">
+            <span class="small text-muted">mỗi trang</span>
+            <select class="form-select form-select-sm ajax-page-size" style="width:78px">
+                <option value="10" selected="@(pageSize == 10)">10</option>
+                <option value="20" selected="@(pageSize == 20)">20</option>
+                <option value="50" selected="@(pageSize == 50)">50</option>
+                <option value="100" selected="@(pageSize == 100)">100</option>
+            </select>
+        </div>
+    </div>
+    @if (totalPages > 1)
+    {
+        var startPage = Math.Max(1, page - 2);
+        var endPage = Math.Min(totalPages, page + 2);
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item @(page <= 1 ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="1" title="Trang đầu"><i class="fas fa-angles-left"></i></a>
+                </li>
+                <li class="page-item @(page <= 1 ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="@(page - 1)" title="Trang trước"><i class="fas fa-angle-left"></i></a>
+                </li>
+                @for (var i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")">
+                        <a class="page-link ajax-page" data-page="@i" href="#">@i</a>
+                    </li>
+                }
+                <li class="page-item @(page >= totalPages ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="@(page + 1)" title="Trang sau"><i class="fas fa-angle-right"></i></a>
+                </li>
+                <li class="page-item @(page >= totalPages ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="@totalPages" title="Trang cuối"><i class="fas fa-angles-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
