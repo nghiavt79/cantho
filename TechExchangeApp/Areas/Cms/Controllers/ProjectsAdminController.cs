@@ -15,7 +15,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly INotificationQueueService _notificationService;
-        private const int LogFunctionId = 20; // Projects
+        private const string LogFunctionName = "Projects";
+        private static readonly string[] LogFunctionAliases = { "Dự án" };
 
         public ProjectsAdminController(
             AppDbContext context,
@@ -32,20 +33,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
         private async Task WriteLog(int eventId, string content)
         {
-            _context.Logs.Add(new Log
-            {
-                FunctionID = LogFunctionId,
-                ActTime = DateTime.Now,
-                EventID = eventId,
-                Content = content,
-                ClientIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserName = User.Identity?.Name,
-                Domain = HttpContext.Request.Host.Value,
-                LanguageId = 1,
-                ParentId = 0,
-                SiteId = GetSiteId()
-            });
-            await _context.SaveChangesAsync();
+            await CmsLogHelper.WriteLogAsync(_context, HttpContext, GetSiteId(),
+                LogFunctionName, LogFunctionAliases, eventId, content);
         }
 
         // ─── INDEX ───

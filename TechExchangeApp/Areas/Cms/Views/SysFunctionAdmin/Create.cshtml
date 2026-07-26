@@ -1,0 +1,103 @@
+@model TechExchangeApp.Areas.Cms.Models.SysFunctionCreateVm
+@{
+    ViewData["Title"] = "Thêm SysFunction";
+}
+
+<div class="card card-outline card-primary shadow-sm">
+    <div class="card-header d-flex align-items-center">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-plus me-1"></i> Thêm menu / SysFunction
+        </h3>
+        <div class="ms-auto">
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                <i class="fas fa-arrow-left me-1"></i> Quay lại
+            </a>
+        </div>
+    </div>
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label asp-for="FunctionId" class="form-label fw-semibold small mb-1">FunctionId</label>
+                    <input asp-for="FunctionId" type="number" class="form-control form-control-sm" />
+                    <span asp-validation-for="FunctionId" class="text-danger small"></span>
+                </div>
+                <div class="col-md-5">
+                    <label asp-for="FunctionName" class="form-label fw-semibold small mb-1">FunctionName</label>
+                    <input asp-for="FunctionName" class="form-control form-control-sm" maxlength="500" />
+                    <span asp-validation-for="FunctionName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-5">
+                    <label asp-for="HrefName" class="form-label fw-semibold small mb-1">HrefName</label>
+                    <input asp-for="HrefName" class="form-control form-control-sm" maxlength="100" />
+                    <span asp-validation-for="HrefName" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="URL" class="form-label fw-semibold small mb-1">URL</label>
+                    <input asp-for="URL" class="form-control form-control-sm font-monospace" maxlength="300" placeholder="cms/Controller/Action" />
+                    <span asp-validation-for="URL" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="IsMenu" class="form-label fw-semibold small mb-1">IsMenu</label>
+                    <select asp-for="IsMenu" class="form-select form-select-sm">
+                        <option value="">null</option>
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="IsStatus" class="form-label fw-semibold small mb-1">IsStatus</label>
+                    <select asp-for="IsStatus" class="form-select form-select-sm">
+                        <option value="">null</option>
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="IsShow" class="form-label fw-semibold small mb-1">IsShow</label>
+                    <select asp-for="IsShow" class="form-select form-select-sm">
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Domain" class="form-label fw-semibold small mb-1">Domain</label>
+                    <input asp-for="Domain" class="form-control form-control-sm" maxlength="500" />
+                    <span asp-validation-for="Domain" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="ParentId" class="form-label fw-semibold small mb-1">ParentId</label>
+                    <input asp-for="ParentId" type="number" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Sort" class="form-label fw-semibold small mb-1">Sort</label>
+                    <input asp-for="Sort" type="number" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="SiteId" class="form-label fw-semibold small mb-1">SiteId</label>
+                    <input asp-for="SiteId" type="number" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="LanguageId" class="form-label fw-semibold small mb-1">LanguageId</label>
+                    <input asp-for="LanguageId" type="number" class="form-control form-control-sm" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent">
+            <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fas fa-save me-1"></i> Thêm
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Hủy</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

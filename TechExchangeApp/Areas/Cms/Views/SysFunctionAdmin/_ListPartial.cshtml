@@ -1,0 +1,141 @@
+@model List<TechExchangeApp.Areas.Cms.Models.SysFunctionListItemVm>
+@{
+    var page = (int)(ViewBag.Page ?? 1);
+    var totalPages = (int)(ViewBag.TotalPages ?? 1);
+    var pageSize = (int)(ViewBag.PageSize ?? 20);
+    var totalCount = (int)(ViewBag.TotalCount ?? 0);
+    var fromRecord = totalCount == 0 ? 0 : ((page - 1) * pageSize) + 1;
+    var toRecord = Math.Min(page * pageSize, totalCount);
+}
+
+<span id="partialTotalCount" class="d-none">@totalCount</span>
+
+<div class="card-body table-responsive p-0">
+    <table class="table table-hover table-sm align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th style="width:95px">Thao tác</th>
+                <th style="width:80px">ID</th>
+                <th>FunctionName</th>
+                <th>URL</th>
+                <th style="width:95px">Menu</th>
+                <th style="width:95px">Status</th>
+                <th style="width:95px">Hiển thị</th>
+                <th style="width:90px">Parent</th>
+                <th style="width:80px">Sort</th>
+                <th style="width:80px">Site</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="10" class="text-center text-muted py-4">Không có tính năng phù hợp.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a asp-action="Edit" asp-route-id="@item.FunctionId" class="btn btn-outline-primary" title="Sửa">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <button type="button" class="btn btn-outline-danger btn-del" data-id="@item.FunctionId" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="text-muted">#@item.FunctionId</td>
+                    <td>
+                        <div class="fw-semibold">@item.FunctionName</div>
+                        @if (!string.IsNullOrWhiteSpace(item.HrefName))
+                        {
+                            <div class="small text-muted">@item.HrefName</div>
+                        }
+                    </td>
+                    <td class="text-break" style="max-width:300px">@item.URL</td>
+                    <td>
+                        @if (item.IsMenu == true)
+                        {
+                            <span class="badge bg-info">Menu</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Không</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsStatus == true)
+                        {
+                            <span class="badge bg-primary">Có</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Không</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsShow)
+                        {
+                            <span class="badge bg-success">Hiện</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Ẩn</span>
+                        }
+                    </td>
+                    <td>@item.ParentId</td>
+                    <td>@item.Sort</td>
+                    <td>@(item.SiteId?.ToString() ?? "Global")</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+<div class="card-footer d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div class="d-flex align-items-center flex-wrap gap-2">
+        <small class="text-muted">
+            Hiển thị <strong>@fromRecord</strong>-<strong>@toRecord</strong> / <strong>@totalCount</strong> bản ghi
+        </small>
+        <div class="d-flex align-items-center gap-1">
+            <span class="small text-muted">mỗi trang</span>
+            <select class="form-select form-select-sm ajax-page-size" style="width:78px">
+                <option value="10" selected="@(pageSize == 10)">10</option>
+                <option value="20" selected="@(pageSize == 20)">20</option>
+                <option value="50" selected="@(pageSize == 50)">50</option>
+                <option value="100" selected="@(pageSize == 100)">100</option>
+            </select>
+        </div>
+    </div>
+    @if (totalPages > 1)
+    {
+        var startPage = Math.Max(1, page - 2);
+        var endPage = Math.Min(totalPages, page + 2);
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item @(page <= 1 ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="1" title="Trang đầu"><i class="fas fa-angles-left"></i></a>
+                </li>
+                <li class="page-item @(page <= 1 ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="@(page - 1)" title="Trang trước"><i class="fas fa-angle-left"></i></a>
+                </li>
+                @for (var i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")">
+                        <a class="page-link ajax-page" data-page="@i" href="#">@i</a>
+                    </li>
+                }
+                <li class="page-item @(page >= totalPages ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="@(page + 1)" title="Trang sau"><i class="fas fa-angle-right"></i></a>
+                </li>
+                <li class="page-item @(page >= totalPages ? "disabled" : "")">
+                    <a class="page-link ajax-page" href="#" data-page="@totalPages" title="Trang cuối"><i class="fas fa-angles-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

@@ -116,6 +116,7 @@ namespace TechExchangeApp.Data
             // not EF migrations, so exclude them from migration scaffolding.
             modelBuilder.Entity<AiChatSession>().ToTable("AiChatSessions", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<AiChatMessage>().ToTable("AiChatMessages", t => t.ExcludeFromMigrations());
+            modelBuilder.Entity<SysFunction>().ToTable("SysFunction", t => t.ExcludeFromMigrations());
         }
 
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -188,6 +189,7 @@ namespace TechExchangeApp.Data
         // Notification System
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<SystemParameter> SystemParameters { get; set; } = null!;
+        public DbSet<SysFunction> SysFunctions { get; set; } = null!;
 
         // Chat System
         public DbSet<ChatConversation> ChatConversations { get; set; } = null!;

@@ -39,24 +39,13 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         private const int TypeThietBi = 2;
         private const int TypeSanPhamTriTue = 3;
         private const int TypeOcop = 4;
-        private const int LogFunctionId = 2; // SanPhamCNTB
+        private const string LogFunctionName = "SanPhamCNTB";
+        private static readonly string[] LogFunctionAliases = { "Sản phẩm Công nghệ - Thiết bị" };
 
         private async Task WriteLog(int eventId, string content)
         {
-            _context.Logs.Add(new Entities.Log
-            {
-                FunctionID = LogFunctionId,
-                ActTime = DateTime.Now,
-                EventID = eventId,
-                Content = content,
-                ClientIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserName = User.Identity?.Name,
-                Domain = HttpContext.Request.Host.Value,
-                LanguageId = 1,
-                ParentId = 0,
-                SiteId = GetSiteId()
-            });
-            await _context.SaveChangesAsync();
+            await CmsLogHelper.WriteLogAsync(_context, HttpContext, GetSiteId(),
+                LogFunctionName, LogFunctionAliases, eventId, content);
         }
 
         // ─────────────────────────────────────────

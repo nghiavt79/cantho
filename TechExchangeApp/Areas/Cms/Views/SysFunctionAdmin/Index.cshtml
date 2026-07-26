@@ -1,0 +1,171 @@
+@model List<TechExchangeApp.Areas.Cms.Models.SysFunctionListItemVm>
+@{
+    ViewData["Title"] = "Quản lý SysFunction";
+    var sites = (IEnumerable<TechExchangeApp.Entities.RootSite>?)ViewBag.Sites;
+    var selectedIsMenu = ViewBag.IsMenu?.ToString() ?? "";
+    var selectedIsStatus = ViewBag.IsStatus?.ToString() ?? "";
+    var selectedIsShow = ViewBag.IsShow?.ToString() ?? "";
+    var selectedSite = ViewBag.SiteId?.ToString() ?? "";
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-sliders-h me-1"></i> Tìm kiếm tính năng</h3>
+    </div>
+    <div class="card-body">
+        <form id="searchForm" method="get" class="row g-3">
+            @Html.AntiForgeryToken()
+            <div class="col-md-3">
+                <label class="form-label fw-semibold small mb-1">Từ khóa</label>
+                <input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control form-control-sm" placeholder="ID, FunctionName, URL, HrefName..." />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Menu</label>
+                <select name="isMenu" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    <option value="true" selected="@(selectedIsMenu.Equals("True", StringComparison.OrdinalIgnoreCase))">Là menu</option>
+                    <option value="false" selected="@(selectedIsMenu.Equals("False", StringComparison.OrdinalIgnoreCase))">Không</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Status</label>
+                <select name="isStatus" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    <option value="true" selected="@(selectedIsStatus.Equals("True", StringComparison.OrdinalIgnoreCase))">Có status</option>
+                    <option value="false" selected="@(selectedIsStatus.Equals("False", StringComparison.OrdinalIgnoreCase))">Không</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Hiển thị</label>
+                <select name="isShow" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    <option value="true" selected="@(selectedIsShow.Equals("True", StringComparison.OrdinalIgnoreCase))">Đang hiện</option>
+                    <option value="false" selected="@(selectedIsShow.Equals("False", StringComparison.OrdinalIgnoreCase))">Đang ẩn</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <label class="form-label fw-semibold small mb-1">Parent</label>
+                <input type="number" name="parentId" value="@ViewBag.ParentId" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-semibold small mb-1">Site</label>
+                <select name="siteId" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    @if (sites != null)
+                    {
+                        foreach (var s in sites)
+                        {
+                            <option value="@s.SiteId" selected="@(selectedSite == s.SiteId.ToString())">@s.SiteName</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-sm me-2" id="btnSearch">
+                    <i class="fas fa-search me-1"></i> Tìm kiếm
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="btnReset">
+                    <i class="fas fa-undo me-1"></i> Đặt lại
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card card-outline card-info shadow-sm">
+    <div class="card-header d-flex align-items-center">
+        <h3 class="card-title mb-0">
+            <i class="fas fa-list me-1"></i> Danh sách SysFunction
+        </h3>
+        <div class="ms-auto">
+            <a asp-area="Cms" asp-controller="SysFunctionAdmin" asp-action="Create" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i> Thêm menu
+            </a>
+        </div>
+    </div>
+    <div id="listContainer">
+        @await Html.PartialAsync("_ListPartial", Model)
+    </div>
+</div>
+
+@section Scripts {
+<script>
+$(function () {
+    toastr.options = { closeButton: true, progressBar: true, positionClass: 'toast-top-right', timeOut: 3000 };
+
+    var baseUrl = '@Url.Action("Index", "SysFunctionAdmin", new { area = "Cms" })';
+    var token = $('input[name="__RequestVerificationToken"]').val() || '';
+
+    function loadList(page) {
+        var params = $('#searchForm').serialize()
+            + '&page=' + (page || 1)
+            + '&pageSize=' + encodeURIComponent($('.ajax-page-size').val() || '20');
+
+        $('#listContainer').css('opacity', '0.5');
+        $.ajax({
+            url: baseUrl,
+            data: params,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function (html) {
+                $('#listContainer').html(html).css('opacity', '1');
+            },
+            error: function () {
+                toastr.error('Không tải được dữ liệu.');
+                $('#listContainer').css('opacity', '1');
+            }
+        });
+    }
+
+    $('#searchForm').on('submit', function (e) {
+        e.preventDefault();
+        loadList(1);
+    });
+
+    $('#btnSearch').on('click', function () {
+        loadList(1);
+    });
+
+    $('#btnReset').on('click', function () {
+        $('#searchForm')[0].reset();
+        loadList(1);
+    });
+
+    $(document).on('change', '.ajax-page-size', function () {
+        loadList(1);
+    });
+
+    $(document).on('click', '.ajax-page', function (e) {
+        e.preventDefault();
+        if ($(this).closest('.page-item').hasClass('disabled') || $(this).closest('.page-item').hasClass('active')) return;
+        loadList($(this).data('page'));
+    });
+
+    $(document).on('click', '.btn-del', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        Swal.fire({
+            title: 'Xác nhận xóa?',
+            text: 'Bạn chắc chắn muốn xóa SysFunction #' + id + '?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="fas fa-trash"></i> Xóa',
+            cancelButtonText: 'Hủy'
+        }).then(function (result) {
+            if (!result.isConfirmed) return;
+            $.post('@Url.Action("Delete", "SysFunctionAdmin", new { area = "Cms" })',
+                { id: id, __RequestVerificationToken: token },
+                function (r) {
+                    if (r.success) {
+                        toastr.success(r.message);
+                        loadList(1);
+                    } else {
+                        toastr.error(r.message);
+                    }
+                });
+        });
+    });
+});
+</script>
+}

@@ -34,7 +34,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
-        private const int LogFunctionId = 25; // PhieuYeuCauCNTB
+        private const string LogFunctionName = "PhieuYeuCauCNTB";
+        private static readonly string[] LogFunctionAliases = { "Yêu Cầu Công nghệ - Thiết bị" };
 
         public PhieuYeuCauCNTBAdminController(AppDbContext context, IConfiguration configuration)
         {
@@ -47,20 +48,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
         private async Task WriteLog(int eventId, string content)
         {
-            _context.Logs.Add(new Log
-            {
-                FunctionID = LogFunctionId,
-                ActTime = DateTime.Now,
-                EventID = eventId,
-                Content = content,
-                ClientIP = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserName = User.Identity?.Name,
-                Domain = HttpContext.Request.Host.Value,
-                LanguageId = 1,
-                ParentId = 0,
-                SiteId = GetSiteId()
-            });
-            await _context.SaveChangesAsync();
+            await CmsLogHelper.WriteLogAsync(_context, HttpContext, GetSiteId(),
+                LogFunctionName, LogFunctionAliases, eventId, content);
         }
 
         // ── INDEX ──
