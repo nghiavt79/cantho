@@ -270,10 +270,29 @@ namespace TechExchangeApp.Controllers
         //Helpers to be refactored into CommonService later
         private string GetCategoryTitle(int productId)
         {
-            var catId = _context.SanPhamCNTBCategories
-                .Where(x => x.SanPhamCNTBId == productId)
-                .Select(x => x.CatId)
+            // Nguồn chính: cột CategoryId trên SanPhamCNTB (CMS ghi category vào đây).
+            var catIdStr = _context.SanPhamCNTBs
+                .Where(x => x.ID == productId)
+                .Select(x => x.CategoryId)
                 .FirstOrDefault();
+
+            int catId = 0;
+            if (!string.IsNullOrWhiteSpace(catIdStr))
+            {
+                var first = catIdStr.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .FirstOrDefault();
+                int.TryParse(first, out catId);
+            }
+
+            // Dự phòng: bảng nối cũ (dữ liệu import) nếu cột CategoryId trống.
+            if (catId == 0)
+            {
+                catId = _context.SanPhamCNTBCategories
+                    .Where(x => x.SanPhamCNTBId == productId)
+                    .Select(x => x.CatId)
+                    .FirstOrDefault();
+            }
+
             if (catId == 0) return "";
             return _context.Categories.Where(x => x.CatId == catId).Select(x => x.Title).FirstOrDefault() ?? "";
         }

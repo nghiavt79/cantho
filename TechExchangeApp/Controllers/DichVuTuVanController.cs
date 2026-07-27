@@ -503,7 +503,7 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = x.CatId,
                     Name = x.Title,
-                    Url = $"{_mainDomain}8-ds-dich-vu-tu-van/{x.QueryString}-{x.CatId}"
+                    Url = $"{_mainDomain}dich-vu-tu-van/{x.QueryString}-{x.CatId}"
                 })
                 .ToList();
 
@@ -524,7 +524,7 @@ namespace TechExchangeApp.Controllers
         }
 
 
-        [HttpGet("8-ds-dich-vu-tu-van/{slug}-{cateId}")]
+        [HttpGet("dich-vu-tu-van/{slug}-{cateId}")]
         public IActionResult DanhSachTheoCate(
             int cateId,
             int page = 1

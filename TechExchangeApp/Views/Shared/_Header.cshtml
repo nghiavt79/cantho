@@ -71,7 +71,7 @@
                             <div class="site-header-v2__submenu">
                                 @foreach (var category in serviceCategories)
                                 {
-                                    <a href="/8-ds-dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                                    <a href="/dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
                                 }
                             </div>
                         }
@@ -188,7 +188,7 @@
                 <a href="/dich-vu-tu-van">@T("Dịch vụ", "Services")</a>
                 @foreach (var category in serviceCategories)
                 {
-                    <a class="site-menu-offcanvas__child" href="/8-ds-dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
+                    <a class="site-menu-offcanvas__child" href="/dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
                 }
                 <a href="/tin-su-kien">@T("Tin tức sự kiện", "News & Events")</a>
                 <a href="/tim-mua-cong-nghe">@T("Tìm mua", "Technology Demand")</a>

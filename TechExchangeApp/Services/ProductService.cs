@@ -14,7 +14,7 @@ namespace TechExchangeApp.Services
             _context = context;
         }
 
-        public async Task<List<SanPhamCNTB>> GetNewProductsAsync(int take, bool excludeOcop = false)
+        public async Task<List<SanPhamCNTB>> GetNewProductsAsync(int take, bool excludeOcop = false, bool hotFirst = false)
         {
             // NOTE: bEffectiveDate/eEffectiveDate range filter removed — it caused a full table scan
             // (no index on those columns). StatusId + LanguageId filter is sufficient for homepage.
@@ -27,8 +27,14 @@ namespace TechExchangeApp.Services
                 query = query.Where(x => x.ProductType != 4);
             }
 
-            return await query
-                .OrderByDescending(x => x.PublishedDate ?? x.Modified ?? x.Created)
+            // hotFirst: sản phẩm IsHot xếp lên đầu, sau đó theo ngày CẬP NHẬT mới nhất
+            // (dùng Modified vì nhiều sản phẩm có PublishedDate = null, fallback Created).
+            var ordered = hotFirst
+                ? query.OrderByDescending(x => x.IsHot == true)
+                       .ThenByDescending(x => x.Modified ?? x.Created)
+                : query.OrderByDescending(x => x.PublishedDate ?? x.Modified ?? x.Created);
+
+            return await ordered
                 .Take(take)
                 .ToListAsync();
         }

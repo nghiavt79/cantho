@@ -59,7 +59,7 @@ namespace TechExchangeApp.Controllers
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:AbsoluteSeconds", 180));
                 entry.SlidingExpiration = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:SlidingSeconds", 60));
                 entry.AddExpirationToken(_homeCacheSignal.GetChangeToken()); // cho phép CMS xóa cache trang chủ tức thì
-                var newProducts = await _productService.GetNewProductsAsync(12, excludeOcop: true);
+                var newProducts = await _productService.GetNewProductsAsync(12, excludeOcop: true, hotFirst: true);
 
                 return new HomeIndexCacheVm
                 {
@@ -211,7 +211,7 @@ namespace TechExchangeApp.Controllers
             {
                 return new List<HomeFeatureVm>
                 {
-                    new() { Icon = "bi-bezier2", Title = "Technology consulting & transfer", Description = "Solutions tailored to real-world needs.", Url = "/dang-ky-tu-van" },
+                    new() { Icon = "bi-bezier2", Title = "Technology consulting & transfer", Description = "Solutions tailored to real-world needs.", Url = "/dich-vu-tu-van" },
                     new() { Icon = "bi-upc-scan", Title = "Traceability", Description = "Product origin tracing and QR-code verification.", Url = "/dich-vu-tu-van" },
                     new() { Icon = "bi-easel2", Title = "Training & capacity building", Description = "Upskilling for individuals and organizations.", Url = "/tin-su-kien-44" }
                 };
@@ -219,7 +219,7 @@ namespace TechExchangeApp.Controllers
 
             return new List<HomeFeatureVm>
             {
-                new() { Icon = "bi-bezier2", Title = "Tư vấn & chuyển giao công nghệ", Description = "Giải pháp phù hợp nhu cầu thực tiễn.", Url = "/dang-ky-tu-van" },
+                new() { Icon = "bi-bezier2", Title = "Tư vấn & chuyển giao công nghệ", Description = "Giải pháp phù hợp nhu cầu thực tiễn.", Url = "/dich-vu-tu-van" },
                 new() { Icon = "bi-upc-scan", Title = "Truy xuất nguồn gốc", Description = "Xác thực nguồn gốc sản phẩm qua mã QR truy xuất.", Url = "/dich-vu-tu-van" },
                 new() { Icon = "bi-easel2", Title = "Đào tạo & tập huấn", Description = "Nâng cao năng lực cho cá nhân, tổ chức.", Url = "/tin-su-kien-44" }
             };
