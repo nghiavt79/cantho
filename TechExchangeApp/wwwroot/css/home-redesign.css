@@ -1885,6 +1885,12 @@ body.is-chat-open .action-dock-vr-shortcut {
         display: none;
     }
 
+    /* Màn nhỏ: ẩn icon Hướng dẫn để 5 icon còn lại vừa khít 5 cột, không rớt 2 dòng.
+       Dùng độ đặc hiệu cao hơn để thắng rule .action-dock__btn {display:flex} bên dưới. */
+    .action-dock .action-dock__btn--guide {
+        display: none !important;
+    }
+
     .action-dock__btn,
     .action-dock__top {
         position: static;

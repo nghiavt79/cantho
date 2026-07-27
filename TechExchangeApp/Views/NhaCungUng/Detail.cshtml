@@ -3,7 +3,9 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = Model.FullName + " — Nhà cung ứng";
-    var headerImg = !string.IsNullOrEmpty(Model.LogoUrl) ? Model.LogoUrl : Model.ImageUrl;
+    var headerImg = !string.IsNullOrEmpty(Model.LogoUrl) ? Model.LogoUrl
+        : !string.IsNullOrEmpty(Model.ImageUrl) ? Model.ImageUrl
+        : "/images/254-170_noImage.jpg";
 }
 
 @section Styles {
