@@ -7,31 +7,37 @@
 <div class="action-dock">
     <div class="action-dock__card">
         <div class="action-dock__group">
-            <button type="button" class="action-dock__btn" data-ai-chat-toggle data-tooltip="@T("Chat hỗ trợ", "Support chat")">
+            <button type="button" class="action-dock__btn" data-ai-chat-toggle data-tooltip="@T("Chat hỗ trợ", "Support chat")" aria-label="@T("Chat hỗ trợ", "Support chat")">
                 <i class="bi bi-chat-dots-fill"></i>
+                <span class="action-dock__label">Chat</span>
             </button>
-            <a class="action-dock__btn" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")">
+            <a class="action-dock__btn" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")" aria-label="@T("Trải nghiệm VR360°", "VR360° experience")">
                 <i class="bi bi-badge-vr"></i>
+                <span class="action-dock__label">VR</span>
             </a>
         </div>
 
         <div class="action-dock__divider" aria-hidden="true"></div>
 
         <div class="action-dock__group">
-            <a class="action-dock__btn action-dock__btn--fb" href="https://www.facebook.com/profile.php?id=100069991094645" target="_blank" rel="noopener" data-tooltip="Facebook">
+            <a class="action-dock__btn action-dock__btn--fb" href="https://www.facebook.com/profile.php?id=100069991094645" target="_blank" rel="noopener" data-tooltip="Facebook" aria-label="Facebook">
                 <i class="bi bi-facebook"></i>
+                <span class="action-dock__label">Facebook</span>
             </a>
-            <a class="action-dock__btn action-dock__btn--zalo" href="https://id.zalo.me/account/login?continue=http%3A%2F%2Fzalo.me%2F02923907037" target="_blank" rel="noopener" data-tooltip="Zalo">
-                <img src="/image/zalo-icon.webp" alt="Zalo">
+            <a class="action-dock__btn action-dock__btn--zalo" href="https://id.zalo.me/account/login?continue=http%3A%2F%2Fzalo.me%2F02923907037" target="_blank" rel="noopener" data-tooltip="Zalo" aria-label="Zalo">
+                <img src="/image/zalo-icon.webp" alt="" aria-hidden="true">
+                <span class="action-dock__label">Zalo</span>
             </a>
-            <a class="action-dock__btn action-dock__btn--guide" href="/huong-dan" data-tooltip="@T("Hướng dẫn sử dụng", "User guide")">
+            <a class="action-dock__btn action-dock__btn--guide" href="/huong-dan" data-tooltip="@T("Hướng dẫn sử dụng", "User guide")" aria-label="@T("Hướng dẫn sử dụng", "User guide")">
                 <i class="bi bi-book-half"></i>
+                <span class="action-dock__label">@T("Hướng dẫn", "Guide")</span>
             </a>
         </div>
     </div>
 
     <button type="button" id="btnBackToTop" class="action-dock__top" data-tooltip="@T("Về đầu trang", "Back to top")" aria-label="@T("Về đầu trang", "Back to top")">
         <i class="bi bi-chevron-up"></i>
+        <span class="action-dock__label">@T("Lên đầu", "Top")</span>
     </button>
 </div>
 
@@ -47,11 +53,17 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
+            // Mobile (≤575.98px) dock là thanh cố định → nút "về đầu trang" luôn hiện,
+            // không ẩn theo cuộn (nếu ẩn thì bấm về đỉnh sẽ làm nút biến mất, tạo ô trống).
+            var isMobileDock = function () {
+                return window.matchMedia('(max-width: 575.98px)').matches;
+            };
             var toggleVisibility = function () {
-                backToTop.classList.toggle('is-visible', window.scrollY > 320);
+                backToTop.classList.toggle('is-visible', isMobileDock() || window.scrollY > 320);
             };
             toggleVisibility();
             window.addEventListener('scroll', toggleVisibility, { passive: true });
+            window.addEventListener('resize', toggleVisibility, { passive: true });
         }
     })();
 </script>

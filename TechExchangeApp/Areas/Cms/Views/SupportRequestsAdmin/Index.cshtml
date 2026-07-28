@@ -1,0 +1,99 @@
+@model List<TechExchangeApp.Areas.Cms.Controllers.SupportInboxItemVm>
+@{
+    ViewData["Title"] = "Yêu cầu hỗ trợ Sàn";
+    int? status = ViewBag.Status as int?;
+    string? search = ViewBag.Search as string;
+
+    string StatusBadge(int s) => s switch
+    {
+        1 => "<span class=\"badge bg-warning text-dark\">Chưa gán</span>",
+        2 => "<span class=\"badge bg-info\">Đang xử lý</span>",
+        3 => "<span class=\"badge bg-secondary\">Đã đóng</span>",
+        _ => "<span class=\"badge bg-light text-dark\">—</span>"
+    };
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-sm-6"><h3 class="mb-0"><i class="fas fa-headset me-2"></i>Yêu cầu hỗ trợ Sàn</h3></div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+
+        <div class="card">
+            <div class="card-header d-flex flex-wrap gap-2 align-items-center">
+                <div class="btn-group btn-group-sm" role="group">
+                    <a asp-action="Index" class="btn @(status == null ? "btn-primary" : "btn-outline-primary")">Tất cả</a>
+                    <a asp-action="Index" asp-route-status="1" class="btn @(status == 1 ? "btn-primary" : "btn-outline-primary")">Chưa gán</a>
+                    <a asp-action="Index" asp-route-status="2" class="btn @(status == 2 ? "btn-primary" : "btn-outline-primary")">Đang xử lý</a>
+                    <a asp-action="Index" asp-route-status="-1" class="btn @(status == -1 ? "btn-primary" : "btn-outline-primary")">Của tôi</a>
+                </div>
+                <form asp-action="Index" method="get" class="ms-auto d-flex gap-2">
+                    @if (status.HasValue)
+                    {
+                        <input type="hidden" name="status" value="@status" />
+                    }
+                    <input type="text" name="search" value="@search" class="form-control form-control-sm" placeholder="Tìm dự án / người gửi..." style="min-width:220px;" />
+                    <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Dự án</th>
+                                <th class="text-center">Bước</th>
+                                <th>Người gửi</th>
+                                <th>Phụ trách</th>
+                                <th class="text-center">Trạng thái</th>
+                                <th>Tin cuối</th>
+                                <th>Thời gian</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                @foreach (var it in Model)
+                                {
+                                    <tr>
+                                        <td>@it.ProjectName</td>
+                                        <td class="text-center">@(it.StepNumber?.ToString() ?? "—")</td>
+                                        <td>@it.RequesterName</td>
+                                        <td>@(it.AssignedStaffName ?? "—")</td>
+                                        <td class="text-center">@Html.Raw(StatusBadge(it.SupportStatus))</td>
+                                        <td class="text-muted small">@(string.IsNullOrEmpty(it.LastMessage) ? "" : (it.LastMessage.Length > 60 ? it.LastMessage.Substring(0, 60) + "..." : it.LastMessage))</td>
+                                        <td class="text-muted small">@(it.LastMessageAt?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
+                                        <td class="text-end">
+                                            <a asp-action="Thread" asp-route-id="@it.Id" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-comments"></i> Xử lý
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="8" class="text-center text-muted p-4">Chưa có yêu cầu hỗ trợ nào.</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

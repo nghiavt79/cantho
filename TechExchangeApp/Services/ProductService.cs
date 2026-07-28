@@ -88,7 +88,7 @@ namespace TechExchangeApp.Services
         {
             var q = from p in _context.SanPhamCNTBs
                     join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
-                    where c.CatId == catId && p.StatusId == 3
+                    where c.CatId == catId && p.StatusId == 3 && p.ProductType != 4 // loại sản phẩm OCOP (có mục /ocop riêng)
                     select p;
 
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -101,7 +101,7 @@ namespace TechExchangeApp.Services
         {
             var q = from p in _context.SanPhamCNTBs
                     join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
-                    where c.CatId == catId && p.StatusId == 3
+                    where c.CatId == catId && p.StatusId == 3 && p.ProductType != 4 // loại sản phẩm OCOP (có mục /ocop riêng)
                     select p;
 
             if (!string.IsNullOrWhiteSpace(keyword))

@@ -31,12 +31,20 @@
                 @for (var i = 0; i < visibleSteps.Count; i++)
                 {
                     var step = visibleSteps[i];
-                    var stepClass = step.StatusId > 0 ? "completed" : (step.IsCurrent ? "current" : "pending");
-                    var badgeClass = step.StatusId > 0 ? "bg-success" : (step.IsCurrent ? "bg-primary" : "bg-light text-muted");
-                    var connectorFilled = i > 0 && visibleSteps[i - 1].StatusId > 0;
+                    var stepClass = step.IsNotApplicable ? "not-applicable" : (step.StatusId > 0 ? "completed" : (step.IsCurrent ? "current" : "pending"));
+                    var badgeClass = step.IsNotApplicable ? "bg-light text-muted" : (step.StatusId > 0 ? "bg-success" : (step.IsCurrent ? "bg-primary" : "bg-light text-muted"));
+                    var connectorFilled = i > 0 && (visibleSteps[i - 1].StatusId > 0 || visibleSteps[i - 1].IsNotApplicable);
 
                     <li class="nav-item step-item tx-workflow-step @stepClass @(connectorFilled ? "tx-connector-filled" : "")">
-                        @if (step.IsAccessible)
+                        @if (step.IsNotApplicable)
+                        {
+                            <span class="nav-link disabled tx-workflow-node-link not-applicable" aria-disabled="true"
+                                  title="Sản phẩm không yêu cầu thỏa thuận bảo mật">
+                                <span class="step-circle tx-workflow-node @badgeClass"><i class="fas fa-minus" aria-hidden="true"></i></span>
+                                <span class="step-name tx-workflow-label">@step.StepName <small class="text-muted d-block">(Không áp dụng)</small></span>
+                            </span>
+                        }
+                        else if (step.IsAccessible)
                         {
                             <a class="nav-link step-link tx-workflow-node-link @stepClass" href="#" data-step="@step.StepNumber"
                                aria-current="@(step.IsCurrent ? "step" : null)">

@@ -415,11 +415,15 @@
     .tech-search-hero__cta { width: 100%; justify-content: center; }
     .tech-filter-field, .tech-filter-field--select, .tech-filter-select, .tech-filter-submit { flex: 1 1 100%; }
     .tech-filter-submit { justify-content: center; }
+    /* Mobile: bỏ overlap desktop, tách ô search khỏi nút "Đăng nhu cầu tìm mua" một chút */
+    .tech-search-section { margin-top: 14px; }
 }
 @media (max-width: 576px) {
     .tech-request-grid { grid-template-columns: 1fr; }
     .tech-search-hero__title { font-size: 23px; }
-    .tech-request-cta { flex-direction: column; align-items: flex-start; }
+    .tech-request-cta { flex-direction: column; align-items: flex-start; gap: 14px; }
+    /* Cột: reset flex-basis để khối text không bị kéo cao 320px tạo khoảng trắng lớn */
+    .tech-request-cta__text { flex: 0 0 auto; }
     .tech-request-cta__btn { width: 100%; justify-content: center; }
 }
 

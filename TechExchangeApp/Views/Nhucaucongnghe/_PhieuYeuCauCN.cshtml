@@ -14,15 +14,15 @@
     <div class="tech-form-grid">
         <div class="tech-form-field">
             <label class="tech-form-label" for="txtName">Họ và tên <span class="req">*</span></label>
-            <input id="txtName" name="FullName" class="tech-form-input" placeholder="Nhập họ và tên" maxlength="150" required />
+            <input id="txtName" name="FullName" value="@Model.FullName" class="tech-form-input" placeholder="Nhập họ và tên" maxlength="150" required />
         </div>
         <div class="tech-form-field">
             <label class="tech-form-label" for="txtPhone">Số điện thoại <span class="req">*</span></label>
-            <input id="txtPhone" name="Phone" class="tech-form-input" placeholder="Nhập số điện thoại" maxlength="150" required />
+            <input id="txtPhone" name="Phone" value="@Model.Phone" class="tech-form-input" placeholder="Nhập số điện thoại" maxlength="150" required />
         </div>
         <div class="tech-form-field">
             <label class="tech-form-label" for="txtEmail">Email</label>
-            <input id="txtEmail" type="email" name="Email" class="tech-form-input" placeholder="Nhập email" maxlength="150" />
+            <input id="txtEmail" type="email" name="Email" value="@Model.Email" class="tech-form-input" placeholder="Nhập email" maxlength="150" />
         </div>
         <div class="tech-form-field">
             <label class="tech-form-label" for="txtCode">Xác thực <span class="req">*</span></label>

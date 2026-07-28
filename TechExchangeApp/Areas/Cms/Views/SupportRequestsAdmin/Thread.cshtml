@@ -1,0 +1,144 @@
+@model TechExchangeApp.Areas.Cms.Controllers.SupportThreadVm
+@{
+    ViewData["Title"] = "Xử lý yêu cầu hỗ trợ";
+    string statusText = Model.SupportStatus switch
+    {
+        1 => "Chưa gán",
+        2 => "Đang xử lý",
+        3 => "Đã đóng",
+        _ => "—"
+    };
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h3 class="mb-0"><i class="fas fa-headset me-2"></i>Yêu cầu hỗ trợ</h3>
+            </div>
+            <div class="col-sm-6 text-end">
+                <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Danh sách</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-md-4"><strong>Dự án:</strong> @Model.ProjectName</div>
+                    <div class="col-md-2"><strong>Bước:</strong> @(Model.StepNumber?.ToString() ?? "—")</div>
+                    <div class="col-md-3"><strong>Người gửi:</strong> @Model.RequesterName</div>
+                    <div class="col-md-3">
+                        <strong>Phụ trách:</strong> @(Model.AssignedStaffName ?? "Chưa gán")
+                        <span class="badge @(Model.SupportStatus == 1 ? "bg-warning text-dark" : Model.SupportStatus == 2 ? "bg-info" : "bg-secondary") ms-1">@statusText</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.SupportStatus != 3)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-7">
+                            <form asp-action="Assign" method="post" class="d-flex gap-2 align-items-end">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <div class="flex-grow-1">
+                                    <label class="form-label mb-1"><i class="fas fa-user-tag me-1"></i>Gán cho nhân viên / tư vấn</label>
+                                    <select name="staffUserId" class="form-select" required>
+                                        <option value="">-- Chọn nhân viên/tư vấn --</option>
+                                        @foreach (var s in Model.StaffOptions)
+                                        {
+                                            <option value="@s.UserId" selected="@(Model.AssignedStaffUserId == s.UserId)">@s.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary"><i class="fas fa-user-check"></i> Gán</button>
+                            </form>
+                        </div>
+                        <div class="col-md-5 text-md-end">
+                            <form asp-action="Close" method="post" onsubmit="return confirm('Đóng yêu cầu hỗ trợ này?');" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-check-circle"></i> Đóng yêu cầu</button>
+                            </form>
+                        </div>
+                    </div>
+                    @if (!Model.StaffOptions.Any())
+                    {
+                        <small class="text-muted d-block mt-2">Chưa có hồ sơ tư vấn nào gắn tài khoản để gán.</small>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-header"><i class="fas fa-comments me-1"></i> Nội dung trao đổi</div>
+            <div class="card-body" style="max-height:480px; overflow-y:auto; background:#f8fafc;">
+                @if (Model.Messages.Any())
+                {
+                    @foreach (var m in Model.Messages)
+                    {
+                        <div class="mb-3">
+                            <div class="small text-secondary mb-1">
+                                <strong>@m.SenderName</strong>
+                                <span class="ms-2">@m.Created.ToString("dd/MM/yyyy HH:mm")</span>
+                            </div>
+                            <div class="p-2 rounded border bg-white">
+                                @if (m.IsSystem)
+                                {
+                                    <em>@Html.Raw(m.Message)</em>
+                                }
+                                else
+                                {
+                                    <span style="white-space:pre-wrap;">@m.Message</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Chưa có tin nhắn.</p>
+                }
+            </div>
+            <div class="card-footer">
+                @if (Model.SupportStatus == 3)
+                {
+                    <div class="text-muted">Yêu cầu đã đóng.</div>
+                }
+                else
+                {
+                    <form asp-action="Reply" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="input-group">
+                            <textarea name="message" class="form-control" rows="2" maxlength="2000"
+                                      placeholder="Nhập phản hồi gửi người gửi..." required></textarea>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
+                        </div>
+                        @if (Model.SupportStatus == 1)
+                        {
+                            <small class="text-muted">Khi bạn gửi phản hồi đầu tiên, yêu cầu sẽ được gán cho bạn.</small>
+                        }
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>

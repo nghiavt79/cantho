@@ -61,7 +61,7 @@
                                                             @if (!string.IsNullOrEmpty(c.ProductName))
                                                             {
                                                                 <p class="text-muted mb-1 small">
-                                                                    <i class="fas fa-cube me-1"></i>@c.ProductName
+                                                                    <i class="fas @(c.ConversationType == 2 ? "fa-headset" : "fa-cube") me-1"></i>@c.ProductName
                                                                 </p>
                                                             }
                                                             @if (!string.IsNullOrEmpty(c.LastMessage))

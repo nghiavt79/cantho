@@ -57,6 +57,25 @@ namespace TechExchangeApp.Controllers.FrontEnd
             return question;
         }
 
+        // Nếu người dùng đã đăng nhập, tự điền Họ tên / Email / SĐT từ hồ sơ tài khoản.
+        private void PrefillFromCurrentUser(PhieuYeuCauCNViewModel vm)
+        {
+            if (vm == null || User?.Identity?.IsAuthenticated != true) return;
+
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdStr, out var userId)) return;
+
+            var u = _context.Users
+                .Where(x => x.Id == userId)
+                .Select(x => new { x.FullName, x.Email, x.PhoneNumber })
+                .FirstOrDefault();
+            if (u == null) return;
+
+            if (string.IsNullOrWhiteSpace(vm.FullName)) vm.FullName = u.FullName;
+            if (string.IsNullOrWhiteSpace(vm.Email)) vm.Email = u.Email;
+            if (string.IsNullOrWhiteSpace(vm.Phone)) vm.Phone = u.PhoneNumber;
+        }
+
 
         public IActionResult CateTechNeeds(
             int menuId,
@@ -83,6 +102,9 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
             // Math captcha cho form gửi nhu cầu
             vm.PhieuYeuCau.CaptchaQuestion = GenerateCaptcha();
+
+            // Tự điền thông tin liên hệ nếu người dùng đã đăng nhập
+            PrefillFromCurrentUser(vm.PhieuYeuCau);
 
             return View("~/Views/Nhucaucongnghe/TechNeedsByMenu.cshtml", vm);
 
@@ -493,6 +515,9 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
             // Captcha cho modal liên hệ/tư vấn
             vm.PhieuYeuCau.CaptchaQuestion = GenerateCaptcha();
+
+            // Tự điền thông tin liên hệ nếu người dùng đã đăng nhập
+            PrefillFromCurrentUser(vm.PhieuYeuCau);
 
             ViewData["Title"] = p.Title;
             ViewData["MetaDescription"] = p.Description;

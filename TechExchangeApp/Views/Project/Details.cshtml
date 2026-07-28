@@ -66,6 +66,9 @@
                     <i class="fas fa-users"></i> Thành viên dự án
                 </button>
             }
+            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#supportRequestModal">
+                <i class="fas fa-headset"></i> Yêu cầu Sàn hỗ trợ
+            </button>
         </div>
     </div>
 
@@ -112,6 +115,96 @@
         </div>
     </div>
 </div>
+
+<!-- Support Request Modal -->
+<div class="modal fade project-detail-modal" id="supportRequestModal" tabindex="-1" aria-labelledby="supportRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="supportRequestModalLabel">
+                    <i class="fas fa-headset"></i> Yêu cầu Sàn hỗ trợ
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="supportRequestForm">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <p class="text-muted small">Gửi yêu cầu hỗ trợ đến Sàn cho dự án này. Sàn sẽ phản hồi và trao đổi trực tiếp với bạn qua tin nhắn.</p>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Bước cần hỗ trợ</label>
+                        <select class="form-select" id="supportStepNumber">
+                            @foreach (var s in Model.Steps.Where(x => x.IsVisible))
+                            {
+                                if (s.StepNumber == Model.CurrentStep)
+                                {
+                                    <option value="@s.StepNumber" selected>Bước @s.StepNumber — @s.StepName</option>
+                                }
+                                else
+                                {
+                                    <option value="@s.StepNumber">Bước @s.StepNumber — @s.StepName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label fw-semibold">Nội dung cần hỗ trợ</label>
+                        <textarea class="form-control" id="supportMessage" rows="4" maxlength="2000"
+                                  placeholder="Mô tả vấn đề bạn cần Sàn hỗ trợ..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" id="supportSubmitBtn">
+                        <i class="fas fa-paper-plane me-1"></i> Gửi yêu cầu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    var form = document.getElementById('supportRequestForm');
+    if (!form) return;
+    var projectId = @Model.Project.Id;
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var btn = document.getElementById('supportSubmitBtn');
+        var stepNumber = parseInt(document.getElementById('supportStepNumber').value, 10) || 1;
+        var message = (document.getElementById('supportMessage').value || '').trim();
+        if (!message) { alert('Vui lòng nhập nội dung cần hỗ trợ.'); return; }
+
+        var token = form.querySelector('input[name="__RequestVerificationToken"]').value;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Đang gửi...';
+
+        try {
+            var res = await fetch('/api/support/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify({ projectId: projectId, stepNumber: stepNumber, message: message })
+            });
+            var data = await res.json();
+            if (res.ok && data.success) {
+                window.location.href = data.redirectUrl || ('/chat/' + data.conversationId);
+            } else {
+                alert(data.error || 'Không gửi được yêu cầu hỗ trợ.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Gửi yêu cầu';
+            }
+        } catch (ex) {
+            alert('Lỗi kết nối: ' + ex.message);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Gửi yêu cầu';
+        }
+    });
+})();
+</script>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />

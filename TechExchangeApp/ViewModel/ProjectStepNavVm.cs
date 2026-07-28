@@ -10,5 +10,7 @@ namespace TechExchangeApp.ViewModel
         public string ActionName { get; set; } = string.Empty;
         public bool IsAccessible { get; set; }
         public bool IsVisible { get; set; } = true;
+        /// <summary>Bước không áp dụng cho dự án này (ví dụ NDA khi sản phẩm không yêu cầu bảo mật).</summary>
+        public bool IsNotApplicable { get; set; }
     }
 }

@@ -22,6 +22,26 @@ namespace TechExchangeApp.Interfaces
 
         /// <summary>Get unread message count for a user.</summary>
         Task<int> GetUnreadCountAsync(int userId);
+
+        /// <summary>
+        /// Tạo hoặc mở lại hội thoại "Yêu cầu Sàn hỗ trợ" cho một dự án + bước.
+        /// Giả định quyền truy cập dự án đã được kiểm tra ở controller. Trả về conversationId.
+        /// </summary>
+        Task<long> StartSupportConversationAsync(int projectId, int requesterUserId, int stepNumber, string message);
+
+        /// <summary>
+        /// Nhân viên CMS trả lời một hội thoại hỗ trợ (atomic nhận xử lý khi chưa gán).
+        /// </summary>
+        Task<SupportReplyResult> ReplySupportAsync(long conversationId, int staffUserId, string message);
+    }
+
+    public enum SupportReplyOutcome { Ok, NotFound, EmptyMessage, AssignedToOther }
+
+    public class SupportReplyResult
+    {
+        public SupportReplyOutcome Outcome { get; set; }
+        public int? AssignedStaffUserId { get; set; }
+        public string? AssignedStaffName { get; set; }
     }
 
     public class ChatStartResult
@@ -41,6 +61,14 @@ namespace TechExchangeApp.Interfaces
         public string? LastMessage { get; set; }
         public DateTime? LastMessageAt { get; set; }
         public int UnreadCount { get; set; }
+
+        // ── Hỗ trợ Sàn ──
+        public int ConversationType { get; set; } = 1;
+        public int? ProjectId { get; set; }
+        public string? ProjectName { get; set; }
+        public int? StepNumber { get; set; }
+        public int SupportStatus { get; set; }
+        public int? AssignedStaffUserId { get; set; }
     }
 
     public class ChatConversationDetailVm
@@ -50,6 +78,14 @@ namespace TechExchangeApp.Interfaces
         public string? ProductName { get; set; }
         public string OtherUserName { get; set; } = "";
         public List<ChatMessageVm> Messages { get; set; } = new();
+
+        // ── Hỗ trợ Sàn ──
+        public int ConversationType { get; set; } = 1;
+        public int? ProjectId { get; set; }
+        public string? ProjectName { get; set; }
+        public int? StepNumber { get; set; }
+        public int SupportStatus { get; set; }
+        public int? AssignedStaffUserId { get; set; }
     }
 
     public class ChatMessageVm

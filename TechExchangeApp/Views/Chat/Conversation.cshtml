@@ -32,7 +32,19 @@
                         <i class="fa fa-comments text-primary me-1"></i>
                         @Model.OtherUserName
                     </h4>
-                    @if (!string.IsNullOrEmpty(Model.ProductName))
+                    @if (Model.ConversationType == 2)
+                    {
+                        <span class="badge bg-primary ms-2">
+                            <i class="fa fa-headset me-1"></i>Hỗ trợ Sàn
+                        </span>
+                        @if (!string.IsNullOrEmpty(Model.ProjectName))
+                        {
+                            <span class="badge bg-info text-dark ms-1">
+                                <i class="fa fa-project-diagram me-1"></i>@Model.ProjectName@(Model.StepNumber.HasValue ? $" — Bước {Model.StepNumber}" : "")
+                            </span>
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(Model.ProductName))
                     {
                         <span class="badge bg-info text-dark ms-2">
                             <i class="fa fa-cube me-1"></i>@Model.ProductName

@@ -652,6 +652,53 @@
     font-weight: 650;
 }
 
+/* Accordion: nhóm "Sản phẩm"/"Dịch vụ" — mặc định thu gọn, bấm chevron mới xổ */
+.site-menu-offcanvas__grouphead {
+    display: flex;
+    align-items: center;
+}
+
+.site-menu-offcanvas__grouphead .site-menu-offcanvas__grouplink {
+    flex: 1 1 auto;
+}
+
+.site-menu-offcanvas__toggle {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--te-blue-700);
+    cursor: pointer;
+}
+
+.site-menu-offcanvas__toggle:hover {
+    background: var(--te-soft);
+}
+
+.site-menu-offcanvas__toggle i {
+    transition: transform .2s ease;
+}
+
+.site-menu-offcanvas__toggle[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+.site-menu-offcanvas__sub {
+    display: grid;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.site-menu-offcanvas__sub[hidden] {
+    display: none;
+}
+
 .site-menu-offcanvas__nav a:hover,
 .site-menu-offcanvas__account a:hover,
 .site-menu-offcanvas__account button:hover,
@@ -1641,13 +1688,18 @@
     }
 
     .home-v2-carousel-nav {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
     }
 }
 
 /* ── Consolidated floating action dock (chat, VR, socials, back-to-top) ── */
+/* Nhãn chữ trong nút dock: mặc định ẩn (desktop chỉ dùng icon + tooltip),
+   chỉ hiện ở mobile — xem block @media (max-width:575.98px) bên dưới. */
+.action-dock__label {
+    display: none;
+}
 .action-dock {
     position: fixed;
     right: 20px;
@@ -1876,6 +1928,16 @@ body.is-chat-open .action-dock-vr-shortcut {
         box-shadow: 0 -6px 16px rgba(8, 59, 102, .1);
     }
 
+    /* Dock cố định hiện đến 575px → chừa chỗ đáy cho cả dải 481–575px,
+       tránh dock che nội dung/footer (block ≤480px bên dưới sẽ ghi đè cho máy nhỏ hơn). */
+    body {
+        padding-bottom: 65px;
+    }
+
+    .hp-footer {
+        padding-bottom: 70px;
+    }
+
     .action-dock__card,
     .action-dock__group {
         display: contents;
@@ -1895,19 +1957,31 @@ body.is-chat-open .action-dock-vr-shortcut {
     .action-dock__top {
         position: static;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 2px;
         width: auto;
         height: auto;
         margin: 0;
-        padding: 10px 0;
+        padding: 7px 0;
         border-radius: 0;
         background: transparent;
         box-shadow: none;
-        font-size: 20px;
+        font-size: 18px;
         opacity: 1 !important;
         visibility: visible !important;
         transform: none !important;
+    }
+
+    /* Nhãn chữ dưới icon — chỉ hiện ở mobile để rõ chức năng từng nút */
+    .action-dock__label {
+        display: block;
+        font-size: 10px;
+        line-height: 1;
+        font-weight: 600;
+        color: var(--te-blue-700);
+        white-space: nowrap;
     }
 
     .action-dock__btn:hover {
@@ -2519,6 +2593,17 @@ body.is-chat-open .action-dock-vr-shortcut {
         justify-content: flex-start;
         overflow-x: auto;
         gap: 18px;
+        /* Dấu hiệu cuộn: bóng mờ mép trái/phải, tự ẩn khi cuộn tới đầu/cuối. */
+        background:
+            linear-gradient(to right, #fff 30%, rgba(255,255,255,0)) 0 0 / 26px 100% no-repeat local,
+            linear-gradient(to left, #fff 30%, rgba(255,255,255,0)) 100% 0 / 26px 100% no-repeat local,
+            radial-gradient(farthest-side at 0 50%, rgba(8,59,102,.16), rgba(0,0,0,0)) 0 0 / 12px 100% no-repeat scroll,
+            radial-gradient(farthest-side at 100% 50%, rgba(8,59,102,.16), rgba(0,0,0,0)) 100% 0 / 12px 100% no-repeat scroll;
+        scrollbar-width: none;
+    }
+
+    .home-v2-search-tabs::-webkit-scrollbar {
+        display: none;
     }
 
     .home-v2-search-tabs button {

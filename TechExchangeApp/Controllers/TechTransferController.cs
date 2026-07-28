@@ -148,10 +148,23 @@ namespace TechExchangeApp.Controllers
                         await _workflowService.InitializeProjectSteps(project.Id);
                         await _workflowService.CompleteStep(project.Id, 1);
 
-                         // Notify buyer: project created, proceed to Step 2
+                         // Bước 2 (NDA) chỉ áp dụng khi sản phẩm CNTB yêu cầu thỏa thuận bảo mật
+                         var requiresNda = false;
+                         if (model.FromId.HasValue && (model.TypeData ?? 1) == 1)
+                         {
+                             requiresNda = await _context.SanPhamCNTBs.AsNoTracking()
+                                 .Where(p => p.ID == model.FromId.Value)
+                                 .Select(p => p.RequiresNDA)
+                                 .FirstOrDefaultAsync() == true;
+                         }
+                         var nextStepMsg = requiresNda
+                             ? "Tiến hành bước 2: Ký NDA."
+                             : "Sản phẩm không yêu cầu NDA, tiến hành bước 3: Yêu cầu báo giá (RFQ).";
+
+                         // Notify buyer: project created, proceed to next step
                          await _notifQueue.QueueAsync(userId, project.Id,
                              " Dự án đã được tạo",
-                             $"Yêu cầu chuyển giao '{model.TenCongNghe}' đã ghi nhận thành công. Tiến hành bước 2: Ký NDA.");
+                             $"Yêu cầu chuyển giao '{model.TenCongNghe}' đã ghi nhận thành công. {nextStepMsg}");
 
                         await transaction.CommitAsync();
 

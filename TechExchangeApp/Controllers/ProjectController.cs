@@ -17,19 +17,22 @@ namespace TechExchangeApp.Controllers
         private readonly Services.IWorkflowService _workflowService;
         private readonly Interfaces.IESignGateway _eSignGateway;
         private readonly Configuration.WorkflowOptions _workflowOptions;
+        private readonly IWebHostEnvironment _env;
 
         public ProjectController(
             AppDbContext context,
             UserManager<ApplicationUser> userManager,
             Services.IWorkflowService workflowService,
             Interfaces.IESignGateway eSignGateway,
-            Microsoft.Extensions.Options.IOptions<Configuration.WorkflowOptions> workflowOptions)
+            Microsoft.Extensions.Options.IOptions<Configuration.WorkflowOptions> workflowOptions,
+            IWebHostEnvironment env)
         {
             _context = context;
             _userManager = userManager;
             _workflowService = workflowService;
             _eSignGateway = eSignGateway;
             _workflowOptions = workflowOptions.Value;
+            _env = env;
         }
 
         // Helper method to get current user ID as int
@@ -195,8 +198,11 @@ namespace TechExchangeApp.Controllers
             // Get step statuses
             var statuses = await GetProjectStepStatuses(id.Value);
 
+            // Bước 2 (NDA) tùy sản phẩm có yêu cầu bảo mật hay không
+            var requiresNda = await GetProjectRequiresNda(id.Value);
+
             // Build step navigation
-            var steps = BuildStepNavigation(statuses);
+            var steps = BuildStepNavigation(statuses, requiresNda);
 
             // Calculate current step (first incomplete step)
             var currentStep = 1;
@@ -233,6 +239,9 @@ namespace TechExchangeApp.Controllers
                 var techReq2 = await _context.TechTransferRequests.AsNoTracking()
                     .FirstOrDefaultAsync(t => t.ProjectId == id.Value);
                 ViewBag.TechTransfer = techReq2;
+
+                // Nội dung NDA + tên người bán (Bên B) theo sản phẩm CNTB
+                await LoadNdaProductInfo(techReq2);
 
                 // Load NDA creator info
                 var nda2 = await _context.NDAAgreements.AsNoTracking()
@@ -527,8 +536,83 @@ namespace TechExchangeApp.Controllers
             return statuses;
         }
 
+        // Helper: Nạp dữ liệu NDA của bước 2 theo sản phẩm CNTB nguồn.
+        // Đặt ViewBag.NdaContent (nội dung riêng của sản phẩm, nếu có) và ViewBag.NdaBenB (tên người bán).
+        private async Task LoadNdaProductInfo(TechExchangeApp.Entities.TechTransferRequest? techReq)
+        {
+            const string sanFallback = "Trung tâm Thông tin, Thống kê và Ứng dụng tiến bộ khoa học công nghệ";
+            string? productNda = null;
+            string benB = sanFallback;
+
+            if (techReq?.FromId != null && (techReq.TypeData ?? 1) == 1)
+            {
+                var product = await _context.SanPhamCNTBs.AsNoTracking()
+                    .Where(p => p.ID == techReq.FromId.Value)
+                    .Select(p => new { p.NDAContent, p.NCUId, p.OwnerType, p.HoTen })
+                    .FirstOrDefaultAsync();
+
+                if (product != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(product.NDAContent))
+                        productNda = product.NDAContent;
+
+                    // Tên người bán (Bên B): đơn vị (NhaCungUng) hoặc cá nhân (HoTen)
+                    string? seller = null;
+                    if (product.OwnerType == 1 && product.NCUId != null)
+                    {
+                        seller = await _context.NhaCungUngs.AsNoTracking()
+                            .Where(n => n.CungUngId == product.NCUId.Value)
+                            .Select(n => n.FullName)
+                            .FirstOrDefaultAsync();
+                    }
+                    if (string.IsNullOrWhiteSpace(seller)) seller = product.HoTen;
+                    if (!string.IsNullOrWhiteSpace(seller)) benB = seller!;
+                }
+            }
+
+            // Nội dung riêng của sản phẩm; nếu trống thì dùng mẫu chuẩn của Sàn
+            // (file wwwroot/templates/nda-standard.html).
+            ViewBag.IsProductNda = !string.IsNullOrWhiteSpace(productNda);
+            ViewBag.NdaContent = !string.IsNullOrWhiteSpace(productNda)
+                ? productNda
+                : await ReadNdaStandardTemplateAsync();
+            ViewBag.NdaBenB = benB;
+        }
+
+        // Đọc mẫu NDA chuẩn của Sàn từ file tĩnh wwwroot/templates/nda-standard.html.
+        private async Task<string> ReadNdaStandardTemplateAsync()
+        {
+            try
+            {
+                var path = System.IO.Path.Combine(_env.WebRootPath, "templates", "nda-standard.html");
+                if (System.IO.File.Exists(path))
+                    return await System.IO.File.ReadAllTextAsync(path);
+            }
+            catch { /* dùng chuỗi rỗng nếu không đọc được file */ }
+            return string.Empty;
+        }
+
+        // Helper: Bước 2 (NDA) có áp dụng cho dự án không, suy từ sản phẩm CNTB nguồn (RequiresNDA).
+        private async Task<bool> GetProjectRequiresNda(int projectId)
+        {
+            var tech = await _context.TechTransferRequests.AsNoTracking()
+                .Where(x => x.ProjectId == projectId)
+                .Select(x => new { x.FromId, x.TypeData })
+                .FirstOrDefaultAsync();
+
+            // Chỉ suy cờ NDA từ sản phẩm CNTB (TypeData == 1). Mặc định khi chưa cấu hình: không yêu cầu NDA.
+            if (tech?.FromId == null || (tech.TypeData ?? 1) != 1) return false;
+
+            var requires = await _context.SanPhamCNTBs.AsNoTracking()
+                .Where(p => p.ID == tech.FromId.Value)
+                .Select(p => p.RequiresNDA)
+                .FirstOrDefaultAsync();
+
+            return requires == true;
+        }
+
         // Helper: Build step navigation list
-        private List<TechExchangeApp.ViewModel.ProjectStepNavVm> BuildStepNavigation(Dictionary<string, int> statuses)
+        private List<TechExchangeApp.ViewModel.ProjectStepNavVm> BuildStepNavigation(Dictionary<string, int> statuses, bool requiresNda = true)
         {
             var steps = new List<TechExchangeApp.ViewModel.ProjectStepNavVm>
             {
@@ -547,6 +631,16 @@ namespace TechExchangeApp.Controllers
                 new() { StepNumber = 13, StepName = "Nghiệm thu", StatusId = statuses["Acceptance"], ControllerName = "Acceptance", ActionName = "Create", IsAccessible = statuses["TechDoc"] > 0 },
                 new() { StepNumber = 14, StepName = "Thanh lý hợp đồng", StatusId = statuses["Liquidation"], ControllerName = "Liquidation", ActionName = "Create", IsAccessible = statuses["Acceptance"] > 0 }
             };
+
+            // Bước 2 (NDA) chỉ áp dụng khi sản phẩm CNTB yêu cầu thỏa thuận bảo mật.
+            // Nếu không yêu cầu: đánh dấu "Không áp dụng", coi như đã xử lý (mở khoá bước sau, tính vào tiến độ)
+            // và cho bước 3 (RFQ) mở khoá trực tiếp từ bước 1.
+            if (!requiresNda)
+            {
+                steps[1].IsNotApplicable = true;
+                steps[1].StatusId = 2; // đã xử lý (không áp dụng) -> không chặn luồng, không bị chọn làm bước hiện tại
+                steps[2].IsAccessible = statuses["TechTransfer"] > 0; // RFQ mở khoá ngay sau bước 1
+            }
 
             // Chủ đầu tư quyết định số bước hiển thị qua cấu hình "Workflow:VisibleStepCount" (ví dụ 7, 10 hoặc 14).
             // Các bước vượt quá số hiển thị vẫn giữ trong danh sách (lưu vết đầy đủ) nhưng ẩn trên giao diện.
@@ -591,7 +685,8 @@ namespace TechExchangeApp.Controllers
             
             // Get step statuses
             var statuses = await GetProjectStepStatuses(projectId);
-            var steps = BuildStepNavigation(statuses);
+            var requiresNda = await GetProjectRequiresNda(projectId);
+            var steps = BuildStepNavigation(statuses, requiresNda);
             
             // Determine current step (first incomplete)
             var currentStep = 1;
@@ -638,6 +733,9 @@ namespace TechExchangeApp.Controllers
                 var techReq = await _context.TechTransferRequests.AsNoTracking()
                     .FirstOrDefaultAsync(t => t.ProjectId == projectId);
                 ViewBag.TechTransfer = techReq;
+
+                // Nội dung NDA + tên người bán (Bên B) theo sản phẩm CNTB
+                await LoadNdaProductInfo(techReq);
 
                 // Load NDA creator info
                 var ndaData = model.StepData as TechExchangeApp.Entities.NDAAgreement;

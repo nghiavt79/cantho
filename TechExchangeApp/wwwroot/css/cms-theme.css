@@ -6,20 +6,29 @@
 /* ─── 0. CSS Variables ─── */
 :root {
     --cms-font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    --cms-bg-start: #dbeafe;
-    --cms-bg-end: #ede9fe;
-    --cms-sidebar-bg: #1f2937;
-    --cms-sidebar-text: #cbd5e1;
-    --cms-sidebar-active: #6366f1;
-    --cms-sidebar-hover: rgba(255, 255, 255, 0.06);
-    --cms-radius: 16px;
-    --cms-radius-sm: 12px;
-    --cms-radius-pill: 20px;
-    --cms-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    --cms-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --cms-navy: #123746;
+    --cms-deep-navy: #0D2B37;
+    --cms-teal: #087F7B;
+    --cms-teal-hover: #066B68;
+    --cms-gold: #E2B343;
+    --cms-page-bg: #F3F7F8;
+    --cms-surface: #FFFFFF;
+    --cms-border: #DCE5E8;
+    --cms-muted: #6B7F89;
+    --cms-bg-start: #F3F7F8;
+    --cms-bg-end: #EAF2F4;
+    --cms-sidebar-bg: #0D2B37;
+    --cms-sidebar-text: #D9E7EA;
+    --cms-sidebar-active: #087F7B;
+    --cms-sidebar-hover: rgba(8, 127, 123, 0.22);
+    --cms-radius: 8px;
+    --cms-radius-sm: 8px;
+    --cms-radius-pill: 14px;
+    --cms-shadow: 0 4px 14px rgba(13, 43, 55, 0.07);
+    --cms-shadow-lg: 0 12px 28px rgba(13, 43, 55, 0.14);
     --cms-transition: 200ms ease;
-    --cms-zebra: #f9fafb;
-    --cms-glass-bg: rgba(255, 255, 255, 0.82);
+    --cms-zebra: #F7FAFB;
+    --cms-glass-bg: rgba(255, 255, 255, 0.92);
     --cms-glass-blur: 8px;
 }
 
@@ -41,7 +50,7 @@ body.cms-saas-theme .app-wrapper {
 
 /* ─── 2. Sidebar ─── */
 body.cms-saas-theme .app-sidebar {
-    background: var(--cms-sidebar-bg) !important;
+    background: linear-gradient(180deg, var(--cms-deep-navy), var(--cms-navy)) !important;
     border-right: none !important;
     box-shadow: var(--cms-shadow-lg) !important;
     transition: width var(--cms-transition), min-width var(--cms-transition) !important;
@@ -49,36 +58,71 @@ body.cms-saas-theme .app-sidebar {
 }
 
 body.cms-saas-theme .app-sidebar .sidebar-brand {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 16px 12px;
+    border-bottom: 1px solid rgba(220, 229, 232, 0.14);
+    padding: 14px 12px;
 }
 
 body.cms-saas-theme .app-sidebar .sidebar-brand .brand-link {
     color: #fff !important;
     text-decoration: none;
     font-weight: 600;
-    letter-spacing: 0.3px;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 body.cms-saas-theme .app-sidebar .sidebar-brand .brand-link:hover {
-    color: #e0e7ff !important;
+    color: #fff !important;
+}
+
+body.cms-saas-theme .app-sidebar .sidebar-brand .casta-brand-logo {
+    width: 52px;
+    height: 42px;
+    object-fit: contain;
+    flex: 0 0 auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+body.cms-saas-theme .app-sidebar .sidebar-brand .casta-brand-text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    line-height: 1.15;
+}
+
+body.cms-saas-theme .app-sidebar .sidebar-brand .casta-brand-text strong {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+body.cms-saas-theme .app-sidebar .sidebar-brand .casta-brand-text small {
+    color: #B6D2D8;
+    font-size: 0.72rem;
+    font-weight: 500;
+    white-space: normal;
 }
 
 body.cms-saas-theme .app-sidebar .sidebar-wrapper {
     background: transparent !important;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 /* Sidebar menu items */
 body.cms-saas-theme .app-sidebar .nav.sidebar-menu .nav-item>.nav-link {
     color: var(--cms-sidebar-text) !important;
     border-radius: var(--cms-radius-sm) !important;
-    margin: 2px 10px;
-    padding: 10px 14px;
+    margin: 2px 6px;
+    padding: 9px 8px;
     transition: all var(--cms-transition) !important;
     cursor: pointer;
     position: relative;
+    justify-content: flex-start;
+    gap: 0;
 }
 
 body.cms-saas-theme .app-sidebar .nav.sidebar-menu .nav-item>.nav-link:hover {
@@ -88,33 +132,38 @@ body.cms-saas-theme .app-sidebar .nav.sidebar-menu .nav-item>.nav-link:hover {
 
 /* Active state */
 body.cms-saas-theme .app-sidebar .nav.sidebar-menu .nav-item>.nav-link.active {
-    background: var(--cms-sidebar-active) !important;
+    background: linear-gradient(90deg, var(--cms-teal), var(--cms-teal-hover)) !important;
     color: #fff !important;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+    box-shadow: 0 6px 14px rgba(8, 127, 123, 0.28);
 }
 
 /* Active left indicator bar */
 body.cms-saas-theme .app-sidebar .nav.sidebar-menu>.nav-item>.nav-link.active::before {
     content: '';
     position: absolute;
-    left: -10px;
+    left: -6px;
     top: 50%;
     transform: translateY(-50%);
     width: 4px;
     height: 60%;
-    background: #818cf8;
+    background: var(--cms-gold);
     border-radius: 0 4px 4px 0;
 }
 
 /* Nav icons */
 body.cms-saas-theme .app-sidebar .nav-icon {
     font-size: 1rem;
-    width: 1.6rem;
+    width: 1.35rem;
     text-align: center;
-    margin-right: 10px;
+    margin-right: 7px;
     opacity: 0.85;
     transition: opacity var(--cms-transition);
+    flex: 0 0 1.35rem;
+}
+
+body.cms-saas-theme .app-sidebar .nav-link p {
+    min-width: 0;
 }
 
 body.cms-saas-theme .app-sidebar .nav-link:hover .nav-icon,
@@ -124,14 +173,17 @@ body.cms-saas-theme .app-sidebar .nav-link.active .nav-icon {
 
 /* Treeview sub-items */
 body.cms-saas-theme .app-sidebar .nav-treeview {
-    padding-left: 8px;
+    padding-left: 0;
     background: transparent !important;
 }
 
 body.cms-saas-theme .app-sidebar .nav-treeview>.nav-item>.nav-link {
     font-size: 0.875rem;
-    padding: 7px 14px 7px 20px;
+    margin-left: 8px;
+    margin-right: 6px;
+    padding: 7px 8px 7px 14px;
     color: rgba(203, 213, 225, 0.8) !important;
+    justify-content: flex-start;
 }
 
 body.cms-saas-theme .app-sidebar .nav-treeview>.nav-item>.nav-link:hover {
@@ -140,8 +192,8 @@ body.cms-saas-theme .app-sidebar .nav-treeview>.nav-item>.nav-link:hover {
 }
 
 body.cms-saas-theme .app-sidebar .nav-treeview>.nav-item>.nav-link.active {
-    background: rgba(99, 102, 241, 0.25) !important;
-    color: #e0e7ff !important;
+    background: rgba(8, 127, 123, 0.28) !important;
+    color: #fff !important;
     font-weight: 500;
     box-shadow: none;
 }
@@ -163,7 +215,7 @@ body.cms-saas-theme .app-sidebar .nav-item.menu-open>.nav-link {
     left: 0;
     right: 0;
     padding: 16px 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(220, 229, 232, 0.14);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -217,19 +269,19 @@ body.cms-saas-theme .app-sidebar .nav-item.menu-open>.nav-link {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, var(--cms-teal), var(--cms-gold));
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
     font-size: 0.85rem;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 8px rgba(8, 127, 123, 0.3);
     transition: box-shadow var(--cms-transition);
 }
 
 .sidebar-bottom .sidebar-user:hover .avatar {
-    box-shadow: 0 2px 14px rgba(99, 102, 241, 0.55);
+    box-shadow: 0 2px 14px rgba(8, 127, 123, 0.55);
 }
 
 .sidebar-bottom .sidebar-user .user-name {
@@ -273,6 +325,12 @@ body.cms-saas-theme.sidebar-collapse .app-sidebar .sidebar-brand .brand-text {
     display: none !important;
 }
 
+body.cms-saas-theme.sidebar-collapse .app-sidebar .sidebar-brand .casta-brand-logo {
+    width: 42px;
+    height: 34px;
+    margin: 0 auto;
+}
+
 body.cms-saas-theme.sidebar-collapse .app-sidebar .sidebar-brand {
     padding: 16px 8px;
     text-align: center;
@@ -307,9 +365,9 @@ body.cms-saas-theme.sidebar-collapse .app-sidebar .nav-item>.nav-treeview {
     left: 100%;
     top: 0;
     min-width: 230px;
-    background: #1e293b;
+    background: var(--cms-deep-navy);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 3px solid var(--cms-sidebar-active);
+    border-left: 3px solid var(--cms-gold);
     border-radius: 0 var(--cms-radius-sm) var(--cms-radius-sm) 0;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
     padding: 8px 0;
@@ -327,7 +385,7 @@ body.cms-saas-theme.sidebar-collapse .app-sidebar .sidebar-wrapper nav ul {
     filter: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background-color: var(--cms-sidebar-bg) !important;
+    background-color: var(--cms-deep-navy) !important;
 }
 
 body.cms-saas-theme.sidebar-collapse .app-sidebar .nav-item:hover>.nav-treeview {
@@ -337,25 +395,31 @@ body.cms-saas-theme.sidebar-collapse .app-sidebar .nav-item:hover>.nav-treeview 
 }
 
 body.cms-saas-theme.sidebar-collapse .app-sidebar .nav-treeview>.nav-item>.nav-link {
-    padding: 8px 16px !important;
-    text-align: left;
+    padding: 8px 14px !important;
+    text-align: left !important;
     margin: 2px 6px;
     color: var(--cms-sidebar-text) !important;
     border-radius: 8px;
     transition: all var(--cms-transition);
+    justify-content: flex-start !important;
+    overflow: visible !important;
+    width: auto;
 }
 
 body.cms-saas-theme.sidebar-collapse .app-sidebar .nav-treeview>.nav-item>.nav-link:hover {
-    background: rgba(99, 102, 241, 0.2) !important;
+    background: rgba(8, 127, 123, 0.28) !important;
     color: #fff !important;
 }
 
 body.cms-saas-theme.sidebar-collapse .app-sidebar .nav.sidebar-menu .nav-treeview>.nav-item>.nav-link p {
     display: inline !important;
+    text-align: left !important;
+    flex: 1 1 auto;
 }
 
 body.cms-saas-theme.sidebar-collapse .app-sidebar .nav-treeview>.nav-item>.nav-link .nav-icon {
     margin-right: 8px;
+    flex: 0 0 1.35rem;
 }
 
 /* Active left indicator adjustment for mini sidebar */
@@ -386,8 +450,8 @@ body.cms-saas-theme .app-header.navbar {
     background: var(--cms-glass-bg) !important;
     backdrop-filter: blur(var(--cms-glass-blur));
     -webkit-backdrop-filter: blur(var(--cms-glass-blur));
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04) !important;
+    border-bottom: 1px solid var(--cms-border) !important;
+    box-shadow: 0 1px 8px rgba(13, 43, 55, 0.05) !important;
     border-radius: 0 0 var(--cms-radius-pill) var(--cms-radius-pill);
     margin: 0 16px;
     position: relative;
@@ -395,7 +459,7 @@ body.cms-saas-theme .app-header.navbar {
 }
 
 body.cms-saas-theme .app-header .nav-link {
-    color: #374151 !important;
+    color: var(--cms-navy) !important;
     font-weight: 500;
     font-size: 0.9rem;
     transition: color var(--cms-transition);
@@ -404,8 +468,8 @@ body.cms-saas-theme .app-header .nav-link {
 }
 
 body.cms-saas-theme .app-header .nav-link:hover {
-    color: var(--cms-sidebar-active) !important;
-    background: rgba(99, 102, 241, 0.06);
+    color: var(--cms-teal) !important;
+    background: rgba(8, 127, 123, 0.08);
 }
 
 body.cms-saas-theme .app-header .btn.btn-link {
@@ -425,8 +489,8 @@ body.cms-saas-theme .app-content-header {
 body.cms-saas-theme .app-content-header h3 {
     font-weight: 700;
     font-size: 1.5rem;
-    color: #1e293b;
-    letter-spacing: -0.02em;
+    color: var(--cms-navy);
+    letter-spacing: 0;
 }
 
 body.cms-saas-theme .app-content {
@@ -435,7 +499,7 @@ body.cms-saas-theme .app-content {
 
 /* ─── 5. Cards ─── */
 body.cms-saas-theme .card {
-    border: none !important;
+    border: 1px solid var(--cms-border) !important;
     border-radius: var(--cms-radius) !important;
     box-shadow: var(--cms-shadow) !important;
     background: #fff !important;
@@ -448,8 +512,8 @@ body.cms-saas-theme .card:hover {
 }
 
 body.cms-saas-theme .card-header {
-    background: #fff !important;
-    border-bottom: 1px solid #f1f5f9 !important;
+    background: var(--cms-surface) !important;
+    border-bottom: 1px solid var(--cms-border) !important;
     padding: 16px 20px !important;
     font-weight: 600;
 }
@@ -457,7 +521,7 @@ body.cms-saas-theme .card-header {
 body.cms-saas-theme .card-header .card-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--cms-navy);
 }
 
 body.cms-saas-theme .card-body {
@@ -465,14 +529,14 @@ body.cms-saas-theme .card-body {
 }
 
 body.cms-saas-theme .card-footer {
-    background: #fafbfc !important;
-    border-top: 1px solid #f1f5f9 !important;
+    background: #F8FBFC !important;
+    border-top: 1px solid var(--cms-border) !important;
     padding: 14px 20px !important;
 }
 
 /* Card outline variants — convert to pastel */
 body.cms-saas-theme .card-outline.card-primary {
-    border-top: 3px solid #818cf8 !important;
+    border-top: 3px solid var(--cms-teal) !important;
 }
 
 body.cms-saas-theme .card-outline.card-success {
@@ -480,7 +544,7 @@ body.cms-saas-theme .card-outline.card-success {
 }
 
 body.cms-saas-theme .card-outline.card-warning {
-    border-top: 3px solid #fbbf24 !important;
+    border-top: 3px solid var(--cms-gold) !important;
 }
 
 body.cms-saas-theme .card-outline.card-danger {
@@ -488,7 +552,7 @@ body.cms-saas-theme .card-outline.card-danger {
 }
 
 body.cms-saas-theme .card-outline.card-info {
-    border-top: 3px solid #38bdf8 !important;
+    border-top: 3px solid var(--cms-teal) !important;
 }
 
 /* ─── 6. Tables ─── */
@@ -498,9 +562,9 @@ body.cms-saas-theme .table {
 }
 
 body.cms-saas-theme .table thead th {
-    background: #f8fafc !important;
+    background: #F7FAFB !important;
     border: none !important;
-    color: #64748b;
+    color: var(--cms-muted);
     font-weight: 600;
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -510,10 +574,10 @@ body.cms-saas-theme .table thead th {
 
 body.cms-saas-theme .table tbody td {
     border: none !important;
-    border-bottom: 1px solid #f1f5f9 !important;
+    border-bottom: 1px solid var(--cms-border) !important;
     padding: 12px 14px !important;
     vertical-align: middle;
-    color: #374151;
+    color: #111111;
     font-size: 0.88rem;
 }
 
@@ -523,8 +587,8 @@ body.cms-saas-theme .table-striped>tbody>tr:nth-of-type(odd)>* {
 }
 
 body.cms-saas-theme .table-hover>tbody>tr:hover>* {
-    background-color: #eef2ff !important;
-    --bs-table-accent-bg: #eef2ff !important;
+    background-color: #EAF6F6 !important;
+    --bs-table-accent-bg: #EAF6F6 !important;
     transition: background-color var(--cms-transition);
 }
 
@@ -535,7 +599,7 @@ body.cms-saas-theme .table .sortable {
 }
 
 body.cms-saas-theme .table .sortable:hover {
-    color: var(--cms-sidebar-active);
+    color: var(--cms-teal);
 }
 
 /* ─── 7. Buttons Polish ─── */
@@ -547,25 +611,25 @@ body.cms-saas-theme .btn {
 }
 
 body.cms-saas-theme .btn-primary {
-    background: var(--cms-sidebar-active) !important;
-    border-color: var(--cms-sidebar-active) !important;
+    background: var(--cms-teal) !important;
+    border-color: var(--cms-teal) !important;
 }
 
 body.cms-saas-theme .btn-primary:hover {
-    background: #4f46e5 !important;
-    border-color: #4f46e5 !important;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    background: var(--cms-teal-hover) !important;
+    border-color: var(--cms-teal-hover) !important;
+    box-shadow: 0 4px 12px rgba(8, 127, 123, 0.3);
 }
 
 body.cms-saas-theme .btn-outline-primary {
-    color: var(--cms-sidebar-active) !important;
-    border-color: var(--cms-sidebar-active) !important;
+    color: var(--cms-teal) !important;
+    border-color: var(--cms-teal) !important;
 }
 
 body.cms-saas-theme .btn-outline-primary:hover {
-    background: var(--cms-sidebar-active) !important;
+    background: var(--cms-teal) !important;
     color: #fff !important;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 12px rgba(8, 127, 123, 0.2);
 }
 
 body.cms-saas-theme .btn-group-sm>.btn,
@@ -589,13 +653,13 @@ body.cms-saas-theme .badge.bg-success {
 }
 
 body.cms-saas-theme .badge.bg-info {
-    background: #dbeafe !important;
-    color: #1e40af !important;
+    background: #D9F0EF !important;
+    color: var(--cms-teal-hover) !important;
 }
 
 body.cms-saas-theme .badge.bg-warning {
-    background: #fef3c7 !important;
-    color: #92400e !important;
+    background: #FFF4D5 !important;
+    color: #806013 !important;
 }
 
 body.cms-saas-theme .badge.bg-danger {
@@ -605,7 +669,7 @@ body.cms-saas-theme .badge.bg-danger {
 
 body.cms-saas-theme .badge.bg-secondary {
     background: #f1f5f9 !important;
-    color: #475569 !important;
+    color: #111111 !important;
 }
 
 /* Notification badge override in sidebar — keep vibrant red */
@@ -635,7 +699,7 @@ body.cms-saas-theme .alert-danger {
 body.cms-saas-theme .form-control,
 body.cms-saas-theme .form-select {
     border-radius: var(--cms-radius-sm) !important;
-    border: 1.5px solid #e2e8f0 !important;
+    border: 1.5px solid var(--cms-border) !important;
     padding: 9px 14px !important;
     font-size: 0.88rem;
     transition: border-color var(--cms-transition), box-shadow var(--cms-transition);
@@ -643,19 +707,19 @@ body.cms-saas-theme .form-select {
 
 body.cms-saas-theme .form-control:focus,
 body.cms-saas-theme .form-select:focus {
-    border-color: #a5b4fc !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+    border-color: var(--cms-teal) !important;
+    box-shadow: 0 0 0 3px rgba(8, 127, 123, 0.12) !important;
 }
 
 body.cms-saas-theme .form-label {
     font-weight: 500;
     font-size: 0.85rem;
-    color: #475569;
+    color: #111111;
 }
 
 /* ─── 11. Nav Tabs (inside forms) ─── */
 body.cms-saas-theme .nav-tabs {
-    border-bottom: 2px solid #e2e8f0 !important;
+    border-bottom: 2px solid var(--cms-border) !important;
 }
 
 body.cms-saas-theme .nav-tabs .nav-link {
@@ -668,14 +732,14 @@ body.cms-saas-theme .nav-tabs .nav-link {
 }
 
 body.cms-saas-theme .nav-tabs .nav-link:hover {
-    color: var(--cms-sidebar-active);
-    background: rgba(99, 102, 241, 0.04);
+    color: var(--cms-teal);
+    background: rgba(8, 127, 123, 0.06);
 }
 
 body.cms-saas-theme .nav-tabs .nav-link.active {
-    color: var(--cms-sidebar-active) !important;
+    color: var(--cms-teal) !important;
     background: #fff !important;
-    border-bottom: 2px solid var(--cms-sidebar-active) !important;
+    border-bottom: 2px solid var(--cms-teal) !important;
     margin-bottom: -2px;
     font-weight: 600;
 }
@@ -684,7 +748,7 @@ body.cms-saas-theme .nav-tabs .nav-link.active {
 body.cms-saas-theme .pagination .page-link {
     border: none !important;
     border-radius: 8px !important;
-    color: #475569;
+    color: #111111;
     font-weight: 500;
     margin: 0 2px;
     padding: 6px 12px;
@@ -692,14 +756,14 @@ body.cms-saas-theme .pagination .page-link {
 }
 
 body.cms-saas-theme .pagination .page-link:hover {
-    background: #eef2ff;
-    color: var(--cms-sidebar-active);
+    background: #EAF6F6;
+    color: var(--cms-teal);
 }
 
 body.cms-saas-theme .pagination .page-item.active .page-link {
-    background: var(--cms-sidebar-active) !important;
+    background: var(--cms-teal) !important;
     color: #fff !important;
-    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 2px 6px rgba(8, 127, 123, 0.3);
 }
 
 body.cms-saas-theme .pagination .page-item.disabled .page-link {
@@ -720,15 +784,15 @@ body.cms-saas-theme .app-footer {
 /* ─── 14. Select2 Overrides ─── */
 body.cms-saas-theme .select2-container--bootstrap-5 .select2-selection {
     border-radius: var(--cms-radius-sm) !important;
-    border: 1.5px solid #e2e8f0 !important;
+    border: 1.5px solid var(--cms-border) !important;
     min-height: 40px !important;
     transition: border-color var(--cms-transition), box-shadow var(--cms-transition);
 }
 
 body.cms-saas-theme .select2-container--bootstrap-5.select2-container--focus .select2-selection,
 body.cms-saas-theme .select2-container--bootstrap-5.select2-container--open .select2-selection {
-    border-color: #a5b4fc !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
+    border-color: var(--cms-teal) !important;
+    box-shadow: 0 0 0 3px rgba(8, 127, 123, 0.12) !important;
 }
 
 body.cms-saas-theme .select2-dropdown {
@@ -739,8 +803,8 @@ body.cms-saas-theme .select2-dropdown {
 }
 
 body.cms-saas-theme .select2-results__option--highlighted {
-    background: #eef2ff !important;
-    color: var(--cms-sidebar-active) !important;
+    background: #EAF6F6 !important;
+    color: var(--cms-teal) !important;
 }
 
 /* ─── 15. Modal Overrides ─── */
