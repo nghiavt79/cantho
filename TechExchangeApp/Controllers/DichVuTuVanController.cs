@@ -22,6 +22,7 @@ namespace TechExchangeApp.Controllers
 
         // ================= INDEX =================
         [HttpGet("dich-vu-tu-van")]
+        [HttpGet("en/services")]
         public IActionResult Index(int menuId = 8)
         {
             var dichVuOptions = new List<SelectItemVm>();
@@ -525,6 +526,7 @@ namespace TechExchangeApp.Controllers
 
 
         [HttpGet("dich-vu-tu-van/{slug}-{cateId}")]
+        [HttpGet("en/services/{slug}-{cateId}")]
         public IActionResult DanhSachTheoCate(
             int cateId,
             int page = 1

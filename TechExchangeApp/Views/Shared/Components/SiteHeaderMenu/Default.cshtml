@@ -1,0 +1,85 @@
+@model TechExchangeApp.ViewComponents.SiteHeaderMenuViewModel
+@{
+    // Render data-driven từ bảng Menu. Home/Search/account/lang do _Header giữ (không nằm ở đây).
+}
+@if (Model.Variant == "desktop")
+{
+    @foreach (var item in Model.Items)
+    {
+        if (item.CategoryGroup != null && item.Children.Any())
+        {
+            var useCols = item.Children.Count > 6;
+            var rows = (int)Math.Ceiling(item.Children.Count / 2.0);
+            <div class="site-header-v2__menu-item">
+                <a class="nav-link site-header-v2__has-submenu" href="@item.Url">
+                    <span>@item.Label</span>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                @if (useCols)
+                {
+                    <div class="site-header-v2__submenu site-header-v2__submenu--cols" style="grid-template-rows: repeat(@rows, auto);">
+                        @foreach (var child in item.Children)
+                        {
+                            <a href="@child.Url">@child.Label</a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="site-header-v2__submenu">
+                        @foreach (var child in item.Children)
+                        {
+                            <a href="@child.Url">@child.Label</a>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <a class="nav-link @item.CssClass" href="@item.Url">
+                @if (!string.IsNullOrEmpty(item.Icon))
+                {
+                    <i class="bi @item.Icon"></i>
+                }
+                @item.Label
+            </a>
+        }
+    }
+}
+else
+{
+    @foreach (var item in Model.Items)
+    {
+        if (item.CategoryGroup != null && item.Children.Any())
+        {
+            var subId = $"menuGrp{item.MenuId}";
+            <div class="site-menu-offcanvas__group">
+                <div class="site-menu-offcanvas__grouphead">
+                    <a class="site-menu-offcanvas__grouplink" href="@item.Url">@item.Label</a>
+                    <button type="button" class="site-menu-offcanvas__toggle" data-menu-toggle
+                            aria-expanded="false" aria-controls="@subId"
+                            aria-label="@item.Label">
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="site-menu-offcanvas__sub" id="@subId" hidden>
+                    @foreach (var child in item.Children)
+                    {
+                        <a class="site-menu-offcanvas__child" href="@child.Url">@child.Label</a>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <a class="@(string.IsNullOrEmpty(item.CssClass) ? null : "site-menu-offcanvas__ocop")" href="@item.Url">
+                @if (!string.IsNullOrEmpty(item.Icon))
+                {
+                    <i class="bi @item.Icon"></i>
+                }
+                @item.Label
+            </a>
+        }
+    }
+}

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.Services.Navigation;
 
 namespace TechExchangeApp.Areas.Cms.Controllers
 {
@@ -14,11 +15,13 @@ namespace TechExchangeApp.Areas.Cms.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IHeaderMenuService _headerMenu;
 
-        public MenuAdminController(AppDbContext context, IConfiguration configuration)
+        public MenuAdminController(AppDbContext context, IConfiguration configuration, IHeaderMenuService headerMenu)
         {
             _context = context;
             _configuration = configuration;
+            _headerMenu = headerMenu;
         }
 
         private int GetSiteId() =>
@@ -36,9 +39,11 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             int page = 1, int pageSize = 30)
         {
             var siteId = GetSiteId();
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext); // ngôn ngữ chung (dropdown góc phải)
+            ViewBag.Lang = lang;
 
             var query = _context.Menus.AsNoTracking()
-                .Where(m => m.LanguageId == 1 && (m.SiteId == null || m.SiteId == siteId));
+                .Where(m => m.LanguageId == lang && (m.SiteId == null || m.SiteId == siteId));
 
             // Filters
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -108,9 +113,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 .Select(s => new { s.StatusId, s.Title })
                 .ToListAsync();
 
-            // Parent menu tree for filter
+            // Parent menu tree for filter (theo đúng ngôn ngữ đang xem)
             var filterMenus = await _context.Menus.AsNoTracking()
-                .Where(m => m.LanguageId == 1 && (m.SiteId == null || m.SiteId == siteId))
+                .Where(m => m.LanguageId == lang && (m.SiteId == null || m.SiteId == siteId))
                 .OrderBy(m => m.Sort)
                 .ToListAsync();
             ViewBag.ParentMenus = BuildMenuTree(filterMenus, null, 0);
@@ -138,15 +143,17 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext);
             var vm = new MenuFormVm
             {
                 StatusId = 1,
-                LanguageId = 1,
+                LanguageId = lang,          // tạo mới theo ngôn ngữ đang chọn (VI/EN)
                 Domain = GetDomain(),
                 SiteId = GetSiteId(),
                 Sort = 0
             };
-            await LoadFormSelectListsAsync();
+            ViewBag.Lang = lang;
+            await LoadFormSelectListsAsync(lang);
             return View(vm);
         }
 
@@ -158,7 +165,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await LoadFormSelectListsAsync();
+                ViewBag.Lang = vm.LanguageId;
+                await LoadFormSelectListsAsync(vm.LanguageId);
                 return View(vm);
             }
 
@@ -168,9 +176,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
             _context.Menus.Add(entity);
             await _context.SaveChangesAsync();
+            _headerMenu.Invalidate();
 
             TempData["Success"] = "Thêm menu thành công!";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { lang = vm.LanguageId });
         }
 
         // ─────────────────────────────────────────
@@ -183,7 +192,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (entity == null) return NotFound();
 
             var vm = MapToVm(entity);
-            await LoadFormSelectListsAsync();
+            ViewBag.Lang = entity.LanguageId;
+            await LoadFormSelectListsAsync(entity.LanguageId);
             return View(vm);
         }
 
@@ -195,7 +205,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await LoadFormSelectListsAsync();
+                ViewBag.Lang = vm.LanguageId;
+                await LoadFormSelectListsAsync(vm.LanguageId);
                 return View(vm);
             }
 
@@ -219,9 +230,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.Modifier = User.FindFirstValue(ClaimTypes.Name) ?? User.Identity?.Name;
 
             await _context.SaveChangesAsync();
+            _headerMenu.Invalidate();
 
             TempData["Success"] = "Cập nhật menu thành công!";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { lang = entity.LanguageId });
         }
 
         // ─────────────────────────────────────────
@@ -240,6 +252,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     entity.Sort = item.Sort;
             }
             await _context.SaveChangesAsync();
+            _headerMenu.Invalidate();
 
             return Json(new { success = true, message = "Đã cập nhật thứ tự." });
         }
@@ -270,6 +283,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
             _context.Menus.Remove(entity);
             await _context.SaveChangesAsync();
+            _headerMenu.Invalidate();
 
             return Json(new { success = true, message = "Đã xóa menu thành công." });
         }
@@ -277,16 +291,18 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // ─────────────────────────────────────────
         // HELPERS
         // ─────────────────────────────────────────
-        private async Task LoadFormSelectListsAsync()
+        private async Task LoadFormSelectListsAsync(int lang = 1)
         {
             var siteId = GetSiteId();
+            if (lang != 2) lang = 1;
 
             ViewBag.Statuses = new SelectList(
                 await _context.Statuses.AsNoTracking().OrderBy(s => s.StatusId).ToListAsync(),
                 "StatusId", "Title");
 
+            // Danh mục cha theo đúng ngôn ngữ
             var menus = await _context.Menus.AsNoTracking()
-                .Where(m => m.LanguageId == 1 && (m.SiteId == null || m.SiteId == siteId))
+                .Where(m => m.LanguageId == lang && (m.SiteId == null || m.SiteId == siteId))
                 .OrderBy(m => m.Sort)
                 .ToListAsync();
 

@@ -1,10 +1,21 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole();
+    builder.Logging.AddDebug();
+    builder.Services.AddDataProtection()
+        .PersistKeysToFileSystem(new DirectoryInfo(
+            Path.Combine(builder.Environment.ContentRootPath, ".dev-data-protection-keys")));
+}
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -37,6 +48,7 @@ builder.WebHost.ConfigureKestrel(options =>
     options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB
 });
 builder.Services.AddMemoryCache();
+builder.Services.AddScoped<TechExchangeApp.Services.Navigation.IHeaderMenuService, TechExchangeApp.Services.Navigation.HeaderMenuService>();
 builder.Services.AddScoped<TechExchangeApp.Services.IWorkflowService, TechExchangeApp.Services.WorkflowService>();
 builder.Services.AddScoped<TechExchangeApp.Services.INotificationQueueService, TechExchangeApp.Services.NotificationQueueService>();
 
@@ -207,6 +219,7 @@ builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.ProductEmbe
 
 // --- Notification System ---
 builder.Services.AddScoped<TechExchangeApp.Interfaces.ISystemParameterService, TechExchangeApp.Services.SystemParameterService>();
+builder.Services.AddScoped<TechExchangeApp.Services.Translation.ITranslationServiceFactory, TechExchangeApp.Services.Translation.TranslationServiceFactory>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IEmailSender, TechExchangeApp.Services.GmailEmailSender>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.ISmsSender, TechExchangeApp.Services.StubSmsSender>(); // Twilio replaced with stub — add Twilio back when SMS is needed
 builder.Services.AddScoped<TechExchangeApp.Interfaces.INotificationProcessor, TechExchangeApp.Services.NotificationProcessor>();
@@ -241,6 +254,18 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
+// --- Đa ngôn ngữ: gắn cờ ngôn ngữ theo tiền tố "/en" (phải nằm TRƯỚC UseRouting) ---
+// KHÔNG cắt path — URL tiếng Anh là route riêng với segment tiếng Anh (vd /en/news-event).
+// Controller đọc cờ này (LangHelper) để lọc LanguageId = 2.
+app.Use(async (ctx, next) =>
+{
+    var path = ctx.Request.Path.Value ?? "";
+    ctx.Items["Lang"] = (path.Equals("/en", StringComparison.OrdinalIgnoreCase)
+                         || path.StartsWith("/en/", StringComparison.OrdinalIgnoreCase))
+                        ? "en" : "vi";
+    await next();
+});
+
 app.UseRouting();
 
 // --- Bắt buộc: UseSession phải nằm ở đây ---
@@ -259,6 +284,53 @@ app.MapAreaControllerRoute(
     name: "cms",
     areaName: "Cms",
     pattern: "cms/{controller=Dashboard}/{action=Index}/{id?}"
+);
+
+// --- English Routes (site tiếng Anh, segment tiếng Anh; middleware gắn cờ Lang=en) ---
+// Nhân ra loại khác = thêm route en/... tương ứng, trỏ về đúng Controller/Action.
+app.MapControllerRoute(
+    name: "en_home",
+    pattern: "en",
+    defaults: new { controller = "Home", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "en_news_category",
+    pattern: "en/news-event",
+    defaults: new { controller = "News", action = "Category", menuId = 62 } // 62 = menu EN "News & Event"
+);
+app.MapControllerRoute(
+    name: "en_news_detail",
+    pattern: "en/news-event/{queryString}-{id:long}",
+    defaults: new { controller = "News", action = "Detail", menuId = 62 }
+);
+app.MapControllerRoute(
+    name: "en_about",
+    pattern: "en/about",
+    defaults: new { controller = "Menu", action = "Detail", menuId = 56 } // 56 = menu EN "Introduction" (Giới thiệu)
+);
+// URL tiếng Anh cho 4 mục header còn lại — trỏ về đúng Controller/Action tiếng Việt,
+// middleware đã gắn Lang=en nên header + nhãn hiển thị tiếng Anh.
+app.MapControllerRoute(
+    name: "en_products",
+    pattern: "en/products",
+    defaults: new { controller = "Product", action = "TatCaSanPham" }
+);
+app.MapControllerRoute(
+    name: "en_products_category",
+    pattern: "en/products/{slug}-{cateId:int}",
+    defaults: new { controller = "Product", action = "ProductByCate" }
+);
+// Lưu ý: DichVuTuVan dùng attribute routing, nên URL EN của nó khai báo bằng
+// [HttpGet("en/services...")] ngay trên action (không map được qua conventional route).
+app.MapControllerRoute(
+    name: "en_technology_demand",
+    pattern: "en/technology-demand",
+    defaults: new { controller = "Nhucaucongnghe", action = "CateTechNeeds", menuId = 67 }
+);
+app.MapControllerRoute(
+    name: "en_ocop",
+    pattern: "en/ocop",
+    defaults: new { controller = "Ocop", action = "Index" }
 );
 
 // --- Custom Routes (Moved from Controllers) ---

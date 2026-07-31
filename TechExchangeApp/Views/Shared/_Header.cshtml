@@ -1,32 +1,16 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @inject TechExchangeApp.Interfaces.ICmsAccessService CmsAccessService
-@inject TechExchangeApp.Data.AppDbContext AppDb
 @{
     var mainDomain = Configuration["AppSettings:MainDomain"] ?? "/";
     var shortName = Configuration["SiteBranding:ShortName"] ?? "CASTA";
     var canAccessCms = await CmsAccessService.CanAccessCmsAsync(ViewContext.HttpContext.User);
-    var isEn = Context.Request.Cookies["site_lang"] == "en";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     string T(string vi, string en) => isEn ? en : vi;
     var currentUrl = Context.Request.Path + Context.Request.QueryString;
     var accountDisplayName = User.Identity?.Name ?? "Tài khoản";
     var accountInitial = string.IsNullOrWhiteSpace(accountDisplayName)
         ? "U"
         : accountDisplayName.Trim().Substring(0, 1).ToUpperInvariant();
-    var productCategories = AppDb.Categories
-        .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
-        .OrderBy(x => x.Sort ?? int.MaxValue)
-        .ThenBy(x => x.Title)
-        .ToList();
-    var serviceCategories = AppDb.Categories
-        .Where(x => x.ParentId == 2 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
-        .OrderBy(x => x.Sort ?? int.MaxValue)
-        .ThenBy(x => x.Title)
-        .ToList();
-
-    string CategorySlug(TechExchangeApp.Entities.Category category)
-    {
-        return TechExchangeApp.Controllers.ProductController.MakeURLFriendly(category.QueryString ?? category.Title);
-    }
 }
 
 <header class="site-header-v2">
@@ -38,47 +22,8 @@
 
             <div class="site-header-v2__actions">
                 <nav class="site-header-v2__menu" aria-label="Menu chính">
-                    <a class="nav-link" href="/gioi-thieu-chung-3">@T("Giới thiệu", "About")</a>
-                    <div class="site-header-v2__menu-item">
-                        <a class="nav-link site-header-v2__has-submenu" href="/san-pham">
-                            <span>@T("Sản phẩm", "Products")</span>
-                            @if (productCategories.Any())
-                            {
-                                <i class="bi bi-chevron-down"></i>
-                            }
-                        </a>
-                        @if (productCategories.Any())
-                        {
-                            var productSubmenuRows = (int)Math.Ceiling(productCategories.Count / 2.0);
-                            <div class="site-header-v2__submenu site-header-v2__submenu--cols" style="grid-template-rows: repeat(@productSubmenuRows, auto);">
-                                @foreach (var category in productCategories)
-                                {
-                                    <a href="/san-pham/@CategorySlug(category)-@category.CatId">@category.Title</a>
-                                }
-                            </div>
-                        }
-                    </div>
-                    <div class="site-header-v2__menu-item">
-                        <a class="nav-link site-header-v2__has-submenu" href="/dich-vu-tu-van">
-                            <span>@T("Dịch vụ", "Services")</span>
-                            @if (serviceCategories.Any())
-                            {
-                                <i class="bi bi-chevron-down"></i>
-                            }
-                        </a>
-                        @if (serviceCategories.Any())
-                        {
-                            <div class="site-header-v2__submenu">
-                                @foreach (var category in serviceCategories)
-                                {
-                                    <a href="/dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
-                                }
-                            </div>
-                        }
-                    </div>
-                    <a class="nav-link" href="/tin-su-kien">@T("Tin tức sự kiện", "News & Events")</a>
-                    <a class="nav-link" href="/tim-mua-cong-nghe">@T("Tìm mua", "Technology Demand")</a>
-                    <a class="nav-link site-header-v2__ocop-link" href="/ocop"><i class="bi bi-star-fill"></i> OCOP</a>
+                    @* Menu chính data-driven từ bảng Menu (MenuPosition="1"), song ngữ theo /en. *@
+                    @await Component.InvokeAsync("SiteHeaderMenu", new { variant = "desktop" })
                     <form class="site-header-v2__quick-search" action="/Search" method="get" role="search">
                         <input type="search" name="q" placeholder="@T("Tìm kiếm...", "Search...")" aria-label="@T("Tìm kiếm", "Search")" autocomplete="off">
                         <button type="submit" class="site-header-v2__quick-search-btn" aria-label="@T("Tìm kiếm", "Search")">
@@ -149,9 +94,9 @@
                         </button>
                     }
                     <div class="site-header-v2__lang">
-                        <a class="@(!isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=vi&returnUrl=@Uri.EscapeDataString(currentUrl)">VI</a>
+                        <a class="@(!isEn ? "is-active" : "")" href="/">VI</a>
                         <span>/</span>
-                        <a class="@(isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=en&returnUrl=@Uri.EscapeDataString(currentUrl)">EN</a>
+                        <a class="@(isEn ? "is-active" : "")" href="/en">EN</a>
                     </div>
                 </nav>
                 <button class="site-header-v2__menu-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteMenuOffcanvas" aria-controls="siteMenuOffcanvas" aria-label="Mở menu">
@@ -168,9 +113,9 @@
         </div>
         <div class="offcanvas-body">
             <div class="site-header-v2__lang site-header-v2__lang--offcanvas">
-                <a class="@(!isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=vi&returnUrl=@Uri.EscapeDataString(currentUrl)">VI</a>
+                <a class="@(!isEn ? "is-active" : "")" href="/">VI</a>
                 <span>/</span>
-                <a class="@(isEn ? "is-active" : "")" href="/Language/SetLanguage?lang=en&returnUrl=@Uri.EscapeDataString(currentUrl)">EN</a>
+                <a class="@(isEn ? "is-active" : "")" href="/en">EN</a>
             </div>
             <form class="site-menu-offcanvas__search" action="/Search" method="get">
                 <i class="bi bi-search"></i>
@@ -179,47 +124,8 @@
 
             <nav class="site-menu-offcanvas__nav">
                 <a href="/">@T("Trang chủ", "Home")</a>
-                <a href="/gioi-thieu-chung-3">@T("Giới thiệu", "About")</a>
-
-                @* Nhóm "Sản phẩm": mặc định chỉ hiện mục cấp 1, bấm chevron mới xổ danh mục *@
-                <div class="site-menu-offcanvas__group">
-                    <div class="site-menu-offcanvas__grouphead">
-                        <a class="site-menu-offcanvas__grouplink" href="/san-pham">@T("Sản phẩm", "Products")</a>
-                        <button type="button" class="site-menu-offcanvas__toggle" data-menu-toggle
-                                aria-expanded="false" aria-controls="menuGrpProducts"
-                                aria-label="@T("Mở danh mục Sản phẩm", "Toggle product categories")">
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                    </div>
-                    <div class="site-menu-offcanvas__sub" id="menuGrpProducts" hidden>
-                        @foreach (var category in productCategories)
-                        {
-                            <a class="site-menu-offcanvas__child" href="/san-pham/@CategorySlug(category)-@category.CatId">@category.Title</a>
-                        }
-                    </div>
-                </div>
-
-                @* Nhóm "Dịch vụ" *@
-                <div class="site-menu-offcanvas__group">
-                    <div class="site-menu-offcanvas__grouphead">
-                        <a class="site-menu-offcanvas__grouplink" href="/dich-vu-tu-van">@T("Dịch vụ", "Services")</a>
-                        <button type="button" class="site-menu-offcanvas__toggle" data-menu-toggle
-                                aria-expanded="false" aria-controls="menuGrpServices"
-                                aria-label="@T("Mở danh mục Dịch vụ", "Toggle service categories")">
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                    </div>
-                    <div class="site-menu-offcanvas__sub" id="menuGrpServices" hidden>
-                        @foreach (var category in serviceCategories)
-                        {
-                            <a class="site-menu-offcanvas__child" href="/dich-vu-tu-van/@CategorySlug(category)-@category.CatId">@category.Title</a>
-                        }
-                    </div>
-                </div>
-
-                <a href="/tin-su-kien">@T("Tin tức sự kiện", "News & Events")</a>
-                <a href="/tim-mua-cong-nghe">@T("Tìm mua", "Technology Demand")</a>
-                <a class="site-menu-offcanvas__ocop" href="/ocop"><i class="bi bi-star-fill"></i> OCOP &amp; Truy xuất nguồn gốc</a>
+                @* Menu chính data-driven từ bảng Menu (MenuPosition="1"), song ngữ theo /en. *@
+                @await Component.InvokeAsync("SiteHeaderMenu", new { variant = "mobile" })
                 <a href="/Search">@T("Tìm kiếm", "Search")</a>
             </nav>
 
@@ -242,10 +148,10 @@
             }
             else
             {
-                <button type="button" class="site-menu-offcanvas__login" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="offcanvas">
+                <button type="button" class="site-menu-offcanvas__login" data-modal-target="#loginModal">
                     <i class="bi bi-person-circle"></i> @T("Đăng nhập", "Log in")
                 </button>
-                <button type="button" class="site-menu-offcanvas__login" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="offcanvas">
+                <button type="button" class="site-menu-offcanvas__login" data-modal-target="#registerModal">
                     <i class="bi bi-person-plus"></i> @T("Đăng ký", "Sign up")
                 </button>
             }
@@ -290,5 +196,32 @@
                 sub.hidden = expanded;
             });
         });
+
+        // Menu mobile (offcanvas): đóng menu dứt điểm khi mở modal đăng nhập/đăng ký
+        // hoặc khi bấm link điều hướng — tránh menu/backdrop kẹt lại phải bấm X thủ công.
+        var siteMenu = document.getElementById('siteMenuOffcanvas');
+        if (siteMenu && window.bootstrap) {
+            // Đóng offcanvas TRƯỚC, khi đóng xong mới mở modal (tránh xung đột backdrop)
+            siteMenu.querySelectorAll('[data-modal-target]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var modalEl = document.querySelector(btn.getAttribute('data-modal-target'));
+                    if (!modalEl) return;
+                    var oc = bootstrap.Offcanvas.getOrCreateInstance(siteMenu);
+                    siteMenu.addEventListener('hidden.bs.offcanvas', function handler() {
+                        siteMenu.removeEventListener('hidden.bs.offcanvas', handler);
+                        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                    });
+                    oc.hide();
+                });
+            });
+
+            // Đóng menu khi bấm bất kỳ link điều hướng nào bên trong
+            siteMenu.querySelectorAll('a[href]').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    var oc = bootstrap.Offcanvas.getInstance(siteMenu);
+                    if (oc) oc.hide();
+                });
+            });
+        }
     });
 </script>
