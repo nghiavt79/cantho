@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.Enums;
 using TechExchangeApp.Interfaces;
 
 namespace TechExchangeApp.Controllers
 {
     /// <summary>
-    /// "Yêu cầu Sàn hỗ trợ" — thành viên dự án tạo hội thoại hỗ trợ ở bất kỳ bước nào.
-    /// Tái dùng hạ tầng Chat (ChatConversation type=2).
+    /// Thành viên dự án tạo ticket hỗ trợ/tư vấn Trung tâm ở bất kỳ bước nào.
+    /// Tái dùng hạ tầng Chat (ChatConversation type=2), mỗi yêu cầu là một ticket riêng.
     /// </summary>
     [Authorize]
     public class SupportController : Controller
@@ -61,11 +62,45 @@ namespace TechExchangeApp.Controllers
             int step = request.StepNumber.GetValueOrDefault(1);
             if (step < 1 || step > 14) step = 1;
 
-            var message = (request.Message ?? "").Trim();
+            var message = (request.Message ?? request.Description ?? "").Trim();
             if (message.Length > 2000) message = message.Substring(0, 2000);
+            if (string.IsNullOrWhiteSpace(message))
+                return BadRequest(new { success = false, error = "Vui lòng nhập nội dung cần hỗ trợ." });
+
+            int requestType = request.RequestType == (int)SupportRequestType.TransactionConsulting
+                ? (int)SupportRequestType.TransactionConsulting
+                : (int)SupportRequestType.GeneralSupport;
+            int? serviceType = null;
+            if (requestType == (int)SupportRequestType.TransactionConsulting)
+            {
+                serviceType = request.ServiceType;
+                var validServiceTypes = new[]
+                {
+                    (int)SupportServiceType.SupplierMatching,
+                    (int)SupportServiceType.ProposalEvaluation,
+                    (int)SupportServiceType.NegotiationAdvice,
+                    (int)SupportServiceType.LegalReview,
+                    (int)SupportServiceType.ElectronicContractSupport,
+                    (int)SupportServiceType.Other
+                };
+                if (!serviceType.HasValue || !validServiceTypes.Contains(serviceType.Value))
+                    return BadRequest(new { success = false, error = "Vui lòng chọn loại tư vấn hợp lệ." });
+            }
 
             var conversationId = await _chatService.StartSupportConversationAsync(
-                request.ProjectId, userId, step, message);
+                request.ProjectId,
+                userId,
+                new SupportStartOptions
+                {
+                    StepNumber = step,
+                    RequestType = requestType,
+                    ServiceType = serviceType,
+                    SupportContextCode = request.SupportContextCode,
+                    DisplayStepNumber = step,
+                    InternalStepNumber = step,
+                    Subject = request.Subject,
+                    Description = message
+                });
 
             return Ok(new { success = true, conversationId, redirectUrl = $"/chat/{conversationId}" });
         }
@@ -102,6 +137,11 @@ namespace TechExchangeApp.Controllers
     {
         public int ProjectId { get; set; }
         public int? StepNumber { get; set; }
+        public int RequestType { get; set; } = 1;
+        public int? ServiceType { get; set; }
+        public string? SupportContextCode { get; set; }
+        public string? Subject { get; set; }
+        public string? Description { get; set; }
         public string Message { get; set; } = "";
     }
 }

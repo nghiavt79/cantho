@@ -243,9 +243,18 @@
                         <textarea asp-for="GiaBanDuKien" id="editorGiaBan" class="form-control ck-editor-field-tab3" rows="20" placeholder="Loại/Quy mô/Hình thức sở hữu&#10;Mô tả chi tiết&#10;Giá bán dự kiến"></textarea>
                     </div>
 
-                    <!-- 11. Bảo hành & Hỗ trợ -->
+                    <!-- 11. Cấu hình luồng giao dịch -->
+                    <div class="mb-3 p-3 border rounded bg-light">
+                        <div class="form-check">
+                            <input asp-for="CanDirectInquiry" class="form-check-input" type="checkbox" />
+                            <label asp-for="CanDirectInquiry" class="form-check-label fw-semibold">Cho phép liên hệ/gửi yêu cầu đặt mua trực tiếp</label>
+                        </div>
+                        <div class="form-text">Bật khi thiết bị/hàng hóa có thể liên hệ hoặc gửi yêu cầu quan tâm trực tiếp, không mặc định đi quy trình giao dịch/chuyển giao.</div>
+                    </div>
+
+                    <!-- 12. Bảo hành & Hỗ trợ -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">11. Chế độ bảo hành & Hỗ trợ kỹ thuật</label>
+                        <label class="form-label fw-semibold">12. Chế độ bảo hành & Hỗ trợ kỹ thuật</label>
                         <textarea asp-for="BaoHanhHoTro" id="editorBaoHanh" class="form-control ck-editor-field-tab3" rows="20"></textarea>
                     </div>
 

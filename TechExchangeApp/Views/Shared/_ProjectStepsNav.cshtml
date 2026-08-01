@@ -1,9 +1,19 @@
 @model List<TechExchangeApp.ViewModel.ProjectStepNavVm>
 
 @{
-    var visibleSteps = Model.Where(s => s.IsVisible).ToList();
+    const string mergedStepName = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
+    var sourceSteps = Model.Where(s => s.IsVisible).ToList();
+    var visibleSteps = sourceSteps.Where(s => s.StepNumber != 6).ToList();
     var totalVisible = visibleSteps.Count;
-    var completedCount = visibleSteps.Count(s => s.StatusId > 0);
+    bool IsDisplayStepCompleted(TechExchangeApp.ViewModel.ProjectStepNavVm step)
+    {
+        if (step.IsNotApplicable) return true;
+        if (step.StepNumber != 5) return step.StatusId > 0;
+
+        var legalReviewStep = sourceSteps.FirstOrDefault(s => s.StepNumber == 6);
+        return step.StatusId > 0 && (legalReviewStep == null || legalReviewStep.StatusId > 0);
+    }
+    var completedCount = visibleSteps.Count(IsDisplayStepCompleted);
     var progressPercent = totalVisible > 0 ? (int)Math.Round((completedCount / (double)totalVisible) * 100) : 0;
     var isComplete = totalVisible > 0 && completedCount == totalVisible;
 }
@@ -31,9 +41,18 @@
                 @for (var i = 0; i < visibleSteps.Count; i++)
                 {
                     var step = visibleSteps[i];
-                    var stepClass = step.IsNotApplicable ? "not-applicable" : (step.StatusId > 0 ? "completed" : (step.IsCurrent ? "current" : "pending"));
-                    var badgeClass = step.IsNotApplicable ? "bg-light text-muted" : (step.StatusId > 0 ? "bg-success" : (step.IsCurrent ? "bg-primary" : "bg-light text-muted"));
-                    var connectorFilled = i > 0 && (visibleSteps[i - 1].StatusId > 0 || visibleSteps[i - 1].IsNotApplicable);
+                    var relatedLegalStep = step.StepNumber == 5 ? sourceSteps.FirstOrDefault(s => s.StepNumber == 6) : null;
+                    var targetStep = step.StepNumber == 5 && relatedLegalStep != null && step.StatusId > 0 && relatedLegalStep.IsAccessible
+                        ? relatedLegalStep
+                        : step;
+                    var displayStepNumber = i + 1;
+                    var displayStepName = step.StepNumber == 5 ? mergedStepName : step.StepName;
+                    var displayCurrent = step.IsCurrent || (relatedLegalStep?.IsCurrent == true);
+                    var displayCompleted = IsDisplayStepCompleted(step);
+                    var displayAccessible = step.IsAccessible || (relatedLegalStep?.IsAccessible == true);
+                    var stepClass = step.IsNotApplicable ? "not-applicable" : (displayCompleted ? "completed" : (displayCurrent ? "current" : "pending"));
+                    var badgeClass = step.IsNotApplicable ? "bg-light text-muted" : (displayCompleted ? "bg-success" : (displayCurrent ? "bg-primary" : "bg-light text-muted"));
+                    var connectorFilled = i > 0 && IsDisplayStepCompleted(visibleSteps[i - 1]);
 
                     <li class="nav-item step-item tx-workflow-step @stepClass @(connectorFilled ? "tx-connector-filled" : "")">
                         @if (step.IsNotApplicable)
@@ -41,31 +60,31 @@
                             <span class="nav-link disabled tx-workflow-node-link not-applicable" aria-disabled="true"
                                   title="Sản phẩm không yêu cầu thỏa thuận bảo mật">
                                 <span class="step-circle tx-workflow-node @badgeClass"><i class="fas fa-minus" aria-hidden="true"></i></span>
-                                <span class="step-name tx-workflow-label">@step.StepName <small class="text-muted d-block">(Không áp dụng)</small></span>
+                                <span class="step-name tx-workflow-label">@displayStepName <small class="text-muted d-block">(Không áp dụng)</small></span>
                             </span>
                         }
-                        else if (step.IsAccessible)
+                        else if (displayAccessible)
                         {
-                            <a class="nav-link step-link tx-workflow-node-link @stepClass" href="#" data-step="@step.StepNumber"
-                               aria-current="@(step.IsCurrent ? "step" : null)">
+                            <a class="nav-link step-link tx-workflow-node-link @stepClass" href="#" data-step="@targetStep.StepNumber"
+                               aria-current="@(displayCurrent ? "step" : null)">
                                 <span class="step-circle tx-workflow-node @badgeClass">
-                                    @if (step.StatusId > 0)
+                                    @if (displayCompleted)
                                     {
                                         <i class="fas fa-check" aria-hidden="true"></i>
                                     }
                                     else
                                     {
-                                        <span>@step.StepNumber.ToString("D2")</span>
+                                        <span>@displayStepNumber.ToString("D2")</span>
                                     }
                                 </span>
-                                <span class="step-name tx-workflow-label">@step.StepName</span>
+                                <span class="step-name tx-workflow-label">@displayStepName</span>
                             </a>
                         }
                         else
                         {
                             <span class="nav-link disabled tx-workflow-node-link @stepClass" aria-disabled="true">
-                                <span class="step-circle tx-workflow-node @badgeClass">@step.StepNumber.ToString("D2")</span>
-                                <span class="step-name tx-workflow-label">@step.StepName</span>
+                                <span class="step-circle tx-workflow-node @badgeClass">@displayStepNumber.ToString("D2")</span>
+                                <span class="step-name tx-workflow-label">@displayStepName</span>
                             </span>
                         }
                     </li>

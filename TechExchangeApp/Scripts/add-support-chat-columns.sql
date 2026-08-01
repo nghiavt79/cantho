@@ -1,12 +1,11 @@
 /* ============================================================================
-   Tính năng "Yêu cầu Sàn hỗ trợ" — bổ sung cột hỗ trợ vào bảng ChatConversations.
-   Idempotent: chạy lại nhiều lần không lỗi, không đụng dữ liệu cũ.
-   Không dùng EF migration (theo quyết định dự án).
+   Support chat columns for ChatConversations.
+   Idempotent script, no EF migration.
+   Ticket layer now allows multiple active support requests per project/requester,
+   so the old unique active-support index is dropped if present.
    ============================================================================ */
 
 SET NOCOUNT ON;
-
-/* ── 1. Thêm cột (chỉ khi chưa có) ─────────────────────────────────────────── */
 
 IF COL_LENGTH('dbo.ChatConversations', 'ConversationType') IS NULL
 BEGIN
@@ -43,9 +42,6 @@ BEGIN
 END
 GO
 
-/* ── 2. Backfill dữ liệu cũ = chat sản phẩm ────────────────────────────────── */
-/* (NOT NULL + DEFAULT đã tự set khi ADD; câu dưới chỉ để chắc chắn với mọi row.) */
-
 UPDATE dbo.ChatConversations
 SET ConversationType = 1
 WHERE ConversationType IS NULL;
@@ -54,8 +50,6 @@ UPDATE dbo.ChatConversations
 SET SupportStatus = 0
 WHERE SupportStatus IS NULL;
 GO
-
-/* ── 3. Index thường ───────────────────────────────────────────────────────── */
 
 IF NOT EXISTS (SELECT 1 FROM sys.indexes
                WHERE name = 'IX_ChatConversations_Type_Project_Buyer'
@@ -76,36 +70,12 @@ BEGIN
 END
 GO
 
-/* ── 4. Unique filtered index: 1 support active / (dự án, người gửi) ─────────── */
-/* Chỉ tạo khi KHÔNG còn duplicate active; nếu có thì cảnh báo, không làm chết deploy. */
-
-IF NOT EXISTS (SELECT 1 FROM sys.indexes
-               WHERE name = 'UX_ChatConversations_Support_Active'
-                 AND object_id = OBJECT_ID('dbo.ChatConversations'))
+IF EXISTS (SELECT 1 FROM sys.indexes
+           WHERE name = 'UX_ChatConversations_Support_Active'
+             AND object_id = OBJECT_ID('dbo.ChatConversations'))
 BEGIN
-    IF EXISTS (
-        SELECT ProjectId, BuyerUserId
-        FROM dbo.ChatConversations
-        WHERE ConversationType = 2
-          AND ProjectId IS NOT NULL
-          AND SupportStatus >= 1 AND SupportStatus <= 2
-        GROUP BY ProjectId, BuyerUserId
-        HAVING COUNT(*) > 1
-    )
-    BEGIN
-        PRINT 'WARNING: Tồn tại nhiều support conversation active trùng (ProjectId, BuyerUserId). '
-            + 'Bỏ qua tạo unique index UX_ChatConversations_Support_Active. '
-            + 'Hãy dọn trùng rồi chạy lại script.';
-    END
-    ELSE
-    BEGIN
-        CREATE UNIQUE INDEX UX_ChatConversations_Support_Active
-            ON dbo.ChatConversations (ProjectId, BuyerUserId)
-            WHERE ConversationType = 2
-              AND ProjectId IS NOT NULL
-              AND SupportStatus >= 1 AND SupportStatus <= 2;
-        PRINT 'Created unique filtered index UX_ChatConversations_Support_Active.';
-    END
+    DROP INDEX UX_ChatConversations_Support_Active ON dbo.ChatConversations;
+    PRINT 'Dropped obsolete unique index UX_ChatConversations_Support_Active.';
 END
 GO
 

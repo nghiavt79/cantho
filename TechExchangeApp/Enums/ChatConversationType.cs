@@ -6,7 +6,7 @@ namespace TechExchangeApp.Enums
         /// <summary>Chat sản phẩm giữa người mua và nhà cung ứng.</summary>
         Product = 1,
 
-        /// <summary>Yêu cầu Sàn hỗ trợ trong một dự án.</summary>
+        /// <summary>Yêu cầu Trung tâm hỗ trợ/tư vấn trong một dự án.</summary>
         PlatformSupport = 2
     }
 }

@@ -108,11 +108,11 @@
     }
 }
 
-<div class="card shadow-sm border-0">
-    <div class="card-header d-flex justify-content-between align-items-center"
-         style="background:linear-gradient(135deg,#1565c0,#1e88e5);color:#fff">
+<div class="card border-0 @(ViewBag.IsCombinedStep5 == true ? "shadow-none mb-0" : "shadow-sm")">
+    <div class="card-header d-flex justify-content-between align-items-center @(ViewBag.IsCombinedStep5 == true ? "bg-light text-dark border-bottom" : "")"
+         style="@(ViewBag.IsCombinedStep5 == true ? "" : "background:linear-gradient(135deg,#1565c0,#1e88e5);color:#fff")">
         <h5 class="mb-0">
-            <i class="fas fa-file-contract me-2"></i>Bước 6: Kiểm tra pháp lý &amp; Hợp đồng
+            <i class="fas fa-file-contract me-2"></i>@(ViewBag.IsCombinedStep5 == true ? "Kiểm tra pháp lý hợp đồng" : "Bước 5: Đàm phán thương mại / Kiểm tra pháp lý hợp đồng")
         </h5>
         @if (ct != null)
         {
@@ -129,8 +129,8 @@
             <div class="alert alert-warning d-flex gap-2 align-items-start">
                 <i class="fas fa-lock fa-2x mt-1"></i>
                 <div>
-                    <strong>Bước này chưa được mở khóa.</strong><br/>
-                    Hoàn thành Bước 5 (Đàm phán – cả 2 bên đã ký) để kích hoạt.
+                    <strong>Phần này chưa được mở khóa.</strong><br/>
+                    Hoàn thành phần Đàm phán ở trên (cả 2 bên đã ký) để kích hoạt.
                 </div>
             </div>
         }
@@ -419,7 +419,7 @@
                             <div class="card-body text-center">
                                 <p class="fw-bold text-primary"><i class="fas fa-signature me-1"></i>Sẵn sàng ký số</p>
                                 <button class="btn btn-success w-100 py-2 step-nav-btn" data-step="7">
-                                    <i class="fas fa-arrow-right me-1"></i>Đến Bước 7 – Ký hợp đồng
+                                    <i class="fas fa-arrow-right me-1"></i>Đến Bước 6 – Ký hợp đồng
                                 </button>
                             </div>
                         </div>
@@ -458,17 +458,20 @@
         }
     </div>
 
-    <div class="card-footer bg-white d-flex justify-content-between">
-        <button class="btn btn-outline-secondary step-nav-btn" data-step="@(Model.StepNumber - 1)">
-            <i class="fas fa-arrow-left"></i> Quay lại
-        </button>
-        @if (Model.StepNumber < 11 && Model.Steps.Count > Model.StepNumber && Model.Steps[Model.StepNumber].IsAccessible)
-        {
-            <button class="btn btn-primary step-nav-btn" data-step="@(Model.StepNumber + 1)">
-                Bước @(Model.StepNumber + 1) <i class="fas fa-arrow-right"></i>
+    @if (ViewBag.IsCombinedStep5 != true)
+    {
+        <div class="card-footer bg-white d-flex justify-content-between">
+            <button class="btn btn-outline-secondary step-nav-btn" data-step="@(Model.StepNumber - 1)">
+                <i class="fas fa-arrow-left"></i> Quay lại
             </button>
-        }
-    </div>
+            @if (Model.StepNumber < 11 && Model.Steps.Count > Model.StepNumber && Model.Steps[Model.StepNumber].IsAccessible)
+            {
+                <button class="btn btn-primary step-nav-btn" data-step="@(Model.StepNumber + 1)">
+                    Bước 6: Ký hợp đồng <i class="fas fa-arrow-right"></i>
+                </button>
+            }
+        </div>
+    }
 </div>
 
 <!-- Upload Modal -->

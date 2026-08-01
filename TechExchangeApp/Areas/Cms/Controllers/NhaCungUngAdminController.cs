@@ -33,6 +33,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
     public class NhaCungUngFormVm
     {
         public int CungUngId { get; set; }
+        public int? OriginalId { get; set; }   // id bản gốc VI khi tạo bản EN nhập tay
         public string? FullName { get; set; }
         public string? QueryString { get; set; }
         public string? HinhDaiDien { get; set; }
@@ -114,9 +115,12 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             int page = 1, int pageSize = 30)
         {
             var configSiteId = GetSiteId();
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext); // ngôn ngữ chung
+            ViewBag.Lang = lang;
 
             var query = _context.NhaCungUngs.AsNoTracking()
-                .Where(n => n.SiteId == null || n.SiteId == configSiteId);
+                .Where(n => (n.SiteId == null || n.SiteId == configSiteId)
+                    && (n.LanguageId ?? 1) == lang);
 
             // Filters
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -285,16 +289,35 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         }
 
         // ── CREATE GET ──
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? fromId)
         {
-            var vm = new NhaCungUngFormVm
+            // fromId: tạo bản EN nhập tay từ 1 nhà cung ứng VI (fallback khi không có key)
+            var src = fromId.HasValue
+                ? await _context.NhaCungUngs.AsNoTracking().FirstOrDefaultAsync(x => x.CungUngId == fromId.Value)
+                : null;
+
+            NhaCungUngFormVm vm;
+            if (src != null)
             {
-                LanguageId = 1,
-                Domain = GetDomain(),
-                SiteId = GetSiteId(),
-                StatusId = 1,
-                IsActivated = false
-            };
+                vm = MapToVm(src);
+                vm.CungUngId = 0;
+                vm.LanguageId = 2;
+                vm.OriginalId = fromId;
+                vm.QueryString = null;
+                TechExchangeApp.Helpers.CmsLangHelper.Set(HttpContext, 2);
+            }
+            else
+            {
+                vm = new NhaCungUngFormVm
+                {
+                    LanguageId = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext),
+                    Domain = GetDomain(),
+                    SiteId = GetSiteId(),
+                    StatusId = 1,
+                    IsActivated = false
+                };
+            }
+            ViewData["Title"] = src != null ? "Nhập bản tiếng Anh (dịch tay)" : "Thêm nhà cung ứng";
             await LoadFormSelectListsAsync();
             return View(vm);
         }
@@ -579,6 +602,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             Rating = vm.Rating,
             ParentId = vm.ParentId,
             LanguageId = vm.LanguageId,
+            OriginalId = vm.OriginalId,
             Keywords = vm.Keywords,
             Domain = vm.Domain,
             SiteId = vm.SiteId,
@@ -596,6 +620,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         private NhaCungUngFormVm MapToVm(NhaCungUng e) => new()
         {
             CungUngId = e.CungUngId,
+            OriginalId = e.OriginalId,
             FullName = e.FullName,
             QueryString = e.QueryString,
             HinhDaiDien = e.HinhDaiDien,

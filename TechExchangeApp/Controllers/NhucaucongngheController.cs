@@ -151,10 +151,22 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 q.PublishedDate <= DateTime.Now &&
                 (q.eEffectiveDate >= DateTime.Now || q.eEffectiveDate == null));
 
-            // Lọc lĩnh vực
-            if (!string.IsNullOrEmpty(vm.SelectedLinhVuc) && vm.SelectedLinhVuc != ";;")
+            // Lọc lĩnh vực theo token CatId chính xác. Không dùng Contains(id) trần vì
+            // CatId=4 có thể match nhầm ;14;, ;40;, ;104;...
+            if (int.TryParse(vm.SelectedLinhVuc, out var selectedLinhVucId))
             {
-                query = query.Where(q => q.LinhVucId != null && q.LinhVucId.Contains(vm.SelectedLinhVuc));
+                var id = selectedLinhVucId.ToString();
+                query = query.Where(q =>
+                    q.LinhVucId != null &&
+                    (
+                        q.LinhVucId == id ||
+                        q.LinhVucId.StartsWith(id + ";") ||
+                        q.LinhVucId.EndsWith(";" + id) ||
+                        q.LinhVucId.Contains(";" + id + ";") ||
+                        q.LinhVucId.StartsWith(id + ",") ||
+                        q.LinhVucId.EndsWith("," + id) ||
+                        q.LinhVucId.Contains("," + id + ",")
+                    ));
             }
 
             // Tìm kiếm từ khóa (Title / Description / Keyword)

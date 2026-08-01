@@ -67,7 +67,8 @@ namespace TechExchangeApp.Services
                             title       = notification.Title,
                             content     = notification.Content,
                             createdDate = notification.CreatedDate,
-                            projectId   = notification.ProjectId
+                            projectId   = notification.ProjectId,
+                            url         = notification.Url
                         }, cancellationToken);
                 }
                 return;
@@ -128,7 +129,8 @@ namespace TechExchangeApp.Services
                             title       = notification.Title,
                             content     = notification.Content,
                             createdDate = notification.CreatedDate,
-                            projectId   = notification.ProjectId
+                            projectId   = notification.ProjectId,
+                            url         = notification.Url
                         }, cancellationToken);
                 }
             }

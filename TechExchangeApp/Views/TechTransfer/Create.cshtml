@@ -1,129 +1,206 @@
 @using TechExchangeApp.Interfaces
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration
 @using TechExchangeApp.Entities
 @inject IAccountService AccountService
 @inject UserManager<ApplicationUser> UserManager
+@inject IConfiguration Configuration
 
 @model TechExchangeApp.Entities.TechTransferRequest
 
 @{
-    ViewData["Title"] = "PHIẾU YÊU CẦU CHUYỂN GIAO CÔNG NGHỆ";
+    ViewData["Title"] = "Gửi yêu cầu chuyển giao công nghệ";
     ViewData["AuthWorkspace"] = true;
     var linhVucList = ViewBag.LinhVucList as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ?? new();
+    var hasAccountEmail = !string.IsNullOrWhiteSpace(Model?.Email);
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
+
+    var supportPhone = Configuration["SiteBranding:Phone"] ?? "";
+    var supportEmail = Configuration["SiteBranding:Email"] ?? "";
+    var workingHours = Configuration["SiteBranding:WorkingHours"] ?? "";
 }
 
 <div class="container-fluid py-4 user-portal">
-  <div class="row">
-    <!-- Sidebar -->
-    <div class="col-md-3 col-lg-2">
-      @await Html.PartialAsync("_AccountSidebar", sidebarData)
-    </div>
-
-    <!-- Main Content -->
-    <div class="col-md-9 col-lg-10 user-portal-main">
-<div class="container user-tech-transfer-form" style="max-width:900px;">
-    <div class="card shadow">
-        <div class="card-header">
-            <h2 class="h4 mb-0"><i class="fas fa-file-signature me-2"></i>@ViewData["Title"]</h2>
+    <div class="row">
+        <div class="col-md-3 col-lg-2">
+            @await Html.PartialAsync("_AccountSidebar", sidebarData)
         </div>
-        <div class="card-body">
-            <form asp-action="Create" method="post">
-                @Html.AntiForgeryToken()
-                <input type="hidden" asp-for="FromId" />
-                <input type="hidden" asp-for="TypeData" />
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                <div class="row">
-                    <!-- Thông tin liên hệ -->
-                    <div class="col-md-12 mb-4">
-                        <h5 class="text-primary border-bottom pb-2 mb-3">Thông tin liên hệ</h5>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label asp-for="HoTen" class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                                <input asp-for="HoTen" class="form-control" placeholder="Nhập họ và tên" />
-                                <span asp-validation-for="HoTen" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="ChucVu" class="form-label">Chức vụ</label>
-                                <input asp-for="ChucVu" class="form-control" />
-                                <span asp-validation-for="ChucVu" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="DonVi" class="form-label">Đơn vị</label>
-                                <input asp-for="DonVi" class="form-control" />
-                                <span asp-validation-for="DonVi" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="DiaChi" class="form-label">Địa chỉ</label>
-                                <input asp-for="DiaChi" class="form-control" />
-                                <span asp-validation-for="DiaChi" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="DienThoai" class="form-label">Điện thoại <span class="text-danger">*</span></label>
-                                <input asp-for="DienThoai" class="form-control" />
-                                <span asp-validation-for="DienThoai" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
-                                <input asp-for="Email" class="form-control" type="email" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
+        <div class="col-md-9 col-lg-10 user-portal-main">
+            <div class="user-tech-transfer-form">
+                <div class="tech-transfer-shell">
+                    <form asp-action="Create" method="post" class="tech-transfer-card">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="FromId" />
+                        <input type="hidden" asp-for="TypeData" />
+
+                        <div class="tech-transfer-header">
+                            <p class="tech-transfer-eyebrow">Yêu cầu giao dịch công nghệ</p>
+                            <h1>Gửi yêu cầu chuyển giao công nghệ</h1>
+                            <p>Cung cấp thông tin về công nghệ cần tìm. Trung tâm sẽ tiếp nhận, đánh giá và hỗ trợ kết nối với đơn vị phù hợp.</p>
                         </div>
-                    </div>
 
-                    <!-- Thông tin nhu cầu -->
-                    <div class="col-md-12">
-                        <h5 class="text-primary border-bottom pb-2 mb-3">Thông tin nhu cầu công nghệ</h5>
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label asp-for="TenCongNghe" class="form-label">Tên công nghệ yêu cầu <span class="text-danger">*</span></label>
-                                <input asp-for="TenCongNghe" class="form-control" placeholder="Nhập tên công nghệ cần chuyển giao" />
-                                <span asp-validation-for="TenCongNghe" class="text-danger"></span>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mx-4 mt-4 mb-0" role="alert"></div>
+
+                        <section class="tech-form-section">
+                            <div class="tech-section-heading">
+                                <span>01</span>
+                                <div>
+                                    <h2>Thông tin người liên hệ</h2>
+                                    <p>Thông tin này giúp Trung tâm liên hệ và xác minh nhu cầu khi cần.</p>
+                                </div>
                             </div>
-                            <div class="col-12">
-                                <label asp-for="MoTaNhuCau" class="form-label">Mô tả chi tiết nhu cầu <span class="text-danger">*</span></label>
-                                <textarea asp-for="MoTaNhuCau" class="form-control" rows="5" placeholder="Mô tả chi tiết về công nghệ, thông số kỹ thuật, yêu cầu cụ thể..."></textarea>
-                                <span asp-validation-for="MoTaNhuCau" class="text-danger"></span>
+
+                            <div class="row g-3 g-lg-4">
+                                <div class="col-md-6">
+                                    <label asp-for="HoTen" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                    <input asp-for="HoTen" class="form-control" autocomplete="name" placeholder="Nhập họ và tên" />
+                                    <span asp-validation-for="HoTen" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="DienThoai" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                    <input asp-for="DienThoai" class="form-control" type="tel" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại" />
+                                    <span asp-validation-for="DienThoai" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="DonVi" class="form-label">Đơn vị/Công ty</label>
+                                    <input asp-for="DonVi" class="form-control" autocomplete="organization" placeholder="Tên đơn vị hoặc công ty" />
+                                    <span asp-validation-for="DonVi" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="ChucVu" class="form-label">Chức vụ</label>
+                                    <input asp-for="ChucVu" class="form-control" autocomplete="organization-title" placeholder="Chức vụ của người liên hệ" />
+                                    <span asp-validation-for="ChucVu" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input asp-for="Email" class="form-control" type="email" autocomplete="email" readonly="@hasAccountEmail" placeholder="Nhập email liên hệ" />
+                                    @if (hasAccountEmail)
+                                    {
+                                        <div class="form-text">Email này được lấy từ hồ sơ tài khoản.</div>
+                                    }
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="DiaChi" class="form-label">Địa chỉ</label>
+                                    <input asp-for="DiaChi" class="form-control" autocomplete="street-address" placeholder="Địa chỉ liên hệ" />
+                                    <span asp-validation-for="DiaChi" class="text-danger small"></span>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="LinhVuc" class="form-label">Lĩnh vực</label>
-                                <select asp-for="LinhVuc" asp-items="linhVucList"
-                                        class="form-select" id="selectLinhVuc">
-                                    <option value="">-- Chọn lĩnh vực --</option>
-                                </select>
-                                <span asp-validation-for="LinhVuc" class="text-danger"></span>
+                        </section>
+
+                        <section class="tech-form-section">
+                            <div class="tech-section-heading">
+                                <span>02</span>
+                                <div>
+                                    <h2>Thông tin nhu cầu công nghệ</h2>
+                                    <p>Mô tả càng chi tiết, kết quả đánh giá và kết nối càng chính xác.</p>
+                                </div>
                             </div>
-                             <div class="col-md-6">
-                                <label asp-for="NganSachDuKien" class="form-label">Ngân sách dự kiến (VNĐ)</label>
-                                <input type="text" class="form-control" id="txtNganSachDisplay"
-                                       placeholder="0" inputmode="numeric"
-                                       value="@(Model?.NganSachDuKien > 0 ? Model.NganSachDuKien?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) : "")" />
-                                <input asp-for="NganSachDuKien" type="hidden" id="hdnNganSach" />
-                                <span asp-validation-for="NganSachDuKien" class="text-danger"></span>
+
+                            <div class="row g-3 g-lg-4">
+                                <div class="col-12">
+                                    <label asp-for="TenCongNghe" class="form-label">Tên công nghệ cần tìm <span class="text-danger">*</span></label>
+                                    <input asp-for="TenCongNghe" class="form-control" placeholder="Ví dụ: Hệ thống xử lý nước tuần hoàn cho nuôi thủy sản" />
+                                    <span asp-validation-for="TenCongNghe" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="LinhVuc" class="form-label">Lĩnh vực</label>
+                                    <select asp-for="LinhVuc" asp-items="linhVucList" class="form-select" id="selectLinhVuc">
+                                        <option value="">Tìm và chọn lĩnh vực công nghệ</option>
+                                    </select>
+                                    <span asp-validation-for="LinhVuc" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="NganSachDuKien" class="form-label">Ngân sách dự kiến</label>
+                                    <input type="text" class="form-control" id="txtNganSachDisplay"
+                                           placeholder="Nhập ngân sách dự kiến" inputmode="numeric"
+                                           value="@(Model?.NganSachDuKien > 0 ? Model.NganSachDuKien?.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")) : "")" />
+                                    <input asp-for="NganSachDuKien" type="hidden" id="hdnNganSach" />
+                                    <div class="form-check tech-budget-check">
+                                        <input class="form-check-input" type="checkbox" id="chkBudgetDiscuss" />
+                                        <label class="form-check-label" for="chkBudgetDiscuss">Trao đổi khi kết nối</label>
+                                    </div>
+                                    <span asp-validation-for="NganSachDuKien" class="text-danger small"></span>
+                                </div>
+                                <div class="col-12">
+                                    <div class="tech-label-row">
+                                        <label asp-for="MoTaNhuCau" class="form-label">Mô tả chi tiết nhu cầu <span class="text-danger">*</span></label>
+                                        <span id="needCounter">0/2000</span>
+                                    </div>
+                                    <textarea asp-for="MoTaNhuCau" class="form-control tech-need-textarea" id="txtMoTaNhuCau" maxlength="2000" rows="6"
+                                              placeholder="Mô tả công nghệ hoặc giải pháp cần tìm, thông số kỹ thuật, công suất, mục đích sử dụng, tiêu chuẩn cần đáp ứng và các yêu cầu liên quan."></textarea>
+                                    <div class="form-text">Thông tin càng chi tiết, kết quả kết nối càng chính xác.</div>
+                                    <span asp-validation-for="MoTaNhuCau" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 d-none">
+                                    <label asp-for="ProjectId" class="form-label">Hồ sơ liên quan (ID)</label>
+                                    <input asp-for="ProjectId" class="form-control" />
+                                    <span asp-validation-for="ProjectId" class="text-danger small"></span>
+                                </div>
                             </div>
-                             <div class="col-md-6" style="display:none;">
-                                <label asp-for="ProjectId" class="form-label">Dự án liên quan (ID)</label>
-                                <input asp-for="ProjectId" class="form-control" />
-                                <span asp-validation-for="ProjectId" class="text-danger"></span>
+                        </section>
+
+                        <section class="tech-form-section tech-confirm-section">
+                            <div class="tech-section-heading">
+                                <span>03</span>
+                                <div>
+                                    <h2>Xác nhận thông tin</h2>
+                                    <p>Thông tin yêu cầu chỉ được sử dụng để đánh giá và kết nối với các đơn vị phù hợp.</p>
+                                </div>
                             </div>
+                            <label class="tech-consent">
+                                <input type="checkbox" required />
+                                <span>Tôi đồng ý để Trung tâm liên hệ hỗ trợ theo nội dung yêu cầu này.</span>
+                            </label>
+                        </section>
+
+                        <div class="tech-form-actions">
+                            <a asp-controller="Projects" asp-action="MyProjects" class="btn btn-outline-secondary">Quay lại</a>
+                            <button type="submit" class="btn btn-primary" id="btnSubmitTechTransfer">
+                                <i class="fas fa-paper-plane me-2"></i><span>Gửi yêu cầu</span>
+                            </button>
                         </div>
-                    </div>
-                </div>
+                    </form>
 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                    <a asp-controller="Projects" asp-action="MyProjects" class="btn btn-secondary me-md-2">Quay lại</a>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane me-2"></i>Gửi yêu cầu</button>
+                    <aside class="tech-transfer-support">
+                        <h2>Cần hỗ trợ?</h2>
+                        @if (!string.IsNullOrWhiteSpace(supportPhone))
+                        {
+                            <div class="support-item">
+                                <i class="fas fa-phone"></i>
+                                <span>Hotline Trung tâm</span>
+                                <strong>@supportPhone</strong>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(supportEmail))
+                        {
+                            <div class="support-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>Email hỗ trợ</span>
+                                <strong>@supportEmail</strong>
+                            </div>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(workingHours))
+                        {
+                            <div class="support-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Thời gian tiếp nhận</span>
+                                <strong>@workingHours</strong>
+                            </div>
+                        }
+                        <div class="support-note">
+                            <i class="fas fa-shield-alt"></i>
+                            <p>Thông tin của bạn được bảo mật và chỉ dùng cho quy trình đánh giá, tư vấn, kết nối chuyển giao công nghệ.</p>
+                        </div>
+                    </aside>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-    </div><!-- End Main Content -->
-  </div><!-- End row -->
-</div><!-- End container-fluid -->
 
 @section Styles {
     <link rel="stylesheet" href="~/css/user-portal.css" asp-append-version="true" />
@@ -134,37 +211,53 @@
 
     <script>
         $(function () {
-            // Select2 searchable dropdown for Lĩnh vực
             $('#selectLinhVuc').select2({
                 theme: 'bootstrap-5',
-                placeholder: '-- Chọn lĩnh vực --',
+                placeholder: 'Tìm và chọn lĩnh vực công nghệ',
                 allowClear: true,
                 width: '100%'
             });
 
-            // Vietnamese currency formatting for Ngân sách
             var $display = $('#txtNganSachDisplay');
             var $hidden = $('#hdnNganSach');
+            var $budgetDiscuss = $('#chkBudgetDiscuss');
+            var $need = $('#txtMoTaNhuCau');
+            var $counter = $('#needCounter');
+            var $submit = $('#btnSubmitTechTransfer');
 
             function formatVND(value) {
                 var num = value.replace(/\D/g, '');
                 if (!num) return '';
-                return num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                return num.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
             }
 
-            $display.on('input', function () {
-                var raw = $(this).val().replace(/\D/g, '');
-                $(this).val(formatVND($(this).val()));
+            function syncBudget() {
+                if ($budgetDiscuss.is(':checked')) {
+                    $display.val('').prop('disabled', true);
+                    $hidden.val('');
+                    return;
+                }
+
+                $display.prop('disabled', false);
+                var raw = $display.val().replace(/\D/g, '');
                 $hidden.val(raw);
-            });
+                $display.val(formatVND(raw));
+            }
 
-            // Initialize hidden field from display value on load
-            var initVal = $display.val().replace(/\D/g, '');
-            if (initVal) $hidden.val(initVal);
+            function syncCounter() {
+                $counter.text(($need.val() || '').length + '/2000');
+            }
 
-            // Ensure hidden field is synced before form submit
+            $display.on('input', syncBudget);
+            $budgetDiscuss.on('change', syncBudget);
+            $need.on('input', syncCounter);
+
+            syncBudget();
+            syncCounter();
+
             $display.closest('form').on('submit', function () {
-                $hidden.val($display.val().replace(/\D/g, ''));
+                syncBudget();
+                $submit.prop('disabled', true).find('span').text('Đang gửi...');
             });
         });
     </script>

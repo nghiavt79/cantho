@@ -130,5 +130,17 @@
   "legalReview.comment.notFound": {
     "vi": "Không tìm thấy nhận xét.",
     "en": "Comment not found."
-  }
+  },
+
+  "common.home": { "vi": "Trang chủ", "en": "Home" },
+  "news.breadcrumb": { "vi": "Tin tức", "en": "News" },
+  "news.title": { "vi": "Tin tức - Sự kiện", "en": "News & Events" },
+  "news.desc": { "vi": "Cập nhật các hoạt động, chương trình, hội thảo và thông tin khoa học công nghệ mới nhất.", "en": "Latest activities, programs, seminars and science & technology updates." },
+  "news.search": { "vi": "Tìm kiếm tin tức", "en": "Search news" },
+  "news.searchPlaceholder": { "vi": "Nhập từ khóa tìm kiếm...", "en": "Enter keywords..." },
+  "common.search": { "vi": "Tìm kiếm", "en": "Search" },
+  "news.categories": { "vi": "Danh mục tin", "en": "News categories" },
+  "news.latest": { "vi": "Tin mới nhất", "en": "Latest news" },
+  "news.archive": { "vi": "Lưu trữ", "en": "Archive" },
+  "news.year": { "vi": "Năm", "en": "Year" }
 }

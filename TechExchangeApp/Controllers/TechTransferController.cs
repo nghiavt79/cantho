@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace TechExchangeApp.Controllers
 {
@@ -35,6 +36,32 @@ namespace TechExchangeApp.Controllers
             return userId;
         }
 
+        private static string CleanPrefillName(ApplicationUser user)
+        {
+            var fullName = user.FullName?.Trim();
+            if (string.IsNullOrWhiteSpace(fullName)) return "";
+
+            var email = user.Email?.Trim();
+            if (!string.IsNullOrWhiteSpace(email) &&
+                string.Equals(fullName, email, StringComparison.OrdinalIgnoreCase))
+            {
+                return "";
+            }
+
+            return fullName;
+        }
+
+        private static string CleanPrefillPhone(ApplicationUser user)
+        {
+            var phone = (user.Phone ?? user.PhoneNumber ?? "").Trim();
+            if (string.IsNullOrWhiteSpace(phone)) return "";
+
+            var compact = Regex.Replace(phone, @"[\s\.\-\(\)]", "");
+            if (!Regex.IsMatch(compact, @"^\+?\d{8,15}$")) return "";
+
+            return phone;
+        }
+
         // GET: /TechTransfer/Create?fromId=18&typeData=1
         [HttpGet]
         public async Task<IActionResult> Create(int? fromId = null, int? typeData = null)
@@ -54,8 +81,8 @@ namespace TechExchangeApp.Controllers
             var model = new TechTransferRequest();
             if (user != null)
             {
-                model.HoTen = user.FullName ?? "";
-                model.DienThoai = user.Phone ?? user.PhoneNumber ?? "";
+                model.HoTen = CleanPrefillName(user);
+                model.DienThoai = CleanPrefillPhone(user);
                 model.Email = user.Email ?? "";
                 model.DiaChi = user.DiaChi ?? "";
             }
@@ -107,10 +134,10 @@ namespace TechExchangeApp.Controllers
                         var userId = GetCurrentUserId();
 
                         // Truncate to match DB column limits
-                        var projectName = ("Dự án: " + model.TenCongNghe);
+                        var projectName = ("Hồ sơ giao dịch/chuyển giao: " + model.TenCongNghe);
                         if (projectName.Length > 500) projectName = projectName[..500];
 
-                        // 1. Create Project
+                        // 1. Create transaction dossier (stored in Project table)
                         var project = new Project
                         {
                             ProjectName = projectName,
@@ -148,7 +175,7 @@ namespace TechExchangeApp.Controllers
                         await _workflowService.InitializeProjectSteps(project.Id);
                         await _workflowService.CompleteStep(project.Id, 1);
 
-                         // Bước 2 (NDA) chỉ áp dụng khi sản phẩm CNTB yêu cầu thỏa thuận bảo mật
+                         // Bước 2 (NDA) chỉ áp dụng khi có yêu cầu thỏa thuận bảo mật từ cấu hình ban đầu hoặc các bên.
                          var requiresNda = false;
                          if (model.FromId.HasValue && (model.TypeData ?? 1) == 1)
                          {
@@ -158,12 +185,12 @@ namespace TechExchangeApp.Controllers
                                  .FirstOrDefaultAsync() == true;
                          }
                          var nextStepMsg = requiresNda
-                             ? "Tiến hành bước 2: Ký NDA."
-                             : "Sản phẩm không yêu cầu NDA, tiến hành bước 3: Yêu cầu báo giá (RFQ).";
+                             ? "Tiến hành bước 2: Thỏa thuận bảo mật (NDA)."
+                             : "Các bên chưa yêu cầu NDA, tiến hành bước 3: Yêu cầu báo giá (RFQ).";
 
-                         // Notify buyer: project created, proceed to next step
+                         // Notify buyer: dossier created, proceed to next step
                          await _notifQueue.QueueAsync(userId, project.Id,
-                             " Dự án đã được tạo",
+                             "Hồ sơ giao dịch/chuyển giao đã được tạo",
                              $"Yêu cầu chuyển giao '{model.TenCongNghe}' đã ghi nhận thành công. {nextStepMsg}");
 
                         await transaction.CommitAsync();
@@ -174,7 +201,7 @@ namespace TechExchangeApp.Controllers
                    {
                        await transaction.RollbackAsync();
                        var detail = ex.InnerException?.Message ?? ex.Message;
-                       ModelState.AddModelError("", "Lỗi tạo dự án: " + detail);
+                       ModelState.AddModelError("", "Lỗi tạo hồ sơ giao dịch/chuyển giao: " + detail);
                    }
                 }
             }
@@ -298,4 +325,3 @@ namespace TechExchangeApp.Controllers
     }
 // #endif
 }
-

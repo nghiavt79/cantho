@@ -57,13 +57,23 @@
                                        asp-action="Edit" asp-route-id="@item.Id" title="Sửa">
                                         <i class="fas fa-pen"></i>
                                     </a>
-                                    <button type="button" class="btn @(isPublished ? "btn-outline-warning" : "btn-outline-success") btn-toggle-publish"
-                                            data-id="@item.Id" title="@(isPublished ? "Ẩn khỏi sàn" : "Đăng lên sàn")">
-                                        <i class="fas @(isPublished ? "fa-eye-slash" : "fa-upload")"></i>
+                                    <button type="button" class="btn btn-outline-info btn-quick-config"
+                                            data-id="@item.Id" title="Cấu hình nhanh (trạng thái)">
+                                        <i class="fas fa-sliders-h"></i>
                                     </button>
-                                    <a class="btn btn-outline-secondary" href="@item.PublicUrl" target="_blank" title="Xem public">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                    @if (isPublished)
+                                    {
+                                        <a class="btn btn-outline-secondary" href="@item.PublicUrl" target="_blank" title="Xem public">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-outline-secondary disabled" tabindex="-1"
+                                                title="Cần chuyển trạng thái Xuất bản trước khi xem public">
+                                            <i class="fas fa-eye-slash"></i>
+                                        </button>
+                                    }
                                 </div>
                             </td>
                             <td class="text-center text-muted small">@stt</td>

@@ -3,29 +3,49 @@
 @{
     var steps = ViewBag.ProjectSteps as List<ProjectStepNavVm>;
     var projectId = ViewBag.ProjectId as int?;
+    const string mergedStepName = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
 }
 
 @if (steps != null && steps.Any() && projectId.HasValue)
 {
+    var sourceSteps = steps.Where(s => s.IsVisible).ToList();
+    var displaySteps = sourceSteps.Where(s => s.StepNumber != 6).ToList();
+    bool IsDisplayStepCompleted(ProjectStepNavVm step)
+    {
+        if (step.StepNumber != 5) return step.StatusId > 0;
+
+        var legalReviewStep = sourceSteps.FirstOrDefault(s => s.StepNumber == 6);
+        return step.StatusId > 0 && (legalReviewStep == null || legalReviewStep.StatusId > 0);
+    }
     <!-- Vertical Step Navigation for Sidebar -->
     <div class="workflow-sidebar-nav">
         <h6 class="text-muted mb-3 px-2">
             <i class="fas fa-tasks"></i> Quy trình
         </h6>
         <div class="list-group list-group-flush">
-            @foreach (var step in steps)
+            @for (var i = 0; i < displaySteps.Count; i++)
             {
+                var step = displaySteps[i];
+                var relatedLegalStep = step.StepNumber == 5 ? sourceSteps.FirstOrDefault(s => s.StepNumber == 6) : null;
+                var targetStep = step.StepNumber == 5 && relatedLegalStep != null && step.StatusId > 0 && relatedLegalStep.IsAccessible
+                    ? relatedLegalStep
+                    : step;
+                var displayStepNumber = i + 1;
+                var displayStepName = step.StepNumber == 5 ? mergedStepName : step.StepName;
+                var displayCurrent = step.IsCurrent || (relatedLegalStep?.IsCurrent == true);
+                var displayCompleted = IsDisplayStepCompleted(step);
+                var displayAccessible = step.IsAccessible || (relatedLegalStep?.IsAccessible == true);
                 var itemClass = "list-group-item list-group-item-action p-2";
                 var badgeClass = "badge";
                 var iconClass = "";
                 
-                if (step.IsCurrent)
+                if (displayCurrent)
                 {
                     itemClass += " active";
                     badgeClass += " bg-white text-primary";
                     iconClass = "fas fa-arrow-right";
                 }
-                else if (step.StatusId > 0)
+                else if (displayCompleted)
                 {
                     badgeClass += " bg-success";
                     iconClass = "fas fa-check";
@@ -36,24 +56,24 @@
                     iconClass = "fas fa-circle";
                 }
 
-                if (step.IsAccessible)
+                if (displayAccessible)
                 {
-                    <a href="@Url.Action(step.ActionName, step.ControllerName, new { projectId = projectId })" 
+                    <a href="@Url.Action(targetStep.ActionName, targetStep.ControllerName, new { projectId = projectId })" 
                        class="@itemClass" 
                        style="font-size: 0.85rem; border: none;">
                         <div class="d-flex justify-content-between align-items-center">
                             <span>
                                 <span class="@badgeClass" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.7rem;">
-                                    @if (step.StatusId > 0 || step.IsCurrent)
+                                    @if (displayCompleted || displayCurrent)
                                     {
                                         <i class="@iconClass" style="font-size: 0.6rem;"></i>
                                     }
                                     else
                                     {
-                                        @step.StepNumber
+                                        @displayStepNumber
                                     }
                                 </span>
-                                <span class="ms-2">@step.StepName</span>
+                                <span class="ms-2">@displayStepName</span>
                             </span>
                         </div>
                     </a>
@@ -64,9 +84,9 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <span>
                                 <span class="@badgeClass" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.7rem;">
-                                    @step.StepNumber
+                                    @displayStepNumber
                                 </span>
-                                <span class="ms-2">@step.StepName</span>
+                                <span class="ms-2">@displayStepName</span>
                             </span>
                             <i class="fas fa-lock text-muted" style="font-size: 0.7rem;"></i>
                         </div>
@@ -79,13 +99,14 @@
         <div class="mt-3 p-2 bg-light rounded">
             <small class="text-muted d-block mb-1">Tiến độ</small>
             @{
-                var completedCount = steps.Count(s => s.StatusId > 0);
-                var progressPercent = (int)Math.Round((completedCount / 14.0) * 100);
+                var completedCount = displaySteps.Count(IsDisplayStepCompleted);
+                var totalSteps = displaySteps.Count;
+                var progressPercent = totalSteps > 0 ? (int)Math.Round((completedCount / (double)totalSteps) * 100) : 0;
             }
             <div class="progress" style="height: 6px;">
                 <div class="progress-bar bg-success" role="progressbar" style="width: @progressPercent%" aria-valuenow="@progressPercent" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <small class="text-muted">@completedCount/14 bước (@progressPercent%)</small>
+            <small class="text-muted">@completedCount/@totalSteps bước (@progressPercent%)</small>
         </div>
     </div>
 

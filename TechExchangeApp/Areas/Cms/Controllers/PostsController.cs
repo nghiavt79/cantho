@@ -49,7 +49,11 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (!siteId.HasValue)
                 siteId = GetSiteId();
 
-            var query = _context.Contents.AsNoTracking().AsQueryable();
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext); // ngôn ngữ chung
+            ViewBag.Lang = lang;
+
+            var query = _context.Contents.AsNoTracking()
+                .Where(c => c.LanguageId == lang);
 
             // Filters
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -238,17 +242,41 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // CREATE (GET)
         // ─────────────────────────────────────────
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(long? fromId)
         {
-            var vm = new ContentFormVm
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext);
+
+            // fromId: tạo bản EN nhập tay từ 1 tin VI (fallback khi không có key dịch)
+            var src = fromId.HasValue
+                ? await _context.Contents.AsNoTracking().FirstOrDefaultAsync(c => c.Id == fromId.Value)
+                : null;
+
+            ContentFormVm vm;
+            if (src != null)
             {
-                StatusId = 1,
-                LanguageId = 1,
-                Domain = GetDomain(),
-                SiteId = GetSiteId(),
-                PublishedDate = DateTime.Now
-            };
-            ViewData["Title"] = "Thêm tin bài";
+                vm = MapToFormVm(src);   // nạp nội dung VI làm nháp để dịch tay
+                vm.Id = 0;               // tạo mới
+                vm.LanguageId = 2;       // bản EN
+                vm.OriginalId = fromId;  // link về bản gốc VI
+                vm.QueryString = null;   // sinh slug mới khi lưu
+                vm.MenuId = 62;          // menu EN "News & Event"
+                lang = 2;
+                TechExchangeApp.Helpers.CmsLangHelper.Set(HttpContext, 2); // đồng bộ ngôn ngữ CMS = EN (dropdown góc phải + list)
+            }
+            else
+            {
+                vm = new ContentFormVm
+                {
+                    StatusId = 1,
+                    LanguageId = lang,
+                    Domain = GetDomain(),
+                    SiteId = GetSiteId(),
+                    PublishedDate = DateTime.Now
+                };
+            }
+
+            ViewData["Title"] = src != null ? "Nhập bản tiếng Anh (dịch tay)" : "Thêm tin bài";
+            ViewBag.Lang = lang;
             await LoadFormSelectListsAsync();
             return View(vm);
         }
@@ -279,7 +307,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Đã thêm tin bài thành công.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { lang = entity.LanguageId });
         }
 
         // ─────────────────────────────────────────
@@ -293,6 +321,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
             var vm = MapToFormVm(entity);
             ViewData["Title"] = $"Sửa: {entity.Title}";
+            ViewBag.Lang = entity.LanguageId;
             await LoadFormSelectListsAsync();
             return View(vm);
         }
@@ -325,7 +354,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Đã cập nhật tin bài thành công.";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { lang = entity.LanguageId });
         }
 
         // ─────────────────────────────────────────
@@ -424,6 +453,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         private async Task LoadFormSelectListsAsync()
         {
             var siteId = GetSiteId();
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext); // menu theo đúng ngôn ngữ (EN → menu LanguageId=2)
 
             ViewBag.Statuses = new SelectList(
                 await _context.Statuses.AsNoTracking().OrderBy(s => s.StatusId).ToListAsync(),
@@ -432,7 +462,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             // Build flat menu list with indented titles for parent > child display
             // Filter by SiteId to only show menus belonging to current site
             var menus = await _context.Menus.AsNoTracking()
-                .Where(m => m.LanguageId == 1 && (m.SiteId == null || m.SiteId == siteId))
+                .Where(m => m.LanguageId == lang && (m.SiteId == null || m.SiteId == siteId))
                 .OrderBy(m => m.Sort)
                 .ToListAsync();
 
@@ -488,6 +518,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 LinkFile = vm.LinkFile,
                 LinkInvite = vm.LinkInvite,
                 LanguageId = vm.LanguageId,
+                OriginalId = vm.OriginalId,
                 Domain = vm.Domain,
                 SiteId = vm.SiteId,
                 ParentId = vm.ParentId,
@@ -536,6 +567,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             return new ContentFormVm
             {
                 Id = entity.Id,
+                OriginalId = entity.OriginalId,
                 Title = entity.Title ?? "",
                 QueryString = entity.QueryString,
                 Description = entity.Description,

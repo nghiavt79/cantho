@@ -41,7 +41,8 @@ namespace TechExchangeApp.Localization
 
         private static string GetLanguage(HttpContext httpContext)
         {
-            var lang = httpContext.Request.Cookies["site_lang"];
+            // Ngôn ngữ do middleware "/en" gắn vào Items["Lang"] (không dùng cookie nữa)
+            var lang = httpContext.Items["Lang"] as string;
             return string.Equals(lang, "en", StringComparison.OrdinalIgnoreCase) ? "en" : DefaultLang;
         }
 

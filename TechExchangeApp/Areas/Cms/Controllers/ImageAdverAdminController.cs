@@ -72,8 +72,11 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (!siteId.HasValue || currentSiteId != 1)
                 siteId = currentSiteId;
 
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext); // ngôn ngữ chung
+            ViewBag.Lang = lang;
+
             var query = _context.ImageAdvers.AsNoTracking()
-                .Where(a => a.LanguageID == 1 && a.SiteId == siteId);
+                .Where(a => a.LanguageID == lang && a.SiteId == siteId);
 
             // Filters
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -151,14 +154,16 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // ── CREATE GET ──
         public async Task<IActionResult> Create()
         {
+            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext);
             var vm = new ImageAdverFormVm
             {
-                LanguageID = 1,
+                LanguageID = lang,          // tạo banner theo ngôn ngữ đang chọn
                 Domain = GetDomain(),
                 SiteId = GetSiteId(),
                 StatusID = 1,
                 Sort = 0
             };
+            ViewBag.Lang = lang;
             await LoadFormSelectListsAsync();
             return View(vm);
         }
@@ -200,7 +205,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 _context.ImageAdvers.Add(entity);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Đã tạo quảng cáo thành công.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { lang = entity.LanguageID });
             }
             catch (Exception ex)
             {
@@ -217,6 +222,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (entity == null) return NotFound();
 
             var vm = MapToVm(entity);
+            ViewBag.Lang = entity.LanguageID;
             await LoadFormSelectListsAsync();
             return View(vm);
         }
@@ -261,7 +267,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             {
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Đã cập nhật quảng cáo thành công.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { lang = entity.LanguageID });
             }
             catch (Exception ex)
             {

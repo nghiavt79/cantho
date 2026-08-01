@@ -8,6 +8,9 @@ namespace TechExchangeApp.Services
     public class ProjectService : IProjectService
     {
         private readonly AppDbContext _context;
+        private const int MergedNegotiationStep = 5;
+        private const int LegalReviewStep = 6;
+        private const int MyProjectsTotalDisplaySteps = 6;
 
         public ProjectService(AppDbContext context)
         {
@@ -34,41 +37,58 @@ namespace TechExchangeApp.Services
 
             foreach (var p in projects)
             {
-                // Get completed steps count (StatusId == 2)
-                var completedSteps = await _context.ProjectSteps
-                    .Where(ps => ps.ProjectId == p.Id && ps.StatusId == 2)
-                    .CountAsync();
-
-                // Calculate progress (14 total steps)
-                var progress = (int)Math.Round((completedSteps / 14.0) * 100);
-
-                // Get current step: step after the last Completed one (StatusId == 2 in DB)
                 var allSteps = await _context.ProjectSteps
                     .Where(ps => ps.ProjectId == p.Id)
                     .OrderBy(ps => ps.StepNumber)
                     .Select(ps => new { ps.StepNumber, ps.StatusId })
                     .ToListAsync();
 
+                var displaySteps = allSteps
+                    .Where(s => s.StepNumber != LegalReviewStep)
+                    .Select(s =>
+                    {
+                        var statusId = s.StatusId;
+                        if (s.StepNumber == MergedNegotiationStep)
+                        {
+                            var legalReview = allSteps.FirstOrDefault(x => x.StepNumber == LegalReviewStep);
+                            statusId = s.StatusId == 2 && (legalReview == null || legalReview.StatusId == 2)
+                                ? 2
+                                : (s.StatusId > 0 || legalReview?.StatusId > 0 ? 1 : 0);
+                        }
+
+                        return new
+                        {
+                            InternalStepNumber = s.StepNumber,
+                            DisplayStepNumber = s.StepNumber > LegalReviewStep ? s.StepNumber - 1 : s.StepNumber,
+                            StatusId = statusId
+                        };
+                    })
+                    .ToList();
+
+                int totalDisplaySteps = MyProjectsTotalDisplaySteps;
+                int completedSteps = Math.Min(displaySteps.Count(s => s.StatusId == 2), totalDisplaySteps);
+
                 int currentStep;
+                int currentStepStatus;
                 if (!allSteps.Any())
                 {
                     currentStep = 1;
+                    currentStepStatus = 0;
                 }
                 else
                 {
-                    var lastCompleted = allSteps
-                        .Where(s => s.StatusId == 2) // 2 = Completed in DB
-                        .OrderByDescending(s => s.StepNumber)
-                        .FirstOrDefault();
-
-                    if (lastCompleted == null)
-                        currentStep = allSteps.First().StepNumber;
-                    else
-                    {
-                        var next = allSteps.FirstOrDefault(s => s.StepNumber > lastCompleted.StepNumber);
-                        currentStep = next?.StepNumber ?? lastCompleted.StepNumber;
-                    }
+                    var currentDisplayStep = displaySteps.FirstOrDefault(s => s.StatusId != 2)
+                        ?? displaySteps.LastOrDefault();
+                    currentStep = currentDisplayStep?.DisplayStepNumber ?? 1;
+                    currentStepStatus = currentDisplayStep?.StatusId ?? 0;
                 }
+                currentStep = Math.Clamp(currentStep, 1, totalDisplaySteps);
+                if (currentStep >= totalDisplaySteps && currentStepStatus > 0)
+                {
+                    completedSteps = totalDisplaySteps;
+                }
+
+                int progress = totalDisplaySteps > 0 ? (int)Math.Round((completedSteps / (double)totalDisplaySteps) * 100) : 0;
 
                 result.Add(new MyProjectVm
                 {
@@ -81,6 +101,7 @@ namespace TechExchangeApp.Services
                     StatusId = p.StatusId,
                     Status = GetStatusName(p.StatusId),
                     ProgressPercent = progress,
+                    TotalDisplaySteps = totalDisplaySteps,
                     CreatedDate = p.CreatedDate
                 });
             }

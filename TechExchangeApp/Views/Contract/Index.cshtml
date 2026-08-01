@@ -2,7 +2,7 @@
 @using TechExchangeApp.Entities
 @using TechExchangeApp.Enums
 @{
-    ViewData["Title"] = "Kiểm tra pháp lý – Hợp đồng";
+    ViewData["Title"] = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
     var projectId  = (int)ViewBag.ProjectId;
     var userRole   = (int)ViewBag.UserRole;        // 1=Buyer, 2=Seller, 3=Consultant
     var approvals  = ViewBag.Approvals as List<ContractApproval> ?? new();
@@ -38,7 +38,7 @@
     <div class="d-flex align-items-center gap-3 mb-4">
         <div class="flex-grow-1">
             <h4 class="fw-bold mb-0">
-                <i class="fas fa-file-contract text-primary me-2"></i>Bước 6 – Kiểm tra pháp lý & Hợp đồng
+                <i class="fas fa-file-contract text-primary me-2"></i>Bước 5 – Đàm phán thương mại / Kiểm tra pháp lý hợp đồng
             </h4>
             <small class="text-muted">Dự án #@projectId</small>
         </div>
@@ -178,7 +178,7 @@
                         <div class="card-body text-center">
                             <p class="fw-bold text-primary"><i class="fas fa-signature me-1"></i>Sẵn sàng ký số</p>
                             <a href="/Project/Details/@projectId?step=7" class="btn btn-success w-100 py-2">
-                                <i class="fas fa-arrow-right me-1"></i>Đến Bước 7 – Ký hợp đồng
+                                <i class="fas fa-arrow-right me-1"></i>Đến Bước 6 – Ký hợp đồng
                             </a>
                         </div>
                     </div>

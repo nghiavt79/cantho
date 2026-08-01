@@ -47,7 +47,7 @@
 
     string Price(SanPhamCNTB p) => p.OriginalPrice > 0
         ? ProductController.FormatCurrencyOto((decimal?)p.OriginalPrice, p.Currency)
-        : "Liên hệ";
+        : "Liên hệ báo giá";
 
     string Source(SanPhamCNTB p)
     {

@@ -39,7 +39,8 @@ namespace TechExchangeApp.Controllers
                     n.IsRead,
                     n.CreatedDate,
                     n.ProjectId,
-                    n.Channel
+                    n.Channel,
+                    n.Url
                 })
                 .ToListAsync();
 

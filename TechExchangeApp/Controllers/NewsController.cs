@@ -42,6 +42,10 @@ namespace TechExchangeApp.Controllers
             if (menuId != p.MenuId || queryString != p.QueryString)
                 return Redirect($"{_mainDomain}Errors/404.aspx");
 
+            // === CHECK NGÔN NGỮ: CHỈ ràng dưới /en (chỉ phục vụ bản EN). VI GIỮ NGUYÊN hành vi cũ (không thêm ràng buộc) ===
+            if (LangHelper.IsEnglish(HttpContext) && p.LanguageId != LangHelper.En)
+                return Redirect($"{_mainDomain}Errors/404.aspx");
+
             // === META ===
             ViewData["Title"] = p.Title;
             ViewData["MetaDescription"] = p.Description;
@@ -86,7 +90,7 @@ namespace TechExchangeApp.Controllers
             }
 
             // === RELATED NEWS ===
-            var langId = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var langId = LangHelper.CurrentLangId(HttpContext);
 
             var subMenus = _context
                 .UspSelectSubMenu(p.MenuId ?? 0);
@@ -137,7 +141,7 @@ namespace TechExchangeApp.Controllers
         {
             const int pageSize = 10;
 
-            var langId = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var langId = LangHelper.CurrentLangId(HttpContext);
 
             var menu = await GetMenuAsync(menuId);
             if (menu == null)

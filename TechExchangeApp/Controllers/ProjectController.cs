@@ -232,6 +232,8 @@ namespace TechExchangeApp.Controllers
             // Calculate progress
             var completedCount = statuses.Values.Count(s => s > 0);
             var progressPercent = (int)Math.Round((completedCount / 14.0) * 100);
+            var contentStepNumber = currentStep == 6 ? 5 : currentStep;
+            var currentStepData = await LoadStepData(id.Value, contentStepNumber, userId, userRole);
 
             // Load step-specific ViewBag data (mirrors Step action logic)
             if (currentStep == 2)
@@ -299,6 +301,42 @@ namespace TechExchangeApp.Controllers
                     ViewBag.InvitedSuppliers = invitedSuppliers;
                 }
             }
+            else if (currentStep == 5 || currentStep == 6)
+            {
+                bool isBuyer5 = project.CreatedBy == userId;
+                bool isSelectedSeller5 = project.SelectedSellerId != null && project.SelectedSellerId == userId;
+                bool isConsultant5 = await _context.ProjectMembers.AnyAsync(m => m.ProjectId == id.Value && m.UserId == userId && m.Role == 3);
+
+                if (!isBuyer5 && !isSelectedSeller5 && !isConsultant5)
+                    return Forbid();
+
+                var existingNeg = currentStepData as TechExchangeApp.Entities.NegotiationForm;
+                if (existingNeg == null && project.SelectedSellerId != null)
+                {
+                    var draft = new TechExchangeApp.Entities.NegotiationForm
+                    {
+                        ProjectId = id.Value,
+                        SellerId = project.SelectedSellerId.Value,
+                        StatusId = 1,
+                        NguoiTao = userId,
+                        NgayTao = DateTime.Now,
+                        DieuKhoanThanhToan = "",
+                        HinhThucKy = ""
+                    };
+                    _context.NegotiationForms.Add(draft);
+                    await _context.SaveChangesAsync();
+                    currentStepData = draft;
+                }
+
+                var buyerUser = project.CreatedBy.HasValue
+                    ? await _context.Users.AsNoTracking().Where(u => u.Id == project.CreatedBy.Value).Select(u => u.FullName ?? u.UserName).FirstOrDefaultAsync()
+                    : null;
+                var sellerUser = project.SelectedSellerId.HasValue
+                    ? await _context.Users.AsNoTracking().Where(u => u.Id == project.SelectedSellerId.Value).Select(u => u.FullName ?? u.UserName).FirstOrDefaultAsync()
+                    : null;
+                ViewBag.BuyerName = buyerUser ?? "Buyer";
+                ViewBag.SellerName = sellerUser ?? "Seller";
+            }
             else if (currentStep == 7)
             {
                 ViewBag.IsBuyer  = project.CreatedBy == userId;
@@ -329,7 +367,8 @@ namespace TechExchangeApp.Controllers
                 Steps = steps,
                 CurrentStep = currentStep,
                 UserRole = userRole,
-                ProgressPercent = progressPercent
+                ProgressPercent = progressPercent,
+                CurrentStepData = currentStepData
             };
 
             return View(viewModel);
@@ -592,7 +631,7 @@ namespace TechExchangeApp.Controllers
             return string.Empty;
         }
 
-        // Helper: Bước 2 (NDA) có áp dụng cho dự án không, suy từ sản phẩm CNTB nguồn (RequiresNDA).
+        // Helper: Bước 2 (NDA) có áp dụng cho hồ sơ không, suy từ cấu hình bảo mật ban đầu của sản phẩm CNTB nguồn.
         private async Task<bool> GetProjectRequiresNda(int projectId)
         {
             var tech = await _context.TechTransferRequests.AsNoTracking()
@@ -600,7 +639,7 @@ namespace TechExchangeApp.Controllers
                 .Select(x => new { x.FromId, x.TypeData })
                 .FirstOrDefaultAsync();
 
-            // Chỉ suy cờ NDA từ sản phẩm CNTB (TypeData == 1). Mặc định khi chưa cấu hình: không yêu cầu NDA.
+            // Chỉ suy cờ NDA từ sản phẩm CNTB (TypeData == 1). Mặc định khi chưa cấu hình: các bên chưa yêu cầu NDA.
             if (tech?.FromId == null || (tech.TypeData ?? 1) != 1) return false;
 
             var requires = await _context.SanPhamCNTBs.AsNoTracking()
@@ -622,7 +661,7 @@ namespace TechExchangeApp.Controllers
                 new() { StepNumber = 4, StepName = "Nộp hồ sơ đề xuất", StatusId = statuses["Proposal"], ControllerName = "Proposal", ActionName = "Index", IsAccessible = statuses["RFQ"] > 0 },
                 new() { StepNumber = 5, StepName = "Đàm phán thương mại", StatusId = statuses["Negotiation"], ControllerName = "Negotiation", ActionName = "Create", IsAccessible = statuses["Proposal"] > 0 },
                 new() { StepNumber = 6, StepName = "Kiểm tra pháp lý", StatusId = statuses["LegalReview"], ControllerName = "LegalReview", ActionName = "Create", IsAccessible = statuses["Negotiation"] > 0 },
-                new() { StepNumber = 7, StepName = "Ký hợp đồng điện tử", StatusId = statuses["Signing"], ControllerName = "Signing", ActionName = "Index", IsAccessible = statuses["LegalReview"] > 0 },
+                new() { StepNumber = 7, StepName = "Ký hợp đồng", StatusId = statuses["Signing"], ControllerName = "Signing", ActionName = "Index", IsAccessible = statuses["LegalReview"] > 0 },
                 new() { StepNumber = 8, StepName = "Xác nhận tạm ứng", StatusId = statuses["AdvancePayment"], ControllerName = "AdvancePayment", ActionName = "Create", IsAccessible = statuses["Signing"] >= 5 },
                 new() { StepNumber = 9, StepName = "Thử nghiệm Pilot", StatusId = statuses["PilotTest"], ControllerName = "PilotTest", ActionName = "Create", IsAccessible = statuses["AdvancePayment"] > 0 },
                 new() { StepNumber = 10, StepName = "Bàn giao & triển khai thiết bị", StatusId = statuses["Handover"], ControllerName = "Handover", ActionName = "Create", IsAccessible = statuses["PilotTest"] > 0 },
@@ -632,7 +671,7 @@ namespace TechExchangeApp.Controllers
                 new() { StepNumber = 14, StepName = "Thanh lý hợp đồng", StatusId = statuses["Liquidation"], ControllerName = "Liquidation", ActionName = "Create", IsAccessible = statuses["Acceptance"] > 0 }
             };
 
-            // Bước 2 (NDA) chỉ áp dụng khi sản phẩm CNTB yêu cầu thỏa thuận bảo mật.
+            // Bước 2 (NDA) chỉ áp dụng khi có yêu cầu thỏa thuận bảo mật từ cấu hình ban đầu hoặc các bên.
             // Nếu không yêu cầu: đánh dấu "Không áp dụng", coi như đã xử lý (mở khoá bước sau, tính vào tiến độ)
             // và cho bước 3 (RFQ) mở khoá trực tiếp từ bước 1.
             if (!requiresNda)
@@ -712,12 +751,16 @@ namespace TechExchangeApp.Controllers
                 stepNumber = currentStep;
             }
             
+            var contentStepNumber = stepNumber == 6 ? 5 : stepNumber;
+
             // Build model for partial view
             var model = new TechExchangeApp.ViewModel.StepContentVm
             {
                 ProjectId = projectId,
-                StepNumber = stepNumber,
-                StepName = steps[stepNumber - 1].StepName,
+                StepNumber = contentStepNumber,
+                StepName = stepNumber == 5 || stepNumber == 6
+                    ? "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng"
+                    : steps[stepNumber - 1].StepName,
                 Project = member.Project,
                 UserRole = member.Role,
                 Steps = steps,
@@ -725,7 +768,7 @@ namespace TechExchangeApp.Controllers
             };
             
             // Load step-specific data for inline display
-            model.StepData = await LoadStepData(projectId, stepNumber, userId, member.Role);
+            model.StepData = await LoadStepData(projectId, contentStepNumber, userId, member.Role);
             
             // Special handling for Step 2 (NDA) - Load TechTransfer for BenA display + creator info
             if (stepNumber == 2)
@@ -836,7 +879,7 @@ namespace TechExchangeApp.Controllers
             }
             
             // Special handling for Step 5 (Negotiation) - Access control + Auto-create
-            if (stepNumber == 5)
+            if (stepNumber == 5 || stepNumber == 6)
             {
                 var project5 = await _context.Projects.FindAsync(projectId);
                 bool isBuyer5 = project5?.CreatedBy == userId;
@@ -910,7 +953,10 @@ namespace TechExchangeApp.Controllers
             }
 
             // Return appropriate partial view
-            return PartialView($"Steps/_Step{stepNumber}", model);
+            var partialName = stepNumber == 5 || stepNumber == 6
+                ? "Steps/_Step5Combined"
+                : $"Steps/_Step{stepNumber}";
+            return PartialView(partialName, model);
         }
 
         // Helper: Load step-specific data

@@ -201,6 +201,7 @@ namespace TechExchangeApp.Data
         // Chat System
         public DbSet<ChatConversation> ChatConversations { get; set; } = null!;
         public DbSet<ChatMessage> ChatMessages { get; set; } = null!;
+        public DbSet<SupportRequest> SupportRequests { get; set; } = null!;
 
         // Generic Entity Action Engine
         public DbSet<EntityRating> EntityRatings { get; set; } = null!;

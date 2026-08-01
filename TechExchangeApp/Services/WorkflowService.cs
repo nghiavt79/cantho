@@ -31,7 +31,7 @@ namespace TechExchangeApp.Services
                 new ProjectStep { ProjectId = projectId, StepNumber = 4, StepName = "Nộp hồ sơ đề xuất", StatusId = 0 },
                 new ProjectStep { ProjectId = projectId, StepNumber = 5, StepName = "Đàm phán thương mại", StatusId = 0 },
                 new ProjectStep { ProjectId = projectId, StepNumber = 6, StepName = "Kiểm tra pháp lý", StatusId = 0 },
-                new ProjectStep { ProjectId = projectId, StepNumber = 7, StepName = "Ký hợp đồng điện tử", StatusId = 0 },
+                new ProjectStep { ProjectId = projectId, StepNumber = 7, StepName = "Ký hợp đồng", StatusId = 0 },
                 new ProjectStep { ProjectId = projectId, StepNumber = 8, StepName = "Xác nhận tạm ứng", StatusId = 0 },
                 new ProjectStep { ProjectId = projectId, StepNumber = 9, StepName = "Thử nghiệm Pilot", StatusId = 0 },
                 new ProjectStep { ProjectId = projectId, StepNumber = 10, StepName = "Bàn giao & triển khai thiết bị", StatusId = 0 },

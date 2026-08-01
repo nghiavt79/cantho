@@ -26,7 +26,7 @@
                     @if (stepNumber > 0)
                     {
                         <p class="text-muted mb-4">
-                            Bạn đang cố gắng truy cập <strong>Bước @stepNumber</strong> của dự án.
+                            Bạn đang cố gắng truy cập <strong>Bước @stepNumber</strong> của hồ sơ.
                         </p>
                     }
 
@@ -44,7 +44,7 @@
                             {
                                 <li class="mb-2">
                                     <i class="fas fa-check-circle text-success me-2"></i>
-                                    Chấp nhận lời mời tham gia dự án
+                                    Chấp nhận lời mời tham gia hồ sơ
                                 </li>
                             }
                             @if (reason.Contains("tư vấn") || reason.Contains("consultant"))
@@ -65,7 +65,7 @@
                         @if (projectId > 0)
                         {
                             <a href="@Url.Action("Details", "Project", new { id = projectId })" class="btn btn-primary">
-                                <i class="fas fa-arrow-left me-2"></i>Quay lại dự án
+                                <i class="fas fa-arrow-left me-2"></i>Quay lại hồ sơ
                             </a>
                         }
                         <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-secondary">

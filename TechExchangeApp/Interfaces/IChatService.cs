@@ -24,10 +24,10 @@ namespace TechExchangeApp.Interfaces
         Task<int> GetUnreadCountAsync(int userId);
 
         /// <summary>
-        /// Tạo hoặc mở lại hội thoại "Yêu cầu Sàn hỗ trợ" cho một dự án + bước.
+        /// Tạo ticket hỗ trợ/tư vấn Trung tâm cho một dự án + bước.
         /// Giả định quyền truy cập dự án đã được kiểm tra ở controller. Trả về conversationId.
         /// </summary>
-        Task<long> StartSupportConversationAsync(int projectId, int requesterUserId, int stepNumber, string message);
+        Task<long> StartSupportConversationAsync(int projectId, int requesterUserId, SupportStartOptions options);
 
         /// <summary>
         /// Nhân viên CMS trả lời một hội thoại hỗ trợ (atomic nhận xử lý khi chưa gán).
@@ -69,6 +69,12 @@ namespace TechExchangeApp.Interfaces
         public int? StepNumber { get; set; }
         public int SupportStatus { get; set; }
         public int? AssignedStaffUserId { get; set; }
+        public long? SupportRequestId { get; set; }
+        public int? RequestType { get; set; }
+        public int? ServiceType { get; set; }
+        public int? TicketStatus { get; set; }
+        public string? Subject { get; set; }
+        public string? SupportContextCode { get; set; }
     }
 
     public class ChatConversationDetailVm
@@ -86,6 +92,12 @@ namespace TechExchangeApp.Interfaces
         public int? StepNumber { get; set; }
         public int SupportStatus { get; set; }
         public int? AssignedStaffUserId { get; set; }
+        public long? SupportRequestId { get; set; }
+        public int? RequestType { get; set; }
+        public int? ServiceType { get; set; }
+        public int? TicketStatus { get; set; }
+        public string? Subject { get; set; }
+        public string? SupportContextCode { get; set; }
     }
 
     public class ChatMessageVm
@@ -96,5 +108,17 @@ namespace TechExchangeApp.Interfaces
         public bool IsSystem { get; set; }
         public string Message { get; set; } = "";
         public DateTime Created { get; set; }
+    }
+
+    public class SupportStartOptions
+    {
+        public int StepNumber { get; set; }
+        public int RequestType { get; set; }
+        public int? ServiceType { get; set; }
+        public string? SupportContextCode { get; set; }
+        public int? DisplayStepNumber { get; set; }
+        public int? InternalStepNumber { get; set; }
+        public string? Subject { get; set; }
+        public string Description { get; set; } = "";
     }
 }

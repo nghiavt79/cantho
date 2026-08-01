@@ -89,7 +89,7 @@
                             @foreach (var item in Model.Related)
                             {
                                 <li>
-                                    <a href="@item.DetailUrl(Html.MainDomain())">@item.Title</a>
+                                    <a href="@item.DetailUrl(Html.MainDomain(), TechExchangeApp.Helpers.LangHelper.IsEnglish(Context))">@item.Title</a>
                                     <span>@item.PublishedDate?.ToString("dd/MM/yyyy")</span>
                                 </li>
                             }

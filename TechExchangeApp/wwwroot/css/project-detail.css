@@ -523,6 +523,14 @@
     opacity: .55;
 }
 
+.project-detail #step-content .form-control ~ small.text-muted,
+.project-detail #step-content .form-control ~ .form-text,
+.project-detail #step-content .form-select ~ small.text-muted,
+.project-detail #step-content .form-select ~ .form-text {
+    display: block;
+    margin-top: .35rem;
+}
+
 /* Star rating widget (moved from Steps/_Step4.cshtml inline <style>) */
 .project-detail .star-rating {
     display: inline-flex;

@@ -399,7 +399,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 ProductType = pt,
                 Code = $"{prefix}-{(maxId + 1):D5}",
                 StatusId = 1,       // Nháp (Draft)
-                SiteId = GetSiteId()
+                SiteId = GetSiteId(),
+                CanDirectInquiry = pt == TypeThietBi
             };
             ViewData["Title"] = "Thêm sản phẩm CNTB";
             await LoadFormSelectListsAsync();
@@ -854,6 +855,7 @@ InvestmentGoal = m.InvestmentGoal,
 InvestmentGoalKhac = m.InvestmentGoalKhac,
 RequiresNDA = m.RequiresNDA,
 NDAContent = m.NDAContent,
+CanDirectInquiry = m.CanDirectInquiry,
 SoSaoOCOP = m.SoSaoOCOP,
 MaTruyXuat = m.MaTruyXuat
     };
@@ -918,6 +920,7 @@ e.InvestmentGoal = m.InvestmentGoal;
 e.InvestmentGoalKhac = m.InvestmentGoalKhac;
 e.RequiresNDA = m.RequiresNDA;
 e.NDAContent = m.NDAContent;
+e.CanDirectInquiry = m.CanDirectInquiry;
 e.SoSaoOCOP = m.SoSaoOCOP;
 if (!string.IsNullOrWhiteSpace(m.MaTruyXuat)) e.MaTruyXuat = m.MaTruyXuat;
     }
@@ -985,6 +988,7 @@ InvestmentGoal = p.InvestmentGoal,
 InvestmentGoalKhac = p.InvestmentGoalKhac,
 RequiresNDA = p.RequiresNDA ?? false,
 NDAContent = p.NDAContent,
+CanDirectInquiry = p.CanDirectInquiry ?? false,
 SoSaoOCOP = p.SoSaoOCOP,
 MaTruyXuat = p.MaTruyXuat
     };
@@ -1101,6 +1105,7 @@ MaTruyXuat = p.MaTruyXuat
         public string? InvestmentGoalKhac { get; set; }
         public bool RequiresNDA { get; set; }
         public string? NDAContent { get; set; }
+        public bool CanDirectInquiry { get; set; }
 
         // ── OCOP dedicated fields ──
         public int? SoSaoOCOP { get; set; }

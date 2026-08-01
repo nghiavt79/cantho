@@ -36,5 +36,11 @@ namespace TechExchangeApp.Configuration
         public const string NotificationIntervalSeconds = "NOTIFICATION_PROCESS_INTERVAL_SECONDS";
         public const string NotificationEnableEmail     = "NOTIFICATION_ENABLE_EMAIL";
         public const string NotificationEnableSms       = "NOTIFICATION_ENABLE_SMS";
+
+        // ── TRANSLATION (site tiếng Anh) ─────────────────────────────────────
+        public const string TranslationProvider        = "TRANSLATION_PROVIDER";        // haiku | sonnet | google
+        public const string TranslationAutoPublish     = "TRANSLATION_AUTO_PUBLISH";     // 1 = hiển thị auto ngay, 0 = cần duyệt
+        public const string TranslationAnthropicApiKey = "TRANSLATION_ANTHROPIC_API_KEY"; // sensitive (Haiku + Sonnet dùng chung)
+        public const string TranslationGoogleApiKey    = "TRANSLATION_GOOGLE_API_KEY";    // sensitive
     }
 }

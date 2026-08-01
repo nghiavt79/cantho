@@ -52,8 +52,8 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> Index()
         {
             var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
-            var isEn = Request.Cookies["site_lang"] == "en";
-            var cacheKey = $"home:index:{lang}:{_mainDomain}";
+            var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(HttpContext);
+            var cacheKey = $"home:index:{(isEn ? "en" : "vi")}:{_mainDomain}";
             var data = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:AbsoluteSeconds", 180));
@@ -69,7 +69,7 @@ namespace TechExchangeApp.Controllers
                     Customers = await LoadLogoItemsAsync(subject: 4, take: 32),
                     Partners = await LoadLogoItemsAsync(subject: 5, take: 8),
                     FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(10)),
-                    FeaturedNews = LoadFeaturedNews(),
+                    FeaturedNews = LoadFeaturedNews(isEn),
                     Experts = LoadExperts(),
                     Stats = await BuildStatsAsync(),
                     NewProducts = newProducts
@@ -255,8 +255,8 @@ namespace TechExchangeApp.Controllers
                 {
                     new() { Number = 1, Icon = "bi-bullseye", Title = "Receive requirements", Description = "Listen to and analyze real-world needs." },
                     new() { Number = 2, Icon = "bi-file-earmark-text", Title = "Advise & propose solutions", Description = "Recommend suitable technologies and equipment." },
-                    new() { Number = 3, Icon = "bi-upc-scan", Title = "Traceability check", Description = "Verify product origin and feasibility." },
-                    new() { Number = 4, Icon = "bi-diagram-3", Title = "Transfer & deploy", Description = "Transfer technology and roll out applications." },
+                    new() { Number = 3, Icon = "bi-clipboard2-check", Title = "Technology and proposal review", Description = "Assess technology fit and supplier proposals." },
+                    new() { Number = 4, Icon = "bi-shield-check", Title = "Negotiation, legal and signing support", Description = "Support negotiation, legal review and contract signing." },
                     new() { Number = 5, Icon = "bi-headset", Title = "Support & accompany", Description = "Technical support throughout the process." },
                     new() { Number = 6, Icon = "bi-graph-up-arrow", Title = "Grow & improve", Description = "Training, technology updates and expanded adoption." }
                 };
@@ -266,8 +266,8 @@ namespace TechExchangeApp.Controllers
             {
                 new() { Number = 1, Icon = "bi-bullseye", Title = "Tiếp nhận nhu cầu", Description = "Lắng nghe, phân tích nhu cầu thực tế." },
                 new() { Number = 2, Icon = "bi-file-earmark-text", Title = "Tư vấn & đề xuất giải pháp", Description = "Đề xuất công nghệ, thiết bị phù hợp." },
-                new() { Number = 3, Icon = "bi-upc-scan", Title = "Truy xuất nguồn gốc", Description = "Xác thực nguồn gốc và đánh giá tính khả thi." },
-                new() { Number = 4, Icon = "bi-diagram-3", Title = "Chuyển giao & triển khai", Description = "Chuyển giao công nghệ và triển khai ứng dụng." },
+                new() { Number = 3, Icon = "bi-clipboard2-check", Title = "Đánh giá công nghệ và hồ sơ đề xuất", Description = "Đánh giá mức độ phù hợp của công nghệ và hồ sơ nhà cung cấp." },
+                new() { Number = 4, Icon = "bi-shield-check", Title = "Hỗ trợ đàm phán, pháp lý và ký kết", Description = "Hỗ trợ điều khoản đàm phán, rà soát pháp lý và ký hợp đồng." },
                 new() { Number = 5, Icon = "bi-headset", Title = "Đồng hành & hỗ trợ", Description = "Hỗ trợ kỹ thuật trong suốt quá trình." },
                 new() { Number = 6, Icon = "bi-graph-up-arrow", Title = "Nâng cao & phát triển", Description = "Đào tạo, cập nhật công nghệ và mở rộng ứng dụng." }
             };
@@ -366,13 +366,17 @@ namespace TechExchangeApp.Controllers
             };
         }
 
-        private List<HomeNewsCardVm> LoadFeaturedNews()
+        private List<HomeNewsCardVm> LoadFeaturedNews(bool isEn)
         {
-            var childIds = TinSuKienMenus.SelectMany(uspSelectSubMenu).ToList();
-            var menuIds = TinSuKienMenus.Concat(childIds).Distinct().ToList();
+            // EN: menu "News & Event" (62); VI: các menu Tin sự kiện gốc
+            var rootMenus = isEn ? new List<int> { 62 } : TinSuKienMenus.ToList();
+            var childIds = rootMenus.SelectMany(uspSelectSubMenu).ToList();
+            var menuIds = rootMenus.Concat(childIds).Distinct().ToList();
 
             return _context.Contents.AsNoTracking()
-                .Where(x => x.StatusId == 3 && x.MenuId.HasValue && menuIds.Contains(x.MenuId.Value))
+                // VI giữ nguyên (không thêm ràng buộc ngôn ngữ); EN chỉ lấy bản LanguageId=2
+                .Where(x => x.StatusId == 3 && x.MenuId.HasValue && menuIds.Contains(x.MenuId.Value)
+                    && (!isEn || x.LanguageId == 2))
                 .OrderByDescending(x => x.PublishedDate)
                 .Take(3)
                 .Select(x => new HomeNewsCardVm
@@ -380,7 +384,9 @@ namespace TechExchangeApp.Controllers
                     Title = x.Title ?? "Tin tức - sự kiện",
                     Description = CleanSummary(x.Description ?? x.Contents, 120),
                     ImageUrl = ProductController.CookedImageURL("254-170", x.Image, _mainDomain),
-                    Url = _mainDomain + (x.MenuId == 44 ? "tin-tuc-su-kien" : x.MenuId.ToString()) + "/" + x.QueryString + "-" + x.Id + "",
+                    Url = isEn
+                        ? _mainDomain + "en/news-event/" + x.QueryString + "-" + x.Id
+                        : _mainDomain + (x.MenuId == 44 ? "tin-tuc-su-kien" : x.MenuId.ToString()) + "/" + x.QueryString + "-" + x.Id,
                     PublishedDate = x.PublishedDate
                 })
                 .ToList();

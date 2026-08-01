@@ -7,6 +7,14 @@
     var autoMaRFQ = ViewBag.AutoMaRFQ as string ?? "RFQ-" + DateTime.Now.ToString("yyyyMMddHHmmss");
     var hasFromId = (bool?)ViewBag.HasFromId ?? false;
     var isConsultant = Model.UserRole == 3; // Only consultant sees search controls
+    var previousStep = Model.Steps
+        .Where(s => s.StepNumber < Model.StepNumber && s.IsVisible && !s.IsNotApplicable && s.IsAccessible)
+        .OrderByDescending(s => s.StepNumber)
+        .FirstOrDefault();
+    var nextStep = Model.Steps
+        .Where(s => s.StepNumber > Model.StepNumber && s.IsVisible && !s.IsNotApplicable && s.IsAccessible)
+        .OrderBy(s => s.StepNumber)
+        .FirstOrDefault();
 }
 
 <div class="card shadow-sm">
@@ -492,13 +500,16 @@
         }
     </div>
     <div class="card-footer">
-        <button class="btn btn-secondary step-nav-btn" data-step="@(Model.StepNumber - 1)">
-            <i class="fas fa-arrow-left"></i> Quay lại bước trước
-        </button>
-        @if (rfq != null && Model.StepNumber < 11 && Model.Steps[Model.StepNumber].IsAccessible)
+        @if (previousStep != null)
         {
-            <button class="btn btn-primary step-nav-btn" data-step="@(Model.StepNumber + 1)">
-                Tiếp tục bước @(Model.StepNumber + 1) <i class="fas fa-arrow-right"></i>
+            <button class="btn btn-secondary step-nav-btn" data-step="@previousStep.StepNumber">
+                <i class="fas fa-arrow-left"></i> Quay lại bước trước
+            </button>
+        }
+        @if (rfq != null && nextStep != null)
+        {
+            <button class="btn btn-primary step-nav-btn" data-step="@nextStep.StepNumber">
+                Tiếp tục bước @nextStep.StepNumber <i class="fas fa-arrow-right"></i>
             </button>
         }
     </div>

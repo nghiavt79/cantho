@@ -7,9 +7,9 @@
 @model TechExchangeApp.ViewModel.ProjectDetailWithStepsVm
 
 @{
-    ViewData["Title"] = "Chi tiết dự án: " + Model.Project.ProjectName;
+    ViewData["Title"] = "Chi tiết hồ sơ giao dịch: " + Model.Project.ProjectName;
     ViewData["AuthWorkspace"] = true;
-    ViewData["HideSideButtons"] = true; // Ẩn thanh action-dock nổi trên trang chi tiết dự án
+    ViewData["HideSideButtons"] = true; // Ẩn thanh action-dock nổi trên trang chi tiết hồ sơ
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
@@ -45,7 +45,7 @@
     <div class="tx-project-header">
         <div>
             <a class="tx-project-back" asp-controller="Projects" asp-action="MyProjects">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i> Quay lại danh sách dự án
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Quay lại danh sách hồ sơ
             </a>
             <div class="tx-project-title-row">
                 <h2 class="tx-project-title">@Model.Project.ProjectName</h2>
@@ -63,11 +63,11 @@
             @if (Model.UserRole == 1)
             {
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#memberManagementModal">
-                    <i class="fas fa-users"></i> Thành viên dự án
+                    <i class="fas fa-users"></i> Thành viên hồ sơ
                 </button>
             }
             <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#supportRequestModal">
-                <i class="fas fa-headset"></i> Yêu cầu Sàn hỗ trợ
+                <i class="fas fa-headset"></i> Yêu cầu Trung tâm tư vấn
             </button>
         </div>
     </div>
@@ -77,16 +77,25 @@
 
     <!-- Dynamic Step Content Container -->
     <div id="step-content">
-        @await Html.PartialAsync($"Steps/_Step{Model.CurrentStep}", new TechExchangeApp.ViewModel.StepContentVm
-        {
-            ProjectId = Model.Project.Id,
-            StepNumber = Model.CurrentStep,
-            StepName = Model.Steps[Model.CurrentStep - 1].StepName,
-            Project = Model.Project,
-            UserRole = Model.UserRole,
-            Steps = Model.Steps,
-            CurrentStep = Model.CurrentStep
-        })
+        @{
+            var initialStepPartial = Model.CurrentStep == 5 || Model.CurrentStep == 6
+                ? "Steps/_Step5Combined"
+                : $"Steps/_Step{Model.CurrentStep}";
+            var initialStepModel = new TechExchangeApp.ViewModel.StepContentVm
+            {
+                ProjectId = Model.Project.Id,
+                StepNumber = Model.CurrentStep == 6 ? 5 : Model.CurrentStep,
+                StepName = Model.CurrentStep == 5 || Model.CurrentStep == 6
+                    ? "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng"
+                    : Model.Steps[Model.CurrentStep - 1].StepName,
+                Project = Model.Project,
+                UserRole = Model.UserRole,
+                Steps = Model.Steps,
+                CurrentStep = Model.CurrentStep,
+                StepData = Model.CurrentStepData
+            };
+        }
+        @await Html.PartialAsync(initialStepPartial, initialStepModel)
     </div>
 
     </div><!-- End Main Content -->
@@ -102,7 +111,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="memberManagementModalLabel">
-                    <i class="fas fa-users"></i> Quản lý thành viên dự án
+                    <i class="fas fa-users"></i> Quản lý thành viên hồ sơ
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -122,26 +131,59 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="supportRequestModalLabel">
-                    <i class="fas fa-headset"></i> Yêu cầu Sàn hỗ trợ
+                    <i class="fas fa-headset"></i> Yêu cầu Trung tâm tư vấn
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="supportRequestForm">
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
-                    <p class="text-muted small">Gửi yêu cầu hỗ trợ đến Sàn cho dự án này. Sàn sẽ phản hồi và trao đổi trực tiếp với bạn qua tin nhắn.</p>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nội dung cần hỗ trợ</label>
+                        <select class="form-select" id="supportRequestType">
+                            <option value="1">Hỗ trợ sử dụng hệ thống</option>
+                            <option value="2">Tư vấn giao dịch/chuyển giao</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 d-none" id="supportServiceTypeWrap">
+                        <label class="form-label fw-semibold">Loại tư vấn</label>
+                        <select class="form-select" id="supportServiceType">
+                            <option value="">-- Chọn loại tư vấn --</option>
+                            <option value="1">Tìm kiếm, lựa chọn nhà cung cấp</option>
+                            <option value="2">Đánh giá hồ sơ đề xuất</option>
+                            <option value="3">Tư vấn đàm phán thương mại</option>
+                            <option value="4">Kiểm tra pháp lý hợp đồng</option>
+                            <option value="5">Hỗ trợ hợp đồng điện tử</option>
+                            <option value="99">Khác</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tiêu đề</label>
+                        <input type="text" class="form-control" id="supportSubject" maxlength="300"
+                               placeholder="Ví dụ: Cần tư vấn đánh giá hồ sơ đề xuất" />
+                    </div>
+                    <p class="text-muted small">Gửi yêu cầu hỗ trợ/tư vấn đến Trung tâm cho hồ sơ này. Trung tâm sẽ phản hồi và trao đổi trực tiếp với bạn qua tin nhắn.</p>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Bước cần hỗ trợ</label>
                         <select class="form-select" id="supportStepNumber">
-                            @foreach (var s in Model.Steps.Where(x => x.IsVisible))
+                            @{
+                                const string mergedSupportStepName = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
+                                var supportSteps = Model.Steps.Where(x => x.IsVisible && x.StepNumber != 6).ToList();
+                            }
+                            @for (var i = 0; i < supportSteps.Count; i++)
                             {
-                                if (s.StepNumber == Model.CurrentStep)
+                                var s = supportSteps[i];
+                                var displayStepNumber = i + 1;
+                                var displayStepName = s.StepNumber == 5 ? mergedSupportStepName : s.StepName;
+                                var isCurrent = s.StepNumber == Model.CurrentStep || (s.StepNumber == 5 && Model.CurrentStep == 6);
+                                var optionValue = s.StepNumber == 5 && Model.CurrentStep == 6 ? 6 : s.StepNumber;
+                                if (isCurrent)
                                 {
-                                    <option value="@s.StepNumber" selected>Bước @s.StepNumber — @s.StepName</option>
+                                    <option value="@optionValue" selected>Bước @displayStepNumber — @displayStepName</option>
                                 }
                                 else
                                 {
-                                    <option value="@s.StepNumber">Bước @s.StepNumber — @s.StepName</option>
+                                    <option value="@optionValue">Bước @displayStepNumber — @displayStepName</option>
                                 }
                             }
                         </select>
@@ -149,7 +191,7 @@
                     <div class="mb-2">
                         <label class="form-label fw-semibold">Nội dung cần hỗ trợ</label>
                         <textarea class="form-control" id="supportMessage" rows="4" maxlength="2000"
-                                  placeholder="Mô tả vấn đề bạn cần Sàn hỗ trợ..."></textarea>
+                                  placeholder="Mô tả vấn đề bạn cần Trung tâm hỗ trợ..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -168,12 +210,26 @@
     var form = document.getElementById('supportRequestForm');
     if (!form) return;
     var projectId = @Model.Project.Id;
+    var requestTypeEl = document.getElementById('supportRequestType');
+    var serviceTypeWrap = document.getElementById('supportServiceTypeWrap');
+    var serviceTypeEl = document.getElementById('supportServiceType');
+    if (requestTypeEl && serviceTypeWrap) {
+        requestTypeEl.addEventListener('change', function () {
+            var isConsulting = requestTypeEl.value === '2';
+            serviceTypeWrap.classList.toggle('d-none', !isConsulting);
+            if (!isConsulting && serviceTypeEl) serviceTypeEl.value = '';
+        });
+    }
 
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
         var btn = document.getElementById('supportSubmitBtn');
         var stepNumber = parseInt(document.getElementById('supportStepNumber').value, 10) || 1;
+        var requestType = parseInt((requestTypeEl && requestTypeEl.value) || '1', 10);
+        var serviceType = serviceTypeEl && serviceTypeEl.value ? parseInt(serviceTypeEl.value, 10) : null;
+        var subject = (document.getElementById('supportSubject').value || '').trim();
         var message = (document.getElementById('supportMessage').value || '').trim();
+        if (requestType === 2 && !serviceType) { alert('Vui lòng chọn loại tư vấn.'); return; }
         if (!message) { alert('Vui lòng nhập nội dung cần hỗ trợ.'); return; }
 
         var token = form.querySelector('input[name="__RequestVerificationToken"]').value;
@@ -187,7 +243,15 @@
                     'Content-Type': 'application/json',
                     'RequestVerificationToken': token
                 },
-                body: JSON.stringify({ projectId: projectId, stepNumber: stepNumber, message: message })
+                body: JSON.stringify({
+                    projectId: projectId,
+                    stepNumber: stepNumber,
+                    requestType: requestType,
+                    serviceType: serviceType,
+                    subject: subject,
+                    description: message,
+                    message: message
+                })
             });
             var data = await res.json();
             if (res.ok && data.success) {

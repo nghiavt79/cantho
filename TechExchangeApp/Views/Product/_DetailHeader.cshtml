@@ -1,6 +1,10 @@
 @using TechExchangeApp.ViewModel
 @using TechExchangeApp.Enums
 @model ProductDetailViewModel
+@{
+    var isDirectInquiry = Model.Product.ProductType == (int)ProductTypeEnum.ThietBi
+        && Model.Product.CanDirectInquiry == true;
+}
 
 <div class="detail-header row mb-4 g-4">
     @* IMAGE GALLERY *@
@@ -71,14 +75,21 @@
 
 
         <div class="d-flex gap-2 mt-3 flex-wrap">
-            <a href="/TechTransfer/Create?fromId=@Model.Product.ID&typeData=1" class="btn btn-primary btn-sm">
-                <i class="fa fa-file-signature me-1"></i> Liên hệ báo giá
-            </a>
+            @if (isDirectInquiry)
+            {
+                <a href="/OcopOrder/Create?productId=@Model.Product.ID" class="btn btn-primary btn-sm">
+                    <i class="fa fa-paper-plane me-1"></i> Gửi yêu cầu đặt mua / quan tâm
+                </a>
+            }
+            else
+            {
+                <a href="/TechTransfer/Create?fromId=@Model.Product.ID&typeData=1" class="btn btn-primary btn-sm">
+                    <i class="fa fa-file-signature me-1"></i> Liên hệ báo giá
+                </a>
+            }
             <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">
                 <i class="fa fa-print me-1"></i> In trang
             </button>
         </div>
     </div>
 </div>
-
-

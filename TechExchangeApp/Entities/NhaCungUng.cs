@@ -112,5 +112,10 @@ namespace TechExchangeApp.Entities
 
         [MaxLength(200)]
         public string? ChuTaiKhoan { get; set; }
+
+        // ── Bản dịch tiếng Anh (dòng riêng LanguageId=2) ──
+        public int? OriginalId { get; set; }   // CungUngId bản gốc VI (bản EN mới có)
+        public bool? EnStale { get; set; }      // true = VI đã đổi → cần dịch lại
+        public string? SourceHash { get; set; } // hash nội dung VI lúc dịch
     }
 }

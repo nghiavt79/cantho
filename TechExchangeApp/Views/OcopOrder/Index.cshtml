@@ -7,7 +7,7 @@
 @model List<TechExchangeApp.ViewModel.OcopOrderVm>
 
 @{
-    ViewData["Title"] = "Đơn hàng OCOP của tôi";
+    ViewData["Title"] = "Yêu cầu đặt mua / quan tâm của tôi";
     ViewData["AuthWorkspace"] = true;
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
@@ -24,14 +24,25 @@
 
     string StatusText(int statusId) => statusId switch
     {
-        1 => "Mới đặt",
+        1 => "Mới gửi",
         2 => "Đã xác nhận",
         3 => "Hoàn tất",
         4 => "Đã huỷ",
         _ => "Không xác định"
     };
 
-    string PaymentText(int hinhThuc) => hinhThuc == 2 ? "Chuyển khoản" : "COD";
+    string ProductTypeText(int? type) => type switch
+    {
+        2 => "Thiết bị",
+        4 => "OCOP",
+        _ => "Sản phẩm"
+    };
+
+    string ProductUrl(TechExchangeApp.ViewModel.OcopOrderVm order)
+        => order.RequestProductType == 4
+            ? $"{Html.MainDomain()}ocop/{Html.MakeURLFriendly(order.ProductName)}-{order.ProductId}"
+            : $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(order.ProductName)}-{order.ProductId}";
+
 }
 
 <div class="container-fluid py-4 user-portal">
@@ -43,16 +54,16 @@
     <div class="col-md-9 col-lg-10 user-portal-main">
         <div class="card shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="fas fa-shopping-cart"></i> Đơn hàng OCOP của tôi</h5>
-                <span class="badge bg-primary">Tổng: @Model.Count đơn</span>
+                <h5 class="mb-0"><i class="fas fa-paper-plane"></i> Yêu cầu đặt mua / quan tâm của tôi</h5>
+                <span class="badge bg-primary">Tổng: @Model.Count yêu cầu</span>
             </div>
             <div class="card-body">
                 @if (Model.Count == 0)
                 {
                     <div class="empty-state">
-                        <i class="fas fa-shopping-cart empty-state-icon"></i>
-                        <p class="empty-state-title">Chưa có đơn hàng nào</p>
-                        <p class="empty-state-text">Bạn chưa đặt mua sản phẩm OCOP nào. Ghé thăm Góc trưng bày OCOP để bắt đầu.</p>
+                        <i class="fas fa-paper-plane empty-state-icon"></i>
+                        <p class="empty-state-title">Chưa có yêu cầu đặt mua nào</p>
+                        <p class="empty-state-text">Bạn chưa gửi yêu cầu đặt mua / quan tâm nào.</p>
                         <a asp-controller="Ocop" asp-action="Index" class="btn btn-primary btn-sm">
                             <i class="fas fa-store"></i> Xem sản phẩm OCOP
                         </a>
@@ -65,11 +76,12 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>Sản phẩm</th>
+                                    <th>Loại sản phẩm</th>
+                                    <th>Giá tham khảo</th>
                                     <th>Số lượng</th>
-                                    <th>Địa chỉ giao</th>
-                                    <th>Thanh toán</th>
+                                    <th>Địa chỉ liên hệ/giao nhận</th>
                                     <th>Trạng thái</th>
-                                    <th>Ngày đặt</th>
+                                    <th>Ngày gửi</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
@@ -78,26 +90,21 @@
                                 {
                                     <tr>
                                         <td data-label="Sản phẩm">
-                                            <a href="@(Html.MainDomain())ocop/@(Html.MakeURLFriendly(order.ProductName))-@order.ProductId" target="_blank">@order.ProductName</a>
+                                            <a href="@ProductUrl(order)" target="_blank">@order.ProductName</a>
                                         </td>
+                                        <td data-label="Loại sản phẩm">@ProductTypeText(order.RequestProductType)</td>
+                                        <td data-label="Giá tham khảo">@(string.IsNullOrWhiteSpace(order.GiaThamKhao) ? "Liên hệ báo giá" : order.GiaThamKhao)</td>
                                         <td data-label="Số lượng">@order.SoLuong</td>
-                                        <td data-label="Địa chỉ giao">@order.DiaChiGiao</td>
-                                        <td data-label="Thanh toán">
-                                            @PaymentText(order.HinhThucThanhToan)
-                                            @if (order.HinhThucThanhToan == 2 && !string.IsNullOrWhiteSpace(order.SoTaiKhoan))
-                                            {
-                                                <div class="small text-muted">@order.TenNganHang - @order.SoTaiKhoan (@order.ChuTaiKhoan)</div>
-                                            }
-                                        </td>
+                                        <td data-label="Địa chỉ liên hệ/giao nhận">@order.DiaChiGiao</td>
                                         <td data-label="Trạng thái"><span class="badge @StatusBadge(order.StatusId)">@StatusText(order.StatusId)</span></td>
-                                        <td data-label="Ngày đặt">@order.NgayTao.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td data-label="Ngày gửi">@order.NgayTao.ToString("dd/MM/yyyy HH:mm")</td>
                                         <td data-label="Thao tác">
                                             @if (order.StatusId == 1)
                                             {
-                                                <form asp-action="Cancel" method="post" class="d-inline" onsubmit="return confirm('Bạn chắc chắn muốn huỷ đơn này?');">
+                                                <form asp-action="Cancel" method="post" class="d-inline" onsubmit="return confirm('Bạn chắc chắn muốn huỷ yêu cầu này?');">
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" name="id" value="@order.Id" />
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger">Huỷ đơn</button>
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">Huỷ yêu cầu</button>
                                                 </form>
                                             }
                                         </td>

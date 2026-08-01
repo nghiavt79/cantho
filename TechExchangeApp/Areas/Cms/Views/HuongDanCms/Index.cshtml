@@ -1,0 +1,382 @@
+@{
+    ViewData["Title"] = "Hướng dẫn CMS";
+}
+
+<div class="cms-guide-page">
+    <div class="row g-4">
+        <div class="col-lg-3">
+            <div class="card cms-guide-toc sticky-top">
+                <div class="card-header">
+                    <h5 class="card-title mb-0"><i class="fas fa-book-open me-2"></i>Hướng dẫn CMS</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action" href="#tong-quan"><i class="fas fa-gauge-high"></i> Tổng quan</a>
+                    <a class="list-group-item list-group-item-action" href="#giao-dich"><i class="fas fa-handshake"></i> Giao dịch</a>
+                    <a class="list-group-item list-group-item-action" href="#san-pham-doi-tac"><i class="fas fa-boxes-stacked"></i> Sản phẩm & đối tác</a>
+                    <a class="list-group-item list-group-item-action" href="#noi-dung"><i class="fas fa-newspaper"></i> Nội dung website</a>
+                    <a class="list-group-item list-group-item-action" href="#he-thong"><i class="fas fa-shield-alt"></i> Hệ thống</a>
+                    <a class="list-group-item list-group-item-action" href="#tien-ich"><i class="fas fa-screwdriver-wrench"></i> Tiện ích nhanh</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <section class="cms-guide-hero" id="tong-quan">
+                <div>
+                    <span class="cms-guide-eyebrow">CASTA CMS</span>
+                    <h2>Hướng dẫn thao tác cho quản trị viên</h2>
+                    <p>Trang này tóm tắt các luồng vận hành chính trong CMS: tiếp nhận giao dịch, duyệt sản phẩm, quản lý đối tác, cập nhật nội dung và cấu hình hệ thống.</p>
+                </div>
+                <div class="cms-guide-hero-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+            </section>
+
+            <section class="card cms-guide-section" id="giao-dich">
+                <div class="card-body">
+                    <h3><i class="fas fa-handshake"></i> Giao dịch</h3>
+                    <div class="cms-guide-grid">
+                        <article>
+                            <h4>Dự án</h4>
+                            <p>Dùng để xem và theo dõi các hồ sơ giao dịch/chuyển giao đã phát sinh từ phía người dùng.</p>
+                            <ul>
+                                <li>Kiểm tra tên hồ sơ, mã hồ sơ, người tạo và trạng thái xử lý.</li>
+                                <li>Mở chi tiết để đối chiếu tiến trình, thành viên và dữ liệu từng bước.</li>
+                                <li>Ưu tiên rà soát các hồ sơ có yêu cầu hỗ trợ hoặc đang dừng ở bước quan trọng.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Phiếu yêu cầu</h4>
+                            <p>Quản lý các phiếu yêu cầu chuyển giao/báo giá từ người dùng.</p>
+                            <ul>
+                                <li>Lọc theo trạng thái, thời gian, người gửi hoặc nội dung yêu cầu.</li>
+                                <li>Kiểm tra thông tin liên hệ trước khi chuyển xử lý.</li>
+                                <li>Đối chiếu sản phẩm nguồn nếu phiếu được tạo từ trang chi tiết sản phẩm.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Tìm mua công khai</h4>
+                            <p>Quản lý nhu cầu công nghệ do người dùng/cơ quan/doanh nghiệp đăng công khai.</p>
+                            <ul>
+                                <li>Rà soát nội dung, lĩnh vực, thời hạn và thông tin liên hệ.</li>
+                                <li>Duyệt hoặc chỉnh sửa để nội dung hiển thị rõ ràng trên website.</li>
+                                <li>Dùng cấu hình nhanh khi cần chuẩn hóa dữ liệu đăng tải.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Yêu cầu Trung tâm tư vấn</h4>
+                            <p>Tiếp nhận yêu cầu hỗ trợ hệ thống hoặc tư vấn giao dịch phát sinh từ hồ sơ.</p>
+                            <ul>
+                                <li>Lọc yêu cầu mới, chưa phân công, đang xử lý hoặc của riêng mình.</li>
+                                <li>Phân công cán bộ phụ trách, phản hồi và cập nhật trạng thái xử lý.</li>
+                                <li>Xuất Excel khi cần tổng hợp báo cáo.</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card cms-guide-section" id="san-pham-doi-tac">
+                <div class="card-body">
+                    <h3><i class="fas fa-boxes-stacked"></i> Sản phẩm & đối tác</h3>
+                    <div class="cms-guide-grid">
+                        <article>
+                            <h4>Công nghệ, thiết bị, sản phẩm trí tuệ</h4>
+                            <p>Đây là nhóm dữ liệu sản phẩm chính của sàn.</p>
+                            <ul>
+                                <li>Kiểm tra tên, ảnh đại diện, lĩnh vực, xuất xứ, mô tả và thông số kỹ thuật.</li>
+                                <li>Với công nghệ có bảo mật, kiểm tra cấu hình NDA và nội dung NDA riêng nếu có.</li>
+                                <li>Với thiết bị bán/liên hệ nhanh, kiểm tra tùy chọn cho phép gửi yêu cầu trực tiếp.</li>
+                                <li>Chỉ xuất bản sản phẩm khi nội dung đủ rõ và thông tin nhà cung ứng hợp lệ.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>OCOP</h4>
+                            <p>Dữ liệu OCOP phục vụ góc trưng bày và truy xuất nguồn gốc.</p>
+                            <ul>
+                                <li>Kiểm tra sao OCOP, mã truy xuất, đơn vị sản xuất, vùng nguyên liệu và chứng nhận.</li>
+                                <li>Đảm bảo ảnh sản phẩm rõ, đúng mặt hàng và không bị sai tỉ lệ.</li>
+                                <li>Kiểm tra liên kết nhà cung ứng để khách gửi yêu cầu đặt mua/quan tâm đúng đơn vị.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Nhà cung ứng</h4>
+                            <p>Quản lý hồ sơ đơn vị cung cấp công nghệ, thiết bị, OCOP hoặc dịch vụ liên quan.</p>
+                            <ul>
+                                <li>Kiểm tra thông tin pháp nhân, người đại diện, lĩnh vực và liên hệ.</li>
+                                <li>Bổ sung thông tin nhận chuyển khoản nếu đơn vị có sản phẩm đặt mua trực tiếp.</li>
+                                <li>Duyệt hồ sơ trước khi cho hiển thị công khai hoặc gắn với sản phẩm.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Nhà tư vấn</h4>
+                            <p>Quản lý hồ sơ chuyên gia/đơn vị tư vấn phục vụ mạng lưới hỗ trợ.</p>
+                            <ul>
+                                <li>Kiểm tra chuyên môn, kinh nghiệm và lĩnh vực tư vấn.</li>
+                                <li>Duyệt hồ sơ đủ điều kiện để hiển thị trên website.</li>
+                                <li>Đảm bảo thông tin liên hệ phù hợp trước khi công khai.</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card cms-guide-section" id="noi-dung">
+                <div class="card-body">
+                    <h3><i class="fas fa-newspaper"></i> Nội dung website</h3>
+                    <div class="cms-guide-grid">
+                        <article>
+                            <h4>Tin bài</h4>
+                            <p>Dùng để đăng tin tức, sự kiện, thông báo và các nội dung truyền thông.</p>
+                            <ul>
+                                <li>Tiêu đề cần ngắn, rõ ý và không trùng lặp.</li>
+                                <li>Ảnh đại diện nên đúng kích thước, sắc nét và liên quan trực tiếp đến nội dung.</li>
+                                <li>Kiểm tra ngày xuất bản, danh mục, trạng thái và mô tả ngắn trước khi lưu.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Menu website</h4>
+                            <p>Quản lý cây menu và nhóm nội dung trên website.</p>
+                            <ul>
+                                <li>Không đổi QueryString của menu đang có link công khai nếu không cần thiết.</li>
+                                <li>Kiểm tra thứ tự sắp xếp, trạng thái và menu cha trước khi xuất bản.</li>
+                                <li>Với mục hướng dẫn sử dụng, nội dung public đang lấy từ cây Menu/Contents riêng.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Danh mục</h4>
+                            <p>Dùng cho lĩnh vực, nhóm sản phẩm và các cấu trúc phân loại.</p>
+                            <ul>
+                                <li>Tránh tạo danh mục gần trùng tên vì sẽ làm dữ liệu tìm kiếm bị phân tán.</li>
+                                <li>Không xóa danh mục đã có dữ liệu liên kết nếu chưa kiểm tra ảnh hưởng.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Banner quảng cáo</h4>
+                            <p>Quản lý ảnh banner và nội dung quảng bá trên website.</p>
+                            <ul>
+                                <li>Kiểm tra ảnh hiển thị tốt trên desktop và mobile.</li>
+                                <li>Đặt thời gian hiệu lực nếu banner chỉ dùng cho chiến dịch ngắn hạn.</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card cms-guide-section" id="he-thong">
+                <div class="card-body">
+                    <h3><i class="fas fa-shield-alt"></i> Quản trị hệ thống</h3>
+                    <div class="cms-guide-grid">
+                        <article>
+                            <h4>Người dùng</h4>
+                            <p>Quản lý tài khoản đăng nhập, thông tin liên hệ và trạng thái người dùng.</p>
+                            <ul>
+                                <li>Kiểm tra đúng email/số điện thoại trước khi hỗ trợ tài khoản.</li>
+                                <li>Chỉ cấp quyền CMS cho tài khoản thực sự cần vận hành hệ thống.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Nhóm quyền và phân quyền</h4>
+                            <p>Quản lý vai trò, tính năng hệ thống và quyền truy cập theo chức năng.</p>
+                            <ul>
+                                <li>Thay đổi quyền theo nguyên tắc cấp vừa đủ cho nhiệm vụ.</li>
+                                <li>Sau khi đổi quyền, yêu cầu người dùng đăng xuất/đăng nhập lại nếu chưa thấy thay đổi.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Tham số hệ thống</h4>
+                            <p>Quản lý các cấu hình vận hành như ký số, cache, workflow hoặc tính năng bật/tắt.</p>
+                            <ul>
+                                <li>Ghi chú lý do thay đổi trước khi cập nhật tham số quan trọng.</li>
+                                <li>Không chỉnh tham số ký số hoặc workflow nếu chưa thống nhất phạm vi triển khai.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Nhật ký</h4>
+                            <p>Dùng để kiểm tra hoạt động hệ thống và truy vết khi cần hỗ trợ.</p>
+                            <ul>
+                                <li>Lọc theo thời gian, tài khoản hoặc chức năng để khoanh vùng vấn đề.</li>
+                                <li>Không dùng nhật ký thay cho báo cáo nghiệp vụ chính thức nếu dữ liệu chưa đối chiếu.</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card cms-guide-section" id="tien-ich">
+                <div class="card-body">
+                    <h3><i class="fas fa-screwdriver-wrench"></i> Tiện ích nhanh trong CMS</h3>
+                    <div class="cms-guide-grid">
+                        <article>
+                            <h4>Cập nhật chỉ mục tìm kiếm</h4>
+                            <p>Nút kính lúp ở cuối sidebar dùng để dựng lại chỉ mục tìm kiếm theo ngôn ngữ.</p>
+                            <ul>
+                                <li>Dùng sau khi cập nhật nhiều sản phẩm, tin bài hoặc dữ liệu cần tìm kiếm.</li>
+                                <li>Chờ hệ thống báo thành công trước khi kiểm tra lại kết quả tìm kiếm.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Xóa cache trang chủ</h4>
+                            <p>Nút làm mới ở cuối sidebar dùng để xóa cache trang chủ.</p>
+                            <ul>
+                                <li>Dùng sau khi thay đổi nội dung cần xuất hiện ngay trên trang chủ.</li>
+                                <li>Nếu chưa thấy thay đổi, tải lại trang public bằng chế độ không cache của trình duyệt.</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .cms-guide-page {
+            --guide-border: rgba(15, 23, 42, .1);
+            --guide-ink: #172033;
+            --guide-muted: #637083;
+        }
+
+        .cms-guide-toc {
+            top: 84px;
+            border: 1px solid var(--guide-border);
+        }
+
+        .cms-guide-toc .list-group-item {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: var(--guide-ink);
+            font-weight: 600;
+        }
+
+        .cms-guide-toc .list-group-item i {
+            width: 18px;
+            color: #2563eb;
+        }
+
+        .cms-guide-hero {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 28px;
+            border: 1px solid var(--guide-border);
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ffffff, #eef6ff);
+        }
+
+        .cms-guide-eyebrow {
+            display: inline-flex;
+            margin-bottom: 8px;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .cms-guide-hero h2 {
+            margin: 0 0 10px;
+            color: var(--guide-ink);
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .cms-guide-hero p {
+            max-width: 760px;
+            margin: 0;
+            color: var(--guide-muted);
+            font-size: 15px;
+        }
+
+        .cms-guide-hero-icon {
+            display: grid;
+            width: 82px;
+            height: 82px;
+            flex: 0 0 auto;
+            place-items: center;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 34px;
+        }
+
+        .cms-guide-section {
+            margin-bottom: 24px;
+            border: 1px solid var(--guide-border);
+            border-radius: 8px;
+        }
+
+        .cms-guide-section h3 {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 0 0 18px;
+            color: var(--guide-ink);
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .cms-guide-section h3 i {
+            color: #2563eb;
+        }
+
+        .cms-guide-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .cms-guide-grid article {
+            padding: 18px;
+            border: 1px solid var(--guide-border);
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        .cms-guide-grid h4 {
+            margin: 0 0 8px;
+            color: var(--guide-ink);
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .cms-guide-grid p {
+            margin-bottom: 10px;
+            color: var(--guide-muted);
+        }
+
+        .cms-guide-grid ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #334155;
+        }
+
+        .cms-guide-grid li + li {
+            margin-top: 6px;
+        }
+
+        @@media (max-width: 991.98px) {
+            .cms-guide-toc {
+                position: static;
+            }
+
+            .cms-guide-hero {
+                align-items: flex-start;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .cms-guide-hero {
+                flex-direction: column;
+                padding: 22px;
+            }
+
+            .cms-guide-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+}

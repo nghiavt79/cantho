@@ -32,10 +32,14 @@
                 <i class="bi bi-book-half"></i>
                 <span class="action-dock__label">@T("Hướng dẫn", "Guide")</span>
             </a>
+            <button type="button" class="action-dock__btn action-dock__btn--top-mobile" data-back-to-top data-tooltip="@T("Về đầu trang", "Back to top")" aria-label="@T("Về đầu trang", "Back to top")">
+                <i class="bi bi-chevron-up"></i>
+                <span class="action-dock__label">@T("Lên đầu", "Top")</span>
+            </button>
         </div>
     </div>
 
-    <button type="button" id="btnBackToTop" class="action-dock__top" data-tooltip="@T("Về đầu trang", "Back to top")" aria-label="@T("Về đầu trang", "Back to top")">
+    <button type="button" id="btnBackToTop" class="action-dock__top action-dock__top--desktop" data-back-to-top data-tooltip="@T("Về đầu trang", "Back to top")" aria-label="@T("Về đầu trang", "Back to top")">
         <i class="bi bi-chevron-up"></i>
         <span class="action-dock__label">@T("Lên đầu", "Top")</span>
     </button>
@@ -47,23 +51,20 @@
 
 <script>
     (function () {
-        var backToTop = document.getElementById('btnBackToTop');
-        if (backToTop) {
-            backToTop.addEventListener('click', function () {
+        var backToTopButtons = document.querySelectorAll('[data-back-to-top]');
+        backToTopButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
+        });
 
-            // Mobile (≤575.98px) dock là thanh cố định → nút "về đầu trang" luôn hiện,
-            // không ẩn theo cuộn (nếu ẩn thì bấm về đỉnh sẽ làm nút biến mất, tạo ô trống).
-            var isMobileDock = function () {
-                return window.matchMedia('(max-width: 575.98px)').matches;
-            };
+        var backToTop = document.getElementById('btnBackToTop');
+        if (backToTop) {
             var toggleVisibility = function () {
-                backToTop.classList.toggle('is-visible', isMobileDock() || window.scrollY > 320);
+                backToTop.classList.toggle('is-visible', window.scrollY > 320);
             };
             toggleVisibility();
             window.addEventListener('scroll', toggleVisibility, { passive: true });
-            window.addEventListener('resize', toggleVisibility, { passive: true });
         }
     })();
 </script>

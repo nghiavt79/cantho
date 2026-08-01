@@ -1,0 +1,31 @@
+@{
+    var statuses = (IEnumerable<dynamic>)ViewBag.Statuses;
+    var id = (long)ViewBag.ItemId;
+    var statusId = (int?)ViewBag.StatusId;
+    var publishedDate = (DateTime?)ViewBag.PublishedDate;
+    var itemName = (string?)ViewBag.ItemName ?? "";
+}
+
+<form id="quickConfigForm">
+    <input type="hidden" name="id" value="@id" />
+    <div class="mb-2 text-muted small">
+        <i class="fas fa-tag me-1"></i> <strong>@itemName</strong>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-semibold small">Trạng thái</label>
+        <select name="statusId" class="form-select form-select-sm">
+            @foreach (var s in statuses)
+            {
+                <option value="@s.StatusId" selected="@(statusId == (int)s.StatusId)">@s.Title</option>
+            }
+        </select>
+        <small class="text-muted">Chọn <strong>Xuất bản</strong> để hiển thị công khai trên sàn.</small>
+    </div>
+
+    <div class="mb-2">
+        <label class="form-label fw-semibold small">Ngày đăng</label>
+        <input type="datetime-local" name="publishedDate" class="form-control form-control-sm"
+               value="@(publishedDate?.ToString("yyyy-MM-ddTHH:mm"))" />
+    </div>
+</form>

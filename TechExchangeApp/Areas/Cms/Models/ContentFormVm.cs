@@ -9,6 +9,9 @@ namespace TechExchangeApp.Areas.Cms.Models
     {
         public long Id { get; set; }
 
+        /// <summary>Id bản gốc VI khi tạo bản EN nhập tay (link về nguồn).</summary>
+        public long? OriginalId { get; set; }
+
         // ── Tab 1: General ──
         [Required(ErrorMessage = "Tiêu đề không được để trống")]
         [StringLength(500)]

@@ -2,6 +2,10 @@
 
 @{
     var techTransfer = Model.StepData as TechExchangeApp.Entities.TechTransferRequest;
+    var nextStep = Model.Steps
+        .Where(s => s.StepNumber > Model.StepNumber && s.IsVisible && !s.IsNotApplicable && s.IsAccessible)
+        .OrderBy(s => s.StepNumber)
+        .FirstOrDefault();
 }
 
 <div class="card shadow-sm">
@@ -101,13 +105,11 @@
         <a href="@Url.Action("Index", "Dashboard")" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Quay lại Dashboard
         </a>
-        @if (Model.StepNumber < 11 && Model.Steps[Model.StepNumber].IsAccessible)
+        @if (nextStep != null)
         {
-            <button class="btn btn-primary step-nav-btn" data-step="@(Model.StepNumber + 1)">
-                Tiếp tục bước @(Model.StepNumber + 1) <i class="fas fa-arrow-right"></i>
+            <button class="btn btn-primary step-nav-btn" data-step="@nextStep.StepNumber">
+                Tiếp tục bước @nextStep.StepNumber <i class="fas fa-arrow-right"></i>
             </button>
         }
     </div>
 </div>
-
-

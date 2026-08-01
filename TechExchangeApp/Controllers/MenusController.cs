@@ -25,7 +25,7 @@ namespace TechExchangeApp.Controllers
 
         public IActionResult Detail(int menuId)
         {
-            var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var lang = LangHelper.CurrentLangId(HttpContext); // /en → 2, còn lại → 1 (VI giữ nguyên)
 
             var model = new MenuDetailViewModel
             {

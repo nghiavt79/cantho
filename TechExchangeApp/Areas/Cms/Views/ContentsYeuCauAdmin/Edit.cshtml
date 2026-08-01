@@ -82,8 +82,22 @@
                                 <span asp-validation-for="QueryString" class="text-danger small"></span>
                             </div>
                             <div class="mb-3">
-                                <label asp-for="LinhVucId" class="form-label fw-semibold">Lĩnh vực</label>
-                                <input asp-for="LinhVucId" class="form-control" placeholder="Ví dụ: ;4;12;" />
+                                <label class="form-label fw-semibold">Lĩnh vực</label>
+                                <input type="hidden" asp-for="LinhVucId" id="hdnLinhVucId" />
+                                @{
+                                    var linhVucItems = (IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>)(ViewBag.LinhVucList ?? new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>());
+                                    var currentCats = (Model.LinhVucId ?? "").Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                }
+                                <div class="border rounded p-2" style="max-height:220px; overflow-y:auto">
+                                    @foreach (var item in linhVucItems.Where(x => !string.IsNullOrEmpty(x.Value)))
+                                    {
+                                        var chk = currentCats.Contains(item.Value) ? "checked" : "";
+                                        <div class="form-check">
+                                            <input class="form-check-input chk-linhvuc" type="checkbox" value="@item.Value" id="lv_@item.Value" @chk />
+                                            <label class="form-check-label" for="lv_@item.Value">@item.Text</label>
+                                        </div>
+                                    }
+                                </div>
                                 <span asp-validation-for="LinhVucId" class="text-danger small"></span>
                             </div>
                             <div class="mb-3">
@@ -93,7 +107,13 @@
                             </div>
                             <div class="mb-3">
                                 <label asp-for="Image" class="form-label fw-semibold">Hình ảnh</label>
-                                <input asp-for="Image" class="form-control" />
+                                <div class="input-group">
+                                    <input asp-for="Image" class="form-control" id="inputImage" placeholder="URL ảnh..." />
+                                    <button type="button" class="btn btn-outline-primary btn-upload-field" data-target="inputImage">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <div id="previewImage" class="mt-2"></div>
                                 <span asp-validation-for="Image" class="text-danger small"></span>
                             </div>
                         </div>
@@ -207,9 +227,18 @@
     </div>
 
     <div class="d-flex justify-content-end mt-3 gap-2">
-        <a href="@($"/tim-mua-cong-nghe/{Model.QueryString}-{Model.Id}")" target="_blank" class="btn btn-outline-secondary">
-            <i class="fas fa-eye me-1"></i> Xem public
-        </a>
+        @if (Model.StatusId == 3)
+        {
+            <a href="@($"/tim-mua-cong-nghe/{Model.QueryString}-{Model.Id}")" target="_blank" class="btn btn-outline-secondary">
+                <i class="fas fa-eye me-1"></i> Xem public
+            </a>
+        }
+        else
+        {
+            <span class="btn btn-outline-secondary disabled" title="Cần chuyển trạng thái Xuất bản để hiển thị công khai">
+                <i class="fas fa-eye-slash me-1"></i> Chưa xuất bản
+            </span>
+        }
         <button type="submit" class="btn btn-primary">
             <i class="fas fa-save me-1"></i> Lưu nhu cầu
         </button>
@@ -250,6 +279,51 @@ $(function () {
         var title = $('#inputTitle').val();
         if (title) $('#inputSlug').val(slugify(title));
     });
+
+    // ── Upload ảnh (mẫu cms/Posts) ──
+    $('.btn-upload-field').on('click', function () {
+        var targetId = $(this).data('target');
+        var input = $('<input type="file" accept="image/*" style="display:none">');
+        input.on('change', function () {
+            var file = this.files[0];
+            if (!file) return;
+            var formData = new FormData();
+            formData.append('upload', file);
+            $.ajax({
+                url: '@Url.Action("Upload", "Upload", new { area = "Cms" })',
+                type: 'POST', data: formData, processData: false, contentType: false,
+                success: function (r) {
+                    if (r.url) {
+                        $('#' + targetId).val(r.url);
+                        var previewId = 'preview' + targetId.replace('input', '');
+                        if ($('#' + previewId).length) {
+                            $('#' + previewId).html('<img src="' + r.url + '" class="rounded" style="max-height:120px" />');
+                        }
+                        if (window.toastr) toastr.success('Upload thành công!');
+                    } else if (r.error) {
+                        if (window.toastr) toastr.error(r.error.message);
+                    }
+                },
+                error: function () { if (window.toastr) toastr.error('Upload thất bại.'); }
+            });
+        });
+        input.trigger('click');
+    });
+
+    // Preview ảnh sẵn có khi tải trang
+    (function () {
+        var val = $('#inputImage').val();
+        if (val) $('#previewImage').html('<img src="' + val + '" class="rounded" style="max-height:120px" />');
+    })();
+
+    // ── Lĩnh vực: checkbox → hidden field (;a;b) — mẫu SanPhamCNTB ──
+    function syncLinhVuc() {
+        var vals = [];
+        $('.chk-linhvuc:checked').each(function () { vals.push($(this).val()); });
+        $('#hdnLinhVucId').val(vals.join(';'));
+    }
+    $(document).on('change', '.chk-linhvuc', syncLinhVuc);
+    syncLinhVuc();
 });
 
 function slugify(text) {

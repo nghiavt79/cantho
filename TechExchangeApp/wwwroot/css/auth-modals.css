@@ -2,6 +2,19 @@
    AUTH MODALS - MODERN DESIGN
    ================================ */
 
+/* Ẩn header cố định + dock hành động khi mở modal đăng nhập/đăng ký,
+   tránh chúng đè lên form (nhất là mobile). Theo convention tech-request / ai-chatbox. */
+body:has(#loginModal.show) .site-header-v2,
+body:has(#loginModal.show) .header-mobile,
+body:has(#loginModal.show) .action-dock,
+body:has(#loginModal.show) .action-dock-vr-shortcut,
+body:has(#registerModal.show) .site-header-v2,
+body:has(#registerModal.show) .header-mobile,
+body:has(#registerModal.show) .action-dock,
+body:has(#registerModal.show) .action-dock-vr-shortcut {
+    display: none !important;
+}
+
 /* Modal Backdrop with Blur */
 .auth-modal .modal-backdrop {
     backdrop-filter: blur(5px);

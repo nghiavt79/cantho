@@ -5,11 +5,16 @@
 }
 
 @* ── Controls row ─────────────────────────────────── *@
-<div class="se-controls">
-    <span class="se-count">
-        Hiển thị <strong>@Model.Items.Count</strong> / <strong>@Model.Total</strong> kết quả
-    </span>
-</div>
+@if (Model.Items.Any())
+{
+    var firstItem = ((Model.Page - 1) * Model.PageSize) + 1;
+    var lastItem = Math.Min(Model.Page * Model.PageSize, Model.Total);
+    <div class="se-controls">
+        <span class="se-count">
+            Hiển thị <strong>@firstItem-@lastItem</strong> trong <strong>@Model.Total</strong> kết quả
+        </span>
+    </div>
+}
 
 @if (Model.Items.Any())
 {
@@ -105,7 +110,22 @@ else
     @* Empty state *@
     <div class="se-empty">
         <i class="bi bi-search"></i>
-        <h5>Không tìm thấy kết quả</h5>
-        <p>Thử từ khóa khác hoặc mở rộng bộ lọc.</p>
+        <h5>Chưa tìm thấy nội dung phù hợp</h5>
+        <p>Thử sử dụng từ khóa ngắn hơn, bỏ bớt bộ lọc hoặc chọn một nhóm nội dung khác.</p>
+        <div class="se-empty-suggestions" aria-label="Gợi ý từ khóa">
+            <span>Gợi ý:</span>
+            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("cây trồng")}")">cây trồng</a>
+            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("nông nghiệp")}")">nông nghiệp</a>
+            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("công nghệ sinh học")}")">công nghệ sinh học</a>
+            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("giống cây")}")">giống cây</a>
+        </div>
     </div>
+
+    <section class="se-request-cta">
+        <div>
+            <h2>Không tìm thấy công nghệ, thiết bị hoặc giải pháp phù hợp?</h2>
+            <p>Gửi nhu cầu tìm mua để Trung tâm hỗ trợ tiếp nhận, tìm kiếm nhà cung cấp và kết nối với đơn vị phù hợp.</p>
+        </div>
+        <a href="@($"{MainDomain}tim-mua-cong-nghe")">Gửi nhu cầu tìm mua</a>
+    </section>
 }

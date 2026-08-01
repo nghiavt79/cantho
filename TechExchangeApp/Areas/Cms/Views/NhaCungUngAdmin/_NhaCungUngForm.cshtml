@@ -107,7 +107,7 @@
 
                 <fieldset class="border rounded p-3 mb-3">
                     <legend class="float-none w-auto px-2 fs-6 fw-semibold">Thông tin nhận chuyển khoản</legend>
-                    <p class="text-muted small mb-3">Tự động hiện cho khách khi họ chọn thanh toán "Chuyển khoản" khi đặt mua sản phẩm OCOP.</p>
+                    <p class="text-muted small mb-3">Thông tin nội bộ của nhà cung ứng, dùng để trao đổi trực tiếp với người mua khi hai bên thống nhất phương thức thanh toán.</p>
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label asp-for="SoTaiKhoan" class="form-label fw-semibold">Số tài khoản</label>
@@ -310,6 +310,7 @@
         </div>
 
         <input type="hidden" asp-for="LanguageId" />
+        <input type="hidden" asp-for="OriginalId" />
         <input type="hidden" asp-for="Domain" />
         <input type="hidden" asp-for="SiteId" />
     </div>

@@ -7,10 +7,11 @@
     var email = Configuration["SiteBranding:Email"] ?? "";
     var address = Configuration["SiteBranding:Address"] ?? "";
     var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + Uri.EscapeDataString(address);
-    var fullOrgTitle = "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ";
-    var fullOrgSlogan = "Kết nối nghiên cứu · Ứng dụng thực tiễn · Đổi mới sáng tạo";
-    var isEn = Context.Request.Cookies["site_lang"] == "en";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     string T(string vi, string en) => isEn ? en : vi;
+    var fullOrgTitle = T("TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ", "CAN THO SCIENCE & TECHNOLOGY APPLICATION CENTER");
+    var fullOrgSlogan = T("Kết nối nghiên cứu · Ứng dụng thực tiễn · Đổi mới sáng tạo", "Connecting research · Practical application · Innovation");
+    var newsUrl = isEn ? "/en/news-event" : "/tin-su-kien";
 }
 
 <footer class="site-footer-v2">
@@ -24,7 +25,7 @@
                         <small>@fullOrgSlogan</small>
                     </span>
                 </div>
-                <p>@organizationName @T("là đơn vị sự nghiệp khoa học và công nghệ, hỗ trợ kết nối nghiên cứu, ứng dụng và chuyển giao công nghệ.", "is a science & technology public service unit that connects research, application and technology transfer.")</p>
+                <p>@(isEn ? "The Can Tho Science & Technology Application Center" : organizationName) @T("là đơn vị sự nghiệp khoa học và công nghệ, hỗ trợ kết nối nghiên cứu, ứng dụng và chuyển giao công nghệ.", "is a science & technology public service unit that connects research, application and technology transfer.")</p>
                 <div class="site-footer-v2__social">
                     <a href="https://www.facebook.com/profile.php?id=100069991094645" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
                     <a href="https://www.youtube.com/@@TrungtamUngdungCanTho" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
@@ -35,9 +36,9 @@
             <div>
                 <h3>@T("Liên kết nhanh", "Quick Links")</h3>
                 <a href="/">@T("Trang chủ", "Home")</a>
-                <a href="/gioi-thieu-chung-3">@T("Giới thiệu", "About")</a>
+                <a href="@(isEn ? "/en/about" : "/gioi-thieu-chung-3")">@T("Giới thiệu", "About")</a>
                 <a href="/dich-vu-tu-van">@T("Dịch vụ & Giải pháp", "Services & Solutions")</a>
-                <a href="/tin-su-kien">@T("Tin tức - Sự kiện", "News & Events")</a>
+                <a href="@newsUrl">@T("Tin tức - Sự kiện", "News & Events")</a>
                 <a href="/lien-he">@T("Liên hệ", "Contact")</a>
             </div>
 
@@ -63,7 +64,7 @@
 
         <div class="site-footer-v2__bottom">
             <span>© @DateTime.Now.Year @shortName. All rights reserved.</span>
-            <span>@tagline</span>
+            <span>@(isEn ? "Connecting research · Practical application · Innovation" : tagline)</span>
         </div>
     </div>
 </footer>

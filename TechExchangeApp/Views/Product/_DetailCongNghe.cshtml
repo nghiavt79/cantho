@@ -8,7 +8,14 @@
     var productImage = Html.CookedImageURL("org", p.QuyTrinhHinhAnh);
     var rating = p.Rating ?? 0;
     var ratingText = rating > 0 ? rating.ToString("0.0") : "0.0";
-    var priceText = p.SellPrice.HasValue && p.SellPrice.Value > 0
+    // Giá lấy từ "Giá bán dự kiến / Giá tham khảo" (GiaBanDuKien, CKEditor = HTML) — render thẳng bằng Html.Raw.
+    // giaBanText (bản strip-tag ở dưới) chỉ để KIỂM TRA rỗng; thiếu thì fallback SellPrice, cuối mới "Liên hệ báo giá".
+    var giaBanText = System.Text.RegularExpressions.Regex.Replace(p.GiaBanDuKien ?? "", "<.*?>", " ");
+    giaBanText = System.Text.RegularExpressions.Regex.Replace(System.Net.WebUtility.HtmlDecode(giaBanText).Replace(' ', ' '), "\\s+", " ").Trim();
+    bool hasGiaBan = !string.IsNullOrWhiteSpace(giaBanText);
+    // GiaBanDuKien có thẻ HTML (vd bảng giá MISA) -> KHÔNG áp style tech-price (cam/đậm/18px), để hiện trung tính.
+    bool giaBanIsHtml = (p.GiaBanDuKien ?? "").Contains('<');
+    var priceFallback = p.SellPrice.HasValue && p.SellPrice.Value > 0
         ? string.Format("{0:N0} {1}", p.SellPrice.Value, p.Currency)
         : "Liên hệ báo giá";
     var updatedText = (p.Modified ?? p.PublishedDate ?? p.Created)?.ToString("dd/MM/yyyy") ?? "Đang cập nhật";
@@ -84,7 +91,7 @@
                     </div>
                     <div class="tech-info-row"><span class="tech-info-label">Danh mục</span><span class="tech-info-value">@categoryText</span></div>
                     <div class="tech-info-row"><span class="tech-info-label">Xuất xứ</span><span class="tech-info-value">@originText</span></div>
-                    <div class="tech-info-row"><span class="tech-info-label">Giá tham khảo</span><span class="tech-price">@priceText</span></div>
+                    <div class="tech-info-row"><span class="tech-info-label">Giá tham khảo</span><span class="@(hasGiaBan && giaBanIsHtml ? "tech-info-value" : "tech-price")">@if (hasGiaBan) { @Html.Raw(p.GiaBanDuKien) } else { @priceFallback }</span></div>
                 </div>
 
                 <div class="tech-actions">
@@ -94,7 +101,7 @@
                 {
                     <div class="alert alert-warning mt-3 mb-0 py-2">
                         <i class="fa fa-shield-alt me-1"></i>
-                        C&ocirc;ng ngh&#7879; n&agrave;y y&ecirc;u c&#7847;u k&yacute; th&#7887;a thu&#7853;n b&#7843;o m&#7853;t (NDA) tr&#432;&#7899;c khi trao &#273;&#7893;i th&ocirc;ng tin chi ti&#7871;t.
+                        C&aacute;c b&ecirc;n c&oacute; th&#7875; y&ecirc;u c&#7847;u th&#7921;c hi&#7879;n th&#7887;a thu&#7853;n b&#7843;o m&#7853;t (NDA) tr&#432;&#7899;c khi trao &#273;&#7893;i th&ocirc;ng tin chi ti&#7871;t.
                     </div>
                 }
             </div>
@@ -165,8 +172,8 @@
                         {
                             <div class="tech-info-grid mb-3">
                                 <div class="tech-info-row">
-                                    <span class="tech-info-label">Y&ecirc;u c&#7847;u b&#7843;o m&#7853;t</span>
-                                    <span class="tech-info-value">C&oacute; y&ecirc;u c&#7847;u k&yacute; th&#7887;a thu&#7853;n b&#7843;o m&#7853;t (NDA)</span>
+                                    <span class="tech-info-label">Th&#7887;a thu&#7853;n b&#7843;o m&#7853;t</span>
+                                    <span class="tech-info-value">C&oacute; th&#7875; c&#7847;n th&#7921;c hi&#7879;n NDA n&#7871;u m&#7897;t trong c&aacute;c b&ecirc;n y&ecirc;u c&#7847;u</span>
                                 </div>
                             </div>
                             @if (!string.IsNullOrWhiteSpace(p.NDAContent))

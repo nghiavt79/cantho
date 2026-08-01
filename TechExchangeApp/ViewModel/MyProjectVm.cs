@@ -11,6 +11,7 @@ namespace TechExchangeApp.ViewModel
         public string Status { get; set; } = null!;
         public int StatusId { get; set; }
         public int ProgressPercent { get; set; }
+        public int TotalDisplaySteps { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

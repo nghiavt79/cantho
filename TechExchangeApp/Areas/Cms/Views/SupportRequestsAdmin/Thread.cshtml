@@ -1,12 +1,27 @@
 @model TechExchangeApp.Areas.Cms.Controllers.SupportThreadVm
 @{
-    ViewData["Title"] = "Xử lý yêu cầu hỗ trợ";
-    string statusText = Model.SupportStatus switch
+    ViewData["Title"] = "Xử lý yêu cầu hỗ trợ/tư vấn";
+    string StatusText(int s) => s switch
     {
-        1 => "Chưa gán",
-        2 => "Đang xử lý",
-        3 => "Đã đóng",
-        _ => "—"
+        1 => "Mới tiếp nhận",
+        2 => "Đã phân công",
+        3 => "Đang xử lý",
+        4 => "Chờ doanh nghiệp bổ sung",
+        5 => "Đã phản hồi",
+        6 => "Đã hoàn thành",
+        7 => "Đã hủy",
+        _ => "-"
+    };
+    string RequestTypeText(int t) => t == 2 ? "Tư vấn giao dịch/chuyển giao" : "Hỗ trợ sử dụng hệ thống";
+    string ServiceTypeText(int? t) => t switch
+    {
+        1 => "Tìm kiếm, lựa chọn nhà cung cấp",
+        2 => "Đánh giá hồ sơ đề xuất",
+        3 => "Tư vấn đàm phán thương mại",
+        4 => "Kiểm tra pháp lý hợp đồng",
+        5 => "Hỗ trợ hợp đồng điện tử",
+        99 => "Khác",
+        _ => "-"
     };
 }
 
@@ -14,7 +29,7 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h3 class="mb-0"><i class="fas fa-headset me-2"></i>Yêu cầu hỗ trợ</h3>
+                <h3 class="mb-0"><i class="fas fa-headset me-2"></i>REQ-@Model.Id</h3>
             </div>
             <div class="col-sm-6 text-end">
                 <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Danh sách</a>
@@ -25,7 +40,6 @@
 
 <div class="app-content">
     <div class="container-fluid">
-
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert alert-success">@TempData["SuccessMessage"]</div>
@@ -38,21 +52,45 @@
         <div class="card mb-3">
             <div class="card-body">
                 <div class="row g-2">
-                    <div class="col-md-4"><strong>Dự án:</strong> @Model.ProjectName</div>
-                    <div class="col-md-2"><strong>Bước:</strong> @(Model.StepNumber?.ToString() ?? "—")</div>
+                    <div class="col-md-4"><strong>Hồ sơ:</strong> @Model.ProjectName</div>
+                    <div class="col-md-2"><strong>Bước:</strong> @(Model.StepNumber?.ToString() ?? "-")</div>
                     <div class="col-md-3"><strong>Người gửi:</strong> @Model.RequesterName</div>
-                    <div class="col-md-3">
-                        <strong>Phụ trách:</strong> @(Model.AssignedStaffName ?? "Chưa gán")
-                        <span class="badge @(Model.SupportStatus == 1 ? "bg-warning text-dark" : Model.SupportStatus == 2 ? "bg-info" : "bg-secondary") ms-1">@statusText</span>
-                    </div>
+                    <div class="col-md-3"><strong>Phụ trách:</strong> @(Model.AssignedStaffName ?? "Chưa gán")</div>
+                    <div class="col-md-4"><strong>Loại yêu cầu:</strong> @RequestTypeText(Model.RequestType)</div>
+                    <div class="col-md-4"><strong>Dịch vụ:</strong> @ServiceTypeText(Model.ServiceType)</div>
+                    <div class="col-md-4"><strong>Trạng thái:</strong> @StatusText(Model.TicketStatus)</div>
+                    <div class="col-12"><strong>Tiêu đề:</strong> @(Model.Subject ?? "-")</div>
+                    @if (!string.IsNullOrWhiteSpace(Model.Description))
+                    {
+                        <div class="col-12"><strong>Nội dung ban đầu:</strong> <span style="white-space:pre-wrap">@Model.Description</span></div>
+                    }
                 </div>
             </div>
         </div>
 
-        @if (Model.SupportStatus != 3)
+        @if (Model.TicketStatus != 6 && Model.TicketStatus != 7)
         {
             <div class="card mb-3">
                 <div class="card-body">
+                    <form asp-action="ChangeStatus" method="post" class="row g-2 align-items-end mb-3">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="col-md-6">
+                            <label class="form-label mb-1"><i class="fas fa-list-check me-1"></i>Trạng thái xử lý</label>
+                            <select name="status" class="form-select">
+                                <option value="1" selected="@(Model.TicketStatus == 1)">Mới tiếp nhận</option>
+                                <option value="2" selected="@(Model.TicketStatus == 2)">Đã phân công</option>
+                                <option value="3" selected="@(Model.TicketStatus == 3)">Đang xử lý</option>
+                                <option value="4" selected="@(Model.TicketStatus == 4)">Chờ doanh nghiệp bổ sung</option>
+                                <option value="5" selected="@(Model.TicketStatus == 5)">Đã phản hồi</option>
+                                <option value="6" selected="@(Model.TicketStatus == 6)">Đã hoàn thành</option>
+                                <option value="7" selected="@(Model.TicketStatus == 7)">Đã hủy</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-outline-primary w-100"><i class="fas fa-save"></i> Cập nhật trạng thái</button>
+                        </div>
+                    </form>
                     <div class="row g-2 align-items-end">
                         <div class="col-md-7">
                             <form asp-action="Assign" method="post" class="d-flex gap-2 align-items-end">
@@ -72,17 +110,19 @@
                             </form>
                         </div>
                         <div class="col-md-5 text-md-end">
-                            <form asp-action="Close" method="post" onsubmit="return confirm('Đóng yêu cầu hỗ trợ này?');" class="d-inline">
+                            <form asp-action="Close" method="post" onsubmit="return confirm('Đóng yêu cầu này?');" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@Model.Id" />
-                                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-check-circle"></i> Đóng yêu cầu</button>
+                                <button type="submit" class="btn btn-outline-secondary"><i class="fas fa-check-circle"></i> Hoàn thành</button>
+                            </form>
+                            <form asp-action="Close" method="post" onsubmit="return confirm('Hủy yêu cầu này?');" class="d-inline ms-1">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" name="status" value="7" />
+                                <button type="submit" class="btn btn-outline-danger"><i class="fas fa-ban"></i> Hủy</button>
                             </form>
                         </div>
                     </div>
-                    @if (!Model.StaffOptions.Any())
-                    {
-                        <small class="text-muted d-block mt-2">Chưa có hồ sơ tư vấn nào gắn tài khoản để gán.</small>
-                    }
                 </div>
             </div>
         }
@@ -118,9 +158,9 @@
                 }
             </div>
             <div class="card-footer">
-                @if (Model.SupportStatus == 3)
+                @if (Model.TicketStatus == 6 || Model.TicketStatus == 7)
                 {
-                    <div class="text-muted">Yêu cầu đã đóng.</div>
+                    <div class="text-muted">Yêu cầu đã kết thúc.</div>
                 }
                 else
                 {
@@ -132,10 +172,6 @@
                                       placeholder="Nhập phản hồi gửi người gửi..." required></textarea>
                             <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Gửi</button>
                         </div>
-                        @if (Model.SupportStatus == 1)
-                        {
-                            <small class="text-muted">Khi bạn gửi phản hồi đầu tiên, yêu cầu sẽ được gán cho bạn.</small>
-                        }
                     </form>
                 }
             </div>

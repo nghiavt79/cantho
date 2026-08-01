@@ -143,6 +143,10 @@ namespace TechExchangeApp.Services
 
                 // Resolve other user name (an toàn cho support chưa gán)
                 var otherUser = await ResolveOtherDisplayNameAsync(c, uid);
+                var supportRequest = c.ConversationType == (int)ChatConversationType.PlatformSupport
+                    ? await _context.SupportRequests.AsNoTracking()
+                        .FirstOrDefaultAsync(r => r.ConversationId == c.Id)
+                    : null;
 
                 result.Add(new ChatConversationVm
                 {
@@ -157,7 +161,13 @@ namespace TechExchangeApp.Services
                     ProjectId = c.ProjectId,
                     StepNumber = c.StepNumber,
                     SupportStatus = c.SupportStatus,
-                    AssignedStaffUserId = c.AssignedStaffUserId
+                    AssignedStaffUserId = c.AssignedStaffUserId,
+                    SupportRequestId = supportRequest?.Id,
+                    RequestType = supportRequest?.RequestType,
+                    ServiceType = supportRequest?.ServiceType,
+                    TicketStatus = supportRequest?.Status,
+                    Subject = supportRequest?.Subject,
+                    SupportContextCode = supportRequest?.SupportContextCode
                 });
             }
 
@@ -181,12 +191,15 @@ namespace TechExchangeApp.Services
 
             // Tên dự án cho hội thoại hỗ trợ (hiển thị badge dự án + bước)
             string? projectName = null;
+            SupportRequest? supportRequest = null;
             if (conv.ConversationType == (int)ChatConversationType.PlatformSupport && conv.ProjectId.HasValue)
             {
                 projectName = await _context.Projects.AsNoTracking()
                     .Where(p => p.Id == conv.ProjectId.Value)
                     .Select(p => p.ProjectName)
                     .FirstOrDefaultAsync();
+                supportRequest = await _context.SupportRequests.AsNoTracking()
+                    .FirstOrDefaultAsync(r => r.ConversationId == conv.Id);
             }
 
             var messages = await _context.ChatMessages
@@ -223,6 +236,12 @@ namespace TechExchangeApp.Services
                 StepNumber = conv.StepNumber,
                 SupportStatus = conv.SupportStatus,
                 AssignedStaffUserId = conv.AssignedStaffUserId,
+                SupportRequestId = supportRequest?.Id,
+                RequestType = supportRequest?.RequestType,
+                ServiceType = supportRequest?.ServiceType,
+                TicketStatus = supportRequest?.Status,
+                Subject = supportRequest?.Subject,
+                SupportContextCode = supportRequest?.SupportContextCode,
                 Messages = messages.Select(m => new ChatMessageVm
                 {
                     Id = m.Id,
@@ -259,6 +278,16 @@ namespace TechExchangeApp.Services
             _context.ChatMessages.Add(msg);
 
             conv.LastMessageAt = DateTime.UtcNow;
+            SupportRequest? supportRequest = null;
+            if (conv.ConversationType == (int)ChatConversationType.PlatformSupport)
+            {
+                supportRequest = await _context.SupportRequests
+                    .FirstOrDefaultAsync(r => r.ConversationId == conversationId);
+                if (supportRequest != null)
+                {
+                    supportRequest.UpdatedAt = DateTime.UtcNow;
+                }
+            }
             await _context.SaveChangesAsync();
 
             // Notify the other party (phân nhánh support / product)
@@ -275,7 +304,9 @@ namespace TechExchangeApp.Services
                         recipientInt = conv.AssignedStaffUserId ?? 0;
                         title = "Tin nhắn hỗ trợ mới";
                         content = "Có tin nhắn mới trong yêu cầu hỗ trợ dự án.";
-                        url = $"/cms/SupportRequestsAdmin/Thread/{conversationId}";
+                        url = supportRequest != null
+                            ? $"/cms/SupportRequestsAdmin/Thread/{supportRequest.Id}"
+                            : "/cms/SupportRequestsAdmin";
                     }
                     else
                     {
@@ -411,7 +442,7 @@ namespace TechExchangeApp.Services
                 {
                     if (c.AssignedStaffUserId is int staffId && staffId > 0)
                         return await ResolveUserNameAsync(staffId.ToString());
-                    return "Sàn hỗ trợ";
+                    return "Trung tâm hỗ trợ";
                 }
                 // Nhân viên nhìn vào → đối tác là người gửi
                 return await ResolveUserNameAsync(c.BuyerUserId);
@@ -421,7 +452,165 @@ namespace TechExchangeApp.Services
             return await ResolveUserNameAsync(otherId);
         }
 
-        public async Task<long> StartSupportConversationAsync(int projectId, int requesterUserId, int stepNumber, string message)
+        private static string BuildSupportSubject(int requestType, int? serviceType, int stepNumber)
+        {
+            if (requestType == (int)SupportRequestType.TransactionConsulting)
+            {
+                return serviceType switch
+                {
+                    (int)SupportServiceType.SupplierMatching => "Tìm kiếm, lựa chọn nhà cung cấp",
+                    (int)SupportServiceType.ProposalEvaluation => "Đánh giá hồ sơ đề xuất",
+                    (int)SupportServiceType.NegotiationAdvice => "Tư vấn đàm phán thương mại",
+                    (int)SupportServiceType.LegalReview => "Kiểm tra pháp lý hợp đồng",
+                    (int)SupportServiceType.ElectronicContractSupport => "Hỗ trợ hợp đồng điện tử",
+                    _ => "Tư vấn giao dịch/chuyển giao"
+                };
+            }
+
+            return $"Hỗ trợ sử dụng hệ thống - bước {stepNumber}";
+        }
+
+        private static string ResolveSupportContextCode(int requestType, int? serviceType, int stepNumber)
+        {
+            if (requestType != (int)SupportRequestType.TransactionConsulting)
+                return "GENERAL_SUPPORT";
+
+            return serviceType switch
+            {
+                (int)SupportServiceType.SupplierMatching => "SUPPLIER_MATCHING",
+                (int)SupportServiceType.ProposalEvaluation => "PROPOSAL_EVALUATION",
+                (int)SupportServiceType.NegotiationAdvice => "NEGOTIATION",
+                (int)SupportServiceType.LegalReview => "LEGAL_REVIEW",
+                (int)SupportServiceType.ElectronicContractSupport => "E_CONTRACT",
+                _ => $"STEP_{stepNumber}"
+            };
+        }
+
+        public async Task<long> StartSupportConversationAsync(int projectId, int requesterUserId, SupportStartOptions options)
+        {
+            string requesterStr = requesterUserId.ToString();
+            int stepNumber = options.StepNumber < 1 ? 1 : options.StepNumber;
+            int requestType = options.RequestType == (int)SupportRequestType.TransactionConsulting
+                ? (int)SupportRequestType.TransactionConsulting
+                : (int)SupportRequestType.GeneralSupport;
+            int? serviceType = requestType == (int)SupportRequestType.TransactionConsulting ? options.ServiceType : null;
+            string description = (options.Description ?? "").Trim();
+            string subject = string.IsNullOrWhiteSpace(options.Subject)
+                ? BuildSupportSubject(requestType, serviceType, stepNumber)
+                : options.Subject.Trim();
+            if (subject.Length > 300) subject = subject[..300];
+
+            var projectName = await _context.Projects.AsNoTracking()
+                .Where(p => p.Id == projectId)
+                .Select(p => p.ProjectName)
+                .FirstOrDefaultAsync() ?? $"Ho so #{projectId}";
+
+            int? staffUserId = null;
+            if (requestType == (int)SupportRequestType.TransactionConsulting)
+            {
+                staffUserId = await _context.ProjectMembers.AsNoTracking()
+                    .Where(m => m.ProjectId == projectId && m.Role == (int)ProjectRole.Consultant && m.IsActive)
+                    .OrderBy(m => m.JoinedDate)
+                    .Select(m => (int?)m.UserId)
+                    .FirstOrDefaultAsync();
+            }
+
+            bool hasStaff = staffUserId.HasValue && staffUserId.Value > 0;
+            var now = DateTime.UtcNow;
+
+            var conv = new ChatConversation
+            {
+                ConversationType = (int)ChatConversationType.PlatformSupport,
+                ProductId = null,
+                ProductType = null,
+                BuyerUserId = requesterStr,
+                SupplierUserId = hasStaff ? staffUserId!.Value.ToString() : "0",
+                ProductName = subject,
+                IsFromProductDetail = false,
+                ProjectId = projectId,
+                StepNumber = stepNumber,
+                AssignedStaffUserId = hasStaff ? staffUserId : null,
+                SupportStatus = hasStaff ? (int)SupportConversationStatus.InProgress : (int)SupportConversationStatus.Unassigned,
+                Created = now,
+                LastMessageAt = now
+            };
+
+            var ticket = new SupportRequest
+            {
+                ProjectId = projectId,
+                RequestedByUserId = requesterUserId,
+                RequestType = requestType,
+                ServiceType = serviceType,
+                SupportContextCode = string.IsNullOrWhiteSpace(options.SupportContextCode)
+                    ? ResolveSupportContextCode(requestType, serviceType, stepNumber)
+                    : options.SupportContextCode.Trim(),
+                DisplayStepNumber = options.DisplayStepNumber ?? stepNumber,
+                InternalStepNumber = options.InternalStepNumber ?? stepNumber,
+                Subject = subject,
+                Description = description,
+                Status = hasStaff ? (int)SupportRequestStatus.Assigned : (int)SupportRequestStatus.New,
+                AssignedStaffUserId = hasStaff ? staffUserId : null,
+                IsPrivateToRequester = true,
+                AssignedAt = hasStaff ? now : null,
+                LastStatusChangedByUserId = requesterUserId,
+                LastStatusChangedAt = now,
+                CreatedAt = now
+            };
+
+            _context.ChatConversations.Add(conv);
+            _context.SupportRequests.Add(ticket);
+            await _context.SaveChangesAsync();
+
+            ticket.ConversationId = conv.Id;
+            await _context.SaveChangesAsync();
+
+            string safeProject = System.Text.Encodings.Web.HtmlEncoder.Default.Encode(projectName);
+            string safeSubject = System.Text.Encodings.Web.HtmlEncoder.Default.Encode(subject);
+            string typeLabel = requestType == (int)SupportRequestType.TransactionConsulting
+                ? "Tư vấn giao dịch/chuyển giao"
+                : "Hỗ trợ sử dụng hệ thống";
+
+            _context.ChatMessages.Add(new ChatMessage
+            {
+                ConversationId = conv.Id,
+                SenderUserId = requesterStr,
+                Message = $"<i class=\"fa fa-headset\"></i> {typeLabel} <strong>REQ-{ticket.Id}</strong> - <strong>{safeSubject}</strong><br/>Hồ sơ: <strong>{safeProject}</strong>, bước {stepNumber}.",
+                IsSystem = true,
+                IsRead = false,
+                Created = now
+            });
+
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                _context.ChatMessages.Add(new ChatMessage
+                {
+                    ConversationId = conv.Id,
+                    SenderUserId = requesterStr,
+                    Message = description,
+                    IsSystem = false,
+                    IsRead = false,
+                    Created = now
+                });
+            }
+            conv.LastMessageAt = now;
+            await _context.SaveChangesAsync();
+
+            if (hasStaff)
+            {
+                try
+                {
+                    await _notifQueue.QueueAsync(staffUserId!.Value, projectId, "Yêu cầu tư vấn mới",
+                        $"Có yêu cầu tư vấn mới cho hồ sơ: {projectName}",
+                        NotificationChannel.Email, $"/cms/SupportRequestsAdmin/Thread/{ticket.Id}");
+                }
+                catch { /* non-critical */ }
+            }
+
+            return conv.Id;
+        }
+
+        [Obsolete("Use StartSupportConversationAsync(projectId, requesterUserId, SupportStartOptions). Each support request must create a separate SupportRequest ticket.")]
+        private async Task<long> StartSupportConversationAsync(int projectId, int requesterUserId, int stepNumber, string message)
         {
             string requesterStr = requesterUserId.ToString();
 
@@ -533,7 +722,7 @@ namespace TechExchangeApp.Services
                 {
                     await _notifQueue.QueueAsync(staffUserId!.Value, projectId, "Yêu cầu hỗ trợ mới",
                         $"Có yêu cầu hỗ trợ mới cho dự án: {projectName}",
-                        NotificationChannel.Email, $"/cms/SupportRequestsAdmin/Thread/{conv.Id}");
+                        NotificationChannel.Email, "/cms/SupportRequestsAdmin");
                 }
                 catch { /* non-critical */ }
             }
@@ -551,6 +740,9 @@ namespace TechExchangeApp.Services
                 c.ConversationType == (int)ChatConversationType.PlatformSupport);
             if (conv == null)
                 return new SupportReplyResult { Outcome = SupportReplyOutcome.NotFound };
+
+            var supportRequest = await _context.SupportRequests
+                .FirstOrDefaultAsync(r => r.ConversationId == conversationId);
 
             using var tx = await _context.Database.BeginTransactionAsync();
 
@@ -598,6 +790,15 @@ WHERE Id = {conversationId} AND ConversationType = 2 AND SupportStatus = 1 AND A
             }
 
             // Thêm tin trả lời (IsSystem=false), cập nhật LastMessageAt
+            if ((!conv.AssignedStaffUserId.HasValue || conv.AssignedStaffUserId <= 0) &&
+                supportRequest != null &&
+                (!supportRequest.AssignedStaffUserId.HasValue || supportRequest.AssignedStaffUserId <= 0))
+            {
+                conv.AssignedStaffUserId = staffUserId;
+                conv.SupplierUserId = staffUserId.ToString();
+                conv.SupportStatus = (int)SupportConversationStatus.InProgress;
+            }
+
             _context.ChatMessages.Add(new ChatMessage
             {
                 ConversationId = conversationId,
@@ -608,6 +809,22 @@ WHERE Id = {conversationId} AND ConversationType = 2 AND SupportStatus = 1 AND A
                 Created = DateTime.UtcNow
             });
             conv.LastMessageAt = DateTime.UtcNow;
+
+            if (supportRequest != null)
+            {
+                var now = DateTime.UtcNow;
+                if (!supportRequest.AssignedStaffUserId.HasValue || supportRequest.AssignedStaffUserId <= 0)
+                {
+                    supportRequest.AssignedStaffUserId = staffUserId;
+                    supportRequest.AssignedAt ??= now;
+                }
+                supportRequest.FirstRespondedAt ??= now;
+                supportRequest.Status = (int)SupportRequestStatus.Responded;
+                supportRequest.UpdatedAt = now;
+                supportRequest.LastStatusChangedByUserId = staffUserId;
+                supportRequest.LastStatusChangedAt = now;
+            }
+
             await _context.SaveChangesAsync();
             await tx.CommitAsync();
 
@@ -616,8 +833,8 @@ WHERE Id = {conversationId} AND ConversationType = 2 AND SupportStatus = 1 AND A
             {
                 try
                 {
-                    await _notifQueue.QueueAsync(requesterInt, conv.ProjectId, "Phản hồi hỗ trợ từ Sàn",
-                        "Sàn vừa phản hồi yêu cầu hỗ trợ của bạn.",
+                    await _notifQueue.QueueAsync(requesterInt, conv.ProjectId, "Phản hồi hỗ trợ/tư vấn từ Trung tâm",
+                        "Trung tâm vừa phản hồi yêu cầu hỗ trợ/tư vấn của bạn.",
                         NotificationChannel.Email, $"/chat/{conversationId}");
                 }
                 catch { /* non-critical */ }

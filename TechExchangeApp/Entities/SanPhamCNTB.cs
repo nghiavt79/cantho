@@ -136,6 +136,9 @@ namespace TechExchangeApp.Entities
         /// <summary>Nội dung/mẫu điều khoản bảo mật do người bán cấu hình cho sản phẩm/công nghệ.</summary>
         public string? NDAContent { get; set; }
 
+        /// <summary>Cho phép người mua liên hệ/gửi yêu cầu đặt mua hoặc quan tâm trực tiếp, không mặc định đi quy trình chuyển giao.</summary>
+        public bool? CanDirectInquiry { get; set; }
+
         /// <summary>1 = CongNghe, 2 = ThietBi, 3 = SanPhamTriTue, 4 = SanPhamOCOP</summary>
         public int ProductType { get; set; } = 1;
 

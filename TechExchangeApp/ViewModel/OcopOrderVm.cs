@@ -4,7 +4,9 @@ namespace TechExchangeApp.ViewModel
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public int? RequestProductType { get; set; }
         public string ProductName { get; set; } = "";
+        public string? GiaThamKhao { get; set; }
         public string HoTen { get; set; } = "";
         public string DienThoai { get; set; } = "";
         public string DiaChiGiao { get; set; } = "";

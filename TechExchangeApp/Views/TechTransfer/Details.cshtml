@@ -87,10 +87,10 @@
 
                         @if (Model.ProjectId.HasValue)
                         {
-                            <dt class="col-sm-3">Dự án liên kết:</dt>
+                            <dt class="col-sm-3">Hồ sơ liên kết:</dt>
                             <dd class="col-sm-9">
                                 <a href="@Url.Action("Details", "Project", new { id = Model.ProjectId })" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-project-diagram"></i> Xem dự án #@Model.ProjectId
+                                    <i class="fas fa-project-diagram"></i> Xem hồ sơ #@Model.ProjectId
                                 </a>
                             </dd>
                         }
@@ -100,7 +100,7 @@
                     @if (Model.ProjectId.HasValue)
                     {
                         <a href="@Url.Action("Details", "Project", new { id = Model.ProjectId })" class="btn btn-primary">
-                            <i class="fas fa-arrow-left"></i> Quay lại Dự án
+                            <i class="fas fa-arrow-left"></i> Quay lại hồ sơ
                         </a>
                     }
                     <a href="@Url.Action("Index", "Dashboard")" class="btn btn-secondary">

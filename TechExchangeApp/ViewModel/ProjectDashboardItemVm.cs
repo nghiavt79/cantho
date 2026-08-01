@@ -17,6 +17,7 @@ namespace TechExchangeApp.ViewModel
         
         // Progress tracking
         public int CompletedSteps { get; set; }
+        public int TotalDisplaySteps { get; set; }
         public int ProgressPercent { get; set; }
         
         // Workflow visualization (11 steps)

@@ -93,6 +93,27 @@
     </div>
 </div>
 
+<!-- Modal cấu hình nhanh (trạng thái) -->
+<div class="modal fade" id="quickConfigModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-sliders-h me-1"></i> Cấu hình nhanh</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body" id="quickConfigBody">
+                <div class="text-center py-3 text-muted"><i class="fas fa-spinner fa-spin"></i></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnQuickConfigSave">
+                    <i class="fas fa-save me-1"></i> Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 <script>
 $(function () {
@@ -143,18 +164,34 @@ $(function () {
         loadList(1);
     });
 
-    $(document).on('click', '.btn-toggle-publish', function (e) {
-        e.preventDefault();
-        $.post('@Url.Action("TogglePublish", "ContentsYeuCauAdmin", new { area = "Cms" })',
-            { id: $(this).data('id'), __RequestVerificationToken: token },
-            function (r) {
-                if (r.success) {
-                    toastr.success(r.message);
-                    loadList(currentPage);
-                } else {
-                    toastr.error(r.message);
-                }
-            });
+    // ── Cấu hình nhanh trạng thái (mẫu SanPhamCNTB) ──
+    var qcUrl = '@Url.Action("QuickConfig", "ContentsYeuCauAdmin", new { area = "Cms" })';
+    var qcModal = new bootstrap.Modal(document.getElementById('quickConfigModal'));
+
+    $(document).on('click', '.btn-quick-config', function () {
+        var id = $(this).data('id');
+        $('#quickConfigBody').html('<div class="text-center py-3 text-muted"><i class="fas fa-spinner fa-spin"></i></div>');
+        qcModal.show();
+        $.get(qcUrl, { id: id })
+            .done(function (html) { $('#quickConfigBody').html(html); })
+            .fail(function () { $('#quickConfigBody').html('<div class="text-danger">Không tải được cấu hình.</div>'); });
+    });
+
+    $('#btnQuickConfigSave').on('click', function () {
+        var $form = $('#quickConfigForm');
+        if (!$form.length) return;
+        var data = $form.serialize() + '&__RequestVerificationToken=' + encodeURIComponent(token);
+        var $btn = $(this).prop('disabled', true);
+        $.post(qcUrl, data, function (r) {
+            if (r.success) {
+                toastr.success(r.message);
+                qcModal.hide();
+                loadList(currentPage);
+            } else {
+                toastr.error(r.message);
+            }
+        }).fail(function () { toastr.error('Lưu thất bại.'); })
+          .always(function () { $btn.prop('disabled', false); });
     });
 });
 </script>

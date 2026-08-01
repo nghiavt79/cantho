@@ -33,8 +33,8 @@ namespace TechExchangeApp.Entities
 
         public DateTime? LastMessageAt { get; set; }
 
-        // ── Hỗ trợ Sàn (Yêu cầu Sàn hỗ trợ) ──
-        /// <summary>1 = chat sản phẩm (mặc định), 2 = hỗ trợ Sàn. Xem <see cref="Enums.ChatConversationType"/>.</summary>
+        // ── Hỗ trợ/tư vấn Trung tâm ──
+        /// <summary>1 = chat sản phẩm (mặc định), 2 = hỗ trợ/tư vấn Trung tâm. Xem <see cref="Enums.ChatConversationType"/>.</summary>
         public int ConversationType { get; set; } = 1;
 
         /// <summary>Dự án gắn với hội thoại hỗ trợ (null với chat sản phẩm).</summary>

@@ -91,6 +91,14 @@ namespace TechExchangeApp.Entities
 
         public int? SiteId { get; set; }
 
+        // ── Bản dịch tiếng Anh (dòng riêng LanguageId=2) ──
+        /// <summary>Id bản gốc tiếng Việt mà bản EN này được dịch từ đó (null với bản VI hoặc bài EN gốc).</summary>
+        public long? OriginalId { get; set; }
+        /// <summary>true = bản gốc VI đã đổi sau khi dịch → gợi ý dịch lại.</summary>
+        public bool? EnStale { get; set; }
+        /// <summary>Hash nội dung VI tại thời điểm dịch, để phát hiện lệch.</summary>
+        public string? SourceHash { get; set; }
+
         public static implicit operator Content(VideoVm v)
         {
             throw new NotImplementedException();

@@ -178,7 +178,7 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> TaoMoiThietBi()
         {
             var maxId = await _context.SanPhamCNTBs.Where(x => x.ProductType == 2).MaxAsync(x => (int?)x.ID) ?? 0;
-            var vm = new SanPhamCNTBFormVm { ProductType = 2, Code = $"TB-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId() };
+            var vm = new SanPhamCNTBFormVm { ProductType = 2, Code = $"TB-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId(), CanDirectInquiry = true };
             ViewData["Title"] = "Đăng ký Thiết bị mới";
             await LoadFormSelectListsAsync(vm);
             return View(vm);

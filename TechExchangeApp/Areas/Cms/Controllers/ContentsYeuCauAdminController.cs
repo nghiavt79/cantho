@@ -316,9 +316,32 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             return RedirectToAction(nameof(Edit), new { id = entity.Id });
         }
 
+        // GET /cms/ContentsYeuCauAdmin/QuickConfig?id= — modal cấu hình nhanh (theo mẫu SanPhamCNTB)
+        [HttpGet]
+        public async Task<IActionResult> QuickConfig(long id)
+        {
+            var entity = await _context.ContentsYeuCaus.AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id && c.MenuId == YeuCauMenuId);
+
+            if (entity == null)
+                return NotFound();
+
+            ViewBag.ItemId = entity.Id;
+            ViewBag.ItemName = entity.Title;
+            ViewBag.StatusId = entity.StatusId;
+            ViewBag.PublishedDate = entity.PublishedDate;
+            ViewBag.Statuses = await _context.Statuses.AsNoTracking()
+                .OrderBy(s => s.StatusId)
+                .Select(s => new { s.StatusId, s.Title })
+                .ToListAsync();
+
+            return PartialView("_QuickConfigPartial");
+        }
+
+        // POST /cms/ContentsYeuCauAdmin/QuickConfig — cập nhật trạng thái nhanh
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TogglePublish(long id)
+        public async Task<IActionResult> QuickConfig(long id, int? statusId, DateTime? publishedDate)
         {
             var entity = await _context.ContentsYeuCaus
                 .FirstOrDefaultAsync(c => c.Id == id && c.MenuId == YeuCauMenuId);
@@ -326,15 +349,12 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             if (entity == null)
                 return Json(new { success = false, message = "Không tìm thấy nhu cầu công khai." });
 
-            if (entity.StatusId == 3)
-            {
-                entity.StatusId = 2;
-            }
-            else
-            {
-                entity.StatusId = 3;
-                entity.PublishedDate ??= DateTime.Now;
-            }
+            entity.StatusId = statusId;
+            // Chuyển sang Xuất bản (3) mà chưa có ngày đăng thì set mặc định
+            if (statusId == 3)
+                entity.PublishedDate = publishedDate ?? entity.PublishedDate ?? DateTime.Now;
+            else if (publishedDate.HasValue)
+                entity.PublishedDate = publishedDate;
 
             entity.Modified = DateTime.Now;
             entity.Modifier = User.Identity?.Name;
@@ -371,6 +391,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 .ToListAsync();
 
             ViewBag.LinhVucs = new SelectList(categories, "Value", "Text", NormalizeSingleCategoryId(vm.LinhVucId));
+            ViewBag.LinhVucList = categories; // cho checkbox multi-select (mẫu SanPhamCNTB)
         }
 
         private async Task PopulateReadonlySourceAsync(ContentsYeuCauEditVm vm)
@@ -507,10 +528,12 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
         private static string BuildDescription(string? text)
         {
+            // Mô tả ngắn hiển thị trong <textarea>/plain-text — KHÔNG HtmlEncode ở đây
+            // (view tự encode khi xuất). Trước đây encode gây hiện &#39; &amp; ... trong ô nhập.
             var value = text?.Trim() ?? "";
             if (value.Length > 220)
                 value = value[..220].Trim() + "...";
-            return WebUtility.HtmlEncode(value);
+            return value;
         }
 
         private static string BuildContents(PhieuYeuCauCNTB phieu)

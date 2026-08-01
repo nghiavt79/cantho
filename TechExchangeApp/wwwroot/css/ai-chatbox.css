@@ -2,8 +2,14 @@
     position: fixed;
     right: 20px;
     bottom: 74px;
-    z-index: 1050;
+    z-index: 2100;
     font-family: inherit;
+    pointer-events: none;
+}
+
+body.is-chat-open .site-header-v2,
+body.is-chat-open .header-mobile {
+    display: none !important;
 }
 
 .ai-chatbox__launcher,
@@ -37,6 +43,7 @@
 
 .ai-chatbox.is-open .ai-chatbox__panel {
     display: flex;
+    pointer-events: auto;
 }
 
 .ai-chatbox.has-messages .ai-chatbox__panel {
@@ -406,22 +413,46 @@
 
 @media (max-width: 575.98px) {
     .ai-chatbox {
-        right: 14px;
-        bottom: 86px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 2100;
+        width: 100%;
+        height: 100dvh;
     }
 
     .ai-chatbox__panel {
-        width: calc(100vw - 32px);
-        max-height: min(440px, calc(100vh - 32px));
-        max-height: min(440px, calc(100dvh - 32px));
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        max-width: none;
+        height: 100vh;
+        height: 100dvh;
+        max-height: none;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
     }
 
     .ai-chatbox.has-messages .ai-chatbox__panel {
-        max-height: calc(100vh - 32px);
-        max-height: calc(100dvh - 32px);
+        max-height: none;
+    }
+
+    .ai-chatbox__header {
+        padding-top: calc(10px + env(safe-area-inset-top));
+    }
+
+    .ai-chatbox__messages {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .ai-chatbox__composer {
+        padding-bottom: calc(10px + env(safe-area-inset-bottom));
     }
 
     .ai-chatbox__quick-actions {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }

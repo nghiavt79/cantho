@@ -1,6 +1,6 @@
 namespace TechExchangeApp.Enums
 {
-    /// <summary>Trạng thái xử lý của hội thoại hỗ trợ Sàn. Map tới ChatConversations.SupportStatus.</summary>
+    /// <summary>Trạng thái xử lý tương thích của hội thoại hỗ trợ/tư vấn Trung tâm. Map tới ChatConversations.SupportStatus.</summary>
     public enum SupportConversationStatus
     {
         /// <summary>Không áp dụng (chat sản phẩm).</summary>

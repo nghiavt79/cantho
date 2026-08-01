@@ -140,6 +140,9 @@
             <button type="button" class="btn btn-outline-danger btn-sm" id="btnBulkDelete" disabled>
                 <i class="fas fa-trash-alt me-1"></i> Xóa chọn
             </button>
+            <button type="button" class="btn btn-outline-primary btn-sm" id="btnBulkTranslate" disabled>
+                <i class="fas fa-language me-1"></i> Dịch sang tiếng Anh
+            </button>
         </div>
     </div>
 
@@ -209,6 +212,7 @@ $(function(){
                 $('#listContainer').html(html).css('opacity', '1');
                 $('#chkAll').prop('checked', false);
                 $('#btnBulkDelete').prop('disabled', true);
+                $('#btnBulkTranslate').prop('disabled', true);
                 var cnt = $('#partialTotalCount').text();
                 $('#badgeTotal').text(cnt);
             },
@@ -249,7 +253,11 @@ $(function(){
     // Checkbox + Bulk Delete
     $(document).on('change', '#chkAll', function() { $('.chkRow:not(:disabled)').prop('checked', this.checked); toggleBulk(); });
     $(document).on('change', '.chkRow', toggleBulk);
-    function toggleBulk() { $('#btnBulkDelete').prop('disabled', !$('.chkRow:checked').length); }
+    function toggleBulk() {
+        var any = !!$('.chkRow:checked').length;
+        $('#btnBulkDelete').prop('disabled', !any);
+        $('#btnBulkTranslate').prop('disabled', !any);
+    }
 
     // Delete single
     $(document).on('click', '.btn-del', function(e) {
@@ -310,6 +318,58 @@ $(function(){
                     loadList(currentPage);
                 });
             }
+        });
+    });
+
+    // Bulk translate → tạo bản EN
+    $('#btnBulkTranslate').on('click', function() {
+        var ids = $('.chkRow:checked').map(function() { return $(this).val(); }).get();
+        if (!ids.length) return;
+        Swal.fire({
+            title: 'Dịch sang tiếng Anh?',
+            text: 'Tạo bản tiếng Anh cho ' + ids.length + ' tin đã chọn? (bỏ qua tin đã có bản EN)',
+            icon: 'question', showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-language"></i> Dịch', cancelButtonText: 'Hủy'
+        }).then(function(result) {
+            if (!result.isConfirmed) return;
+            var $btn = $('#btnBulkTranslate').prop('disabled', true)
+                .html('<i class="fas fa-spinner fa-spin me-1"></i> Đang dịch...');
+            $.ajax({
+                url: '@Url.Action("BulkTranslateNews", "TranslationAdmin", new { area = "Cms" })',
+                type: 'POST', traditional: true,
+                data: { ids: ids, __RequestVerificationToken: token }
+            }).done(function(res) {
+                if (res && res.needManual && res.redirectUrl) { window.location = res.redirectUrl; return; }
+                if (res && res.ok) toastr.success(res.message + ' (Provider: ' + res.provider + ')');
+                else toastr.error((res && res.message) || 'Lỗi dịch.');
+                loadList(currentPage);
+            }).fail(function() {
+                toastr.error('Lỗi gọi dịch.');
+            }).always(function() {
+                $btn.html('<i class="fas fa-language me-1"></i> Dịch sang tiếng Anh');
+            });
+        });
+    });
+
+    // Dịch 1 tin ngay trên dòng (icon cạnh Cấu hình nhanh)
+    $(document).on('click', '.btn-translate', function() {
+        var id = $(this).data('id');
+        var $ic = $(this).prop('disabled', true);
+        var old = $ic.html();
+        $ic.html('<i class="fas fa-spinner fa-spin"></i>');
+        $.ajax({
+            url: '@Url.Action("BulkTranslateNews", "TranslationAdmin", new { area = "Cms" })',
+            type: 'POST', traditional: true,
+            data: { ids: [id], __RequestVerificationToken: token }
+        }).done(function(res) {
+            if (res && res.needManual && res.redirectUrl) { window.location = res.redirectUrl; return; }
+            if (res && res.ok && res.created > 0) toastr.success('Đã tạo bản EN. (' + res.provider + ')');
+            else if (res && res.ok && res.skipped > 0) toastr.info('Tin này đã có bản EN.');
+            else toastr.error((res && res.message) || 'Lỗi dịch.');
+            loadList(currentPage);
+        }).fail(function() {
+            toastr.error('Lỗi gọi dịch.');
+            $ic.prop('disabled', false).html(old);
         });
     });
 

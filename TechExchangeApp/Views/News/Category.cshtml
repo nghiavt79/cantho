@@ -3,6 +3,16 @@
 @{
     ViewData["Title"] = Model.CategoryTitle;
     var mainDomain = Html.MainDomain();
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    // Nhãn tab/danh mục tin theo ngôn ngữ (menu Tin sự kiện = 44). Menu khác chưa có EN → giữ Title.
+    Func<TechExchangeApp.ViewModel.SiblingMenuVm, string> sibLabel = m =>
+        (isEn && m.MenuId == 44) ? Html.Text("news.title") : m.Title;
+    // URL danh mục tin theo ngôn ngữ (EN → /en/news-event; VI giữ nguyên route cũ)
+    Func<int, string> catUrl = p => isEn
+        ? (p <= 1 ? "/en/news-event" : $"/en/news-event?page={p}")
+        : Url.Action("Category", new { menuId = Model.MenuId, page = p });
+    Func<TechExchangeApp.ViewModel.SiblingMenuVm, string> sibUrl = m =>
+        (isEn && m.MenuId == 44) ? "/en/news-event" : $"{mainDomain}{m.QueryString}-{m.MenuId}";
 
     string StripHtml(string? value)
     {
@@ -22,18 +32,18 @@
 
         <!-- ===== BREADCRUMB ===== -->
         <nav class="news-breadcrumb" aria-label="breadcrumb">
-            <a href="@mainDomain">Trang chủ</a>
+            <a href="@mainDomain">@Html.Tr("common.home")</a>
             <span>/</span>
-            <a href="#">Tin tức</a>
+            <a href="#">@Html.Tr("news.breadcrumb")</a>
             <span>/</span>
-            <strong>@Model.CategoryTitle</strong>
+            <strong>@(isEn ? Html.Text("news.title") : Model.CategoryTitle)</strong>
         </nav>
 
         <!-- ===== HERO HEADER ===== -->
         <div class="news-hero">
-            <h1 class="news-hero__title">@Model.CategoryTitle</h1>
+            <h1 class="news-hero__title">@(isEn ? Html.Text("news.title") : Model.CategoryTitle)</h1>
             <div class="news-hero__accent"></div>
-            <p class="news-hero__desc">@Model.CategoryDescription</p>
+            <p class="news-hero__desc">@(isEn ? Html.Text("news.desc") : Model.CategoryDescription)</p>
         </div>
 
         <!-- ===== FEATURED (page 1 only) ===== -->
@@ -44,12 +54,12 @@
 
             <section class="news-featured">
                 <div class="news-featured__main">
-                    <a href="@mainFeatured.DetailUrl(mainDomain)" class="news-featured__image">
+                    <a href="@mainFeatured.DetailUrl(mainDomain, isEn)" class="news-featured__image">
                         <img src="@Html.CookedImageURL("750-450", mainFeatured.Image)" alt="@mainFeatured.Title" loading="lazy" />
                     </a>
                     <div class="news-featured__body">
                         <span class="news-featured__date"><i class="bi bi-calendar3"></i> @mainFeatured.PublishedDateText</span>
-                        <h2 class="news-featured__title"><a href="@mainFeatured.DetailUrl(mainDomain)">@mainFeatured.Title</a></h2>
+                        <h2 class="news-featured__title"><a href="@mainFeatured.DetailUrl(mainDomain, isEn)">@mainFeatured.Title</a></h2>
                         <p class="news-featured__desc">@Truncate(mainFeatured.Description, 200)</p>
                     </div>
                 </div>
@@ -58,7 +68,7 @@
                     <div class="news-featured__side">
                         @foreach (var f in sideFeatured)
                         {
-                            <a class="news-featured__card" href="@f.DetailUrl(mainDomain)">
+                            <a class="news-featured__card" href="@f.DetailUrl(mainDomain, isEn)">
                                 <div class="news-featured__card-img">
                                     <img src="@Html.CookedImageURL("460-275", f.Image)" alt="@f.Title" loading="lazy" />
                                 </div>
@@ -79,9 +89,9 @@
             <div class="news-filter-tabs">
                 @foreach (var m in Model.SiblingMenus)
                 {
-                    <a href="@($"{mainDomain}{m.QueryString}-{m.MenuId}")"
+                    <a href="@sibUrl(m)"
                        class="news-filter-tab @(m.IsActive ? "news-filter-tab--active" : "")">
-                        @m.Title
+                        @sibLabel(m)
                     </a>
                 }
             </div>
@@ -96,7 +106,7 @@
                     @foreach (var item in Model.Items)
                     {
                         <article class="news-card">
-                            <a class="news-card__image" href="@item.DetailUrl(mainDomain)">
+                            <a class="news-card__image" href="@item.DetailUrl(mainDomain, isEn)">
                                 <img src="@Html.CookedImageURL("460-275", item.Image)" alt="@item.Title" loading="lazy" />
                             </a>
                             <div class="news-card__body">
@@ -108,10 +118,10 @@
                                     }
                                 </div>
                                 <h3 class="news-card__title">
-                                    <a href="@item.DetailUrl(mainDomain)">@item.Title</a>
+                                    <a href="@item.DetailUrl(mainDomain, isEn)">@item.Title</a>
                                 </h3>
                                 <p class="news-card__desc">@Truncate(item.Description, 160)</p>
-                                <a href="@item.DetailUrl(mainDomain)" class="news-card__readmore">Đọc thêm <i class="bi bi-arrow-right"></i></a>
+                                <a href="@item.DetailUrl(mainDomain, isEn)" class="news-card__readmore">Đọc thêm <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </article>
                     }
@@ -123,18 +133,18 @@
                     <nav class="news-pagination" aria-label="Phân trang">
                         <ul>
                             <li class="@(Model.Pager.CurrentPage == 1 ? "disabled" : "")">
-                                <a href="@Url.Action("Category", new { menuId = Model.MenuId, page = Model.Pager.CurrentPage - 1 })">
+                                <a href="@catUrl(Model.Pager.CurrentPage - 1)">
                                     <i class="bi bi-chevron-left"></i> Trước
                                 </a>
                             </li>
                             @foreach (var p in Model.Pager.Pages)
                             {
                                 <li class="@(p == Model.Pager.CurrentPage ? "active" : "")">
-                                    <a href="@Url.Action("Category", new { menuId = Model.MenuId, page = p })">@p</a>
+                                    <a href="@catUrl(p)">@p</a>
                                 </li>
                             }
                             <li class="@(Model.Pager.CurrentPage == Model.Pager.TotalPage ? "disabled" : "")">
-                                <a href="@Url.Action("Category", new { menuId = Model.MenuId, page = Model.Pager.CurrentPage + 1 })">
+                                <a href="@catUrl(Model.Pager.CurrentPage + 1)">
                                     Sau <i class="bi bi-chevron-right"></i>
                                 </a>
                             </li>
@@ -148,22 +158,22 @@
 
                 <!-- Search -->
                 <div class="news-sidebar-card">
-                    <h4 class="news-sidebar-card__title">Tìm kiếm tin tức</h4>
+                    <h4 class="news-sidebar-card__title">@Html.Tr("news.search")</h4>
                     <div class="news-sidebar-search">
-                        <input type="search" class="form-control" placeholder="Nhập từ khóa tìm kiếm..." aria-label="Tìm kiếm" />
+                        <input type="search" class="form-control" placeholder="@Html.Text("news.searchPlaceholder")" aria-label="@Html.Text("common.search")" />
                         <button class="btn" type="button"><i class="bi bi-search"></i></button>
                     </div>
                 </div>
 
                 <!-- Categories -->
                 <div class="news-sidebar-card">
-                    <h4 class="news-sidebar-card__title">Danh mục tin</h4>
+                    <h4 class="news-sidebar-card__title">@Html.Tr("news.categories")</h4>
                     <ul class="news-sidebar-categories">
                         @foreach (var m in Model.SiblingMenus)
                         {
                             <li class="@(m.IsActive ? "active" : "")">
-                                <a href="@($"{mainDomain}{m.QueryString}-{m.MenuId}")">
-                                    <i class="bi bi-chevron-right"></i> @m.Title
+                                <a href="@sibUrl(m)">
+                                    <i class="bi bi-chevron-right"></i> @sibLabel(m)
                                 </a>
                             </li>
                         }
@@ -172,11 +182,11 @@
 
                 <!-- Latest -->
                 <div class="news-sidebar-card">
-                    <h4 class="news-sidebar-card__title">Tin mới nhất</h4>
+                    <h4 class="news-sidebar-card__title">@Html.Tr("news.latest")</h4>
                     <div class="news-sidebar-latest">
                         @foreach (var item in Model.LatestItems)
                         {
-                            <a class="news-sidebar-latest__item" href="@item.DetailUrl(mainDomain)">
+                            <a class="news-sidebar-latest__item" href="@item.DetailUrl(mainDomain, isEn)">
                                 <div class="news-sidebar-latest__thumb">
                                     <img src="@Html.CookedImageURL("150-100", item.Image)" alt="@item.Title" loading="lazy" />
                                 </div>
@@ -191,11 +201,11 @@
 
                 <!-- Archive -->
                 <div class="news-sidebar-card">
-                    <h4 class="news-sidebar-card__title">Lưu trữ</h4>
+                    <h4 class="news-sidebar-card__title">@Html.Tr("news.archive")</h4>
                     <ul class="news-sidebar-categories">
-                        <li><a href="#"><i class="bi bi-folder"></i> Năm 2026</a></li>
-                        <li><a href="#"><i class="bi bi-folder"></i> Năm 2025</a></li>
-                        <li><a href="#"><i class="bi bi-folder"></i> Năm 2024</a></li>
+                        <li><a href="#"><i class="bi bi-folder"></i> @Html.Tr("news.year") 2026</a></li>
+                        <li><a href="#"><i class="bi bi-folder"></i> @Html.Tr("news.year") 2025</a></li>
+                        <li><a href="#"><i class="bi bi-folder"></i> @Html.Tr("news.year") 2024</a></li>
                     </ul>
                 </div>
 

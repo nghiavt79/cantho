@@ -28,6 +28,10 @@ namespace TechExchangeApp.ViewModel
         /// (menuId=44 "Tin tức" dùng prefix chữ tin-tuc-su-kien thay vì số)</summary>
         public string DetailUrl(string domain) =>
             $"{domain}{(MenuId == 44 ? "tin-tuc-su-kien" : MenuId?.ToString())}/{QueryString}-{Id}";
+
+        /// <summary>URL theo ngôn ngữ: EN → {domain}en/news-event/{slug}-{id}, VI giữ nguyên.</summary>
+        public string DetailUrl(string domain, bool isEn) =>
+            isEn ? $"{domain}en/news-event/{QueryString}-{Id}" : DetailUrl(domain);
     }
 
     public class NewsCategoryVm
@@ -65,6 +69,10 @@ namespace TechExchangeApp.ViewModel
             var prefix = MenuId == 44 ? "tin-tuc-su-kien" : MenuId?.ToString();
             return $"{domain}{prefix}/{QueryString}-{Id}";
         }
+
+        /// <summary>URL theo ngôn ngữ: EN → {domain}en/news-event/{slug}-{id}, VI giữ nguyên.</summary>
+        public string DetailUrl(string domain, bool isEn) =>
+            isEn ? $"{domain}en/news-event/{QueryString}-{Id}" : DetailUrl(domain);
 
         public string PublishedDateText =>
             PublishedDate.HasValue

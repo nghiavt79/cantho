@@ -40,7 +40,7 @@
 
     string ProductPrice(TechExchangeApp.Entities.SanPhamCNTB p) => p.OriginalPrice > 0
         ? Html.FormatCurrencyOto(p.OriginalPrice.ToString(), p.Currency)
-        : "Liên hệ";
+        : "Liên hệ báo giá";
 
     var _db = ((IServiceProvider)ViewContext.HttpContext.RequestServices)
         .GetService(typeof(TechExchangeApp.Data.AppDbContext)) as TechExchangeApp.Data.AppDbContext;

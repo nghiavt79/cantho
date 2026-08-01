@@ -2,13 +2,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Text.RegularExpressions;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using TechExchangeApp.ViewModel;
 
 namespace TechExchangeApp.Controllers
 {
-    // Standalone 3-step retail order flow for OCOP products (Đặt hàng -> NCC xác nhận & giao hàng -> Hoàn tất).
+    // Standalone request flow for OCOP products (Người mua gửi yêu cầu -> NCC liên hệ/xác nhận trực tiếp).
     // Intentionally does NOT go through Project/WorkflowService (the 14-step "chuyển giao công nghệ" process),
     // since buying OCOP specialty goods is a simple retail transaction, not a technology transfer negotiation.
     [Authorize]
@@ -17,6 +19,8 @@ namespace TechExchangeApp.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly Services.INotificationQueueService _notifQueue;
+        private const int ProductTypeThietBi = 2;
+        private const int ProductTypeOcop = 4;
 
         public OcopOrderController(AppDbContext context, UserManager<ApplicationUser> userManager, Services.INotificationQueueService notifQueue)
         {
@@ -35,20 +39,55 @@ namespace TechExchangeApp.Controllers
             return userId;
         }
 
+        private static bool IsDirectInquiryProduct(SanPhamCNTB product)
+            => product.ProductType == ProductTypeOcop
+               || (product.ProductType == ProductTypeThietBi && product.CanDirectInquiry == true);
+
+        private static string ProductTypeLabel(int? productType) => productType switch
+        {
+            ProductTypeThietBi => "Thiết bị",
+            ProductTypeOcop => "OCOP",
+            _ => "Sản phẩm"
+        };
+
+        private static string StripHtml(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return "";
+            var text = Regex.Replace(value, "<.*?>", " ");
+            text = WebUtility.HtmlDecode(text);
+            return Regex.Replace(text, @"\s+", " ").Trim();
+        }
+
+        private static string BuildGiaThamKhao(SanPhamCNTB product)
+        {
+            var giaBanDuKien = StripHtml(product.GiaBanDuKien);
+            if (!string.IsNullOrWhiteSpace(giaBanDuKien)) return giaBanDuKien;
+
+            if (product.SellPrice.HasValue && product.SellPrice.Value > 0)
+                return $"{product.SellPrice.Value:N0} {product.Currency}".Trim();
+
+            if (product.OriginalPrice.HasValue && product.OriginalPrice.Value > 0)
+                return $"{product.OriginalPrice.Value:N0} {product.Currency}".Trim();
+
+            return "Liên hệ báo giá";
+        }
+
         // GET: /OcopOrder/Create?productId=18
         [HttpGet]
         public async Task<IActionResult> Create(int productId)
         {
             var product = await _context.SanPhamCNTBs.AsNoTracking()
-                .FirstOrDefaultAsync(p => p.ID == productId && p.ProductType == 4);
+                .FirstOrDefaultAsync(p => p.ID == productId);
 
-            if (product == null) return NotFound();
+            if (product == null || !IsDirectInquiryProduct(product)) return NotFound();
 
             var user = await _userManager.GetUserAsync(User);
             var model = new OcopOrderRequest
             {
                 ProductId = productId,
+                RequestProductType = product.ProductType,
                 SupplierId = product.NCUId,
+                GiaThamKhao = BuildGiaThamKhao(product),
                 SoLuong = 1
             };
 
@@ -70,18 +109,21 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> Create(OcopOrderRequest model)
         {
             var product = await _context.SanPhamCNTBs.AsNoTracking()
-                .FirstOrDefaultAsync(p => p.ID == model.ProductId && p.ProductType == 4);
+                .FirstOrDefaultAsync(p => p.ID == model.ProductId);
 
-            if (product == null) return NotFound();
+            if (product == null || !IsDirectInquiryProduct(product)) return NotFound();
 
             if (ModelState.IsValid)
             {
                 var userId = GetCurrentUserId();
 
                 model.SupplierId = product.NCUId;
+                model.RequestProductType = product.ProductType;
+                model.GiaThamKhao = BuildGiaThamKhao(product);
                 model.NguoiTao = userId;
                 model.NgayTao = DateTime.Now;
-                model.StatusId = 1; // Mới đặt
+                model.HinhThucThanhToan = 1; // Legacy column; the platform does not manage payment.
+                model.StatusId = 1; // Mới gửi yêu cầu
 
                 _context.OcopOrderRequests.Add(model);
                 await _context.SaveChangesAsync();
@@ -93,8 +135,8 @@ namespace TechExchangeApp.Controllers
                     if (supplier?.UserId.HasValue == true)
                     {
                         await _notifQueue.QueueAsync(supplier.UserId.Value, null,
-                            "Có đơn đặt mua sản phẩm OCOP mới",
-                            $"{model.HoTen} vừa đặt mua {model.SoLuong} \"{product.Name}\". Vui lòng liên hệ khách hàng qua {model.DienThoai} để xác nhận và giao hàng.");
+                            $"Có yêu cầu đặt mua / quan tâm {ProductTypeLabel(product.ProductType)} mới",
+                            $"{model.HoTen} vừa gửi yêu cầu đặt mua / quan tâm {model.SoLuong} \"{product.Name}\". Vui lòng liên hệ khách hàng qua {model.DienThoai} để trao đổi và xác nhận trực tiếp.");
                     }
                 }
 
@@ -120,16 +162,10 @@ namespace TechExchangeApp.Controllers
 
             ViewBag.Product = product;
 
-            if (order.HinhThucThanhToan == 2 && order.SupplierId.HasValue)
-            {
-                ViewBag.Supplier = await _context.NhaCungUngs.AsNoTracking()
-                    .FirstOrDefaultAsync(n => n.CungUngId == order.SupplierId.Value);
-            }
-
             return View(order);
         }
 
-        // GET: /OcopOrder/Index — "Đơn hàng OCOP của tôi" (buyer)
+        // GET: /OcopOrder/Index — "Yêu cầu đặt mua OCOP của tôi" (buyer)
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -147,7 +183,9 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = o.Id,
                     ProductId = o.ProductId,
+                    RequestProductType = o.RequestProductType ?? (p != null ? p.ProductType : null),
                     ProductName = p != null ? p.Name ?? "" : "",
+                    GiaThamKhao = o.GiaThamKhao,
                     HoTen = o.HoTen,
                     DienThoai = o.DienThoai,
                     DiaChiGiao = o.DiaChiGiao,
@@ -164,7 +202,7 @@ namespace TechExchangeApp.Controllers
             return View(orders);
         }
 
-        // GET: /OcopOrder/Manage — quản lý đơn khách đặt (nhà cung ứng)
+        // GET: /OcopOrder/Manage — quản lý yêu cầu khách gửi (nhà cung ứng)
         [HttpGet]
         public async Task<IActionResult> Manage()
         {
@@ -186,7 +224,9 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = o.Id,
                     ProductId = o.ProductId,
+                    RequestProductType = o.RequestProductType ?? (p != null ? p.ProductType : null),
                     ProductName = p != null ? p.Name ?? "" : "",
+                    GiaThamKhao = o.GiaThamKhao,
                     HoTen = o.HoTen,
                     DienThoai = o.DienThoai,
                     DiaChiGiao = o.DiaChiGiao,
@@ -200,7 +240,7 @@ namespace TechExchangeApp.Controllers
             return View(orders);
         }
 
-        // POST: /OcopOrder/UpdateStatus — nhà cung ứng xác nhận / hoàn tất / huỷ đơn
+        // POST: /OcopOrder/UpdateStatus — nhà cung ứng xác nhận / hoàn tất / huỷ yêu cầu
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateStatus(int id, int statusId)
@@ -232,15 +272,15 @@ namespace TechExchangeApp.Controllers
                 if (order.NguoiTao.HasValue)
                 {
                     await _notifQueue.QueueAsync(order.NguoiTao.Value, null,
-                        "Đơn đặt mua OCOP đã bị huỷ",
-                        $"Nhà cung ứng đã huỷ đơn đặt mua \"{product?.Name}\". Vui lòng liên hệ nhà cung ứng nếu cần biết thêm chi tiết.");
+                        $"Yêu cầu đặt mua / quan tâm {ProductTypeLabel(order.RequestProductType ?? product?.ProductType)} đã bị huỷ",
+                        $"Nhà cung ứng đã huỷ yêu cầu đặt mua / quan tâm \"{product?.Name}\". Vui lòng liên hệ nhà cung ứng nếu cần biết thêm chi tiết.");
                 }
             }
 
             return RedirectToAction("Manage");
         }
 
-        // POST: /OcopOrder/Cancel — người mua tự huỷ đơn khi còn "Mới đặt"
+        // POST: /OcopOrder/Cancel — người mua tự huỷ yêu cầu khi còn "Mới gửi"
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel(int id)
@@ -267,8 +307,8 @@ namespace TechExchangeApp.Controllers
                     if (supplier?.UserId.HasValue == true)
                     {
                         await _notifQueue.QueueAsync(supplier.UserId.Value, null,
-                            "Khách hàng đã huỷ đơn đặt mua OCOP",
-                            $"{order.HoTen} đã huỷ đơn đặt mua \"{product?.Name}\".");
+                            $"Khách hàng đã huỷ yêu cầu đặt mua / quan tâm {ProductTypeLabel(order.RequestProductType ?? product?.ProductType)}",
+                            $"{order.HoTen} đã huỷ yêu cầu đặt mua / quan tâm \"{product?.Name}\".");
                     }
                 }
             }

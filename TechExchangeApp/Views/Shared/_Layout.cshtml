@@ -87,7 +87,7 @@
                 <a class="nav-link text-dark" asp-controller="Negotiation" asp-action="Create">5. Thương thảo giá</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-controller="EContract" asp-action="Create">6. Ký hợp đồng điện tử</a>
+                <a class="nav-link text-dark" asp-controller="EContract" asp-action="Create">6. Ký hợp đồng</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-controller="AdvancePayment" asp-action="Create">7. Xác nhận tạm ứng</a>
@@ -213,7 +213,7 @@
 
             function buildItem(n) {
                 const time = new Date(n.createdDate).toLocaleString('vi-VN', { hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit' });
-                return `<div class="tp-item ${n.isRead ? '' : 'unread'}" data-id="${n.id}" data-project="${n.projectId || ''}" onclick="tpClickItem(this)">
+                return `<div class="tp-item ${n.isRead ? '' : 'unread'}" data-id="${n.id}" data-project="${n.projectId || ''}" data-url="${n.url || ''}" onclick="tpClickItem(this)">
                     <div class="tp-item-title">${n.title || 'Thông báo'}</div>
                     <div class="tp-item-body text-muted small">${(n.content || '').substring(0, 80)}${(n.content||'').length > 80 ? '…' : ''}</div>
                     <div class="tp-item-time" style="font-size:11px;color:#aaa">${time}</div>
@@ -287,12 +287,13 @@
 
             // Click item → mark read + redirect
             window.tpClickItem = function(el) {
-                const id = el.dataset.id, project = el.dataset.project;
+                const id = el.dataset.id, project = el.dataset.project, url = el.dataset.url;
                 el.classList.remove('unread');
                 const token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
                 fetch(`/api/notifications/mark-read/${id}`, { method: 'POST', headers: { 'RequestVerificationToken': token } })
                     .then(() => { const c = parseInt(badge?.textContent||'0')||0; setBadge(Math.max(0,c-1)); });
-                if (project) window.location.href = `/Project/Details/${project}`;
+                if (url) window.location.href = url;
+                else if (project) window.location.href = `/Project/Details/${project}`;
             };
 
             // Mark all read

@@ -7,12 +7,15 @@ using TechExchangeApp.ViewModel;
 namespace TechExchangeApp.Services
 {
     /// <summary>
-    /// Service implementation for dashboard operations
-    /// Provides optimized queries to fetch user dashboard data
+    /// Service implementation for dashboard operations.
     /// </summary>
     public class DashboardService : IDashboardService
     {
         private readonly AppDbContext _context;
+        private const int MergedNegotiationStep = 5;
+        private const int LegalReviewStep = 6;
+        private const int DashboardTotalDisplaySteps = 6;
+        private const string MergedStepName = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
 
         public DashboardService(AppDbContext context)
         {
@@ -21,13 +24,11 @@ namespace TechExchangeApp.Services
 
         public async Task<UserDashboardVm> GetDashboardForUserAsync(string userId)
         {
-            // Convert userId string to int (ApplicationUser.Id is int)
             if (!int.TryParse(userId, out int userIdInt))
             {
                 throw new ArgumentException("Invalid user ID format", nameof(userId));
             }
 
-            // Get user information
             var user = await _context.Users
                 .Where(u => u.Id == userIdInt)
                 .Select(u => new { u.FullName, u.UserName })
@@ -38,7 +39,6 @@ namespace TechExchangeApp.Services
                 throw new InvalidOperationException($"User with ID {userId} not found");
             }
 
-            // Get all projects where user is a member (optimized - single query)
             var userProjectIds = await _context.ProjectMembers
                 .Where(pm => pm.UserId == userIdInt && pm.IsActive)
                 .Select(pm => pm.ProjectId)
@@ -46,7 +46,6 @@ namespace TechExchangeApp.Services
 
             if (!userProjectIds.Any())
             {
-                // User has no projects
                 return new UserDashboardVm
                 {
                     FullName = user.FullName ?? user.UserName ?? string.Empty,
@@ -59,7 +58,6 @@ namespace TechExchangeApp.Services
                 };
             }
 
-            // Get all projects data (optimized - single query)
             var projects = await _context.Projects
                 .Where(p => userProjectIds.Contains(p.Id))
                 .Select(p => new
@@ -70,7 +68,6 @@ namespace TechExchangeApp.Services
                 })
                 .ToListAsync();
 
-            // Get all project members for role information (optimized - single query)
             var projectMembers = await _context.ProjectMembers
                 .Where(pm => userProjectIds.Contains(pm.ProjectId) && pm.UserId == userIdInt)
                 .Select(pm => new
@@ -80,7 +77,6 @@ namespace TechExchangeApp.Services
                 })
                 .ToListAsync();
 
-            // Get all steps for these projects (optimized - single query to avoid N+1)
             var allSteps = await _context.ProjectSteps
                 .Where(ps => userProjectIds.Contains(ps.ProjectId))
                 .OrderBy(ps => ps.ProjectId)
@@ -94,82 +90,53 @@ namespace TechExchangeApp.Services
                 })
                 .ToListAsync();
 
-            // Group steps by ProjectId for efficient lookup
-            var stepsByProject = allSteps.GroupBy(s => s.ProjectId)
+            var stepsByProject = allSteps
+                .GroupBy(s => s.ProjectId)
                 .ToDictionary(g => g.Key, g => g.ToList());
 
-            // Build project dashboard items
             var projectItems = new List<ProjectDashboardItemVm>();
 
             foreach (var project in projects)
             {
                 var member = projectMembers.FirstOrDefault(pm => pm.ProjectId == project.Id);
-                var steps = stepsByProject.ContainsKey(project.Id) 
-                    ? stepsByProject[project.Id] 
+                var steps = stepsByProject.TryGetValue(project.Id, out var projectSteps)
+                    ? projectSteps
                     : new List<StepDto>();
 
-                // Determine current step: step after the last Completed one (StatusId == 5)
-                int currentStepNumber;
-                string currentStepName;
-                string currentStepStatus;
+                var displaySteps = BuildDisplaySteps(steps);
+                var currentDisplayStep = displaySteps.FirstOrDefault(s => s.StatusId != 2)
+                    ?? displaySteps.LastOrDefault();
 
-                if (!steps.Any())
+                var currentStepNumber = Math.Clamp(currentDisplayStep?.DisplayStepNumber ?? 1, 1, DashboardTotalDisplaySteps);
+                var currentStepName = currentDisplayStep?.StepName ?? "Bước 1";
+                var currentStepStatus = currentDisplayStep?.StatusId switch
                 {
-                    currentStepNumber = 1;
-                    currentStepName   = "Bước 1";
-                    currentStepStatus = "NotStarted";
-                }
-                else
+                    2 => "Completed",
+                    1 => "InProgress",
+                    _ => "NotStarted"
+                };
+
+                var dashboardSteps = displaySteps
+                    .Where(s => s.DisplayStepNumber <= DashboardTotalDisplaySteps)
+                    .ToList();
+                var totalDisplaySteps = DashboardTotalDisplaySteps;
+                var completedSteps = Math.Min(dashboardSteps.Count(s => s.StatusId == 2), totalDisplaySteps);
+                if (currentStepNumber >= totalDisplaySteps && currentStepStatus != "NotStarted")
                 {
-                    var lastCompleted = steps
-                        .Where(s => s.StatusId == 2) // 2 = Completed in DB
-                        .OrderByDescending(s => s.StepNumber)
-                        .FirstOrDefault();
-
-                    if (lastCompleted == null)
-                    {
-                        // Nothing completed yet → show step 1
-                        var first = steps.OrderBy(s => s.StepNumber).First();
-                        currentStepNumber = first.StepNumber;
-                        currentStepName   = first.StepName;
-                        currentStepStatus = "NotStarted";
-                    }
-                    else
-                    {
-                        var next = steps.FirstOrDefault(s => s.StepNumber > lastCompleted.StepNumber);
-                        if (next != null)
-                        {
-                            currentStepNumber = next.StepNumber;
-                            currentStepName   = next.StepName;
-                            currentStepStatus = "NotStarted";
-                        }
-                        else
-                        {
-                            // All steps completed
-                            currentStepNumber = lastCompleted.StepNumber;
-                            currentStepName   = lastCompleted.StepName;
-                            currentStepStatus = "Completed";
-                        }
-                    }
+                    completedSteps = totalDisplaySteps;
                 }
+                var progressPercent = totalDisplaySteps > 0
+                    ? (int)Math.Round((completedSteps / (double)totalDisplaySteps) * 100)
+                    : 0;
 
-                // Calculate progress
-                int completedSteps = steps.Count(s => s.StatusId == 2); // 2 = Completed in DB
-                int progressPercent = steps.Any() ? (int)Math.Round((completedSteps / 14.0) * 100) : 0;
-
-                // Build steps summary for visualization
-                var stepsSummary = new List<StepMiniVm>();
-                for (int i = 1; i <= 14; i++)
-                {
-                    var step = steps.FirstOrDefault(s => s.StepNumber == i);
-                    stepsSummary.Add(new StepMiniVm
+                var stepsSummary = dashboardSteps
+                    .Select(s => new StepMiniVm
                     {
-                        StepNumber = i,
-                        StatusId = step?.StatusId ?? (int)StepStatus.NotStarted
-                    });
-                }
+                        StepNumber = s.DisplayStepNumber,
+                        StatusId = s.StatusId
+                    })
+                    .ToList();
 
-                // Get role name
                 string roleName = member?.Role switch
                 {
                     (int)ProjectRole.Buyer => "Buyer",
@@ -188,29 +155,18 @@ namespace TechExchangeApp.Services
                     CurrentStepName = currentStepName,
                     CurrentStepStatus = currentStepStatus,
                     CompletedSteps = completedSteps,
+                    TotalDisplaySteps = totalDisplaySteps,
                     ProgressPercent = progressPercent,
                     StepsSummary = stepsSummary
                 });
             }
 
-            // Calculate statistics
             int totalProjects = projectItems.Count;
-            
-            // InProgress: projects with at least one step not yet Completed (StatusId != 2) and not all NotStarted
             int inProgressProjects = projectItems.Count(p =>
-                p.StepsSummary.Any(s => s.StatusId == 1) || // StatusId=1 = InProgress in DB
+                p.StepsSummary.Any(s => s.StatusId == 1) ||
                 (p.StepsSummary.Any(s => s.StatusId == 2) && p.StepsSummary.Any(s => s.StatusId == 0)));
-            
-            // Completed: projects where step 14 is Completed (StatusId == 2)
             int completedProjects = projectItems.Count(p =>
-            {
-                var step14 = p.StepsSummary.FirstOrDefault(s => s.StepNumber == 14);
-                return step14?.StatusId == 2 ||
-                       p.StepsSummary.All(s => s.StatusId == 2);
-            });
-            
-            // WaitingForMe: Simplified logic - projects with InProgress steps where user is active member
-            // (Can be enhanced later with step-to-role mapping)
+                p.StepsSummary.Any() && p.StepsSummary.All(s => s.StatusId == 2));
             int waitingForMe = inProgressProjects;
 
             return new UserDashboardVm
@@ -223,6 +179,41 @@ namespace TechExchangeApp.Services
                 CompletedProjects = completedProjects,
                 Projects = projectItems
             };
+        }
+
+        private static List<DisplayStep> BuildDisplaySteps(List<StepDto> steps)
+        {
+            return steps
+                .Where(s => s.StepNumber != LegalReviewStep)
+                .Select(s =>
+                {
+                    var statusId = s.StatusId;
+                    var stepName = s.StepName;
+
+                    if (s.StepNumber == MergedNegotiationStep)
+                    {
+                        var legalReview = steps.FirstOrDefault(x => x.StepNumber == LegalReviewStep);
+                        statusId = s.StatusId == 2 && (legalReview == null || legalReview.StatusId == 2)
+                            ? 2
+                            : (s.StatusId > 0 || legalReview?.StatusId > 0 ? 1 : 0);
+                        stepName = MergedStepName;
+                    }
+
+                    return new DisplayStep
+                    {
+                        DisplayStepNumber = s.StepNumber > LegalReviewStep ? s.StepNumber - 1 : s.StepNumber,
+                        StepName = stepName,
+                        StatusId = statusId
+                    };
+                })
+                .ToList();
+        }
+
+        private sealed class DisplayStep
+        {
+            public int DisplayStepNumber { get; set; }
+            public string StepName { get; set; } = string.Empty;
+            public int StatusId { get; set; }
         }
     }
 }

@@ -1,29 +1,55 @@
 @model List<TechExchangeApp.Areas.Cms.Controllers.SupportInboxItemVm>
 @{
-    ViewData["Title"] = "Yêu cầu hỗ trợ Sàn";
+    ViewData["Title"] = "Yêu cầu hỗ trợ/tư vấn";
     int? status = ViewBag.Status as int?;
+    int? requestType = ViewBag.RequestType as int?;
+    int? serviceType = ViewBag.ServiceType as int?;
+    int? staffUserId = ViewBag.StaffUserId as int?;
+    int? projectId = ViewBag.ProjectId as int?;
+    DateTime? dateFrom = ViewBag.DateFrom as DateTime?;
+    DateTime? dateTo = ViewBag.DateTo as DateTime?;
     string? search = ViewBag.Search as string;
+    var staffOptions = ViewBag.StaffOptions as List<TechExchangeApp.Areas.Cms.Controllers.SupportStaffOptionVm> ?? new();
+    int totalCount = ViewBag.TotalCount is int tc ? tc : Model.Count;
+    int newCount = ViewBag.NewCount is int nc ? nc : Model.Count(x => x.TicketStatus == 1);
+    int unassignedCount = ViewBag.UnassignedCount is int uc ? uc : Model.Count(x => string.IsNullOrEmpty(x.AssignedStaffName));
+    int completedCount = ViewBag.CompletedCount is int cc ? cc : Model.Count(x => x.TicketStatus == 6);
 
     string StatusBadge(int s) => s switch
     {
-        1 => "<span class=\"badge bg-warning text-dark\">Chưa gán</span>",
-        2 => "<span class=\"badge bg-info\">Đang xử lý</span>",
-        3 => "<span class=\"badge bg-secondary\">Đã đóng</span>",
-        _ => "<span class=\"badge bg-light text-dark\">—</span>"
+        1 => "<span class=\"badge bg-warning text-dark\">Mới tiếp nhận</span>",
+        2 => "<span class=\"badge bg-primary\">Đã phân công</span>",
+        3 => "<span class=\"badge bg-info text-dark\">Đang xử lý</span>",
+        4 => "<span class=\"badge bg-secondary\">Chờ bổ sung</span>",
+        5 => "<span class=\"badge bg-success\">Đã phản hồi</span>",
+        6 => "<span class=\"badge bg-dark\">Hoàn thành</span>",
+        7 => "<span class=\"badge bg-light text-dark\">Đã hủy</span>",
+        _ => "<span class=\"badge bg-light text-dark\">-</span>"
+    };
+
+    string RequestTypeText(int t) => t == 2 ? "Tư vấn giao dịch" : "Hỗ trợ hệ thống";
+    string ServiceTypeText(int? t) => t switch
+    {
+        1 => "Tìm nhà cung cấp",
+        2 => "Đánh giá hồ sơ",
+        3 => "Đàm phán",
+        4 => "Pháp lý hợp đồng",
+        5 => "Hợp đồng điện tử",
+        99 => "Khác",
+        _ => "-"
     };
 }
 
 <div class="app-content-header">
     <div class="container-fluid">
         <div class="row align-items-center">
-            <div class="col-sm-6"><h3 class="mb-0"><i class="fas fa-headset me-2"></i>Yêu cầu hỗ trợ Sàn</h3></div>
+            <div class="col-sm-6"><h3 class="mb-0"><i class="fas fa-headset me-2"></i>Yêu cầu hỗ trợ/tư vấn</h3></div>
         </div>
     </div>
 </div>
 
 <div class="app-content">
     <div class="container-fluid">
-
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert alert-success">@TempData["SuccessMessage"]</div>
@@ -33,21 +59,88 @@
             <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
         }
 
+        <div class="row g-3 mb-3">
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Tổng yêu cầu</div><div class="h4 mb-0">@totalCount</div></div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Mới tiếp nhận</div><div class="h4 mb-0 text-warning">@newCount</div></div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Chưa phân công</div><div class="h4 mb-0 text-danger">@unassignedCount</div></div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Đã hoàn thành</div><div class="h4 mb-0 text-success">@completedCount</div></div></div>
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-header d-flex flex-wrap gap-2 align-items-center">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a asp-action="Index" class="btn @(status == null ? "btn-primary" : "btn-outline-primary")">Tất cả</a>
-                    <a asp-action="Index" asp-route-status="1" class="btn @(status == 1 ? "btn-primary" : "btn-outline-primary")">Chưa gán</a>
-                    <a asp-action="Index" asp-route-status="2" class="btn @(status == 2 ? "btn-primary" : "btn-outline-primary")">Đang xử lý</a>
+                    <a asp-action="Index" class="btn @(status == null && requestType == null ? "btn-primary" : "btn-outline-primary")">Tất cả</a>
+                    <a asp-action="Index" asp-route-status="1" class="btn @(status == 1 ? "btn-primary" : "btn-outline-primary")">Mới</a>
+                    <a asp-action="Index" asp-route-status="2" class="btn @(status == 2 ? "btn-primary" : "btn-outline-primary")">Đã phân công</a>
+                    <a asp-action="Index" asp-route-status="5" class="btn @(status == 5 ? "btn-primary" : "btn-outline-primary")">Đã phản hồi</a>
                     <a asp-action="Index" asp-route-status="-1" class="btn @(status == -1 ? "btn-primary" : "btn-outline-primary")">Của tôi</a>
+                    <a asp-action="Index" asp-route-requestType="1" class="btn @(requestType == 1 ? "btn-primary" : "btn-outline-primary")">Hỗ trợ</a>
+                    <a asp-action="Index" asp-route-requestType="2" class="btn @(requestType == 2 ? "btn-primary" : "btn-outline-primary")">Tư vấn</a>
                 </div>
-                <form asp-action="Index" method="get" class="ms-auto d-flex gap-2">
+                <a asp-action="ExportExcel"
+                   asp-route-status="@status"
+                   asp-route-requestType="@requestType"
+                   asp-route-serviceType="@serviceType"
+                   asp-route-staffUserId="@staffUserId"
+                   asp-route-projectId="@projectId"
+                   asp-route-dateFrom="@(dateFrom?.ToString("yyyy-MM-dd"))"
+                   asp-route-dateTo="@(dateTo?.ToString("yyyy-MM-dd"))"
+                   asp-route-search="@search"
+                   class="btn btn-sm btn-outline-success ms-auto">
+                    <i class="fas fa-file-excel"></i> Xuất Excel
+                </a>
+                <form asp-action="Index" method="get" class="w-100 mt-2">
                     @if (status.HasValue)
                     {
                         <input type="hidden" name="status" value="@status" />
                     }
-                    <input type="text" name="search" value="@search" class="form-control form-control-sm" placeholder="Tìm dự án / người gửi..." style="min-width:220px;" />
-                    <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search"></i></button>
+                    @if (requestType.HasValue)
+                    {
+                        <input type="hidden" name="requestType" value="@requestType" />
+                    }
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <input type="text" name="search" value="@search" class="form-control form-control-sm" placeholder="Tìm hồ sơ / người gửi / tiêu đề..." />
+                        </div>
+                        <div class="col-md-2">
+                            <select name="serviceType" class="form-select form-select-sm">
+                                <option value="">Tất cả dịch vụ</option>
+                                <option value="1" selected="@(serviceType == 1)">Tìm nhà cung cấp</option>
+                                <option value="2" selected="@(serviceType == 2)">Đánh giá hồ sơ</option>
+                                <option value="3" selected="@(serviceType == 3)">Đàm phán</option>
+                                <option value="4" selected="@(serviceType == 4)">Pháp lý hợp đồng</option>
+                                <option value="5" selected="@(serviceType == 5)">Hợp đồng điện tử</option>
+                                <option value="99" selected="@(serviceType == 99)">Khác</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="staffUserId" class="form-select form-select-sm">
+                                <option value="">Tất cả phụ trách</option>
+                                @foreach (var s in staffOptions)
+                                {
+                                    <option value="@s.UserId" selected="@(staffUserId == s.UserId)">@s.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="number" name="projectId" value="@projectId" class="form-control form-control-sm" placeholder="Mã hồ sơ" />
+                        </div>
+                        <div class="col-md-2">
+                            <input type="date" name="dateFrom" value="@(dateFrom?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-md-2 d-flex gap-2">
+                            <input type="date" name="dateTo" value="@(dateTo?.ToString("yyyy-MM-dd"))" class="form-control form-control-sm" />
+                            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="card-body p-0">
@@ -55,8 +148,10 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>Dự án</th>
-                                <th class="text-center">Bước</th>
+                                <th>Mã</th>
+                                <th>Hồ sơ</th>
+                                <th>Loại</th>
+                                <th>Dịch vụ</th>
                                 <th>Người gửi</th>
                                 <th>Phụ trách</th>
                                 <th class="text-center">Trạng thái</th>
@@ -71,12 +166,17 @@
                                 @foreach (var it in Model)
                                 {
                                     <tr>
-                                        <td>@it.ProjectName</td>
-                                        <td class="text-center">@(it.StepNumber?.ToString() ?? "—")</td>
+                                        <td><strong>REQ-@it.Id</strong></td>
+                                        <td>
+                                            <div>@it.ProjectName</div>
+                                            <div class="text-muted small">Bước @(it.StepNumber?.ToString() ?? "-") · @it.SupportContextCode</div>
+                                        </td>
+                                        <td>@RequestTypeText(it.RequestType)</td>
+                                        <td>@ServiceTypeText(it.ServiceType)</td>
                                         <td>@it.RequesterName</td>
-                                        <td>@(it.AssignedStaffName ?? "—")</td>
-                                        <td class="text-center">@Html.Raw(StatusBadge(it.SupportStatus))</td>
-                                        <td class="text-muted small">@(string.IsNullOrEmpty(it.LastMessage) ? "" : (it.LastMessage.Length > 60 ? it.LastMessage.Substring(0, 60) + "..." : it.LastMessage))</td>
+                                        <td>@(it.AssignedStaffName ?? "-")</td>
+                                        <td class="text-center">@Html.Raw(StatusBadge(it.TicketStatus))</td>
+                                        <td class="text-muted small">@(string.IsNullOrEmpty(it.LastMessage) ? "" : (it.LastMessage.Length > 70 ? it.LastMessage.Substring(0, 70) + "..." : it.LastMessage))</td>
                                         <td class="text-muted small">@(it.LastMessageAt?.ToString("dd/MM/yyyy HH:mm") ?? "")</td>
                                         <td class="text-end">
                                             <a asp-action="Thread" asp-route-id="@it.Id" class="btn btn-sm btn-primary">
@@ -88,7 +188,7 @@
                             }
                             else
                             {
-                                <tr><td colspan="8" class="text-center text-muted p-4">Chưa có yêu cầu hỗ trợ nào.</td></tr>
+                                <tr><td colspan="10" class="text-center text-muted p-4">Chưa có yêu cầu hỗ trợ/tư vấn nào.</td></tr>
                             }
                         </tbody>
                     </table>

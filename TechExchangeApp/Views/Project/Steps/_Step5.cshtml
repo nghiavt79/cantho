@@ -53,9 +53,9 @@
     </div>
 </div>
 
-<div class="card shadow-sm">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="fas fa-handshake"></i> Bước 5: Đàm phán Thương mại</h5>
+<div class="card @(ViewBag.IsCombinedStep5 == true ? "border-0 shadow-none mb-0" : "shadow-sm")">
+    <div class="card-header d-flex justify-content-between align-items-center @(ViewBag.IsCombinedStep5 == true ? "bg-light text-dark border-bottom" : "bg-primary text-white")">
+        <h5 class="mb-0"><i class="fas fa-handshake me-1"></i> @(ViewBag.IsCombinedStep5 == true ? "Đàm phán thương mại" : "Bước 5: Đàm phán Thương mại")</h5>
         @if (isBuyer && negotiation != null && !isCompleted)
         {
             <button class="btn btn-sm btn-light" type="button"
@@ -337,17 +337,20 @@
             }
         }
     </div>
-    <div class="card-footer">
-        <button class="btn btn-secondary step-nav-btn" data-step="@(Model.StepNumber - 1)">
-            <i class="fas fa-arrow-left"></i> Quay lại bước trước
-        </button>
-        @if (Model.StepNumber < 11 && Model.Steps[Model.StepNumber].IsAccessible)
-        {
-            <button class="btn btn-primary step-nav-btn" data-step="@(Model.StepNumber + 1)">
-                Tiếp tục bước @(Model.StepNumber + 1) <i class="fas fa-arrow-right"></i>
+    @if (ViewBag.IsCombinedStep5 != true)
+    {
+        <div class="card-footer">
+            <button class="btn btn-secondary step-nav-btn" data-step="@(Model.StepNumber - 1)">
+                <i class="fas fa-arrow-left"></i> Quay lại bước trước
             </button>
-        }
-    </div>
+            @if (Model.StepNumber < 11 && Model.Steps[Model.StepNumber].IsAccessible)
+            {
+                <button class="btn btn-primary step-nav-btn" data-step="@(Model.StepNumber + 1)">
+                    Tiếp tục kiểm tra pháp lý hợp đồng <i class="fas fa-arrow-right"></i>
+                </button>
+            }
+        </div>
+    }
 </div>
 
 @section Scripts {
@@ -754,4 +757,3 @@
         </div>
     </div>
 }
-

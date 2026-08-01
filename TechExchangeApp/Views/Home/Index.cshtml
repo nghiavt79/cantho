@@ -177,7 +177,7 @@
             <div class="home-v2-card">
                 <div class="home-v2-section-head home-v2-section-head--compact">
                     <h2>@T("Tin tức - Sự kiện", "News & Events")</h2>
-                    <a href="/tin-su-kien">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
+                    <a href="@(Model.IsEnglish ? "/en/news-event" : "/tin-su-kien")">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="home-v2-news-list">
                     @foreach (var item in Model.FeaturedNews)
@@ -194,7 +194,7 @@
 
             <div class="home-v2-card">
                 <div class="home-v2-section-head home-v2-section-head--compact">
-                    <h2>@T("Chuyên gia của chúng tôi", "Our experts")</h2>
+                    <h2>@T("Mạng lưới chuyên gia", "Expert network")</h2>
                     <a href="/chuyen-gia">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="home-v2-expert-list">
@@ -216,7 +216,7 @@
     {
         <section class="container home-v2-section">
             <div class="home-v2-partners">
-                <h2>@T("Khách hàng tiêu biểu", "Featured customers")</h2>
+                <h2>@T("Doanh nghiệp/Đơn vị tiêu biểu", "Featured organizations")</h2>
                 <div class="home-v2-partner-row">
                     @foreach (var customer in Model.Customers)
                     {
@@ -258,7 +258,7 @@
                     <h2>@T("Bạn cần tư vấn giải pháp công nghệ phù hợp?", "Need advice on the right technology solution?")</h2>
                     <p>@T($"Đội ngũ chuyên gia của {branding.ShortName} luôn sẵn sàng đồng hành cùng bạn.", $"The {branding.ShortName} expert team is always ready to accompany you.")</p>
                 </div>
-                <a class="home-v2-btn home-v2-btn--light" href="/dang-ky-tu-van">
+                <a class="home-v2-btn home-v2-btn--light" href="/lien-he">
                     @T("Đăng ký tư vấn ngay", "Request consulting now") <i class="bi bi-arrow-right"></i>
                 </a>
             </div>

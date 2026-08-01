@@ -22,7 +22,7 @@
 
             <div class="user-sidebar-section-label">Giao dịch</div>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Projects/MyProjects") ? "active" : "")" href="@Url.Action("MyProjects", "Projects")">
-                <i class="fas fa-folder-open me-2"></i> Dự án của tôi
+                <i class="fas fa-folder-open me-2"></i> Hồ sơ giao dịch của tôi
                 @if (Model.ProjectCount > 0)
                 {
                     <span class="badge bg-primary float-end">@Model.ProjectCount</span>
@@ -36,7 +36,7 @@
                 </a>
             }
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/OcopOrder/Index") ? "active" : "")" href="@Url.Action("Index", "OcopOrder")">
-                <i class="fas fa-shopping-cart me-2"></i> Đơn hàng OCOP của tôi
+                <i class="fas fa-paper-plane me-2"></i> Yêu cầu đặt mua của tôi
                 @if (Model.OcopOrderCount > 0)
                 {
                     <span class="badge bg-primary float-end">@Model.OcopOrderCount</span>
@@ -68,7 +68,7 @@
             @if (Model.IsSeller)
             {
                 <a class="nav-link @(Context.Request.Path.StartsWithSegments("/OcopOrder/Manage") ? "active" : "")" href="@Url.Action("Manage", "OcopOrder")">
-                    <i class="fas fa-clipboard-list me-2"></i> Đơn OCOP khách đặt
+                    <i class="fas fa-clipboard-list me-2"></i> Yêu cầu khách gửi
                     @if (Model.PendingOcopOrderCount > 0)
                     {
                         <span class="badge bg-danger float-end">@Model.PendingOcopOrderCount</span>

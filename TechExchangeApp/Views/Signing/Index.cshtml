@@ -2,7 +2,7 @@
 @using TechExchangeApp.Entities
 @using TechExchangeApp.Interfaces
 @{
-    ViewData["Title"] = "Ký số hợp đồng";
+    ViewData["Title"] = "Ký hợp đồng";
     var projectId  = (int)ViewBag.ProjectId;
     bool isBuyer   = (bool)(ViewBag.IsBuyer  ?? false);
     bool isSeller  = (bool)(ViewBag.IsSeller ?? false);
@@ -15,7 +15,7 @@
     <!-- Header -->
     <div class="d-flex align-items-center mb-4 gap-3">
         <div>
-            <h4 class="fw-bold mb-0"><i class="fas fa-signature text-success me-2"></i>Bước 7 – Ký số hợp đồng</h4>
+            <h4 class="fw-bold mb-0"><i class="fas fa-signature text-success me-2"></i>Bước 7 – Ký hợp đồng</h4>
             <small class="text-muted">Dự án #@projectId – Hợp đồng v@(Model?.VersionNumber)</small>
         </div>
         @if (status.FullySigned)

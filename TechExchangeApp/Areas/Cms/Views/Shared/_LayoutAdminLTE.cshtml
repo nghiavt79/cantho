@@ -46,6 +46,29 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
+                @{
+                    var cmsLang = TechExchangeApp.Helpers.CmsLangHelper.Current(Context);
+                    var cmsReturn = Context.Request.Path + Context.Request.QueryString;
+                }
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Ngôn ngữ biên tập">
+                        <i class="fas fa-language me-1"></i> @(cmsLang == 2 ? "EN" : "VI")
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item @(cmsLang == 1 ? "active" : "")"
+                               href="@Url.Action("Set", "CmsLanguage", new { area = "Cms", lang = 1, returnUrl = cmsReturn })">
+                                🇻🇳 Tiếng Việt
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item @(cmsLang == 2 ? "active" : "")"
+                               href="@Url.Action("Set", "CmsLanguage", new { area = "Cms", lang = 2, returnUrl = cmsReturn })">
+                                🇬🇧 English
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <form method="post" action="/Account/Logout" class="d-inline">
                         @Html.AntiForgeryToken()
@@ -92,11 +115,19 @@
                         bool isNhaCungUngAdmin = postsCtrl == "NhaCungUngAdmin";
                         bool isNhaTuVanAdmin = postsCtrl == "NhaTuVanAdmin";
                         bool isUsers = postsCtrl == "Users";
+                        bool isHuongDanCms = postsCtrl == "HuongDanCms";
                         bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin;
                         bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin;
                         bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin;
                         bool isSystemGroup = isUsers || isLogAdmin || isSystemParameterAdmin || isSysFunctionAdmin || isRoleAdmin || isSysFuncPermissionAdmin;
                     }
+                    <li class="nav-item">
+                        <a href="/cms/huog-dan-cms" class="nav-link @(isHuongDanCms ? "active" : "")">
+                            <i class="nav-icon fas fa-book-open"></i>
+                            <p>Hướng dẫn CMS</p>
+                        </a>
+                    </li>
+
                     <li class="nav-item @(isTransactionGroup ? "menu-open" : "")">
                         <a href="#" class="nav-link @(isTransactionGroup ? "active" : "")">
                             <i class="nav-icon fas fa-handshake"></i>
@@ -138,7 +169,7 @@
                                 <a asp-area="Cms" asp-controller="SupportRequestsAdmin" asp-action="Index"
                                    class="nav-link @(isSupportRequestsAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-headset"></i>
-                                    <p>Yêu cầu hỗ trợ Sàn</p>
+                                    <p>Yêu cầu Trung tâm tư vấn</p>
                                 </a>
                             </li>
                         </ul>

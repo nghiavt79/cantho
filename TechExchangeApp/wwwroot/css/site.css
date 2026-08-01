@@ -5277,6 +5277,12 @@ header {
     border-radius: 10px 0 0 10px;
 }
 
+.category-search .form-control:focus {
+    border-color: #d5e7f0;
+    box-shadow: none;
+    outline: none;
+}
+
 .category-search .btn {
     height: 38px;
     width: 42px;
@@ -7489,4 +7495,3 @@ header {
         flex-direction: column;
     }
 }
-

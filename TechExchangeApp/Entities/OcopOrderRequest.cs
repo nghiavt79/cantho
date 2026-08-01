@@ -12,7 +12,11 @@ namespace TechExchangeApp.Entities
 
         public int ProductId { get; set; }
 
+        public int? RequestProductType { get; set; }
+
         public int? SupplierId { get; set; } // NhaCungUng.CungUngId
+
+        public string? GiaThamKhao { get; set; }
 
         [Required(ErrorMessage = "Vui lòng nhập họ tên")]
         [StringLength(100)]
