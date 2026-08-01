@@ -91,7 +91,7 @@ namespace TechExchangeApp.Controllers
                 ProcessSteps = BuildProcessSteps(isEn),
                 Customers = data.Customers,
                 Partners = data.Partners,
-                PopularTags = BuildPopularTags(),
+                PopularTags = BuildPopularTags(isEn),
                 FeaturedTechnologies = data.FeaturedTechnologies,
                 FeaturedNews = data.FeaturedNews,
                 Experts = data.Experts,
@@ -100,7 +100,12 @@ namespace TechExchangeApp.Controllers
                     .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
                     .OrderBy(x => x.Sort ?? int.MaxValue)
                     .ThenBy(x => x.Title)
-                    .Select(x => new HomeFieldOptionVm { Value = x.CatId.ToString(), Label = x.Title ?? "" })
+                    .Select(x => new HomeFieldOptionVm
+                    {
+                        Value = x.CatId.ToString(),
+                        // EN: dùng TitleEn nếu có, thiếu thì fallback Title.
+                        Label = isEn && x.TitleEn != null && x.TitleEn != "" ? x.TitleEn : (x.Title ?? "")
+                    })
                     .ToList()
             };
 
@@ -308,16 +313,21 @@ namespace TechExchangeApp.Controllers
             return "/" + src.TrimStart('~', '/');
         }
 
-        private static List<string> BuildPopularTags()
+        private static List<HomeFieldOptionVm> BuildPopularTags(bool isEn)
         {
-            return new List<string>
+            // Value = từ khóa tìm kiếm (giữ tiếng Việt để khớp dữ liệu), Label = hiển thị theo ngôn ngữ.
+            var tags = new (string Vi, string En)[]
             {
-                "Công nghệ sau thu hoạch",
-                "Nuôi cấy mô thực vật",
-                "Xử lý nước thải",
-                "Đóng gói - bảo quản",
-                "Năng lượng tái tạo"
+                ("Công nghệ sau thu hoạch", "Post-harvest technology"),
+                ("Nuôi cấy mô thực vật",     "Plant tissue culture"),
+                ("Xử lý nước thải",          "Wastewater treatment"),
+                ("Đóng gói - bảo quản",      "Packaging & preservation"),
+                ("Năng lượng tái tạo",       "Renewable energy")
             };
+            // EN: cả từ khóa tìm lẫn nhãn đều tiếng Anh (search sẽ dùng /en/search).
+            return tags
+                .Select(t => new HomeFieldOptionVm { Value = isEn ? t.En : t.Vi, Label = isEn ? t.En : t.Vi })
+                .ToList();
         }
 
         private static string ProductCompany(SanPhamCNTB x)

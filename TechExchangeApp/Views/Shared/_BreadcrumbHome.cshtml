@@ -1,0 +1,3 @@
+@* Link "Trang chủ / Home" cho breadcrumb: URL và nhãn tự đổi theo ngôn ngữ.
+   Tiếng Anh (/en) -> href "/en" + "Home"; tiếng Việt -> href "/" + "Trang chủ". *@
+<a href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">@Html.Text("common.home")</a>

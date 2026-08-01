@@ -16,22 +16,13 @@
             <textarea asp-for="Description" id="editorDescription" class="form-control" rows="6"></textarea>
         </div>
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="QueryString" class="form-label fw-semibold">Query String</label>
-                    <input asp-for="QueryString" class="form-control form-control-sm" placeholder="/danh-muc-abc" />
-                    <small class="text-muted">Đường dẫn nội bộ, ví dụ: /tin-tuc</small>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label asp-for="NavigateUrl" class="form-label fw-semibold">Navigate URL</label>
-                    <input asp-for="NavigateUrl" class="form-control form-control-sm" placeholder="https://..." />
-                    <small class="text-muted">Liên kết ngoài (nếu có)</small>
-                </div>
-            </div>
+        <div class="mb-3">
+            <label asp-for="NavigateUrl" class="form-label fw-semibold">Navigate URL</label>
+            <input asp-for="NavigateUrl" class="form-control form-control-sm" placeholder="/lien-he hoặc https://..." />
+            <small class="text-muted">Link của mục. Để trống thì URL tự sinh dạng <code>/trang/{slug}-{id}</code>.</small>
         </div>
+        @* Query String ẩn: giữ giá trị (dùng làm slug dự phòng khi NavigateUrl trống). *@
+        <input type="hidden" asp-for="QueryString" />
 
         <div class="mb-3">
             <label asp-for="TitlePage" class="form-label fw-semibold">Title Page (SEO)</label>
@@ -78,11 +69,8 @@
                     <input asp-for="Sort" type="number" class="form-control form-control-sm" />
                 </div>
 
-                <div class="mb-3">
-                    <label asp-for="MenuPosition" class="form-label fw-semibold small">Vị trí hiển thị</label>
-                    <input asp-for="MenuPosition" class="form-control form-control-sm" placeholder="1,2,3..." />
-                    <small class="text-muted">Các vị trí cách nhau bởi dấu phẩy</small>
-                </div>
+                @* "Vị trí hiển thị" (MenuPosition) đã thay bằng toggle Header/Footer ở danh sách; ẩn, giữ giá trị. *@
+                <input type="hidden" asp-for="MenuPosition" />
 
                 <div class="mb-3 form-check">
                     <input asp-for="ShowRight" class="form-check-input" type="checkbox" />

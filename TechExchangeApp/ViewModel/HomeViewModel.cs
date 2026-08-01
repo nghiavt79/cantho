@@ -23,7 +23,7 @@ namespace TechExchangeApp.ViewModel
         public List<HomeExpertVm> Experts { get; set; } = new();
         public List<HomePartnerVm> Customers { get; set; } = new();
         public List<HomePartnerVm> Partners { get; set; } = new();
-        public List<string> PopularTags { get; set; } = new();
+        public List<HomeFieldOptionVm> PopularTags { get; set; } = new(); // Value = từ khóa tìm (VN), Label = hiển thị
         public List<HomeFieldOptionVm> SearchFields { get; set; } = new();
     }
 

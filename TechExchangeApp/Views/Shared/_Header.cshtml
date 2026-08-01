@@ -16,7 +16,7 @@
 <header class="site-header-v2">
     <nav class="site-header-v2__nav">
         <div class="container site-header-v2__nav-inner">
-            <a class="site-header-v2__brand" href="@mainDomain">
+            <a class="site-header-v2__brand" href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">
                 <img src="/image/logo-casta.webp" alt="@shortName" onerror="this.src='/image/logo.png'">
             </a>
 
@@ -24,7 +24,7 @@
                 <nav class="site-header-v2__menu" aria-label="Menu chính">
                     @* Menu chính data-driven từ bảng Menu (MenuPosition="1"), song ngữ theo /en. *@
                     @await Component.InvokeAsync("SiteHeaderMenu", new { variant = "desktop" })
-                    <form class="site-header-v2__quick-search" action="/Search" method="get" role="search">
+                    <form class="site-header-v2__quick-search" action="@TechExchangeApp.Helpers.LangHelper.SearchUrl(Context)" method="get" role="search">
                         <input type="search" name="q" placeholder="@T("Tìm kiếm...", "Search...")" aria-label="@T("Tìm kiếm", "Search")" autocomplete="off">
                         <button type="submit" class="site-header-v2__quick-search-btn" aria-label="@T("Tìm kiếm", "Search")">
                             <i class="bi bi-search"></i>
@@ -117,13 +117,13 @@
                 <span>/</span>
                 <a class="@(isEn ? "is-active" : "")" href="/en">EN</a>
             </div>
-            <form class="site-menu-offcanvas__search" action="/Search" method="get">
+            <form class="site-menu-offcanvas__search" action="@TechExchangeApp.Helpers.LangHelper.SearchUrl(Context)" method="get">
                 <i class="bi bi-search"></i>
                 <input type="search" name="q" placeholder="@T("Tìm kiếm dịch vụ, công nghệ...", "Search services, technologies...")" aria-label="@T("Tìm kiếm", "Search")">
             </form>
 
             <nav class="site-menu-offcanvas__nav">
-                <a href="/">@T("Trang chủ", "Home")</a>
+                <a href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">@T("Trang chủ", "Home")</a>
                 @* Menu chính data-driven từ bảng Menu (MenuPosition="1"), song ngữ theo /en. *@
                 @await Component.InvokeAsync("SiteHeaderMenu", new { variant = "mobile" })
                 <a href="/Search">@T("Tìm kiếm", "Search")</a>

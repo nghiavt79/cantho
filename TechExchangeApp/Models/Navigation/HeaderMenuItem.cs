@@ -1,9 +1,9 @@
 namespace TechExchangeApp.Models.Navigation
 {
     /// <summary>
-    /// Một mục trên thanh menu header. Dữ liệu tĩnh lấy từ bảng Menu (MenuPosition = "1").
-    /// Danh sách con (Children) do ViewComponent bơm vào theo request (danh mục Sản phẩm/Dịch vụ),
-    /// KHÔNG lưu trong bản cache của service.
+    /// Một mục cấp 1 trên thanh menu header, lấy từ bảng Menu (MenuPosition = "1").
+    /// Con cấp 2 (Children) là các row Menu có ParentId = MenuId này — cũng lấy từ DB,
+    /// dựng sẵn và cache trong service (menu 2 cấp hoàn toàn data-driven).
     /// </summary>
     public class HeaderMenuItem
     {
@@ -17,13 +17,7 @@ namespace TechExchangeApp.Models.Navigation
         /// <summary>Class CSS phụ cho link desktop (vd "site-header-v2__ocop-link").</summary>
         public string? CssClass { get; set; }
 
-        /// <summary>
-        /// Nhóm danh mục cần bơm submenu động: 1 = Sản phẩm (Category.ParentId=1),
-        /// 2 = Dịch vụ (Category.ParentId=2). Null = mục thường, không có submenu.
-        /// </summary>
-        public int? CategoryGroup { get; set; }
-
-        /// <summary>Danh mục con (ViewComponent điền theo ngôn ngữ; rỗng khi CategoryGroup null).</summary>
+        /// <summary>Mục con cấp 2 (row Menu có ParentId = MenuId này). Rỗng = link đơn.</summary>
         public List<HeaderMenuChild> Children { get; set; } = new();
     }
 

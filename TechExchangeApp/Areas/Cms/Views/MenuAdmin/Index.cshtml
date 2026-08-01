@@ -224,6 +224,32 @@ $(function(){
         loadList(1);
     });
 
+    // ── Toggle ShowHeader / ShowFooter ──
+    $(document).on('change', '.toggle-flag', function() {
+        var $cb = $(this);
+        var id = $cb.data('id');
+        var field = $cb.data('field');
+        var newVal = $cb.prop('checked');
+        var label = (field === 'header') ? 'Header' : 'Footer';
+        $cb.prop('disabled', true);
+        $.post('@Url.Action("ToggleFlag", "MenuAdmin", new { area = "Cms" })',
+            { id: id, field: field, __RequestVerificationToken: token })
+            .done(function(r) {
+                if (r && r.success) {
+                    $cb.prop('checked', r.value);
+                    toastr.success(label + ': ' + (r.value ? 'Bật' : 'Tắt'));
+                } else {
+                    $cb.prop('checked', !newVal);
+                    toastr.error((r && r.message) ? r.message : 'Lỗi cập nhật.');
+                }
+            })
+            .fail(function() {
+                $cb.prop('checked', !newVal);
+                toastr.error('Lỗi cập nhật.');
+            })
+            .always(function() { $cb.prop('disabled', false); });
+    });
+
     // ── Drag & Drop sorting ──
     function initSortable() {
         var el = document.getElementById('sortableBody');

@@ -8,7 +8,7 @@
     <div class="menu-detail-container">
 
         <nav class="menu-detail-breadcrumb" aria-label="breadcrumb">
-            <a href="/">Trang chủ</a>
+            <partial name="_BreadcrumbHome" />
             <span>/</span>
             <strong>@Model.Title</strong>
         </nav>
@@ -27,7 +27,7 @@
 
             <!-- Sidebar -->
             <aside class="menu-detail-sidebar">
-                <p class="menu-detail-sidebar__title">Giới thiệu</p>
+                <p class="menu-detail-sidebar__title">@Model.Header</p>
                 <ul class="menu-detail-sidebar__list">
                     @foreach (var item in Model.Menus)
                     {

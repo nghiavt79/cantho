@@ -43,6 +43,8 @@
                     <th class="sortable" data-sort="status" style="cursor:pointer;width:130px">
                         Trạng thái <i class="fas fa-sort text-muted ms-1"></i>
                     </th>
+                    <th style="width:70px" class="text-center" title="Hiển thị trên thanh header">Header</th>
+                    <th style="width:70px" class="text-center" title="Hiển thị ở footer">Footer</th>
                     <th style="width:150px">Đường dẫn</th>
                     <th class="sortable d-none d-md-table-cell" data-sort="created" style="cursor:pointer;width:130px">
                         Người tạo <i class="fas fa-sort text-muted ms-1"></i>
@@ -56,7 +58,7 @@
                 @if (!Model.Any())
                 {
                     <tr>
-                        <td colspan="9" class="text-center py-5 text-muted">
+                        <td colspan="11" class="text-center py-5 text-muted">
                             <i class="fas fa-inbox fa-3x mb-3 d-block opacity-25"></i>
                             Không có dữ liệu. Hãy thêm menu mới!
                         </td>
@@ -117,6 +119,20 @@
                                     };
                                 }
                                 <span class="badge @badgeClass">@(item.StatusTitle ?? "—")</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="form-check form-switch d-inline-block m-0">
+                                    <input class="form-check-input toggle-flag" type="checkbox" role="switch"
+                                           data-id="@item.MenuId" data-field="header"
+                                           title="Hiển thị header" @(item.ShowHeader ? "checked" : "") />
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="form-check form-switch d-inline-block m-0">
+                                    <input class="form-check-input toggle-flag" type="checkbox" role="switch"
+                                           data-id="@item.MenuId" data-field="footer"
+                                           title="Hiển thị footer" @(item.ShowFooter ? "checked" : "") />
+                                </div>
                             </td>
                             <td>
                                 <small class="text-muted text-truncate d-block" style="max-width:140px"

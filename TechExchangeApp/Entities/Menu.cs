@@ -37,6 +37,12 @@ namespace TechExchangeApp.Entities
 
         public byte? ShowRight { get; set; }
 
+        /// <summary>Hiển thị trên thanh header (menu cấp 1). HeaderMenuService lọc theo cột này.</summary>
+        public bool ShowHeader { get; set; }
+
+        /// <summary>Đánh dấu hiển thị ở footer (footer render động làm sau).</summary>
+        public bool ShowFooter { get; set; }
+
         public string? TitlePage { get; set; }
 
         public int LanguageId { get; set; }

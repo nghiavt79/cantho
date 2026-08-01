@@ -6,7 +6,7 @@
 {
     @foreach (var item in Model.Items)
     {
-        if (item.CategoryGroup != null && item.Children.Any())
+        if (item.Children.Any())
         {
             var useCols = item.Children.Count > 6;
             var rows = (int)Math.Ceiling(item.Children.Count / 2.0);
@@ -51,7 +51,7 @@ else
 {
     @foreach (var item in Model.Items)
     {
-        if (item.CategoryGroup != null && item.Children.Any())
+        if (item.Children.Any())
         {
             var subId = $"menuGrp{item.MenuId}";
             <div class="site-menu-offcanvas__group">

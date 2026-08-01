@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.Helpers;
 
 namespace TechExchangeApp.ViewComponents
 {
@@ -24,7 +25,7 @@ namespace TechExchangeApp.ViewComponents
         /// </summary>
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var lang = LangHelper.CurrentLangId(HttpContext); // /en → 2, còn lại → 1
             var siteId = GetSiteId();
 
             var items = await _context.ImageAdvers

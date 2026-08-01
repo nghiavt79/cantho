@@ -296,12 +296,12 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "en_news_category",
     pattern: "en/news-event",
-    defaults: new { controller = "News", action = "Category", menuId = 62 } // 62 = menu EN "News & Event"
+    defaults: new { controller = "News", action = "Category", menuId = 352 } // 352 = menu EN "News & Events"
 );
 app.MapControllerRoute(
     name: "en_news_detail",
     pattern: "en/news-event/{queryString}-{id:long}",
-    defaults: new { controller = "News", action = "Detail", menuId = 62 }
+    defaults: new { controller = "News", action = "Detail", menuId = 352 }
 );
 app.MapControllerRoute(
     name: "en_about",
@@ -331,6 +331,18 @@ app.MapControllerRoute(
     name: "en_ocop",
     pattern: "en/ocop",
     defaults: new { controller = "Ocop", action = "Index" }
+);
+// Tìm kiếm tiếng Anh: /en/search -> Search.Index (middleware gắn Lang=en).
+app.MapControllerRoute(
+    name: "en_search",
+    pattern: "en/search",
+    defaults: new { controller = "Search", action = "Index" }
+);
+// Trang nội dung menu tiếng Anh (động): /en/page/{slug}-{menuId}. slug chỉ để đẹp URL.
+app.MapControllerRoute(
+    name: "en_menu_detail",
+    pattern: "en/page/{slug}-{menuId:int}",
+    defaults: new { controller = "Menu", action = "Detail" }
 );
 
 // --- Custom Routes (Moved from Controllers) ---
@@ -490,6 +502,12 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "menu_detail",
     pattern: "{queryString:regex(^gioi-thieu-chung|quy-dinh-chung$)}-{menuId:int}",
+    defaults: new { controller = "Menu", action = "Detail" }
+);
+// Trang nội dung menu tiếng Việt (động): /trang/{slug}-{menuId}. slug chỉ để đẹp URL.
+app.MapControllerRoute(
+    name: "menu_detail_dynamic",
+    pattern: "trang/{slug}-{menuId:int}",
     defaults: new { controller = "Menu", action = "Detail" }
 );
 

@@ -90,6 +90,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     MenuPosition = m.MenuPosition,
                     QueryString = m.QueryString,
                     NavigateUrl = m.NavigateUrl,
+                    ShowHeader = m.ShowHeader,
+                    ShowFooter = m.ShowFooter,
                     Created = m.Created,
                     Creator = m.Creator,
                     Modified = m.Modified,
@@ -233,7 +235,42 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             _headerMenu.Invalidate();
 
             TempData["Success"] = "Cập nhật menu thành công!";
-            return RedirectToAction(nameof(Index), new { lang = entity.LanguageId });
+            // Quay lại list submenu của menu cha (nếu có) để tiếp tục set toggle.
+            return RedirectToAction(nameof(Index), new { lang = entity.LanguageId, parentId = entity.ParentId });
+        }
+
+        // ─────────────────────────────────────────
+        // TOGGLE ShowHeader / ShowFooter (AJAX)
+        // ─────────────────────────────────────────
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleFlag(int id, string field)
+        {
+            var entity = await _context.Menus.FindAsync(id);
+            if (entity == null)
+                return Json(new { success = false, message = "Không tìm thấy menu." });
+
+            bool value;
+            if (string.Equals(field, "header", StringComparison.OrdinalIgnoreCase))
+            {
+                entity.ShowHeader = !entity.ShowHeader;
+                value = entity.ShowHeader;
+            }
+            else if (string.Equals(field, "footer", StringComparison.OrdinalIgnoreCase))
+            {
+                entity.ShowFooter = !entity.ShowFooter;
+                value = entity.ShowFooter;
+            }
+            else
+            {
+                return Json(new { success = false, message = "Trường không hợp lệ." });
+            }
+
+            entity.Modified = DateTime.Now;
+            entity.Modifier = User.FindFirstValue(ClaimTypes.Name) ?? User.Identity?.Name;
+            await _context.SaveChangesAsync();
+            _headerMenu.Invalidate(); // header đổi -> xoá cache
+
+            return Json(new { success = true, field, value });
         }
 
         // ─────────────────────────────────────────
@@ -390,6 +427,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public string? MenuPosition { get; set; }
         public string? QueryString { get; set; }
         public string? NavigateUrl { get; set; }
+        public bool ShowHeader { get; set; }
+        public bool ShowFooter { get; set; }
         public DateTime? Created { get; set; }
         public string? Creator { get; set; }
         public DateTime? Modified { get; set; }

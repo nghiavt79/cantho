@@ -9,7 +9,7 @@
 <div class="docs-page">
     <div class="container-fluid">
         <nav class="docs-breadcrumb" aria-label="breadcrumb">
-            <a href="@mainDomain">Trang chủ</a>
+            <partial name="_BreadcrumbHome" />
             <span>/</span>
             <a href="@Url.Action("Index", "HuongDan")">Hướng dẫn sử dụng</a>
             @if (activeRole != null)

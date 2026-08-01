@@ -24,7 +24,7 @@
                     <button type="button" data-search-type="Service">@T("Dịch vụ", "Services")</button>
                     <button type="button" data-search-type="Expert">@T("Chuyên gia", "Experts")</button>
                 </div>
-                <form class="home-v2-search-form" action="/Search" method="get">
+                <form class="home-v2-search-form" action="@(isEn ? "/en/search" : "/Search")" method="get">
                     <input type="hidden" name="type" value="Technology" id="homeSearchType">
                     <input type="text" name="q" placeholder="@T("Nhập từ khóa: công nghệ, thiết bị, chuyên gia, dịch vụ...", "Enter a keyword: technology, equipment, expert, service...")" aria-label="@T("Từ khóa tìm kiếm", "Search keyword")">
                     <select name="field" aria-label="@T("Lĩnh vực", "Field")">
@@ -42,7 +42,7 @@
                     <span>@T("Tìm kiếm phổ biến:", "Popular searches:")</span>
                     @foreach (var tag in Model.PopularTags)
                     {
-                        <a href="/Search?q=@Uri.EscapeDataString(tag)&type=Technology">@tag</a>
+                        <a href="@(isEn ? "/en/search" : "/Search")?q=@Uri.EscapeDataString(tag.Value)&type=Technology">@tag.Label</a>
                     }
                 </div>
             </div>
