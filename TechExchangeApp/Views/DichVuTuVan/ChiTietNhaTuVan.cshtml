@@ -33,7 +33,7 @@
                                     <img src="@other.ImageUrl" alt="@other.FullName"
                                          style="width:48px;height:48px;object-fit:cover;border-radius:50%;margin-right:8px;" />
                                     <div>
-                                        <a href="@other.DetailUrl" class="d-block" style="font-size:13px;font-weight:600;">@other.FullName</a>
+                                        <a href="@(string.IsNullOrWhiteSpace(other.Url) ? other.DetailUrl : other.Url)" class="d-block" style="font-size:13px;font-weight:600;">@other.FullName</a>
                                         <span class="small text-muted">@other.CoQuan</span>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><partial name="_BreadcrumbHome" /></li>
-                        <li class="breadcrumb-item"><a href="/dich-vu-tu-van">Dịch vụ tư vấn</a></li>
+                        <li class="breadcrumb-item"><a href="@(TechExchangeApp.Helpers.LangHelper.IsEnglish(Context) ? "/en/services" : "/dich-vu-tu-van")">Dịch vụ tư vấn</a></li>
                         <li class="breadcrumb-item active">@Model.FullName</li>
                     </ol>
                 </nav>

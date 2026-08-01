@@ -51,15 +51,15 @@ namespace TechExchangeApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
-            var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(HttpContext);
+            var lang = LangHelper.CurrentLangId(HttpContext);
+            var isEn = LangHelper.IsEnglish(HttpContext);
             var cacheKey = $"home:index:{(isEn ? "en" : "vi")}:{_mainDomain}";
             var data = await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:AbsoluteSeconds", 180));
                 entry.SlidingExpiration = TimeSpan.FromSeconds(_configuration.GetValue("HomeCache:SlidingSeconds", 60));
                 entry.AddExpirationToken(_homeCacheSignal.GetChangeToken()); // cho phép CMS xóa cache trang chủ tức thì
-                var newProducts = await _productService.GetNewProductsAsync(12, excludeOcop: true, hotFirst: true);
+                var newProducts = await _productService.GetNewProductsAsync(12, excludeOcop: true, hotFirst: true, languageId: lang);
 
                 return new HomeIndexCacheVm
                 {
@@ -68,10 +68,10 @@ namespace TechExchangeApp.Controllers
                     YeuCauCongNghe = LoadYeuCauCongNghe(),
                     Customers = await LoadLogoItemsAsync(subject: 4, take: 32),
                     Partners = await LoadLogoItemsAsync(subject: 5, take: 8),
-                    FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(10)),
+                    FeaturedTechnologies = MapFeaturedTechnologies(newProducts.Take(10), isEn),
                     FeaturedNews = LoadFeaturedNews(isEn),
-                    Experts = LoadExperts(),
-                    Stats = await BuildStatsAsync(),
+                    Experts = LoadExperts(isEn, lang),
+                    Stats = await BuildStatsAsync(lang, isEn),
                     NewProducts = newProducts
                 };
             }) ?? new HomeIndexCacheVm();
@@ -97,7 +97,7 @@ namespace TechExchangeApp.Controllers
                 Experts = data.Experts,
                 Stats = data.Stats,
                 SearchFields = _context.Categories
-                    .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
+                    .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == lang)
                     .OrderBy(x => x.Sort ?? int.MaxValue)
                     .ThenBy(x => x.Title)
                     .Select(x => new HomeFieldOptionVm
@@ -130,13 +130,25 @@ namespace TechExchangeApp.Controllers
             };
         }
 
-        private async Task<List<HomeStatVm>> BuildStatsAsync()
+        private async Task<List<HomeStatVm>> BuildStatsAsync(int langId, bool isEn)
         {
-            var experts = await _context.NhaTuVans.AsNoTracking().CountAsync(x => x.StatusId == 3);
-            var technologies = await _context.SanPhamCNTBs.AsNoTracking().CountAsync(x => x.StatusId == 3);
-            var partners = await _context.NhaCungUngs.AsNoTracking().CountAsync();
-            var labs = await _context.Categories.AsNoTracking().CountAsync();
+            var experts = await _context.NhaTuVans.AsNoTracking().CountAsync(x => x.LanguageId == langId && x.StatusId == 3);
+            var technologies = await _context.SanPhamCNTBs.AsNoTracking().CountAsync(x => x.LanguageId == langId && x.StatusId == 3);
+            var partners = await _context.NhaCungUngs.AsNoTracking().CountAsync(x => x.LanguageId == langId);
+            var labs = await _context.Categories.AsNoTracking().CountAsync(x => x.LanguageId == langId);
             var floors = ReadHeroStatsFloors();
+
+            if (isEn)
+            {
+                return new List<HomeStatVm>
+                {
+                    new() { Icon = "bi-people", Value = FormatCount(Math.Max(experts, floors.ExpertsFloor)), Label = "Scientists & experts" },
+                    new() { Icon = "bi-building-gear", Value = FormatCount(Math.Max(labs, floors.LabsFloor)), Label = "Facilities & laboratories" },
+                    new() { Icon = "bi-person-workspace", Value = FormatCount(Math.Max(experts, floors.ExpertsFloor)), Label = "Consulting experts" },
+                    new() { Icon = "bi-diagram-3", Value = FormatCount(Math.Max(partners, floors.PartnersFloor)), Label = "Business partners" },
+                    new() { Icon = "bi-bank", Value = floors.YearsLabel, Label = "Years of operation & development" }
+                };
+            }
 
             return new List<HomeStatVm>
             {
@@ -190,12 +202,12 @@ namespace TechExchangeApp.Controllers
             {
                 return new List<HomeFeatureVm>
                 {
-                    new() { Icon = "bi-cpu", Title = "Supply technologies", Url = "/cong-nghe" },
-                    new() { Icon = "bi-link-45deg", Title = "Connect supply & demand", Url = "/tim-kiem-doi-tac" },
-                    new() { Icon = "bi-lightbulb", Title = "Research - Application - Technology transfer", Url = "/dich-vu-tu-van" },
-                    new() { Icon = "bi-upc-scan", Title = "Product traceability", Url = "/dich-vu-tu-van" },
-                    new() { Icon = "bi-stars", Title = "Innovation & technology upgrade consulting", Url = "/dang-ky-tu-van" },
-                    new() { Icon = "bi-mortarboard", Title = "Outreach & capacity building", Url = "/tin-su-kien-44" }
+                    new() { Icon = "bi-cpu", Title = "Supply technologies", Url = "/en/technologies" },
+                    new() { Icon = "bi-link-45deg", Title = "Connect supply & demand", Url = "/en/search" },
+                    new() { Icon = "bi-lightbulb", Title = "Research - Application - Technology transfer", Url = "/en/services" },
+                    new() { Icon = "bi-upc-scan", Title = "Product traceability", Url = "/en/services" },
+                    new() { Icon = "bi-stars", Title = "Innovation & technology upgrade consulting", Url = "/en/services" },
+                    new() { Icon = "bi-mortarboard", Title = "Outreach & capacity building", Url = "/en/news-event" }
                 };
             }
 
@@ -216,9 +228,9 @@ namespace TechExchangeApp.Controllers
             {
                 return new List<HomeFeatureVm>
                 {
-                    new() { Icon = "bi-bezier2", Title = "Technology consulting & transfer", Description = "Solutions tailored to real-world needs.", Url = "/dich-vu-tu-van" },
-                    new() { Icon = "bi-upc-scan", Title = "Traceability", Description = "Product origin tracing and QR-code verification.", Url = "/dich-vu-tu-van" },
-                    new() { Icon = "bi-easel2", Title = "Training & capacity building", Description = "Upskilling for individuals and organizations.", Url = "/tin-su-kien-44" }
+                    new() { Icon = "bi-bezier2", Title = "Technology consulting & transfer", Description = "Solutions tailored to real-world needs.", Url = "/en/services" },
+                    new() { Icon = "bi-upc-scan", Title = "Traceability", Description = "Product origin tracing and QR-code verification.", Url = "/en/services" },
+                    new() { Icon = "bi-easel2", Title = "Training & capacity building", Description = "Upskilling for individuals and organizations.", Url = "/en/news-event" }
                 };
             }
 
@@ -345,7 +357,7 @@ namespace TechExchangeApp.Controllers
             return ("", "new");
         }
 
-        private List<HomeTechCardVm> MapFeaturedTechnologies(IEnumerable<SanPhamCNTB> items)
+        private List<HomeTechCardVm> MapFeaturedTechnologies(IEnumerable<SanPhamCNTB> items, bool isEn)
         {
             var result = items.Select(x =>
             {
@@ -355,7 +367,7 @@ namespace TechExchangeApp.Controllers
                     Title = x.Name ?? "Công nghệ đang cập nhật",
                     Description = CleanSummary(x.MoTaNgan ?? x.MoTa, 120),
                     ImageUrl = ProductController.CookedImageURL("254-170", x.QuyTrinhHinhAnh, _mainDomain),
-                    Url = $"{_mainDomain}san-pham/chi-tiet/{x.QueryString}-{x.ID}",
+                    Url = isEn ? $"{_mainDomain}en/products/{x.QueryString}-{x.ID}" : $"{_mainDomain}san-pham/chi-tiet/{x.QueryString}-{x.ID}",
                     Category = x.ProductType == 2 ? "Thiết bị" : x.ProductType == 3 ? "Tài sản trí tuệ" : "Công nghệ",
                     Company = ProductCompany(x),
                     Badge = badge,
@@ -363,11 +375,21 @@ namespace TechExchangeApp.Controllers
                 };
             }).ToList();
 
-            return result.Any() ? result : BuildFallbackTechnologies();
+            return result.Any() ? result : BuildFallbackTechnologies(isEn);
         }
 
-        private static List<HomeTechCardVm> BuildFallbackTechnologies()
+        private static List<HomeTechCardVm> BuildFallbackTechnologies(bool isEn)
         {
+            if (isEn)
+            {
+                return new List<HomeTechCardVm>
+                {
+                    new() { Title = "Smart hydroponic vegetable system", Description = "Clean cultivation, water saving and high productivity.", ImageUrl = "/image/tuoinuocnhogiot.png", Url = "/en/technologies", Category = "High-tech agriculture", Badge = "New", BadgeType = "new" },
+                    new() { Title = "Domestic wastewater treatment technology", Description = "Efficient, easy to operate and environmentally friendly.", ImageUrl = "/image/thietbiloc.png", Url = "/en/technologies", Category = "Environment", Badge = "Featured", BadgeType = "hot" },
+                    new() { Title = "Cold drying system for agricultural products", Description = "Preserves quality and extends product shelf life.", ImageUrl = "/image/dinhlang.png", Url = "/en/technologies", Category = "Post-harvest technology", Badge = "", BadgeType = "new" }
+                };
+            }
+
             return new List<HomeTechCardVm>
             {
                 new() { Title = "Hệ thống trồng rau thủy canh thông minh", Description = "Giải pháp canh tác sạch, tiết kiệm nước, năng suất cao.", ImageUrl = "/image/tuoinuocnhogiot.png", Url = "/cong-nghe", Category = "Nông nghiệp công nghệ cao", Badge = "Mới", BadgeType = "new" },
@@ -402,10 +424,10 @@ namespace TechExchangeApp.Controllers
                 .ToList();
         }
 
-        private List<HomeExpertVm> LoadExperts()
+        private List<HomeExpertVm> LoadExperts(bool isEn, int langId)
         {
             var experts = _context.NhaTuVans.AsNoTracking()
-                .Where(x => x.StatusId == 3)
+                .Where(x => x.LanguageId == langId && x.StatusId == 3)
                 .OrderByDescending(x => x.Rating ?? 0)
                 .ThenByDescending(x => x.Created)
                 .Take(3)
@@ -415,11 +437,26 @@ namespace TechExchangeApp.Controllers
                     Title = string.IsNullOrEmpty(x.HocHam) ? (x.ChucVu ?? "Chuyên gia tư vấn") : x.HocHam,
                     Field = x.DichVu ?? x.LinhVucId ?? x.CoQuan ?? "Khoa học và công nghệ",
                     ImageUrl = ProductController.CookedImageURL("254-170", x.HinhDaiDien, _mainDomain),
-                    Url = _mainDomain + "chuyen-gia/" + x.QueryString + "-" + x.TuVanId + ""
+                    Url = isEn ? _mainDomain + "en/experts/" + x.QueryString + "-" + x.TuVanId : _mainDomain + "chuyen-gia/" + x.QueryString + "-" + x.TuVanId
                 })
                 .ToList();
 
-            return experts.Any() ? experts : new List<HomeExpertVm>
+            if (experts.Any())
+            {
+                return experts;
+            }
+
+            if (isEn)
+            {
+                return new List<HomeExpertVm>
+                {
+                    new() { Name = "Technology consultant", Title = "Biotechnology specialist", Field = "Research and applied biotechnology.", ImageUrl = "/images/NoImages.jpg", Url = "/en/experts" },
+                    new() { Name = "Agritech consultant", Title = "High-tech agriculture specialist", Field = "Cultivation, preservation and agricultural processing.", ImageUrl = "/images/NoImages.jpg", Url = "/en/experts" },
+                    new() { Name = "Environment consultant", Title = "Environmental technology specialist", Field = "Environmental treatment and sustainable development.", ImageUrl = "/images/NoImages.jpg", Url = "/en/experts" }
+                };
+            }
+
+            return new List<HomeExpertVm>
             {
                 new() { Name = "PGS.TS. Nguyễn Văn A", Title = "Chuyên gia Công nghệ sinh học", Field = "Nghiên cứu và ứng dụng công nghệ sinh học.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia" },
                 new() { Name = "TS. Trần Thị B", Title = "Chuyên gia Nông nghiệp công nghệ cao", Field = "Canh tác, bảo quản và chế biến nông sản.", ImageUrl = "/images/NoImages.jpg", Url = "/chuyen-gia" },
@@ -580,3 +617,4 @@ namespace TechExchangeApp.Controllers
         }
     }
 }
+

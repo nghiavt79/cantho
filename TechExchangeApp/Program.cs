@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -52,11 +52,11 @@ builder.Services.AddScoped<TechExchangeApp.Services.Navigation.IHeaderMenuServic
 builder.Services.AddScoped<TechExchangeApp.Services.IWorkflowService, TechExchangeApp.Services.WorkflowService>();
 builder.Services.AddScoped<TechExchangeApp.Services.INotificationQueueService, TechExchangeApp.Services.NotificationQueueService>();
 
-// Cho phép lấy HttpContext trong Razor
+// Cho phÃ©p láº¥y HttpContext trong Razor
 builder.Services.AddHttpContextAccessor();
 
-// --- Session cần đăng ký ---
-builder.Services.AddDistributedMemoryCache(); // Lưu session trên memory
+// --- Session cáº§n Ä‘Äƒng kÃ½ ---
+builder.Services.AddDistributedMemoryCache(); // LÆ°u session trÃªn memory
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -64,7 +64,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Đăng ký DbContext
+// ÄÄƒng kÃ½ DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -191,7 +191,7 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.IContractService,         
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IContractSigningService,   TechExchangeApp.Services.ContractSigningService>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IVerificationService,      TechExchangeApp.Services.VerificationService>();
 builder.Services.AddScoped<TechExchangeApp.Services.PdfSigningService>();  // iText7 visible signature embedding
-builder.Services.AddScoped<TechExchangeApp.Services.HtmlToPdfService>();   // iText7 HTML→PDF for contracts without uploaded file
+builder.Services.AddScoped<TechExchangeApp.Services.HtmlToPdfService>();   // iText7 HTMLâ†’PDF for contracts without uploaded file
 
 // CA signing provider adapters (resolved by name via factory)
 builder.Services.AddScoped<TechExchangeApp.Interfaces.ISigningProvider, TechExchangeApp.Services.Signing.VnptSigningProvider>();
@@ -221,7 +221,7 @@ builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.ProductEmbe
 builder.Services.AddScoped<TechExchangeApp.Interfaces.ISystemParameterService, TechExchangeApp.Services.SystemParameterService>();
 builder.Services.AddScoped<TechExchangeApp.Services.Translation.ITranslationServiceFactory, TechExchangeApp.Services.Translation.TranslationServiceFactory>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IEmailSender, TechExchangeApp.Services.GmailEmailSender>();
-builder.Services.AddScoped<TechExchangeApp.Interfaces.ISmsSender, TechExchangeApp.Services.StubSmsSender>(); // Twilio replaced with stub — add Twilio back when SMS is needed
+builder.Services.AddScoped<TechExchangeApp.Interfaces.ISmsSender, TechExchangeApp.Services.StubSmsSender>(); // Twilio replaced with stub â€” add Twilio back when SMS is needed
 builder.Services.AddScoped<TechExchangeApp.Interfaces.INotificationProcessor, TechExchangeApp.Services.NotificationProcessor>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.NotificationWorker>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBackgroundService>();
@@ -230,14 +230,14 @@ builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBa
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// ⚠️ TẠM THỜI BẬT DEBUG — nhớ revert lại sau khi tìm xong lỗi
+// âš ï¸ Táº M THá»œI Báº¬T DEBUG â€” nhá»› revert láº¡i sau khi tÃ¬m xong lá»—i
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 else
 {
-    app.UseDeveloperExceptionPage(); // 👈 DEBUG tạm thời
+    app.UseDeveloperExceptionPage(); // ðŸ‘ˆ DEBUG táº¡m thá»i
     // app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
@@ -254,9 +254,9 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 
-// --- Đa ngôn ngữ: gắn cờ ngôn ngữ theo tiền tố "/en" (phải nằm TRƯỚC UseRouting) ---
-// KHÔNG cắt path — URL tiếng Anh là route riêng với segment tiếng Anh (vd /en/news-event).
-// Controller đọc cờ này (LangHelper) để lọc LanguageId = 2.
+// --- Äa ngÃ´n ngá»¯: gáº¯n cá» ngÃ´n ngá»¯ theo tiá»n tá»‘ "/en" (pháº£i náº±m TRÆ¯á»šC UseRouting) ---
+// KHÃ”NG cáº¯t path â€” URL tiáº¿ng Anh lÃ  route riÃªng vá»›i segment tiáº¿ng Anh (vd /en/news-event).
+// Controller Ä‘á»c cá» nÃ y (LangHelper) Ä‘á»ƒ lá»c LanguageId = 2.
 app.Use(async (ctx, next) =>
 {
     var path = ctx.Request.Path.Value ?? "";
@@ -268,7 +268,7 @@ app.Use(async (ctx, next) =>
 
 app.UseRouting();
 
-// --- Bắt buộc: UseSession phải nằm ở đây ---
+// --- Báº¯t buá»™c: UseSession pháº£i náº±m á»Ÿ Ä‘Ã¢y ---
 app.UseSession();
 
 // Authentication & Authorization
@@ -286,8 +286,8 @@ app.MapAreaControllerRoute(
     pattern: "cms/{controller=Dashboard}/{action=Index}/{id?}"
 );
 
-// --- English Routes (site tiếng Anh, segment tiếng Anh; middleware gắn cờ Lang=en) ---
-// Nhân ra loại khác = thêm route en/... tương ứng, trỏ về đúng Controller/Action.
+// --- English Routes (site tiáº¿ng Anh, segment tiáº¿ng Anh; middleware gáº¯n cá» Lang=en) ---
+// NhÃ¢n ra loáº¡i khÃ¡c = thÃªm route en/... tÆ°Æ¡ng á»©ng, trá» vá» Ä‘Ãºng Controller/Action.
 app.MapControllerRoute(
     name: "en_home",
     pattern: "en",
@@ -306,22 +306,67 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "en_about",
     pattern: "en/about",
-    defaults: new { controller = "Menu", action = "Detail", menuId = 56 } // 56 = menu EN "Introduction" (Giới thiệu)
+    defaults: new { controller = "Menu", action = "Detail", menuId = 56 } // 56 = menu EN "Introduction" (Giá»›i thiá»‡u)
 );
-// URL tiếng Anh cho 4 mục header còn lại — trỏ về đúng Controller/Action tiếng Việt,
-// middleware đã gắn Lang=en nên header + nhãn hiển thị tiếng Anh.
+app.MapControllerRoute(
+    name: "en_contact",
+    pattern: "en/contact",
+    defaults: new { controller = "Feedback", action = "Index" }
+);
+// URL tiáº¿ng Anh cho 4 má»¥c header cÃ²n láº¡i â€” trá» vá» Ä‘Ãºng Controller/Action tiáº¿ng Viá»‡t,
+// middleware Ä‘Ã£ gáº¯n Lang=en nÃªn header + nhÃ£n hiá»ƒn thá»‹ tiáº¿ng Anh.
 app.MapControllerRoute(
     name: "en_products",
     pattern: "en/products",
     defaults: new { controller = "Product", action = "TatCaSanPham" }
 );
 app.MapControllerRoute(
-    name: "en_products_category",
-    pattern: "en/products/{slug}-{cateId:int}",
+    name: "en_products_tech",
+    pattern: "en/technologies",
+    defaults: new { controller = "Product", action = "CongNghe" }
+);
+app.MapControllerRoute(
+    name: "en_products_equipment",
+    pattern: "en/equipment",
+    defaults: new { controller = "Product", action = "ThietBi" }
+);
+app.MapControllerRoute(
+    name: "en_products_ip",
+    pattern: "en/intellectual-property",
+    defaults: new { controller = "Product", action = "TaiSanTriTue" }
+);
+app.MapControllerRoute(
+    name: "en_product_category",
+    pattern: "en/products/category/{slug}-{cateId:int}",
     defaults: new { controller = "Product", action = "ProductByCate" }
 );
-// Lưu ý: DichVuTuVan dùng attribute routing, nên URL EN của nó khai báo bằng
-// [HttpGet("en/services...")] ngay trên action (không map được qua conventional route).
+app.MapControllerRoute(
+    name: "en_product_detail",
+    pattern: "en/products/{slug}-{id:int}",
+    defaults: new { controller = "Product", action = "Detail" }
+);
+app.MapControllerRoute(
+    name: "en_experts",
+    pattern: "en/experts",
+    defaults: new { controller = "ChuyenGia", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "en_expert_detail",
+    pattern: "en/experts/{slug}-{id:int}",
+    defaults: new { controller = "ChuyenGia", action = "Detail" }
+);
+app.MapControllerRoute(
+    name: "en_suppliers",
+    pattern: "en/suppliers",
+    defaults: new { controller = "NhaCungUng", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "en_supplier_detail",
+    pattern: "en/suppliers/{slug}-{id:int}",
+    defaults: new { controller = "NhaCungUng", action = "Detail" }
+);
+// LÆ°u Ã½: DichVuTuVan dÃ¹ng attribute routing, nÃªn URL EN cá»§a nÃ³ khai bÃ¡o báº±ng
+// [HttpGet("en/services...")] ngay trÃªn action (khÃ´ng map Ä‘Æ°á»£c qua conventional route).
 app.MapControllerRoute(
     name: "en_technology_demand",
     pattern: "en/technology-demand",
@@ -332,13 +377,13 @@ app.MapControllerRoute(
     pattern: "en/ocop",
     defaults: new { controller = "Ocop", action = "Index" }
 );
-// Tìm kiếm tiếng Anh: /en/search -> Search.Index (middleware gắn Lang=en).
+// TÃ¬m kiáº¿m tiáº¿ng Anh: /en/search -> Search.Index (middleware gáº¯n Lang=en).
 app.MapControllerRoute(
     name: "en_search",
     pattern: "en/search",
     defaults: new { controller = "Search", action = "Index" }
 );
-// Trang nội dung menu tiếng Anh (động): /en/page/{slug}-{menuId}. slug chỉ để đẹp URL.
+// Trang ná»™i dung menu tiáº¿ng Anh (Ä‘á»™ng): /en/page/{slug}-{menuId}. slug chá»‰ Ä‘á»ƒ Ä‘áº¹p URL.
 app.MapControllerRoute(
     name: "en_menu_detail",
     pattern: "en/page/{slug}-{menuId:int}",
@@ -347,7 +392,7 @@ app.MapControllerRoute(
 
 // --- Custom Routes (Moved from Controllers) ---
 
-// 1. Product Routes — each URL maps to its own dedicated action
+// 1. Product Routes â€” each URL maps to its own dedicated action
 app.MapControllerRoute(
     name: "product_tat_ca",
     pattern: "san-pham",
@@ -379,7 +424,7 @@ app.MapControllerRoute(
     defaults: new { controller = "Product", action = "Detail" }
 );
 
-// Legacy URL — 301-redirects to the new san-pham/chi-tiet/... route to preserve SEO/bookmarks
+// Legacy URL â€” 301-redirects to the new san-pham/chi-tiet/... route to preserve SEO/bookmarks
 app.MapControllerRoute(
     name: "product_detail_legacy",
     pattern: "{menu:int}-cong-nghe-thiet-bi/{typeId:int}/{slug}-{id:int}",
@@ -461,7 +506,7 @@ app.MapControllerRoute(
     defaults: new { controller = "Nhucaucongnghe", action = "Detail" }
 );
 
-// Giữ URL cũ {menuId}/yeu-cau/{slug}-{id} → 301 redirect sang route mới
+// Giá»¯ URL cÅ© {menuId}/yeu-cau/{slug}-{id} â†’ 301 redirect sang route má»›i
 app.MapControllerRoute(
     name: "nhucau_detail_legacy",
     pattern: "{menuId:int}/yeu-cau/{slug}-{id:int}",
@@ -470,7 +515,7 @@ app.MapControllerRoute(
 
 // 5. News Routes
 
-// Pretty URL cho danh mục "Tin tức" (menuId=44): /tin-su-kien (không còn hậu tố -44)
+// Pretty URL cho danh má»¥c "Tin tá»©c" (menuId=44): /tin-su-kien (khÃ´ng cÃ²n háº­u tá»‘ -44)
 app.MapControllerRoute(
     name: "news_menu_tinsukien",
     pattern: "tin-su-kien",
@@ -483,9 +528,9 @@ app.MapControllerRoute(
     defaults: new { controller = "News", action = "Category" }
 );
 
-// Pretty URL cho tin tức thuộc menuId=44 ("Tin tức"): /tin-tuc-su-kien/{slug}-{id}
-// menuId=44 được cấp qua route default (không nằm trên URL) nên
-// NewsController.Detail nhận menuId=44 y hệt như route số cũ.
+// Pretty URL cho tin tá»©c thuá»™c menuId=44 ("Tin tá»©c"): /tin-tuc-su-kien/{slug}-{id}
+// menuId=44 Ä‘Æ°á»£c cáº¥p qua route default (khÃ´ng náº±m trÃªn URL) nÃªn
+// NewsController.Detail nháº­n menuId=44 y há»‡t nhÆ° route sá»‘ cÅ©.
 app.MapControllerRoute(
     name: "news_detail_tintuc",
     pattern: "tin-tuc-su-kien/{queryString}-{id:long}",
@@ -504,7 +549,7 @@ app.MapControllerRoute(
     pattern: "{queryString:regex(^gioi-thieu-chung|quy-dinh-chung$)}-{menuId:int}",
     defaults: new { controller = "Menu", action = "Detail" }
 );
-// Trang nội dung menu tiếng Việt (động): /trang/{slug}-{menuId}. slug chỉ để đẹp URL.
+// Trang ná»™i dung menu tiáº¿ng Viá»‡t (Ä‘á»™ng): /trang/{slug}-{menuId}. slug chá»‰ Ä‘á»ƒ Ä‘áº¹p URL.
 app.MapControllerRoute(
     name: "menu_detail_dynamic",
     pattern: "trang/{slug}-{menuId:int}",
@@ -536,7 +581,7 @@ app.MapControllerRoute(
     defaults: new { controller = "Feedback", action = "Index" }
 );
 
-// Giữ URL cũ /lien-he-74 → 301 redirect sang /lien-he (SEO/bookmark)
+// Giá»¯ URL cÅ© /lien-he-74 â†’ 301 redirect sang /lien-he (SEO/bookmark)
 app.MapGet("lien-he-74", ctx =>
 {
     ctx.Response.Redirect("/lien-he", permanent: true);
@@ -570,7 +615,7 @@ app.MapControllerRoute(
     defaults: new { controller = "NhaCungUng", action = "Index" }
 );
 
-// 301 Redirect — old DichVuTuVan list pages
+// 301 Redirect â€” old DichVuTuVan list pages
 app.MapGet("8-dich-vu-tu-van", ctx =>
 {
     ctx.Response.Redirect("/chuyen-gia", permanent: true);
@@ -582,7 +627,7 @@ app.MapGet("8-dich-vu-cung-ung", ctx =>
     return Task.CompletedTask;
 });
 
-// Video routes — /video và /video.html cùng trỏ vào VideoController.Index
+// Video routes â€” /video vÃ  /video.html cÃ¹ng trá» vÃ o VideoController.Index
 app.MapControllerRoute(
     name: "video_clean",
     pattern: "video",
@@ -666,7 +711,7 @@ app.MapControllerRoute(
     defaults: new { controller = "QuanLySanPham", action = "Xoa" }
 );
 
-// Hướng dẫn sử dụng (docs) Routes
+// HÆ°á»›ng dáº«n sá»­ dá»¥ng (docs) Routes
 app.MapControllerRoute(
     name: "huongdan_index",
     pattern: "huong-dan",
@@ -683,7 +728,7 @@ app.MapControllerRoute(
     defaults: new { controller = "HuongDan", action = "Category" }
 );
 
-// ROUTE MẶC ĐỊNH
+// ROUTE Máº¶C Äá»ŠNH
 
 app.MapControllerRoute(
     name: "legacy_404_aspx",
@@ -703,3 +748,4 @@ app.MapControllerRoute(
 );
 
 app.Run();
+

@@ -1,6 +1,11 @@
 @model TechExchangeApp.ViewModel.ProductIndexViewModel
 @{
     ViewData["Title"] = ViewData["PageTitle"]?.ToString() ?? "Thiết Bị";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
+        isEn ? $"{Html.MainDomain()}en/products/{Html.MakeURLFriendly(p.Name)}-{p.ID}" : $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
+    string CategoryUrl(TechExchangeApp.Entities.Category c) =>
+        isEn ? $"{Html.MainDomain()}en/products/category/{Html.MakeURLFriendly(c.QueryString)}-{c.CatId}" : $"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(c.QueryString)}-{c.CatId}";
 }
 
 @section Scripts {
@@ -52,7 +57,7 @@
                 {
                     <div class="brand-showcase">
                         <h2 class="brand-showcase-title">
-                            <a href="@($"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}")">
+                            <a href="@CategoryUrl(block.Category)">
                                 @block.Category.Title
                             </a>
                         </h2>
@@ -83,7 +88,7 @@
                                                     <li class="col-sx-12 col-sm-3 ListProductMobile">
                                                         <div class="product-container">
                                                             <div class="left-block">
-                                                                <a href="@($"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}")">
+                                                                <a href="@ProductUrl(p)">
                                                                     <img src="@imgUrl" class="img-responsive ProductListImage" alt="@p.Name" />
                                                                 </a>
                                                                 @if (p.TypeId == 2) { <div class="label_sc"></div> }
@@ -91,7 +96,7 @@
                                                             </div>
                                                             <div class="right-block">
                                                                 <h4 class="product-name">
-                                                                    <a href="@($"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}")">
+                                                                    <a href="@ProductUrl(p)">
                                                                         @p.Name
                                                                     </a>
                                                                 </h4>
@@ -131,3 +136,5 @@
         </div>
     </div>
 </div>
+
+

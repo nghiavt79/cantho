@@ -4,6 +4,7 @@
     var totalPages = ViewBag.TotalPages ?? 1;
     var page = ViewBag.Page ?? 1;
     var pageSize = ViewBag.PageSize ?? 30;
+    var languageId = (int)(ViewBag.LanguageId ?? 1);
 }
 
 <span id="partialTotalCount" class="d-none">@totalCount</span>
@@ -51,7 +52,7 @@
                         var canDelete = !isActive;
                         <tr>
                             <td class="text-center">
-                                <input type="checkbox" class="form-check-input chkRow" value="@item.CungUngId" @(canDelete ? "" : "disabled") />
+                                <input type="checkbox" class="form-check-input chkRow" value="@item.CungUngId" data-can-delete="@(canDelete ? "1" : "0")" />
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
@@ -70,6 +71,13 @@
                                             title="Đổi chủ sở hữu">
                                         <i class="fas fa-user-edit"></i>
                                     </button>
+                                    @if (languageId == 1)
+                                    {
+                                        <button type="button" class="btn btn-outline-info btn-translate"
+                                                data-id="@item.CungUngId" title="D&#7883;ch sang ti&#7871;ng Anh">
+                                            <i class="fas fa-language"></i>
+                                        </button>
+                                    }
                                     @if (canDelete)
                                     {
                                         <button type="button" class="btn btn-outline-danger btn-del"

@@ -37,9 +37,10 @@ namespace TechExchangeApp.ViewModel
         public string Email    { get; set; } = "";
         public string Website  { get; set; } = "";
         public int    Rating   { get; set; }
+        public bool   IsEnglish { get; set; }
 
         // Derived URL
-        public string DetailUrl => $"/nha-cung-ung/{Slug}-{Id}";
+        public string DetailUrl => IsEnglish ? $"/en/suppliers/{Slug}-{Id}" : $"/nha-cung-ung/{Slug}-{Id}";
     }
 
     // =====================================================================

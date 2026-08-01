@@ -3,6 +3,7 @@
 @model List<SanPhamCNTB>
 
 @{
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     var pageTitle = ViewData["PageTitle"]?.ToString() ?? "Công nghệ";
     var pageLink = pageTitle switch
     {
@@ -26,7 +27,9 @@
         };
     }
 
-    string DetailUrl(SanPhamCNTB p) => $"{Html.MainDomain()}san-pham/chi-tiet/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}";
+    string DetailUrl(SanPhamCNTB p) => isEn
+        ? $"{Html.MainDomain()}en/products/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}"
+        : $"{Html.MainDomain()}san-pham/chi-tiet/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}";
 
     string PlainText(string? value)
     {
@@ -147,3 +150,5 @@
         }
     })();
 </script>
+
+

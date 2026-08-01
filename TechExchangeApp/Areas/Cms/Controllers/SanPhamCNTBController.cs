@@ -9,6 +9,7 @@ using TechExchangeApp.Areas.Cms.Models;
 using TechExchangeApp.Controllers;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.Helpers;
 using TechExchangeApp.Interfaces;
 using TechExchangeApp.Services;
 
@@ -58,7 +59,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             string? sortBy, string? sortDir,
             int page = 1, int pageSize = 15)
             => ListByType(TypeCongNghe, "CongNghe", "Quản lý Công nghệ",
-                keyword, statusId, ncuId, xuatXuId, siteId, creator, linhVuc, trlLevel, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
+                keyword, statusId, ncuId, xuatXuId, siteId, CmsLangHelper.Current(HttpContext), creator, linhVuc, trlLevel, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
 
         // ─────────────────────────────────────────
         // LIST: Thiết bị
@@ -70,7 +71,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             string? sortBy, string? sortDir,
             int page = 1, int pageSize = 15)
             => ListByType(TypeThietBi, "ThietBi", "Quản lý Thiết bị",
-                keyword, statusId, ncuId, xuatXuId, siteId, creator, linhVuc, null, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
+                keyword, statusId, ncuId, xuatXuId, siteId, CmsLangHelper.Current(HttpContext), creator, linhVuc, null, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
 
         // ─────────────────────────────────────────
         // LIST: Sản phẩm trí tuệ
@@ -82,7 +83,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             string? sortBy, string? sortDir,
             int page = 1, int pageSize = 15)
             => ListByType(TypeSanPhamTriTue, "SanPhamTriTue", "Quản lý Sản phẩm trí tuệ",
-                keyword, statusId, ncuId, xuatXuId, siteId, creator, linhVuc, null, categoryId, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
+                keyword, statusId, ncuId, xuatXuId, siteId, CmsLangHelper.Current(HttpContext), creator, linhVuc, null, categoryId, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
 
         // ─────────────────────────────────────────
         // LIST: OCOP
@@ -94,7 +95,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             string? sortBy, string? sortDir,
             int page = 1, int pageSize = 15)
             => ListByType(TypeOcop, "Ocop", "Quản lý OCOP",
-                keyword, statusId, ncuId, xuatXuId, siteId, creator, linhVuc, null, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
+                keyword, statusId, ncuId, xuatXuId, siteId, CmsLangHelper.Current(HttpContext), creator, linhVuc, null, null, createdFrom, createdTo, sortBy, sortDir, page, pageSize);
 
         // ─────────────────────────────────────────
         // EXPORT EXCEL: Công nghệ
@@ -106,11 +107,12 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             DateTime? createdFrom, DateTime? createdTo,
             int productType = TypeCongNghe)
         {
+            var languageId = CmsLangHelper.Current(HttpContext);
             if (!siteId.HasValue)
                 siteId = GetSiteId();
 
             var query = _context.SanPhamCNTBs.AsNoTracking()
-                .Where(p => p.ProductType == productType);
+                .Where(p => p.ProductType == productType && p.LanguageId == languageId);
 
             if (!string.IsNullOrWhiteSpace(keyword))
                 query = query.Where(p => (p.Name != null && p.Name.Contains(keyword))
@@ -170,7 +172,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             foreach (var item in items)
             {
                 var slug = ProductController.MakeURLFriendly(item.Name);
-                item.PublicUrl = $"{baseUrl}/san-pham/chi-tiet/{slug}-{item.ID}";
+                item.PublicUrl = languageId == 2
+                    ? $"{baseUrl}/en/products/{slug}-{item.ID}"
+                    : $"{baseUrl}/san-pham/chi-tiet/{slug}-{item.ID}";
             }
 
             var typeName = productType switch
@@ -188,7 +192,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // Shared list logic (projection, no Include)
         // ─────────────────────────────────────────
         private async Task<IActionResult> ListByType(int productType, string viewName, string title,
-            string? keyword, int? statusId, int? ncuId, int? xuatXuId, int? siteId,
+            string? keyword, int? statusId, int? ncuId, int? xuatXuId, int? siteId, int languageId,
             string? creator, string? linhVuc, int? trlLevel, string? categoryId,
             DateTime? createdFrom, DateTime? createdTo,
             string? sortBy, string? sortDir,
@@ -202,7 +206,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 siteId = GetSiteId();
 
             var query = _context.SanPhamCNTBs.AsNoTracking()
-                .Where(p => p.ProductType == productType);
+                .Where(p => p.ProductType == productType && p.LanguageId == languageId);
 
             if (!string.IsNullOrWhiteSpace(keyword))
                 query = query.Where(p => (p.Name != null && p.Name.Contains(keyword))
@@ -280,6 +284,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             ViewBag.StatusId = statusId;
             ViewBag.NcuId = ncuId;
             ViewBag.XuatXuId = xuatXuId;
+            ViewBag.LanguageId = languageId;
             ViewBag.Creator = creator;
             ViewBag.LinhVuc = linhVuc;
             ViewBag.TrlLevel = trlLevel;
@@ -299,6 +304,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
             // Dropdown lists for filters
             ViewBag.NhaCungUngs = await _context.NhaCungUngs.AsNoTracking()
+                .Where(n => n.LanguageId == languageId)
                 .OrderBy(n => n.FullName)
                 .Select(n => new { n.CungUngId, n.FullName })
                 .ToListAsync();
@@ -384,9 +390,12 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // CREATE (GET)
         // ─────────────────────────────────────────
         [HttpGet]
-        public async Task<IActionResult> Create(int? productType)
+        public async Task<IActionResult> Create(int? productType, int? fromId)
         {
-            var pt = productType ?? TypeCongNghe;
+            var source = fromId.HasValue
+                ? await _context.SanPhamCNTBs.AsNoTracking().FirstOrDefaultAsync(x => x.ID == fromId.Value && x.LanguageId == 1)
+                : null;
+            var pt = source?.ProductType ?? productType ?? TypeCongNghe;
 
             // Auto-generate Code
             var prefix = pt switch { TypeThietBi => "TB", TypeSanPhamTriTue => "TT", TypeOcop => "OCOP", _ => "CN" };
@@ -394,15 +403,33 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 .Where(x => x.ProductType == pt)
                 .MaxAsync(x => (int?)x.ID) ?? 0;
 
-            var vm = new SanPhamCNTBFormVm
+            var vm = source != null
+                ? BuildFormVm(source)
+                : new SanPhamCNTBFormVm
+                {
+                    ProductType = pt,
+                    CanDirectInquiry = pt == TypeThietBi
+                };
+
+            vm.ID = 0;
+            vm.ProductType = pt;
+            vm.Code = source?.Code ?? $"{prefix}-{(maxId + 1):D5}";
+            vm.StatusId = 1;
+            vm.SiteId = GetSiteId();
+
+            if (source != null)
             {
-                ProductType = pt,
-                Code = $"{prefix}-{(maxId + 1):D5}",
-                StatusId = 1,       // Nháp (Draft)
-                SiteId = GetSiteId(),
-                CanDirectInquiry = pt == TypeThietBi
-            };
-            ViewData["Title"] = "Thêm sản phẩm CNTB";
+                vm.LanguageId = 2;
+                vm.OriginalId = source.ID;
+                CmsLangHelper.Set(HttpContext, 2);
+                ViewData["Title"] = "Nh\u1eadp b\u1ea3n ti\u1ebfng Anh (d\u1ecbch tay)";
+            }
+            else
+            {
+                vm.LanguageId = CmsLangHelper.Current(HttpContext);
+                vm.OriginalId = null;
+                ViewData["Title"] = "Th\u00eam s\u1ea3n ph\u1ea9m CNTB";
+            }
             await LoadFormSelectListsAsync();
             return View(GetCreateViewName(vm.ProductType), vm);
         }
@@ -433,6 +460,16 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 entity.SiteId = GetSiteId();
                 entity.StatusId = 1; // Nháp (Draft)
                 entity.Creator = User.Identity?.Name;
+
+                if (entity.LanguageId == 2 && entity.OriginalId.HasValue)
+                {
+                    var source = await _context.SanPhamCNTBs.AsNoTracking().FirstOrDefaultAsync(x => x.ID == entity.OriginalId.Value);
+                    if (source != null)
+                    {
+                        entity.EnStale = false;
+                        entity.SourceHash = ProductSourceHash(source);
+                    }
+                }
 
                 // Auto-generate Code if empty
                 if (string.IsNullOrWhiteSpace(entity.Code))
@@ -544,6 +581,17 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
                 // Always regenerate QueryString (slug) from the updated Name
                 entity.QueryString = ToSlug(entity.Name ?? "");
+
+                if (entity.LanguageId == 1)
+                {
+                    var sourceHash = ProductSourceHash(entity);
+                    var enItems = await _context.SanPhamCNTBs
+                        .Where(x => x.OriginalId == entity.ID && x.LanguageId == 2)
+                        .ToListAsync();
+                    foreach (var en in enItems)
+                        if (!string.Equals(en.SourceHash, sourceHash, StringComparison.OrdinalIgnoreCase))
+                            en.EnStale = true;
+                }
 
                 _context.SanPhamCNTBs.Update(entity);
                 await _context.SaveChangesAsync();
@@ -793,6 +841,14 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             _ => RedirectToAction(nameof(CongNghe))
         };
 
+        private static string ProductSourceHash(SanPhamCNTB p)
+            => TranslationHashHelper.HashOf(
+                p.Name, p.MoTaNgan, p.MoTa, p.ThongSo, p.UuDiem, p.GiaiThuong,
+                p.Keywords, p.XuatXu, p.Khachhang, p.CoQuanChuTri, p.CoQuanChuQuan,
+                p.LoaiDeTaiKhac, p.TransferMethodKhac, p.TargetCustomer, p.DevelopmentStage,
+                p.CooperationGoal, p.CooperationType, p.GiaBanDuKien, p.ChiPhiPhatSinh,
+                p.BaoHanhHoTro, p.ChungNhanKhacText, p.InvestmentGoalKhac, p.NDAContent);
+
         internal static SanPhamCNTB BuildEntity(SanPhamCNTBFormVm m) => new()
     {
         Code = m.Code,
@@ -819,7 +875,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         XuatXu = m.XuatXu,
         GiaiThuong = m.GiaiThuong,
         Keywords = m.Keywords,
-        LanguageId = 1,
+        LanguageId = m.LanguageId <= 0 ? 1 : m.LanguageId,
+        OriginalId = m.OriginalId,
         SiteId = m.SiteId ?? 1, // overridden in Create/Edit POST
         // Owner fields
         OwnerType = m.OwnerType,
@@ -885,6 +942,8 @@ MaTruyXuat = m.MaTruyXuat
         e.XuatXu = m.XuatXu;
         e.GiaiThuong = m.GiaiThuong;
         e.Keywords = m.Keywords;
+        e.LanguageId = m.LanguageId <= 0 ? e.LanguageId : m.LanguageId;
+        e.OriginalId = m.OriginalId;
         e.SiteId = m.SiteId ?? e.SiteId;
         // Owner fields
         e.OwnerType = m.OwnerType;
@@ -951,6 +1010,8 @@ if (!string.IsNullOrWhiteSpace(m.MaTruyXuat)) e.MaTruyXuat = m.MaTruyXuat;
         XuatXu = p.XuatXu,
         GiaiThuong = p.GiaiThuong,
         Keywords = p.Keywords,
+        LanguageId = p.LanguageId,
+        OriginalId = p.OriginalId,
         SiteId = p.SiteId,
         // Owner fields
         OwnerType = p.OwnerType,
@@ -1035,6 +1096,8 @@ MaTruyXuat = p.MaTruyXuat
         public int? NCUId { get; set; }
         public int? StatusId { get; set; }
         public int ProductType { get; set; } = 1;
+        public int LanguageId { get; set; } = 1;
+        public int? OriginalId { get; set; }
 
         // Sản phẩm trí tuệ
         public string? SoBang { get; set; }

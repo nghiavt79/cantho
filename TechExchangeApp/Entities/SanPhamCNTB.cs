@@ -142,6 +142,10 @@ namespace TechExchangeApp.Entities
         /// <summary>1 = CongNghe, 2 = ThietBi, 3 = SanPhamTriTue, 4 = SanPhamOCOP</summary>
         public int ProductType { get; set; } = 1;
 
+        public int? OriginalId { get; set; }
+        public bool? EnStale { get; set; }
+        public string? SourceHash { get; set; }
+
         // ── Góc trưng bày OCOP & Truy xuất nguồn gốc ──
         /// <summary>Hạng sao OCOP (1-5), chỉ áp dụng khi ProductType == 4</summary>
         public int? SoSaoOCOP { get; set; }

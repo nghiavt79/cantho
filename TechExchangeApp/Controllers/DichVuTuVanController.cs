@@ -25,10 +25,11 @@ namespace TechExchangeApp.Controllers
         [HttpGet("en/services")]
         public IActionResult Index(int menuId = 8)
         {
+            int lang = LangHelper.CurrentLangId(HttpContext);
             var dichVuOptions = new List<SelectItemVm>();
             dichVuOptions.AddRange(
                 _context.Categories
-                    .Where(x => x.ParentId == 2)
+                    .Where(x => x.ParentId == 2 && x.LanguageId == lang)
                     .OrderBy(x => x.Sort)
                     .Select(x => new SelectItemVm
                     {
@@ -64,7 +65,7 @@ namespace TechExchangeApp.Controllers
         )
         {
             const int pageSize = 16;
-            int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            int lang = LangHelper.CurrentLangId(HttpContext);
 
             // ===== giống Page_Load + BindToGrid =====
             var vm = new DichVuTuVanVm
@@ -87,7 +88,7 @@ namespace TechExchangeApp.Controllers
 
             vm.DichVuOptions.AddRange(
                 _context.Categories
-                    .Where(x => x.ParentId == 2)
+                    .Where(x => x.ParentId == 2 && x.LanguageId == lang)
                     .Select(x => new SelectItemVm
                     {
                         Value = x.CatId.ToString(),
@@ -152,7 +153,7 @@ namespace TechExchangeApp.Controllers
             const int pageSize = 16;
             const int page2Show = 10;
 
-            int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            int lang = LangHelper.CurrentLangId(HttpContext);
 
             var vm = new DichVuTuVanVm
             {
@@ -172,7 +173,7 @@ namespace TechExchangeApp.Controllers
 
             vm.DichVuOptions.AddRange(
                 _context.Categories
-                    .Where(x => x.ParentId == 2)
+                    .Where(x => x.ParentId == 2 && x.LanguageId == lang)
                     .OrderBy(x => x.Sort)
                     .Select(x => new SelectItemVm
                     {
@@ -227,9 +228,11 @@ namespace TechExchangeApp.Controllers
 
 
         [HttpGet("8-dich-vu-tu-van/{slug}-{id}")]
+        [HttpGet("en/services/experts/{slug}-{id}")]
         public IActionResult ChiTietNhaTuVan(int id)
         {
-            int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            int lang = LangHelper.CurrentLangId(HttpContext);
+            bool isEn = LangHelper.IsEnglish(HttpContext);
 
             var entity = _context.NhaTuVans
                 .FirstOrDefault(x =>
@@ -347,6 +350,7 @@ namespace TechExchangeApp.Controllers
                     CoQuan = x.CoQuan,
                     Phone = x.Phone,
                     Email = x.Email,
+                    Url = isEn ? $"/en/experts/{x.QueryString}-{x.TuVanId}" : $"/chuyen-gia/{x.QueryString}-{x.TuVanId}",
                     Rating = x.Rating ?? 0
                 })
                 .ToList();
@@ -361,7 +365,7 @@ namespace TechExchangeApp.Controllers
                 {
                     Id = x.CatId,
                     Name = x.Title,
-                    Url = "/dich-vu-tu-van"
+                    Url = isEn ? "/en/services" : "/dich-vu-tu-van"
                 })
                 .ToList();
 
@@ -372,9 +376,11 @@ namespace TechExchangeApp.Controllers
         }
 
         [HttpGet("8-dich-vu-cung-ung/{slug}-{id}")]
+        [HttpGet("en/services/suppliers/{slug}-{id}")]
         public IActionResult ChiTietNhaCungUng(int id)
         {
-            int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            int lang = LangHelper.CurrentLangId(HttpContext);
+            bool isEn = LangHelper.IsEnglish(HttpContext);
             int userId = HttpContext.Session.GetInt32("UserID") ?? 0;
 
             var entity = _context.NhaCungUngs
@@ -398,7 +404,7 @@ namespace TechExchangeApp.Controllers
 
                 linhVucText = string.Join("<br>",
                     _context.Categories
-                        .Where(x => ids.Contains(x.CatId))
+                        .Where(x => ids.Contains(x.CatId) && x.LanguageId == lang)
                         .OrderBy(x => x.Sort)
                         .Select(x => x.Title)
                         .ToList()
@@ -416,7 +422,7 @@ namespace TechExchangeApp.Controllers
 
                 dichVuText = string.Join("<br>",
                     _context.Categories
-                        .Where(x => ids.Contains(x.CatId))
+                        .Where(x => ids.Contains(x.CatId) && x.LanguageId == lang)
                         .OrderBy(x => x.Sort)
                         .Select(x => x.Title)
                         .ToList()
@@ -492,19 +498,20 @@ namespace TechExchangeApp.Controllers
                     Email = x.Email,
                     Website = x.Website,
                     Rating = x.Rating ?? 0,
+                    IsEnglish = isEn,
                     ImageUrl = ProductController.CookedImageURL("254-170", x.HinhDaiDien, _mainDomain)
                 })
                 .ToList();
 
             // ================== CATEGORY LEFT ==================
             vm.Categories = _context.Categories
-                .Where(x => x.ParentId == 2 && x.MainCate == true)
+                .Where(x => x.ParentId == 2 && x.MainCate == true && x.LanguageId == lang)
                 .OrderBy(x => x.Sort)
                 .Select(x => new CategoryVm
                 {
                     Id = x.CatId,
                     Name = x.Title,
-                    Url = $"{_mainDomain}dich-vu-tu-van/{x.QueryString}-{x.CatId}"
+                    Url = isEn ? $"{_mainDomain}en/services/{x.QueryString}-{x.CatId}" : $"{_mainDomain}dich-vu-tu-van/{x.QueryString}-{x.CatId}"
                 })
                 .ToList();
 
@@ -533,10 +540,10 @@ namespace TechExchangeApp.Controllers
         )
         {
             const int pageSize = 16;
-            int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            int lang = LangHelper.CurrentLangId(HttpContext);
 
             var dichVuOptions = _context.Categories
-                .Where(x => x.ParentId == 2)
+                .Where(x => x.ParentId == 2 && x.LanguageId == lang)
                 .OrderBy(x => x.Sort)
                 .Select(x => new SelectItemVm
                 {

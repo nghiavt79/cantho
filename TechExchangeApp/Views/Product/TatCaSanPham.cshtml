@@ -1,6 +1,7 @@
 @model TechExchangeApp.ViewModel.AllProductsViewModel
 @{
     ViewData["Title"] = "Sản phẩm";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
 }
 
 @section Styles {
@@ -19,7 +20,7 @@
     }
 
     string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
-        $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
+        isEn ? $"{Html.MainDomain()}en/products/{Html.MakeURLFriendly(p.Name)}-{p.ID}" : $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
 
     string TypeLabel(int t) => t switch { 2 => "Thiết bị", 3 => "Sản phẩm trí tuệ", _ => "Công nghệ" };
 
@@ -138,3 +139,5 @@
         </div>
     </div>
 </div>
+
+

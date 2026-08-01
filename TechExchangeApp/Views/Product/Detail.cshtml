@@ -13,6 +13,10 @@
     };
 
     var categories = Model.RelatedCategories ?? new List<TechExchangeApp.Entities.Category>();
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    string CategoryUrl(TechExchangeApp.Entities.Category cat) => isEn
+        ? $"/en/products/category/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}"
+        : $"/san-pham/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}";
     var productImage = Html.CookedImageURL("org", Model.Product.QuyTrinhHinhAnh);
     var p = Model.Product;
     var rating = p.Rating ?? 0;
@@ -173,7 +177,7 @@
                                 <ul class="tech-category-list">
                                     @foreach (var cat in categories.Take(6))
                                     {
-                                        <li><a href="/san-pham/@cat.QueryString-@cat.CatId">@cat.Title</a></li>
+                                        <li><a href="@CategoryUrl(cat)">@cat.Title</a></li>
                                     }
                                 </ul>
                             </section>

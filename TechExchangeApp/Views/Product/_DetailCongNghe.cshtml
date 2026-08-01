@@ -5,6 +5,10 @@
 @{
     var p = Model.Product;
     var categories = Model.RelatedCategories ?? new List<Category>();
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    string CategoryUrl(Category cat) => isEn
+        ? $"/en/products/category/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}"
+        : $"/san-pham/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}";
     var productImage = Html.CookedImageURL("org", p.QuyTrinhHinhAnh);
     var rating = p.Rating ?? 0;
     var ratingText = rating > 0 ? rating.ToString("0.0") : "0.0";
@@ -266,7 +270,7 @@
                     <ul class="tech-category-list">
                         @foreach (var cat in categories.Take(6))
                         {
-                            <li><a href="/san-pham/@cat.QueryString-@cat.CatId">@cat.Title</a></li>
+                            <li><a href="@CategoryUrl(cat)">@cat.Title</a></li>
                         }
                     </ul>
                 </section>

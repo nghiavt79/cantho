@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Dịch vụ tư vấn khoa học công nghệ";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    var contactUrl = isEn ? "/en/contact" : "/lien-he";
 }
 
 @section Scripts {
@@ -79,7 +81,7 @@
         <h1 class="dvtv-hero__title">Dịch vụ tư vấn khoa học, công nghệ và đổi mới sáng tạo</h1>
         <p class="dvtv-hero__desc">Kết nối doanh nghiệp, tổ chức, cá nhân với đơn vị tư vấn và chuyên gia hàng đầu trong lĩnh vực khoa học công nghệ tại Thành phố Cần Thơ.</p>
         <div class="dvtv-hero__actions">
-            <a href="/lien-he" class="dvtv-btn dvtv-btn--primary"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
+            <a href="@contactUrl" class="dvtv-btn dvtv-btn--primary"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
             <a href="#tab-donvi" class="dvtv-btn dvtv-btn--outline" onclick="$('#dvtvTabs button[data-bs-target=\'#tab-donvi\']').tab('show');">
                 <i class="fa fa-building me-2"></i>Tìm đơn vị tư vấn
             </a>
@@ -153,7 +155,7 @@
                     <div class="dvtv-sidebar-card dvtv-sidebar-card--cta">
                         <h3 class="dvtv-sidebar-title"><i class="fa fa-headset me-2"></i>Bạn cần tư vấn?</h3>
                         <p class="dvtv-sidebar-text">Gửi yêu cầu tư vấn để được kết nối với đơn vị và chuyên gia phù hợp nhất.</p>
-                        <a href="/lien-he" class="dvtv-btn dvtv-btn--primary w-100"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
+                        <a href="@contactUrl" class="dvtv-btn dvtv-btn--primary w-100"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
                     </div>
 
                     <div class="dvtv-sidebar-card">
@@ -175,3 +177,4 @@
         </div>
     </div>
 </div>
+

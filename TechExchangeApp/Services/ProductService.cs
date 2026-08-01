@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using TechExchangeApp.Interfaces;
@@ -14,21 +14,21 @@ namespace TechExchangeApp.Services
             _context = context;
         }
 
-        public async Task<List<SanPhamCNTB>> GetNewProductsAsync(int take, bool excludeOcop = false, bool hotFirst = false)
+        public async Task<List<SanPhamCNTB>> GetNewProductsAsync(int take, bool excludeOcop = false, bool hotFirst = false, int languageId = 1)
         {
-            // NOTE: bEffectiveDate/eEffectiveDate range filter removed — it caused a full table scan
+            // NOTE: bEffectiveDate/eEffectiveDate range filter removed â€” it caused a full table scan
             // (no index on those columns). StatusId + LanguageId filter is sufficient for homepage.
             var query = _context.SanPhamCNTBs
                 .AsNoTracking()
-                .Where(x => x.StatusId == 3 && x.LanguageId == 1);
+                .Where(x => x.StatusId == 3 && x.LanguageId == languageId);
 
             if (excludeOcop)
             {
                 query = query.Where(x => x.ProductType != 4);
             }
 
-            // hotFirst: sản phẩm IsHot xếp lên đầu, sau đó theo ngày CẬP NHẬT mới nhất
-            // (dùng Modified vì nhiều sản phẩm có PublishedDate = null, fallback Created).
+            // hotFirst: sáº£n pháº©m IsHot xáº¿p lÃªn Ä‘áº§u, sau Ä‘Ã³ theo ngÃ y Cáº¬P NHáº¬T má»›i nháº¥t
+            // (dÃ¹ng Modified vÃ¬ nhiá»u sáº£n pháº©m cÃ³ PublishedDate = null, fallback Created).
             var ordered = hotFirst
                 ? query.OrderByDescending(x => x.IsHot == true)
                        .ThenByDescending(x => x.Modified ?? x.Created)
@@ -54,10 +54,10 @@ namespace TechExchangeApp.Services
                           .ToListAsync();
         }
 
-        public async Task<SanPhamCNTB?> GetProductByIdAsync(int id)
+        public async Task<SanPhamCNTB?> GetProductByIdAsync(int id, int languageId = 1)
         {
             return await _context.SanPhamCNTBs
-                .FirstOrDefaultAsync(x => x.ID == id && x.LanguageId == 1 && x.StatusId == 3);
+                .FirstOrDefaultAsync(x => x.ID == id && x.LanguageId == languageId && x.StatusId == 3);
         }
 
         public async Task<List<SanPhamCNTB>> GetRelatedProductsAsync(int productId, int languageId, int take)
@@ -84,11 +84,14 @@ namespace TechExchangeApp.Services
                           .ToListAsync();
         }
 
-        public async Task<int> GetProductCountByCategoryAsync(int catId, string? keyword = null)
+        public async Task<int> GetProductCountByCategoryAsync(int catId, int languageId = 1, string? keyword = null)
         {
             var q = from p in _context.SanPhamCNTBs
                     join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
-                    where c.CatId == catId && p.StatusId == 3 && p.ProductType != 4 // loại sản phẩm OCOP (có mục /ocop riêng)
+                    where c.CatId == catId
+                          && p.LanguageId == languageId
+                          && p.StatusId == 3
+                          && p.ProductType != 4
                     select p;
 
             if (!string.IsNullOrWhiteSpace(keyword))
@@ -97,17 +100,20 @@ namespace TechExchangeApp.Services
             return await q.Select(p => p.ID).Distinct().CountAsync();
         }
 
-        public async Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int page, int pageSize, string? keyword = null, string? sort = null)
+        public async Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int languageId = 1, int page = 1, int pageSize = 12, string? keyword = null, string? sort = null)
         {
             var q = from p in _context.SanPhamCNTBs
                     join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
-                    where c.CatId == catId && p.StatusId == 3 && p.ProductType != 4 // loại sản phẩm OCOP (có mục /ocop riêng)
+                    where c.CatId == catId
+                          && p.LanguageId == languageId
+                          && p.StatusId == 3
+                          && p.ProductType != 4
                     select p;
 
             if (!string.IsNullOrWhiteSpace(keyword))
                 q = q.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{keyword}%"));
 
-            // Chỉ lấy đúng các cột listing cần — KHÔNG kéo cột LOB (MoTa/ThongSo/Keywords).
+            // Chá»‰ láº¥y Ä‘Ãºng cÃ¡c cá»™t listing cáº§n â€” KHÃ”NG kÃ©o cá»™t LOB (MoTa/ThongSo/Keywords).
             var proj = q.Select(p => new SanPhamCNTB
             {
                 ID = p.ID,
@@ -142,13 +148,13 @@ namespace TechExchangeApp.Services
                 .ToListAsync();
         }
 
-        // ── ProductType-scoped queries ─────────────────────────────────────────────
+        // â”€â”€ ProductType-scoped queries â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-        public async Task<List<SanPhamCNTB>> GetNewProductsByProductTypeAsync(int productType, int take)
+        public async Task<List<SanPhamCNTB>> GetNewProductsByProductTypeAsync(int productType, int take, int languageId = 1)
         {
             return await _context.SanPhamCNTBs
                 .AsNoTracking()
-                .Where(x => x.ProductType == productType && x.StatusId == 3)
+                .Where(x => x.ProductType == productType && x.LanguageId == languageId && x.StatusId == 3)
                 .OrderByDescending(x => x.Modified)
                 .ThenByDescending(x => x.Created)
                 .Take(take)
@@ -172,3 +178,4 @@ namespace TechExchangeApp.Services
         }
     }
 }
+

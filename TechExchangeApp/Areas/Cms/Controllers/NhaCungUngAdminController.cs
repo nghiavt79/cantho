@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Controllers;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.Helpers;
 using TechExchangeApp.Interfaces;
 using TechExchangeApp.Services;
 
@@ -115,8 +116,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             int page = 1, int pageSize = 30)
         {
             var configSiteId = GetSiteId();
-            var lang = TechExchangeApp.Helpers.CmsLangHelper.Current(HttpContext); // ngôn ngữ chung
+            var lang = CmsLangHelper.Current(HttpContext); // ngôn ngữ chung
             ViewBag.Lang = lang;
+            ViewBag.LanguageId = lang;
 
             var query = _context.NhaCungUngs.AsNoTracking()
                 .Where(n => (n.SiteId == null || n.SiteId == configSiteId)
@@ -226,8 +228,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             DateTime? createdFrom, DateTime? createdTo)
         {
             var configSiteId = GetSiteId();
+            var lang = CmsLangHelper.Current(HttpContext);
             var query = _context.NhaCungUngs.AsNoTracking()
-                .Where(n => n.SiteId == null || n.SiteId == configSiteId);
+                .Where(n => (n.SiteId == null || n.SiteId == configSiteId)
+                    && (n.LanguageId ?? 1) == lang);
 
             if (!string.IsNullOrWhiteSpace(keyword))
                 query = query.Where(n => n.FullName != null && n.FullName.Contains(keyword));
@@ -282,7 +286,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 if (item.StatusId.HasValue && statuses.TryGetValue(item.StatusId.Value, out var t))
                     item.StatusTitle = t;
                 var slug = ProductController.MakeURLFriendly(item.FullName);
-                item.PublicUrl = $"{baseUrl}/nha-cung-ung/{slug}-{item.CungUngId}";
+                item.PublicUrl = lang == 2
+                    ? $"{baseUrl}/en/suppliers/{slug}-{item.CungUngId}"
+                    : $"{baseUrl}/nha-cung-ung/{slug}-{item.CungUngId}";
             }
 
             return _excelExport.Export(items, $"NhaCungUng_{DateTime.Now:yyyyMMdd}");
@@ -338,6 +344,17 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.Created = DateTime.Now;
             entity.CreatedBy = User.Identity?.Name;
 
+            if ((entity.LanguageId ?? 1) == 2 && entity.OriginalId.HasValue)
+            {
+                var source = await _context.NhaCungUngs.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.CungUngId == entity.OriginalId.Value);
+                if (source != null)
+                {
+                    entity.EnStale = false;
+                    entity.SourceHash = TranslationHashHelper.HashOf(source.ChucNangChinh, source.DichVu, source.SanPham, source.ChungNhan);
+                }
+            }
+
             _context.NhaCungUngs.Add(entity);
             await _context.SaveChangesAsync();
 
@@ -391,6 +408,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.StatusId = vm.StatusId;
             entity.Rating = vm.Rating;
             entity.ParentId = vm.ParentId;
+            entity.LanguageId = vm.LanguageId;
+            entity.OriginalId = vm.OriginalId;
             entity.Keywords = vm.Keywords;
             entity.SiteId = vm.SiteId;
             entity.TenVietTat = vm.TenVietTat;
@@ -404,6 +423,17 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.ChuTaiKhoan = vm.ChuTaiKhoan;
             entity.Modified = DateTime.Now;
             entity.Modifier = User.Identity?.Name;
+
+            if ((entity.LanguageId ?? 1) == 1)
+            {
+                var sourceHash = TranslationHashHelper.HashOf(entity.ChucNangChinh, entity.DichVu, entity.SanPham, entity.ChungNhan);
+                var enItems = await _context.NhaCungUngs
+                    .Where(x => x.OriginalId == entity.CungUngId && x.LanguageId == 2)
+                    .ToListAsync();
+                foreach (var en in enItems)
+                    if (!string.Equals(en.SourceHash, sourceHash, StringComparison.OrdinalIgnoreCase))
+                        en.EnStale = true;
+            }
 
             await _context.SaveChangesAsync();
 

@@ -14,7 +14,6 @@ namespace TechExchangeApp.Controllers
         private readonly AppDbContext _context;
         private readonly string       _mainDomain;
 
-        private const int LangId          = 1;
         private const int DefaultPageSize  = 16;
         private const int PageWindow       = 5;
         private const int CateParentId     = 2;   // Categories.ParentId for DichVu filter
@@ -30,14 +29,17 @@ namespace TechExchangeApp.Controllers
         // GET /nha-cung-ung?cateId=3&page=1
         // =====================================================================
         [HttpGet("nha-cung-ung")]
+        [HttpGet("en/suppliers")]
         public IActionResult Index(int cateId = 0, int page = 1)
         {
             page = Math.Max(1, page);
+            var langId = LangHelper.CurrentLangId(HttpContext);
+            var isEn = LangHelper.IsEnglish(HttpContext);
 
             // ── Category sidebar ──────────────────────────────────────────
             var categories = _context.Categories
                 .AsNoTracking()
-                .Where(x => x.ParentId == CateParentId && x.LanguageId == LangId)
+                .Where(x => x.ParentId == CateParentId && x.LanguageId == langId)
                 .OrderBy(x => x.Sort)
                 .Select(x => new NhaCungUngCateVm { Id = x.CatId, Title = x.Title })
                 .ToList();
@@ -45,7 +47,7 @@ namespace TechExchangeApp.Controllers
             // ── Base query ────────────────────────────────────────────────
             IQueryable<NhaCungUng> baseQuery = _context.NhaCungUngs
                 .AsNoTracking()
-                .Where(x => x.LanguageId == LangId && x.IsActivated == true);
+                .Where(x => x.LanguageId == langId && x.IsActivated == true);
 
             if (cateId > 0)
             {
@@ -73,6 +75,7 @@ namespace TechExchangeApp.Controllers
                     Email    = x.Email    ?? "",
                     Website  = x.Website  ?? "",
                     Rating   = x.Rating   ?? 0,
+                    IsEnglish = isEn,
                     ImageUrl = ProductController.CookedImageURL("254-170", !string.IsNullOrEmpty(x.Logo) ? x.Logo : x.HinhDaiDien, _mainDomain)
                 })
                 .ToList();
@@ -95,12 +98,14 @@ namespace TechExchangeApp.Controllers
         // GET /nha-cung-ung/{slug}-{id}.html
         // =====================================================================
         [HttpGet("nha-cung-ung/{slug}-{id:int}")]
+        [HttpGet("en/suppliers/{slug}-{id:int}")]
         public IActionResult Detail(string slug, int id)
         {
+            var langId = LangHelper.CurrentLangId(HttpContext);
             var entity = _context.NhaCungUngs
                 .FirstOrDefault(x =>
                     x.CungUngId  == id     &&
-                    x.LanguageId == LangId  &&
+                    x.LanguageId == langId  &&
                     x.IsActivated == true
                 );
 
@@ -117,8 +122,8 @@ namespace TechExchangeApp.Controllers
             }
 
             // ── Resolve category texts ────────────────────────────────────
-            string linhVucText = ResolveCategoryText(entity.LinhVucId, "<br>");
-            string dichVuText  = ResolveCategoryText(entity.DichVu,    "<br>");
+            string linhVucText = ResolveCategoryText(entity.LinhVucId, langId, "<br>");
+            string dichVuText  = ResolveCategoryText(entity.DichVu, langId, "<br>");
 
             // ── Resolve LoaiHinhToChuc ────────────────────────────────────
             var loaiHinhMap = new Dictionary<string, string> {
@@ -141,7 +146,7 @@ namespace TechExchangeApp.Controllers
             // ── NhaCungUng khác (sidebar) ─────────────────────────────────
             var others = _context.NhaCungUngs
                 .AsNoTracking()
-                .Where(x => x.CungUngId != id && x.LanguageId == LangId && x.IsActivated == true)
+                .Where(x => x.CungUngId != id && x.LanguageId == langId && x.IsActivated == true)
                 .OrderByDescending(x => x.Created)
                 .Take(8)
                 .AsEnumerable()
@@ -155,6 +160,7 @@ namespace TechExchangeApp.Controllers
                     Email    = x.Email   ?? "",
                     Website  = x.Website ?? "",
                     Rating   = x.Rating  ?? 0,
+                    IsEnglish = LangHelper.IsEnglish(HttpContext),
                     ImageUrl = ProductController.CookedImageURL("254-170", !string.IsNullOrEmpty(x.Logo) ? x.Logo : x.HinhDaiDien, _mainDomain)
                 })
                 .ToList();
@@ -162,7 +168,7 @@ namespace TechExchangeApp.Controllers
             // ── Category sidebar ──────────────────────────────────────────
             var categories = _context.Categories
                 .AsNoTracking()
-                .Where(x => x.ParentId == CateParentId && x.LanguageId == LangId)
+                .Where(x => x.ParentId == CateParentId && x.LanguageId == langId)
                 .OrderBy(x => x.Sort)
                 .Select(x => new NhaCungUngCateVm { Id = x.CatId, Title = x.Title })
                 .ToList();
@@ -200,9 +206,20 @@ namespace TechExchangeApp.Controllers
             };
 
             // ── Load products of this supplier ───────────────────────────
+            var originSupplierId = entity.OriginalId ?? entity.CungUngId;
+            var viProductIds = _context.SanPhamCNTBs
+                .AsNoTracking()
+                .Where(p => p.NCUId == originSupplierId)
+                .Select(p => p.ID)
+                .ToList();
+
             vm.Products = _context.SanPhamCNTBs
                 .AsNoTracking()
-                .Where(p => p.NCUId == id && p.StatusId == 3)
+                .Where(p => p.LanguageId == langId
+                    && p.StatusId == 3
+                    && (langId == LangHelper.En
+                        ? p.OriginalId != null && viProductIds.Contains(p.OriginalId.Value)
+                        : p.NCUId == entity.CungUngId))
                 .OrderByDescending(p => p.PublishedDate)
                 .Take(20)
                 .AsEnumerable()
@@ -216,7 +233,9 @@ namespace TechExchangeApp.Controllers
                     PriceText   = p.OriginalPrice == null ? ""
                         : string.Format("{0:N0} {1}", p.OriginalPrice, p.Currency),
                     ImageUrl    = ProductController.CookedImageURL("254-170", p.QuyTrinhHinhAnh, _mainDomain),
-                    Url         = $"/san-pham/chi-tiet/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}"
+                    Url         = langId == LangHelper.En
+                        ? $"/en/products/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}"
+                        : $"/san-pham/chi-tiet/{ProductController.MakeURLFriendly(p.Name)}-{p.ID}"
                 })
                 .ToList();
 
@@ -230,7 +249,7 @@ namespace TechExchangeApp.Controllers
         /// <summary>
         /// Parses ";id1;id2;" format and resolves to category titles joined by separator.
         /// </summary>
-        private string ResolveCategoryText(string? idString, string separator = ", ")
+        private string ResolveCategoryText(string? idString, int langId, string separator = ", ")
         {
             if (string.IsNullOrWhiteSpace(idString))
                 return string.Empty;
@@ -247,7 +266,7 @@ namespace TechExchangeApp.Controllers
             return string.Join(separator,
                 _context.Categories
                     .AsNoTracking()
-                    .Where(x => ids.Contains(x.CatId))
+                    .Where(x => ids.Contains(x.CatId) && x.LanguageId == langId)
                     .OrderBy(x => x.Sort)
                     .Select(x => x.Title)
                     .ToList()

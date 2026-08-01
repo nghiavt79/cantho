@@ -37,15 +37,15 @@ namespace TechExchangeApp.Controllers
 
         public async Task<IActionResult> Index(int catId = 1)
         {
-            var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var lang = LangHelper.CurrentLangId(HttpContext);
 
             var categories = _context.Categories
-                .Where(x => x.ParentId == catId && x.MainCate == true)
+                .Where(x => x.ParentId == catId && x.MainCate == true && x.LanguageId == lang)
                 .OrderBy(x => x.Sort)
                 .ToList();
 
             var model = new ProductIndexViewModel();
-            model.NewProducts = await _productService.GetNewProductsAsync(12);
+            model.NewProducts = await _productService.GetNewProductsAsync(12, languageId: lang);
 
             foreach (var cate in categories)
             {
@@ -68,10 +68,11 @@ namespace TechExchangeApp.Controllers
         {
             if (page < 1) page = 1;
             if (pageSize < 1) pageSize = 12;
+            var langId = LangHelper.CurrentLangId(HttpContext);
 
             var baseQuery = _context.SanPhamCNTBs
                 .AsNoTracking()
-                .Where(x => x.StatusId == 3 && (x.ProductType == 1 || x.ProductType == 2 || x.ProductType == 3));
+                .Where(x => x.LanguageId == langId && x.StatusId == 3 && (x.ProductType == 1 || x.ProductType == 2 || x.ProductType == 3));
 
             // Tổng theo từng loại cho nhãn tab (độc lập với bộ lọc đang chọn)
             var totalCongNghe = await baseQuery.CountAsync(x => x.ProductType == ProductTypeConstants.CongNghe);
@@ -143,24 +144,24 @@ namespace TechExchangeApp.Controllers
 
         private async Task<IActionResult> BuildIndexByProductTypeAsync(int productType, string pageTitle)
         {
-            var lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var lang = LangHelper.CurrentLangId(HttpContext);
             ViewData["PageTitle"] = pageTitle;
 
             var allCategories = _context.Categories
-                .Where(x => x.ParentId == 1 && x.MainCate == true)
+                .Where(x => x.ParentId == 1 && x.MainCate == true && x.LanguageId == lang)
                 .OrderBy(x => x.Sort)
                 .ToList();
 
             var model = new ProductIndexViewModel();
-            model.NewProducts = await _productService.GetNewProductsByProductTypeAsync(productType, 16);
+            model.NewProducts = await _productService.GetNewProductsByProductTypeAsync(productType, 16, lang);
             model.AllCategories = allCategories;
 
             // Hero stats from DB
             model.TotalProducts = _context.SanPhamCNTBs
-                .Count(x => x.TypeId == productType && x.StatusId == 3);
+                .Count(x => x.ProductType == productType && x.LanguageId == lang && x.StatusId == 3);
             model.TotalCategories = allCategories.Count;
             model.TotalSuppliers = _context.NhaCungUngs
-                .Count(x => x.StatusId == 3);
+                .Count(x => x.LanguageId == lang && x.StatusId == 3);
 
             foreach (var cate in allCategories)
             {
@@ -222,7 +223,7 @@ namespace TechExchangeApp.Controllers
         // Legacy route {menu}-cong-nghe-thiet-bi/{typeId}/{slug}-{id} — 301-redirect to the new san-pham/chi-tiet/... URL
         public async Task<IActionResult> DetailLegacyRedirect(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var product = await _productService.GetProductByIdAsync(id, LangHelper.CurrentLangId(HttpContext));
             if (product == null)
                 return Redirect($"{_mainDomain}san-pham");
 
@@ -243,10 +244,11 @@ namespace TechExchangeApp.Controllers
             if (id == 8512)
                 return RedirectPermanent("http://techport.vn/2-cong-nghe-thiet-bi/1/thiet-bi-dong-goi-bot-tu-dong-goi-lon--8512");
 
-            var product = await _productService.GetProductByIdAsync(id);
+            var langId = LangHelper.CurrentLangId(HttpContext);
+            var product = await _productService.GetProductByIdAsync(id, langId);
 
             if (product == null)
-                return Redirect($"{_mainDomain}san-pham");
+                return LangHelper.IsEnglish(HttpContext) ? NotFound() : Redirect($"{_mainDomain}san-pham");
 
             var model = new ProductDetailViewModel
             {
@@ -270,6 +272,7 @@ namespace TechExchangeApp.Controllers
         //Helpers to be refactored into CommonService later
         private string GetCategoryTitle(int productId)
         {
+            var langId = LangHelper.CurrentLangId(HttpContext);
             // Nguồn chính: cột CategoryId trên SanPhamCNTB (CMS ghi category vào đây).
             var catIdStr = _context.SanPhamCNTBs
                 .Where(x => x.ID == productId)
@@ -294,21 +297,27 @@ namespace TechExchangeApp.Controllers
             }
 
             if (catId == 0) return "";
-            return _context.Categories.Where(x => x.CatId == catId).Select(x => x.Title).FirstOrDefault() ?? "";
+            return _context.Categories.Where(x => x.CatId == catId && x.LanguageId == langId).Select(x => x.Title).FirstOrDefault() ?? "";
         }
-        private List<Category> GetIndustries() => _context.Categories.Where(x => x.ParentId == 1).OrderBy(x => x.Sort).ToList();
+        private List<Category> GetIndustries() => _context.Categories.Where(x => x.ParentId == 1 && x.LanguageId == LangHelper.CurrentLangId(HttpContext)).OrderBy(x => x.Sort).ToList();
         private List<NhaCungUng> GetSuppliers() => _context.NhaCungUngs.OrderBy(x => x.FullName).ToList();
         
         private void MapSupplier(ProductDetailViewModel vm, SanPhamCNTB p) {
              if (p.NCUId == null) return;
-            var supplier = _context.NhaCungUngs.FirstOrDefault(x => x.CungUngId == p.NCUId);
+            var isEn = LangHelper.IsEnglish(HttpContext);
+            var supplier = isEn
+                ? _context.NhaCungUngs.FirstOrDefault(x => x.OriginalId == p.NCUId && x.LanguageId == LangHelper.En)
+                : _context.NhaCungUngs.FirstOrDefault(x => x.CungUngId == p.NCUId);
+            supplier ??= _context.NhaCungUngs.FirstOrDefault(x => x.CungUngId == p.NCUId);
             if (supplier == null) return;
             vm.SupplierName = supplier.FullName;
-            vm.SupplierUrl = $"{_mainDomain}nha-cung-ung/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
+            vm.SupplierUrl = isEn
+                ? $"{_mainDomain}en/suppliers/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}"
+                : $"{_mainDomain}nha-cung-ung/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
         }
         
         private List<VSImage> GetImages(int contentId) => _context.VSImages.Where(x => x.ContentId == contentId && x.StatusId == 1).OrderBy(x => x.Id).ToList();
-        private List<Category> GetRelatedCategories(int parentId) => _context.Categories.Where(x => x.ParentId == parentId && x.MainCate == true).OrderBy(x => x.Sort).ToList();
+        private List<Category> GetRelatedCategories(int parentId) => _context.Categories.Where(x => x.ParentId == parentId && x.LanguageId == LangHelper.CurrentLangId(HttpContext) && x.MainCate == true).OrderBy(x => x.Sort).ToList();
         
         private List<KeywordVm> GetKeywords(int productId) {
              return (from lk in _context.KeywordLienKets join k in _context.KeywordEntities on lk.KeywordId equals k.KeywordID where lk.TargetId == productId && lk.TypeId == 1 select new KeywordVm { KeywordId = (int)k.KeywordID, Keyword = k.Keyword }).Distinct().ToList();
@@ -348,8 +357,10 @@ namespace TechExchangeApp.Controllers
 
         private async Task LoadProductsAsync(ProductByCateViewModel vm)
         {
-            vm.Total = await _productService.GetProductCountByCategoryAsync(vm.CateId, vm.Keyword);
-            var list = await _productService.GetPagedProductsByCategoryAsync(vm.CateId, vm.CurPage, vm.PageSize, vm.Keyword, vm.Sort);
+            var langId = LangHelper.CurrentLangId(HttpContext);
+            var isEn = LangHelper.IsEnglish(HttpContext);
+            vm.Total = await _productService.GetProductCountByCategoryAsync(vm.CateId, langId, vm.Keyword);
+            var list = await _productService.GetPagedProductsByCategoryAsync(vm.CateId, langId, vm.CurPage, vm.PageSize, vm.Keyword, vm.Sort);
 
             // Nạp trước supplier & category theo mẻ (1 query mỗi loại) — tránh N+1 trong vòng lặp.
             var ncuIds = list.Where(r => r.NCUId != null).Select(r => r.NCUId!.Value).Distinct().ToList();
@@ -398,14 +409,16 @@ namespace TechExchangeApp.Controllers
                     CategoryName = catName,
                     PriceText = row.OriginalPrice == null ? "" : FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
                     ImageUrl = string.IsNullOrEmpty(row.QuyTrinhHinhAnh) ? (row.TypeId == 2 ? _mainDomain + "images/sangche.png" : _mainDomain + "images/research.jpg") : CookedImageURL("254-170", row.QuyTrinhHinhAnh),
-                    Url = row.ProductType == 4
+                    Url = isEn
+                        ? _mainDomain + "en/products/" + MakeURLFriendly(row.Name) + "-" + row.ID
+                        : row.ProductType == 4
                         ? _mainDomain + "ocop/" + MakeURLFriendly(row.Name) + "-" + row.ID
                         : _mainDomain + "san-pham/chi-tiet/" + MakeURLFriendly(row.Name) + "-" + row.ID
                 };
                 vm.Products.Add(item);
             }
 
-            var cate = _context.Categories.FirstOrDefault(x => x.CatId == vm.CateId);
+            var cate = _context.Categories.FirstOrDefault(x => x.CatId == vm.CateId && x.LanguageId == langId);
             if (cate != null)
             {
                 vm.CateTitle = cate.Title;
@@ -420,8 +433,10 @@ namespace TechExchangeApp.Controllers
 
         private void LoadCategories(ProductByCateViewModel vm)
         {
-             var list = _context.Categories.Where(x => x.ParentId == vm.CateId && x.MainCate == true).OrderBy(x => x.Sort).ToList();
-            foreach (var row in list) { vm.Categories.Add(new CategoryItemVm { Title = row.Title, Url = _mainDomain + "san-pham/" + MakeURLFriendly(row.QueryString) + "-" + row.CatId + "" }); }
+             var langId = LangHelper.CurrentLangId(HttpContext);
+             var isEn = LangHelper.IsEnglish(HttpContext);
+             var list = _context.Categories.Where(x => x.ParentId == vm.CateId && x.LanguageId == langId && x.MainCate == true).OrderBy(x => x.Sort).ToList();
+            foreach (var row in list) { vm.Categories.Add(new CategoryItemVm { Title = row.Title, Url = isEn ? _mainDomain + "en/products/category/" + MakeURLFriendly(row.QueryString) + "-" + row.CatId : _mainDomain + "san-pham/" + MakeURLFriendly(row.QueryString) + "-" + row.CatId + "" }); }
         }
         private void BuildPager(ProductByCateViewModel vm)
         {

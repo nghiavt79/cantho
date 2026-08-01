@@ -52,7 +52,7 @@
     <section class="container home-v2-section home-v2-section--first">
         <div class="home-v2-section-head">
             <h2>@T("Sản phẩm & Công nghệ nổi bật", "Featured Products & Technologies")</h2>
-            <a href="/san-pham">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
+            <a href="@(isEn ? "/en/products" : "/san-pham")">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
         </div>
         <div class="home-v2-carousel-wrap" data-carousel-per-page="4">
             <button type="button" class="home-v2-carousel-nav home-v2-carousel-nav--prev" data-carousel-prev aria-label="@T("Trang trước", "Previous page")">
@@ -195,7 +195,7 @@
             <div class="home-v2-card">
                 <div class="home-v2-section-head home-v2-section-head--compact">
                     <h2>@T("Mạng lưới chuyên gia", "Expert network")</h2>
-                    <a href="/chuyen-gia">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
+                    <a href="@(isEn ? "/en/experts" : "/chuyen-gia")">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="home-v2-expert-list">
                     @foreach (var item in Model.Experts)
@@ -258,7 +258,7 @@
                     <h2>@T("Bạn cần tư vấn giải pháp công nghệ phù hợp?", "Need advice on the right technology solution?")</h2>
                     <p>@T($"Đội ngũ chuyên gia của {branding.ShortName} luôn sẵn sàng đồng hành cùng bạn.", $"The {branding.ShortName} expert team is always ready to accompany you.")</p>
                 </div>
-                <a class="home-v2-btn home-v2-btn--light" href="/lien-he">
+                <a class="home-v2-btn home-v2-btn--light" href="@(isEn ? "/en/contact" : "/lien-he")">
                     @T("Đăng ký tư vấn ngay", "Request consulting now") <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
@@ -410,3 +410,4 @@
         })();
     </script>
 }
+

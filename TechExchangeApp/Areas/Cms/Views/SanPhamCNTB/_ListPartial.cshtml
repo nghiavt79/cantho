@@ -8,6 +8,7 @@
     var sortDir = (string?)ViewBag.SortDir ?? "";
     var productType = (int)ViewBag.ProductType;
     var currentSiteId = (int)(ViewBag.CurrentSiteId ?? 1);
+    var languageId = (int)(ViewBag.LanguageId ?? 1);
 }
 
 @functions {
@@ -79,8 +80,9 @@
                         var isDiffSite = p.SiteId.HasValue && p.SiteId.Value != currentSiteId;
                         var isPublished = p.StatusId == 3;
                         var canDelete = !isPublished && !isDiffSite;
+                        var canSelect = !isDiffSite;
                     }
-                        <input type="checkbox" class="form-check-input chkRow" value="@p.ID" @(canDelete ? "" : "disabled") />
+                        <input type="checkbox" class="form-check-input chkRow" value="@p.ID" data-can-delete="@(canDelete ? "1" : "0")" @(canSelect ? "" : "disabled") />
                     </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm" role="group">
@@ -106,6 +108,12 @@
                         {
                             <button class="btn btn-outline-secondary btn-sm" disabled title="Thuộc sàn khác">
                                 <i class="fas fa-gear"></i>
+                            </button>
+                        }
+                        @if (!isDiffSite && languageId == 1)
+                        {
+                            <button type="button" class="btn btn-outline-info btn-sm btn-translate" data-id="@p.ID" title="D&#7883;ch sang ti&#7871;ng Anh">
+                                <i class="fas fa-language"></i>
                             </button>
                         }
                         @if (canDelete)

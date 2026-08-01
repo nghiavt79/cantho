@@ -28,6 +28,7 @@ $(function(){
     toastr.options = { closeButton: true, progressBar: true, positionClass: 'toast-top-right', timeOut: 3000 };
 
     var token = $('input[name="__RequestVerificationToken"]').val() || '';
+    var currentLanguageId = @((int)(ViewBag.LanguageId ?? 1));
     var baseUrl = '@Url.Action(actionName, "SanPhamCNTB", new { area = "Cms" })';
     var currentPage = 1, currentSortBy = '', currentSortDir = '';
 
@@ -51,6 +52,7 @@ $(function(){
                 $('#listContainer').html(html).css('opacity', '1');
                 $('#chkAll').prop('checked', false);
                 $('#btnBulkDelete').prop('disabled', true);
+                $('#btnBulkTranslate').prop('disabled', true);
                 var cnt = $('#partialTotalCount').text();
                 $('#badgeTotal').text(cnt);
             },
@@ -91,7 +93,13 @@ $(function(){
     // Checkbox + Bulk Delete
     $(document).on('change', '#chkAll', function() { $('.chkRow:not(:disabled)').prop('checked', this.checked); toggleBulk(); });
     $(document).on('change', '.chkRow', toggleBulk);
-    function toggleBulk() { $('#btnBulkDelete').prop('disabled', !$('.chkRow:checked').length); }
+    function toggleBulk() {
+        var checked = $('.chkRow:checked');
+        var canDelete = checked.filter(function(){ return $(this).data('can-delete') == 1; }).length > 0;
+        $('#btnBulkDelete').prop('disabled', !canDelete);
+        var canTranslate = currentLanguageId === 1 && checked.length > 0;
+        $('#btnBulkTranslate').prop('disabled', !canTranslate);
+    }
 
     // Delete single
     $(document).on('click', '.btn-del', function(e) {
@@ -133,8 +141,31 @@ $(function(){
     });
 
     // Bulk delete
-    $('#btnBulkDelete').on('click', function() {
+    $('#btnBulkTranslate').on('click', function() {
         var ids = $('.chkRow:checked').map(function() { return $(this).val(); }).get();
+        if (currentLanguageId !== 1) { toastr.warning('Chỉ có thể dịch từ bản Tiếng Việt.'); return; }
+        if (!ids.length) return;
+        Swal.fire({
+            title: 'Dịch sang tiếng Anh?', text: 'Tạo bản EN cho ' + ids.length + ' sản phẩm? (bỏ qua mục đã có bản EN)',
+            icon: 'question', showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-language"></i> Dich', cancelButtonText: 'Huy'
+        }).then(function(result) {
+            if (!result.isConfirmed) return;
+            var $btn = $('#btnBulkTranslate').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i> Dang dich...');
+            $.ajax({
+                url: '@Url.Action("BulkTranslateProducts", "TranslationAdmin", new { area = "Cms" })',
+                type: 'POST', traditional: true, data: { ids: ids, __RequestVerificationToken: token }
+            }).done(function(res) {
+                if (res && res.needManual && res.redirectUrl) { window.location = res.redirectUrl; return; }
+                if (res && res.ok) toastr.success(res.message + ' (' + res.provider + ')');
+                else toastr.error((res && res.message) || 'L\u1ed7i d\u1ecbch.');
+                loadList(currentPage);
+            }).fail(function() { toastr.error('Loi goi dich.'); })
+              .always(function() { $btn.html('<i class="fas fa-language me-1"></i> Dịch sang tiếng Anh'); });
+        });
+    });
+    $('#btnBulkDelete').on('click', function() {
+        var ids = $('.chkRow:checked[data-can-delete="1"]').map(function() { return $(this).val(); }).get();
         if (!ids.length) return;
         Swal.fire({
             title: 'Xóa nhiều sản phẩm?', text: 'Bạn chắc chắn xóa ' + ids.length + ' sản phẩm đã chọn?',
@@ -155,6 +186,33 @@ $(function(){
         });
     });
 
+
+    // Translate one product from the row action, matching Cms/Posts fallback behavior.
+    $(document).on('click', '.btn-translate', function() {
+        var id = $(this).data('id');
+        if (currentLanguageId !== 1) { toastr.warning('Ch\u1ec9 c\u00f3 th\u1ec3 d\u1ecbch t\u1eeb b\u1ea3n Ti\u1ebfng Vi\u1ec7t.'); return; }
+        var $btn = $(this).prop('disabled', true);
+        var old = $btn.html();
+        $btn.html('<i class="fas fa-spinner fa-spin"></i>');
+        $.ajax({
+            url: '@Url.Action("BulkTranslateProducts", "TranslationAdmin", new { area = "Cms" })',
+            type: 'POST', traditional: true,
+            data: { ids: [id], __RequestVerificationToken: token }
+        }).done(function(res) {
+            if (res && res.needManual && res.redirectUrl) { window.location = res.redirectUrl; return; }
+            if (res && res.ok && res.created > 0) toastr.success('\u0110\u00e3 t\u1ea1o b\u1ea3n EN. (' + res.provider + ')');
+            else if (res && res.ok && res.skipped > 0) toastr.info('S\u1ea3n ph\u1ea9m n\u00e0y \u0111\u00e3 c\u00f3 b\u1ea3n EN.');
+            else toastr.error((res && res.message) || 'L\u1ed7i d\u1ecbch.');
+            loadList(currentPage);
+        }).fail(function() {
+            toastr.error('L\u1ed7i g\u1ecdi d\u1ecbch.');
+            $btn.prop('disabled', false).html(old);
+        });
+    });
+
 });
 </script>
 }
+
+
+

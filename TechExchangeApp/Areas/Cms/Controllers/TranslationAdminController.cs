@@ -154,6 +154,149 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // ─────────────────────────────────────────
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BulkTranslateProducts(int[] ids, CancellationToken ct)
+        {
+            if (ids == null || ids.Length == 0)
+                return Json(new { ok = false, message = "Chua chon san pham nao." });
+
+            var svc = await _factory.CreateAsync(ct);
+            if (svc == null)
+                return NoKeyResult(ids, "SanPhamCNTB");
+
+            bool autoPublish = await _param.GetIntAsync(ParameterKeys.TranslationAutoPublish, 0) == 1;
+            var user = User.Identity?.Name ?? "system";
+            int created = 0, skipped = 0, failed = 0;
+
+            foreach (var id in ids.Distinct())
+            {
+                var vi = await _context.SanPhamCNTBs.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.ID == id && x.LanguageId == 1 && x.ProductType != 4, ct);
+                if (vi == null) { skipped++; continue; }
+                if (await _context.SanPhamCNTBs.AnyAsync(x => x.OriginalId == id && x.LanguageId == LangEn, ct)) { skipped++; continue; }
+
+                try
+                {
+                    var nameEn = await svc.TranslatePlainAsync(vi.Name, ct) ?? vi.Name;
+                    if (string.IsNullOrWhiteSpace(nameEn)) { failed++; continue; }
+
+                    var en = new SanPhamCNTB
+                    {
+                        Code = vi.Code,
+                        Name = nameEn,
+                        QueryString = SlugHelper.Slugify(nameEn),
+                        QuyTrinhHinhAnh = vi.QuyTrinhHinhAnh,
+                        URL = vi.URL,
+                        IsYoutube = vi.IsYoutube,
+                        XuatXuId = vi.XuatXuId,
+                        MucDoId = vi.MucDoId,
+                        CategoryId = vi.CategoryId,
+                        MoTaNgan = await svc.TranslatePlainAsync(vi.MoTaNgan, ct) ?? vi.MoTaNgan,
+                        MoTa = await svc.TranslateHtmlAsync(vi.MoTa, ct) ?? vi.MoTa,
+                        ThongSo = await svc.TranslateHtmlAsync(vi.ThongSo, ct) ?? vi.ThongSo,
+                        UuDiem = await svc.TranslateHtmlAsync(vi.UuDiem, ct) ?? vi.UuDiem,
+                        OriginalPrice = vi.OriginalPrice,
+                        SellPrice = vi.SellPrice,
+                        Currency = vi.Currency,
+                        GiaiThuong = await svc.TranslateHtmlAsync(vi.GiaiThuong, ct) ?? vi.GiaiThuong,
+                        OwnerType = vi.OwnerType,
+                        OwnerEmail = vi.OwnerEmail,
+                        NCUId = vi.NCUId,
+                        Khachhang = await svc.TranslatePlainAsync(vi.Khachhang, ct) ?? vi.Khachhang,
+                        StoreId = vi.StoreId,
+                        IsSellOff = vi.IsSellOff,
+                        IsHot = vi.IsHot,
+                        StatusId = autoPublish ? StatusPublished : StatusDraft,
+                        PublishedDate = vi.PublishedDate,
+                        DaBan = vi.DaBan,
+                        TinhTrangHang = vi.TinhTrangHang,
+                        TongSo = vi.TongSo,
+                        XuatXu = await svc.TranslatePlainAsync(vi.XuatXu, ct) ?? vi.XuatXu,
+                        TinhTP = vi.TinhTP,
+                        DiaChi = vi.DiaChi,
+                        Phone = vi.Phone,
+                        PhoneOther = vi.PhoneOther,
+                        HoTen = vi.HoTen,
+                        YahooId = vi.YahooId,
+                        SkypeId = vi.SkypeId,
+                        WebUrl = vi.WebUrl,
+                        LanguageId = LangEn,
+                        bEffectiveDate = vi.bEffectiveDate,
+                        eEffectiveDate = vi.eEffectiveDate,
+                        Created = DateTime.Now,
+                        Creator = user,
+                        TypeId = vi.TypeId,
+                        SoBang = vi.SoBang,
+                        NgayCapBang = vi.NgayCapBang,
+                        ThoiHan = vi.ThoiHan,
+                        CoQuanChuTri = await svc.TranslatePlainAsync(vi.CoQuanChuTri, ct) ?? vi.CoQuanChuTri,
+                        CoQuanChuQuan = await svc.TranslatePlainAsync(vi.CoQuanChuQuan, ct) ?? vi.CoQuanChuQuan,
+                        LoaiDeTai = vi.LoaiDeTai,
+                        LoaiDeTaiKhac = await svc.TranslatePlainAsync(vi.LoaiDeTaiKhac, ct) ?? vi.LoaiDeTaiKhac,
+                        Rating = vi.Rating,
+                        ParentId = vi.ParentId,
+                        Viewed = 0,
+                        Keywords = await svc.TranslatePlainAsync(vi.Keywords, ct) ?? vi.Keywords,
+                        SiteId = vi.SiteId,
+                        TRLLevel = vi.TRLLevel,
+                        TransferMethod = vi.TransferMethod,
+                        TransferMethodKhac = await svc.TranslatePlainAsync(vi.TransferMethodKhac, ct) ?? vi.TransferMethodKhac,
+                        TargetCustomer = await svc.TranslatePlainAsync(vi.TargetCustomer, ct) ?? vi.TargetCustomer,
+                        ApplicationNumber = vi.ApplicationNumber,
+                        AcceptedDate = vi.AcceptedDate,
+                        ClaimsCount = vi.ClaimsCount,
+                        DevelopmentStage = await svc.TranslatePlainAsync(vi.DevelopmentStage, ct) ?? vi.DevelopmentStage,
+                        CooperationGoal = await svc.TranslatePlainAsync(vi.CooperationGoal, ct) ?? vi.CooperationGoal,
+                        CooperationType = await svc.TranslatePlainAsync(vi.CooperationType, ct) ?? vi.CooperationType,
+                        GiaBanDuKien = await svc.TranslateHtmlAsync(vi.GiaBanDuKien, ct) ?? vi.GiaBanDuKien,
+                        ChiPhiPhatSinh = await svc.TranslateHtmlAsync(vi.ChiPhiPhatSinh, ct) ?? vi.ChiPhiPhatSinh,
+                        BaoHanhHoTro = await svc.TranslateHtmlAsync(vi.BaoHanhHoTro, ct) ?? vi.BaoHanhHoTro,
+                        BrochureUrl = vi.BrochureUrl,
+                        ChungNhanISO = vi.ChungNhanISO,
+                        ChungNhanQuatest = vi.ChungNhanQuatest,
+                        ChungNhanKhac = vi.ChungNhanKhac,
+                        ChungNhanKhacText = await svc.TranslatePlainAsync(vi.ChungNhanKhacText, ct) ?? vi.ChungNhanKhacText,
+                        DevelopmentStageValue = vi.DevelopmentStageValue,
+                        InvestmentGoal = vi.InvestmentGoal,
+                        InvestmentGoalKhac = await svc.TranslatePlainAsync(vi.InvestmentGoalKhac, ct) ?? vi.InvestmentGoalKhac,
+                        RequiresNDA = vi.RequiresNDA,
+                        NDAContent = await svc.TranslateHtmlAsync(vi.NDAContent, ct) ?? vi.NDAContent,
+                        CanDirectInquiry = vi.CanDirectInquiry,
+                        ProductType = vi.ProductType,
+                        OriginalId = id,
+                        EnStale = false,
+                        SourceHash = TranslationHashHelper.HashOf(
+                            vi.Name, vi.MoTaNgan, vi.MoTa, vi.ThongSo, vi.UuDiem, vi.GiaiThuong,
+                            vi.Keywords, vi.XuatXu, vi.Khachhang, vi.CoQuanChuTri, vi.CoQuanChuQuan,
+                            vi.LoaiDeTaiKhac, vi.TransferMethodKhac, vi.TargetCustomer, vi.DevelopmentStage,
+                            vi.CooperationGoal, vi.CooperationType, vi.GiaBanDuKien, vi.ChiPhiPhatSinh,
+                            vi.BaoHanhHoTro, vi.ChungNhanKhacText, vi.InvestmentGoalKhac, vi.NDAContent)
+                    };
+
+                    _context.SanPhamCNTBs.Add(en);
+                    await _context.SaveChangesAsync(ct);
+
+                    var catLinks = await _context.SanPhamCNTBCategories.AsNoTracking()
+                        .Where(x => x.SanPhamCNTBId == id)
+                        .ToListAsync(ct);
+                    foreach (var link in catLinks)
+                    {
+                        _context.SanPhamCNTBCategories.Add(new SanPhamCNTBCategory
+                        {
+                            SanPhamCNTBId = en.ID,
+                            CatId = link.CatId
+                        });
+                    }
+                    await _context.SaveChangesAsync(ct);
+                    created++;
+                }
+                catch { failed++; }
+            }
+
+            return Json(new { ok = true, created, skipped, failed, provider = svc.ProviderName, autoPublish, message = $"Da tao {created} ban EN, bo qua {skipped}, loi {failed}." });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> BulkTranslateExperts(int[] ids, CancellationToken ct)
         {
             if (ids == null || ids.Length == 0)

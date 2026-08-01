@@ -2,6 +2,7 @@
 @{
     var pageTitle = ViewData["PageTitle"]?.ToString() ?? "Công nghệ";
     ViewData["Title"] = pageTitle;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
 
     string ProductImage(TechExchangeApp.Entities.SanPhamCNTB p)
     {
@@ -19,7 +20,7 @@
     }
 
     string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
-        $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
+        isEn ? $"{Html.MainDomain()}en/products/{Html.MakeURLFriendly(p.Name)}-{p.ID}" : $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
 
     string PlainText(string? value)
     {
@@ -86,7 +87,7 @@
                 <div class="category-filter tech-filter" aria-label="Lĩnh vực công nghệ">
                     @foreach (var cat in Model.AllCategories)
                     {
-                        <a href="@($"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
+                        <a href="@(isEn ? $"{Html.MainDomain()}en/products/category/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}" : $"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
                             @cat.Title
                         </a>
                     }
@@ -96,7 +97,7 @@
 
                 @foreach (var block in Model.Categories)
                 {
-                    var categoryUrl = $"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}";
+                    var categoryUrl = isEn ? $"{Html.MainDomain()}en/products/category/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}" : $"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(block.Category.QueryString)}-{block.Category.CatId}";
 
                     <section class="tech-section">
                         <div class="section-heading section-heading--plain">
@@ -152,3 +153,5 @@
         </div>
     </div>
 </div>
+
+

@@ -39,9 +39,10 @@ namespace TechExchangeApp.ViewModel
         public string Phone    { get; set; } = "";
         public string Email    { get; set; } = "";
         public int    Rating   { get; set; }
+        public bool   IsEnglish { get; set; }
 
         // Derived URL
-        public string DetailUrl => $"/chuyen-gia/{Slug}-{Id}";
+        public string DetailUrl => IsEnglish ? $"/en/experts/{Slug}-{Id}" : $"/chuyen-gia/{Slug}-{Id}";
     }
 
     // =====================================================================

@@ -234,6 +234,7 @@ $(function(){
     $('#filterDichVu').select2({ theme: 'bootstrap-5', placeholder: '-- Chọn dịch vụ --', allowClear: true, width: '100%' });
 
     var token = $('input[name="__RequestVerificationToken"]').val() || '';
+    var currentLanguageId = @((int)(ViewBag.LanguageId ?? 1));
     var baseUrl = '@Url.Action("Index", "NhaCungUngAdmin", new { area = "Cms" })';
     var currentPage = 1, currentSortBy = '', currentSortDir = '';
 
@@ -290,9 +291,11 @@ $(function(){
     $(document).on('change', '#chkAll', function() { $('.chkRow:not(:disabled)').prop('checked', this.checked); toggleBulk(); });
     $(document).on('change', '.chkRow', toggleBulk);
     function toggleBulk() {
-        var any = !!$('.chkRow:checked').length;
-        $('#btnBulkDelete').prop('disabled', !any);
-        $('#btnBulkTranslate').prop('disabled', !any);
+        var checked = $('.chkRow:checked');
+        var canDelete = checked.filter(function(){ return $(this).data('can-delete') == 1; }).length > 0;
+        var canTranslate = currentLanguageId === 1 && checked.length > 0;
+        $('#btnBulkDelete').prop('disabled', !canDelete);
+        $('#btnBulkTranslate').prop('disabled', !canTranslate);
     }
 
     $(document).on('click', '.btn-config', function(e) {
@@ -348,7 +351,7 @@ $(function(){
     });
 
     $('#btnBulkDelete').on('click', function() {
-        var ids = $('.chkRow:checked').map(function() { return $(this).val(); }).get();
+        var ids = $('.chkRow:checked[data-can-delete="1"]').map(function() { return $(this).val(); }).get();
         if (!ids.length) return;
         Swal.fire({
             title: 'Xóa nhiều nhà cung ứng?', text: 'Bạn chắc chắn xóa ' + ids.length + ' nhà cung ứng đã chọn?',
@@ -372,6 +375,7 @@ $(function(){
     // Bulk translate → tạo bản EN nhà cung ứng
     $('#btnBulkTranslate').on('click', function() {
         var ids = $('.chkRow:checked').map(function() { return $(this).val(); }).get();
+        if (currentLanguageId !== 1) { toastr.warning('Ch\u1ec9 c\u00f3 th\u1ec3 d\u1ecbch t\u1eeb b\u1ea3n Ti\u1ebfng Vi\u1ec7t.'); return; }
         if (!ids.length) return;
         Swal.fire({
             title: 'Dịch sang tiếng Anh?', text: 'Tạo bản EN cho ' + ids.length + ' nhà cung ứng? (bỏ qua mục đã có bản EN)',
@@ -394,6 +398,31 @@ $(function(){
     });
 
     // ══════════ CHANGE OWNER ══════════
+
+
+    // Translate one row, with manual fallback when no translation key is configured.
+    $(document).on('click', '.btn-translate', function() {
+        var id = $(this).data('id');
+        if (currentLanguageId !== 1) { toastr.warning('Ch\u1ec9 c\u00f3 th\u1ec3 d\u1ecbch t\u1eeb b\u1ea3n Ti\u1ebfng Vi\u1ec7t.'); return; }
+        var $btn = $(this).prop('disabled', true);
+        var old = $btn.html();
+        $btn.html('<i class="fas fa-spinner fa-spin"></i>');
+        $.ajax({
+            url: '@Url.Action("BulkTranslateSuppliers", "TranslationAdmin", new { area = "Cms" })',
+            type: 'POST', traditional: true,
+            data: { ids: [id], __RequestVerificationToken: token }
+        }).done(function(res) {
+            if (res && res.needManual && res.redirectUrl) { window.location = res.redirectUrl; return; }
+            if (res && res.ok && res.created > 0) toastr.success('\u0110\u00e3 t\u1ea1o b\u1ea3n EN. (' + res.provider + ')');
+            else if (res && res.ok && res.skipped > 0) toastr.info('Nh\u00e0 cung \u1ee9ng n\u00e0y \u0111\u00e3 c\u00f3 b\u1ea3n EN.');
+            else toastr.error((res && res.message) || 'L\u1ed7i d\u1ecbch.');
+            loadList(currentPage);
+        }).fail(function() {
+            toastr.error('L\u1ed7i g\u1ecdi d\u1ecbch.');
+            $btn.prop('disabled', false).html(old);
+        });
+    });
+
     var ownerSearchUrl = '@Url.Action("SearchUsers", "NhaCungUngAdmin", new { area = "Cms" })';
     var changeOwnerUrl = '@Url.Action("ChangeOwner", "NhaCungUngAdmin", new { area = "Cms" })';
     var ownerSearchPage = 1;

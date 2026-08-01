@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = Model.PageTitle;
     var mainDomain = Model.MainDomain;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     int totalPages = Model.PageSize > 0 ? (int)Math.Ceiling((double)Model.Total / Model.PageSize) : 1;
     int curPage = Model.CurPage;
     int startItem = Model.Total > 0 ? (curPage - 1) * Model.PageSize + 1 : 0;
@@ -10,6 +11,11 @@
     // Giữ trạng thái lọc/sắp xếp khi phân trang & đổi tuỳ chọn
     string kw = Uri.EscapeDataString(Model.Keyword ?? "");
     string sortParam = Model.Sort ?? "newest";
+    string ProductsUrl() => isEn ? $"{mainDomain}en/products" : $"{mainDomain}san-pham";
+    string TechnologyUrl() => isEn ? $"{mainDomain}en/technologies" : $"{mainDomain}cong-nghe";
+    string CategoryUrl(TechExchangeApp.Entities.Category cat) => isEn
+        ? $"{mainDomain}en/products/category/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}"
+        : $"{mainDomain}san-pham/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}";
 
     string categoryDesc = !string.IsNullOrWhiteSpace(Model.Description)
         ? Model.Description
@@ -23,7 +29,7 @@
         <nav class="catalog-breadcrumb" aria-label="breadcrumb">
             <partial name="_BreadcrumbHome" />
             <span>/</span>
-            <a href="@($"{mainDomain}san-pham")">Sản phẩm</a>
+            <a href="@ProductsUrl()">Sản phẩm</a>
             <span>/</span>
             <strong>@Model.CateTitle</strong>
         </nav>
@@ -91,7 +97,7 @@
                     <div class="catalog-empty">
                         <i class="bi bi-inbox"></i>
                         <p>Chưa có sản phẩm nào trong lĩnh vực này.</p>
-                        <a href="@($"{mainDomain}cong-nghe")" class="btn-back-catalog">← Quay lại danh sách công nghệ</a>
+                        <a href="@TechnologyUrl()" class="btn-back-catalog">← Quay lại danh sách công nghệ</a>
                     </div>
                 }
                 else
@@ -175,7 +181,7 @@
                             {
                                 var isActive = cat.CatId == Model.CateId;
                                 <li class="@(isActive ? "active" : "")">
-                                    <a href="@($"{mainDomain}san-pham/{TechExchangeApp.Controllers.ProductController.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
+                                    <a href="@CategoryUrl(cat)">
                                         @cat.Title
                                         @if (isActive) { <i class="bi bi-check2"></i> }
                                     </a>

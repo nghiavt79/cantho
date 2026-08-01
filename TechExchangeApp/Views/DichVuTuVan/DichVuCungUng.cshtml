@@ -1,6 +1,7 @@
 @model TechExchangeApp.ViewModel.DichVuTuVanVm
 
 @{
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     int startIdx = (Model.CurrentPage - 1) * Model.PageSize + 1;
     int endIdx = Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalCount);
 }
@@ -21,7 +22,7 @@ else
     <div class="dvtv-card-list">
         @foreach (var p in Model.ItemsCungUng)
         {
-            var detailUrl = $"{Model.MainDomain}nha-cung-ung/{p.QueryString}-{p.CungUngId}";
+            var detailUrl = isEn ? $"{Model.MainDomain}en/suppliers/{p.QueryString}-{p.CungUngId}" : $"{Model.MainDomain}nha-cung-ung/{p.QueryString}-{p.CungUngId}";
             var star = Math.Clamp(p.Rating ?? 0, 0, 5);
             var stars = new string('★', star) + new string('☆', 5 - star);
 
