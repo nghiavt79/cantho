@@ -44,6 +44,18 @@
         4 => !string.IsNullOrEmpty(p.LoaiDeTaiKhac) ? p.LoaiDeTaiKhac : "Khác",
         _ => "—"
     };
+
+    string OptLabel(string vi) => vi switch {
+        "Tìm nhà đầu tư tài chính" => I18n.T(Context, "product.ip.goalInvestor"),
+        "Tìm đối tác sản xuất" => I18n.T(Context, "product.ip.goalProduction"),
+        "Tìm đối tác phân phối/thương mại" => I18n.T(Context, "product.ip.goalDistribution"),
+        "Chuyển nhượng toàn bộ bản quyền" => I18n.T(Context, "product.ip.transferFull"),
+        "Chuyển giao quyền sử dụng (Li-xăng)" => I18n.T(Context, "product.ip.transferLicense"),
+        "Góp vốn bằng tài sản trí tuệ" => I18n.T(Context, "product.ip.transferCapital"),
+        "Hợp tác nghiên cứu phát triển thêm" => I18n.T(Context, "product.ip.transferRnd"),
+        "Khác" => I18n.T(Context, "common.other"),
+        _ => vi
+    };
 }
 
 
@@ -56,25 +68,25 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="sc-chusohuuTab" data-bs-toggle="tab"
                     data-bs-target="#sc-chusohuu" type="button" role="tab">
-                <i class="fa fa-user me-1"></i>Chủ sở hữu
+                <i class="fa fa-user me-1"></i>@Html.Text("product.ip.tab.owner")
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="sc-phanloaiTab" data-bs-toggle="tab"
                     data-bs-target="#sc-phanloai" type="button" role="tab">
-                <i class="fa fa-id-card me-1"></i>Thông tin
+                <i class="fa fa-id-card me-1"></i>@Html.Text("product.equip.tab.info")
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="sc-motaTab" data-bs-toggle="tab"
                     data-bs-target="#sc-mota" type="button" role="tab">
-                <i class="fa fa-file-text me-1"></i>Mô tả
+                <i class="fa fa-file-text me-1"></i>@Html.Text("product.ip.tab.description")
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="sc-muctieuTab" data-bs-toggle="tab"
                     data-bs-target="#sc-muctieu" type="button" role="tab">
-                <i class="fa fa-bullseye me-1"></i>Mục tiêu kêu gọi
+                <i class="fa fa-bullseye me-1"></i>@Html.Text("product.ip.tab.goals")
             </button>
         </li>
     </ul>
@@ -85,14 +97,14 @@
            TAB 1 – CHỦ SỞ HỮU
            ══════════════════════════════════════ *@
         <div class="tab-pane fade show active" id="sc-chusohuu" role="tabpanel">
-            <div class="hscn-section-title"><i class="fa fa-user me-2"></i>Thông tin chủ sở hữu</div>
+            <div class="hscn-section-title"><i class="fa fa-user me-2"></i>@Html.Text("product.ip.ownerInfo")</div>
 
 
 
             @* Tên đơn vị / Cá nhân *@
             <div class="hscn-item">
                 <div class="hscn-item-title">
-                    @(isOrg ? "Tên đơn vị chủ sở hữu" : "Họ và tên chủ sở hữu")
+                    @(isOrg ? I18n.T(Context, "product.ip.ownerNameOrg") : I18n.T(Context, "product.ip.ownerNamePerson"))
                 </div>
                 <div class="ps-3 fw-bold">
                     @if (isOrg)
@@ -124,22 +136,22 @@
 
             @* Thông tin liên hệ *@
             <div class="hscn-item">
-                <div class="hscn-item-title">Thông tin liên hệ</div>
+                <div class="hscn-item-title">@Html.Text("product.equip.contactInfo")</div>
                 <table class="hscn-table-info ps-3 ms-3" style="font-size:13.5px;">
                     <tbody>
                         @if (isOrg && supplier != null)
                         {
                             @if (!string.IsNullOrEmpty(supplier.DiaChi))
                             {
-                                <tr><td>Địa chỉ:</td><td>@supplier.DiaChi</td></tr>
+                                <tr><td>@Html.Text("product.equip.address")</td><td>@supplier.DiaChi</td></tr>
                             }
                             @if (!string.IsNullOrEmpty(supplier.NguoiDaiDien))
                             {
-                                <tr><td>Người đại diện:</td><td>@supplier.NguoiDaiDien</td></tr>
+                                <tr><td>@Html.Text("product.equip.representative")</td><td>@supplier.NguoiDaiDien</td></tr>
                             }
                             @if (!string.IsNullOrEmpty(supplier.Phone))
                             {
-                                <tr><td>Điện thoại:</td><td>@supplier.Phone</td></tr>
+                                <tr><td>@Html.Text("product.equip.phone")</td><td>@supplier.Phone</td></tr>
                             }
                             @if (!string.IsNullOrEmpty(supplier.Email))
                             {
@@ -150,11 +162,11 @@
                         {
                             @if (!string.IsNullOrEmpty(p.DiaChi))
                             {
-                                <tr><td>Địa chỉ:</td><td>@p.DiaChi</td></tr>
+                                <tr><td>@Html.Text("product.equip.address")</td><td>@p.DiaChi</td></tr>
                             }
                             @if (!string.IsNullOrEmpty(p.Phone))
                             {
-                                <tr><td>Điện thoại:</td><td>@p.Phone</td></tr>
+                                <tr><td>@Html.Text("product.equip.phone")</td><td>@p.Phone</td></tr>
                             }
                             @if (!string.IsNullOrEmpty(p.OwnerEmail))
                             {
@@ -173,7 +185,7 @@
             {
                 <div class="ps-3">
                     <a href="@Model.SupplierUrl" class="btn btn-outline-primary btn-sm">
-                        <i class="fa fa-external-link me-1"></i> Xem hồ sơ chủ sở hữu
+                        <i class="fa fa-external-link me-1"></i> @Html.Text("product.ip.viewOwnerProfile")
                     </a>
                 </div>
             }
@@ -183,17 +195,17 @@
            TAB 2 – PHÂN LOẠI & ĐỊNH DANH
            ══════════════════════════════════════ *@
         <div class="tab-pane fade" id="sc-phanloai" role="tabpanel">
-            <div class="hscn-section-title"><i class="fa fa-id-card me-2"></i>Thông tin tài sản trí tuệ</div>
+            <div class="hscn-section-title"><i class="fa fa-id-card me-2"></i>@Html.Text("product.ip.assetInfo")</div>
 
             @* Phân loại hồ sơ *@
             <div class="hscn-item">
-                <div class="hscn-item-title">Phân loại hồ sơ</div>
+                <div class="hscn-item-title">@Html.Text("product.ip.classification")</div>
                 <div class="ps-3">
-                    <div class="hscn-check-row">@chk(p.LoaiDeTai == 1) Sáng chế / Giải pháp hữu ích</div>
-                    <div class="hscn-check-row">@chk(p.LoaiDeTai == 2) Thiết kế bố trí vi mạch</div>
-                    <div class="hscn-check-row">@chk(p.LoaiDeTai == 3) Phần mềm (Bản quyền tác giả)</div>
+                    <div class="hscn-check-row">@chk(p.LoaiDeTai == 1) @Html.Text("product.ip.classPatent")</div>
+                    <div class="hscn-check-row">@chk(p.LoaiDeTai == 2) @Html.Text("product.ip.classChipLayout")</div>
+                    <div class="hscn-check-row">@chk(p.LoaiDeTai == 3) @Html.Text("product.ip.classSoftware")</div>
                     <div class="hscn-check-row">
-                        @chk(p.LoaiDeTai == 4) Khác
+                        @chk(p.LoaiDeTai == 4) @Html.Text("common.other")
                         @if (p.LoaiDeTai == 4 && !string.IsNullOrEmpty(p.LoaiDeTaiKhac))
                         {
                             <span>(@p.LoaiDeTaiKhac)</span>
@@ -204,20 +216,20 @@
 
             @* Tên tài sản trí tuệ *@
             <div class="hscn-item">
-                <div class="hscn-item-title">Tên tài sản trí tuệ</div>
+                <div class="hscn-item-title">@Html.Text("product.ip.assetName")</div>
                 <div class="ps-3 fw-bold fs-6">@p.Name</div>
             </div>
 
             @* Tình trạng pháp lý *@
             <div class="hscn-item">
-                <div class="hscn-item-title">Tình trạng pháp lý</div>
+                <div class="hscn-item-title">@Html.Text("product.ip.legalStatus")</div>
                 <table class="hscn-table-info ps-3 ms-3" style="font-size:13.5px;">
                     <tbody>
-                        <tr><td>Số bằng:</td><td>@p.SoBang</td></tr>
-                        <tr><td>Ngày cấp bằng:</td><td>@(p.NgayCapBang?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
-                        <tr><td>Thời hạn bảo hộ đến:</td><td>@(p.ThoiHan?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
-                        <tr><td>Số đơn đăng ký:</td><td>@p.ApplicationNumber</td></tr>
-                        <tr><td>Ngày chấp nhận đơn:</td><td>@(p.AcceptedDate?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                        <tr><td>@Html.Text("product.ip.patentNo")</td><td>@p.SoBang</td></tr>
+                        <tr><td>@Html.Text("product.ip.grantDate")</td><td>@(p.NgayCapBang?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                        <tr><td>@Html.Text("product.ip.protectionUntil")</td><td>@(p.ThoiHan?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                        <tr><td>@Html.Text("product.ip.applicationNo")</td><td>@p.ApplicationNumber</td></tr>
+                        <tr><td>@Html.Text("product.ip.acceptedDate")</td><td>@(p.AcceptedDate?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -229,7 +241,7 @@
             @if (checkedIndustriesSC != null && checkedIndustriesSC.Any())
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Lĩnh vực áp dụng</div>
+                    <div class="hscn-item-title">@Html.Text("product.equip.applicationField")</div>
                     <div class="ps-3">
                         @foreach (var ind in checkedIndustriesSC)
                         {
@@ -241,7 +253,7 @@
             else if (!string.IsNullOrEmpty(Model.CategoryTitle))
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Lĩnh vực áp dụng</div>
+                    <div class="hscn-item-title">@Html.Text("product.equip.applicationField")</div>
                     <div class="ps-3"><div class="hscn-check-row">☑ @Model.CategoryTitle</div></div>
                 </div>
             }
@@ -250,7 +262,7 @@
             @if (Model.Keywords != null && Model.Keywords.Any())
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Từ khoá</div>
+                    <div class="hscn-item-title">@Html.Text("product.equip.keywords")</div>
                     <div class="ps-3">
                         @foreach (var kw in Model.Keywords)
                         {
@@ -265,14 +277,14 @@
            TAB 3 – MÔ TẢ
            ══════════════════════════════════════ *@
         <div class="tab-pane fade" id="sc-mota" role="tabpanel">
-            <div class="hscn-section-title"><i class="fa fa-file-text me-2"></i>Nội dung mô tả</div>
+            <div class="hscn-section-title"><i class="fa fa-file-text me-2"></i>@Html.Text("product.ip.descContent")</div>
 
             @* Mô tả tài sản trí tuệ *@
             @if (!string.IsNullOrEmpty(p.MoTa))
             {
             <div class="hscn-item">
-                <div class="hscn-item-title">Mô tả tài sản trí tuệ
-                    <small class="text-muted fw-normal">(tính mới, tính sáng tạo, khả năng áp dụng)</small>
+                <div class="hscn-item-title">@Html.Text("product.ip.assetDesc")
+                    <small class="text-muted fw-normal">@Html.Text("product.ip.assetDescNote")</small>
                 </div>
                 <div class="ps-3 content-body">@Html.Raw(p.MoTa)</div>
             </div>
@@ -330,7 +342,7 @@
             @if (!string.IsNullOrEmpty(embedUrl))
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Video giới thiệu</div>
+                    <div class="hscn-item-title">@Html.Text("product.ip.introVideo")</div>
                     <div class="ps-3">
                         <div class="ratio ratio-16x9" style="max-width:640px;">
                             <iframe src="@embedUrl"
@@ -345,10 +357,10 @@
             else if (!string.IsNullOrEmpty(Model.VideoFileUrl))
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Video giới thiệu</div>
+                    <div class="hscn-item-title">@Html.Text("product.ip.introVideo")</div>
                     <div class="ps-3">
                         <a href="@Model.VideoFileUrl" target="_blank" class="btn btn-sm btn-outline-danger">
-                            <i class="fa fa-play me-1"></i> Xem video
+                            <i class="fa fa-play me-1"></i> @Html.Text("product.tech.watchVideo")
                         </a>
                     </div>
                 </div>
@@ -358,7 +370,7 @@
             @if (!string.IsNullOrEmpty(p.UuDiem))
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Ưu điểm / Tính mới</div>
+                    <div class="hscn-item-title">@Html.Text("product.ip.advantageNovelty")</div>
                     <div class="ps-3 content-body">@Html.Raw(p.UuDiem)</div>
                 </div>
             }
@@ -368,25 +380,25 @@
            TAB 4 – MỤC TIÊU KÊU GỌI
            ══════════════════════════════════════ *@
         <div class="tab-pane fade" id="sc-muctieu" role="tabpanel">
-            <div class="hscn-section-title"><i class="fa fa-bullseye me-2"></i>Mục tiêu kêu gọi đầu tư &amp; Hợp tác</div>
+            <div class="hscn-section-title"><i class="fa fa-bullseye me-2"></i>@Html.Text("product.ip.goalsTitle")</div>
 
             @* CooperationGoal (ghi chú riêng nếu có) *@
             @if (!string.IsNullOrEmpty(p.CooperationGoal))
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Mục tiêu hợp tác</div>
+                    <div class="hscn-item-title">@Html.Text("product.ip.cooperationGoal")</div>
                     <div class="ps-3 content-body">@Html.Raw(p.CooperationGoal)</div>
                 </div>
             }
 
             @* Phân loại mục tiêu kêu gọi *@
             <div class="hscn-item">
-                <div class="hscn-item-title">Phân loại mục tiêu kêu gọi</div>
+                <div class="hscn-item-title">@Html.Text("product.ip.goalClassification")</div>
                 <div class="ps-3">
                     @foreach (var opt in goalOptions)
                     {
                         bool isSelected = selectedGoals.Contains(opt);
-                        <div class="hscn-check-row">@chk(isSelected) @opt
+                        <div class="hscn-check-row">@chk(isSelected) @OptLabel(opt)
                             @if (opt == "Khác" && isSelected && !string.IsNullOrEmpty(p.InvestmentGoalKhac))
                             {
                                 <span>(@p.InvestmentGoalKhac)</span>
@@ -398,12 +410,12 @@
 
             @* Hình thức hợp tác mong muốn *@
             <div class="hscn-item">
-                <div class="hscn-item-title">Hình thức hợp tác mong muốn</div>
+                <div class="hscn-item-title">@Html.Text("product.ip.desiredCooperation")</div>
                 <div class="ps-3">
                     @foreach (var opt in transferOptions)
                     {
                         bool isSelected = selectedTransfer.Contains(opt);
-                        <div class="hscn-check-row">@chk(isSelected) @opt
+                        <div class="hscn-check-row">@chk(isSelected) @OptLabel(opt)
                             @if (opt == "Khác" && isSelected && !string.IsNullOrEmpty(p.TransferMethodKhac))
                             {
                                 <span>(@p.TransferMethodKhac)</span>
@@ -417,18 +429,18 @@
             @if (!string.IsNullOrEmpty(p.CooperationType))
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Hình thức hợp tác bổ sung</div>
+                    <div class="hscn-item-title">@Html.Text("product.ip.additionalCooperation")</div>
                     <div class="ps-3">@p.CooperationType</div>
                 </div>
             }
 
             @* Tình trạng phát triển *@
             <div class="hscn-item">
-                <div class="hscn-item-title">Tình trạng phát triển</div>
+                <div class="hscn-item-title">@Html.Text("product.ip.developmentStatus")</div>
                 <div class="ps-3">
-                    <div class="hscn-check-row">@chk(p.DevelopmentStageValue == 1) <i class="fa fa-lightbulb-o me-1"></i> Ý tưởng / Thiết kế</div>
-                    <div class="hscn-check-row">@chk(p.DevelopmentStageValue == 2) <i class="fa fa-flask me-1"></i> Đã có sản phẩm mẫu (Prototype)</div>
-                    <div class="hscn-check-row">@chk(p.DevelopmentStageValue == 3) <i class="fa fa-shopping-cart me-1"></i> Đã thương mại hóa</div>
+                    <div class="hscn-check-row">@chk(p.DevelopmentStageValue == 1) <i class="fa fa-lightbulb-o me-1"></i> @Html.Text("product.ip.stageIdea")</div>
+                    <div class="hscn-check-row">@chk(p.DevelopmentStageValue == 2) <i class="fa fa-flask me-1"></i> @Html.Text("product.ip.stagePrototype")</div>
+                    <div class="hscn-check-row">@chk(p.DevelopmentStageValue == 3) <i class="fa fa-shopping-cart me-1"></i> @Html.Text("product.equip.levelCommercial")</div>
 
                     @if (p.DevelopmentStageValue.HasValue)
                     {
@@ -436,16 +448,14 @@
                             @{
                                 var pct = p.DevelopmentStageValue.Value * 33;
                                 if (pct > 100) pct = 100;
-                                string label = p.DevelopmentStageValue.Value == 1 ? "Ý tưởng"
-                                             : p.DevelopmentStageValue.Value == 2 ? "Prototype"
-                                             : "Thương mại hóa";
+                                string label = p.DevelopmentStageValue.Value == 1 ? I18n.T(Context, "product.ip.stageLabelIdea") : p.DevelopmentStageValue.Value == 2 ? "Prototype" : I18n.T(Context, "product.ip.stageLabelCommercial");
                             }
                             <div class="progress-bar bg-primary fw-semibold"
                                  role="progressbar"
                                  style="width:@pct%"
                                  aria-valuenow="@p.DevelopmentStageValue"
                                  aria-valuemin="0" aria-valuemax="3">
-                                Giai đoạn @p.DevelopmentStageValue / 3 — @label
+                                @Html.Text("product.ip.stage") @p.DevelopmentStageValue / 3 — @label
                             </div>
                         </div>
                     }
@@ -456,7 +466,7 @@
             @if (!string.IsNullOrEmpty(p.TargetCustomer))
             {
                 <div class="hscn-item">
-                    <div class="hscn-item-title">Khách hàng / Đối tác mục tiêu</div>
+                    <div class="hscn-item-title">@Html.Text("product.ip.targetCustomer")</div>
                     <div class="ps-3 content-body">@Html.Raw(p.TargetCustomer)</div>
                 </div>
             }
