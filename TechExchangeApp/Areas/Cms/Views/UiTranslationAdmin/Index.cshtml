@@ -1,0 +1,154 @@
+@model List<TechExchangeApp.Entities.UiTranslation>
+@{
+    ViewData["Title"] = "Quản lý chuỗi giao diện (i18n)";
+    var groups = ViewBag.Groups as List<string> ?? new List<string>();
+    int page = ViewBag.Page ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int total = ViewBag.Total ?? 0;
+    string? kw = ViewBag.Keyword;
+    string? grp = ViewBag.Group;
+    bool activeOnly = ViewBag.ActiveOnly == true;
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>@TempData["Error"]</div>
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header"><h3 class="card-title"><i class="fas fa-language me-1"></i> Tìm kiếm</h3></div>
+    <form method="get" class="card-body">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label small fw-semibold mb-1">Từ khóa (key / nội dung)</label>
+                <input type="text" name="keyword" value="@kw" class="form-control form-control-sm" placeholder="common.home, Trang chủ, Home..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small fw-semibold mb-1">Nhóm</label>
+                <select name="group" class="form-select form-select-sm">
+                    <option value="">-- Tất cả --</option>
+                    @foreach (var g in groups)
+                    {
+                        <option value="@g" selected="@(grp == g)">@g</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="activeOnly" value="true" id="activeOnly" @(activeOnly ? "checked" : "") />
+                    <label class="form-check-label small" for="activeOnly">Chỉ đang dùng</label>
+                </div>
+            </div>
+            <div class="col-md-2 text-end">
+                <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search me-1"></i>Tìm</button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="fas fa-undo"></i></a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card card-outline card-info shadow-sm">
+    <div class="card-header d-flex align-items-center flex-wrap gap-2">
+        <h3 class="card-title mb-0"><i class="fas fa-list me-1"></i> Chuỗi giao diện <span class="badge bg-info ms-1">@total</span></h3>
+        <div class="ms-auto d-flex gap-2">
+            <a asp-action="Create" class="btn btn-success btn-sm"><i class="fas fa-plus me-1"></i>Thêm key</a>
+            <a asp-action="ExportUiJson" class="btn btn-outline-secondary btn-sm"><i class="fas fa-download me-1"></i>Export ui.json</a>
+            <form asp-action="ImportUiJson" method="post" class="d-inline" onsubmit="return confirm('Import từ ui.json? (chỉ thêm key mới, không ghi đè)');">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="fas fa-upload me-1"></i>Import ui.json</button>
+            </form>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        @Html.AntiForgeryToken()
+        <div class="table-responsive">
+            <table class="table table-hover table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:220px">Key</th>
+                        <th>Tiếng Việt</th>
+                        <th>English</th>
+                        <th style="width:60px" class="text-center">HTML</th>
+                        <th style="width:70px" class="text-center">Dùng</th>
+                        <th style="width:110px">Sửa lúc</th>
+                        <th style="width:110px">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="7" class="text-center py-4 text-muted">Không có dữ liệu.</td></tr>
+                    }
+                    @foreach (var x in Model)
+                    {
+                        <tr data-id="@x.Id">
+                            <td><code class="small">@x.Key</code></td>
+                            <td><small class="d-inline-block text-truncate" style="max-width:280px" title="@x.Vi">@x.Vi</small></td>
+                            <td><small class="d-inline-block text-truncate" style="max-width:280px" title="@x.En">@x.En</small></td>
+                            <td class="text-center">
+                                @if (x.AllowHtml)
+                                {
+                                    <span class="badge bg-warning" title="Cho phép HTML">HTML</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="form-check form-switch d-inline-block m-0">
+                                    <input class="form-check-input toggle-active" type="checkbox" role="switch"
+                                           data-id="@x.Id" @(x.IsActive ? "checked" : "") />
+                                </div>
+                            </td>
+                            <td><small class="text-muted">@(x.Modified?.ToString("dd/MM/yyyy") ?? "—")</small></td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="Edit" asp-route-id="@x.Id" class="btn btn-outline-primary" title="Sửa"><i class="fas fa-pen"></i></a>
+                                    <a asp-action="History" asp-route-id="@x.Id" class="btn btn-outline-secondary" title="Lịch sử"><i class="fas fa-clock-rotate-left"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @if (totalPages > 1)
+    {
+        <div class="card-footer">
+            <nav><ul class="pagination pagination-sm mb-0">
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-keyword="@kw" asp-route-group="@grp" asp-route-activeOnly="@(activeOnly ? "true" : null)">@i</a>
+                    </li>
+                }
+            </ul></nav>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+$(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val();
+    $(document).on('change', '.toggle-active', function () {
+        var $cb = $(this), id = $cb.data('id'), newVal = $cb.prop('checked');
+        $cb.prop('disabled', true);
+        $.post('@Url.Action("ToggleActive", "UiTranslationAdmin", new { area = "Cms" })',
+            { id: id, __RequestVerificationToken: token })
+            .done(function (r) {
+                if (r && r.success) { $cb.prop('checked', r.value); toastr.success('Đã cập nhật'); }
+                else { $cb.prop('checked', !newVal); toastr.error((r && r.message) || 'Lỗi'); }
+            })
+            .fail(function () { $cb.prop('checked', !newVal); toastr.error('Lỗi cập nhật'); })
+            .always(function () { $cb.prop('disabled', false); });
+    });
+});
+</script>
+}

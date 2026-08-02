@@ -350,10 +350,10 @@ namespace TechExchangeApp.Controllers
             return "";
         }
 
-        private static (string Badge, string BadgeType) ProductBadge(SanPhamCNTB x)
+        private static (string Badge, string BadgeType) ProductBadge(SanPhamCNTB x, bool isEn)
         {
-            if (x.IsHot == true) return ("Nổi bật", "hot");
-            if (x.Created.HasValue && x.Created.Value >= DateTime.Now.AddDays(-30)) return ("Mới", "new");
+            if (x.IsHot == true) return (isEn ? "Featured" : "Nổi bật", "hot");
+            if (x.Created.HasValue && x.Created.Value >= DateTime.Now.AddDays(-30)) return (isEn ? "New" : "Mới", "new");
             return ("", "new");
         }
 
@@ -361,14 +361,16 @@ namespace TechExchangeApp.Controllers
         {
             var result = items.Select(x =>
             {
-                var (badge, badgeType) = ProductBadge(x);
+                var (badge, badgeType) = ProductBadge(x, isEn);
                 return new HomeTechCardVm
                 {
-                    Title = x.Name ?? "Công nghệ đang cập nhật",
+                    Title = x.Name ?? (isEn ? "Technology updating" : "Công nghệ đang cập nhật"),
                     Description = CleanSummary(x.MoTaNgan ?? x.MoTa, 120),
                     ImageUrl = ProductController.CookedImageURL("254-170", x.QuyTrinhHinhAnh, _mainDomain),
                     Url = isEn ? $"{_mainDomain}en/products/{x.QueryString}-{x.ID}" : $"{_mainDomain}san-pham/chi-tiet/{x.QueryString}-{x.ID}",
-                    Category = x.ProductType == 2 ? "Thiết bị" : x.ProductType == 3 ? "Tài sản trí tuệ" : "Công nghệ",
+                    Category = x.ProductType == 2 ? (isEn ? "Equipment" : "Thiết bị")
+                             : x.ProductType == 3 ? (isEn ? "IP Assets" : "Tài sản trí tuệ")
+                             : (isEn ? "Technology" : "Công nghệ"),
                     Company = ProductCompany(x),
                     Badge = badge,
                     BadgeType = badgeType

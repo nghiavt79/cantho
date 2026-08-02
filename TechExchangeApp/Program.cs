@@ -49,6 +49,7 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<TechExchangeApp.Services.Navigation.IHeaderMenuService, TechExchangeApp.Services.Navigation.HeaderMenuService>();
+builder.Services.AddScoped<TechExchangeApp.Services.Localization.IUiTextService, TechExchangeApp.Services.Localization.UiTextService>();
 builder.Services.AddScoped<TechExchangeApp.Services.IWorkflowService, TechExchangeApp.Services.WorkflowService>();
 builder.Services.AddScoped<TechExchangeApp.Services.INotificationQueueService, TechExchangeApp.Services.NotificationQueueService>();
 

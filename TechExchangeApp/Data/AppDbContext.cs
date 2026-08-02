@@ -219,6 +219,8 @@ namespace TechExchangeApp.Data
         public DbSet<MucDo> MucDos { get; set; } = null!;
 
         // Admin Analytics Dashboard
+        public DbSet<UiTranslation> UiTranslations { get; set; } = null!;
+        public DbSet<UiTranslationHistory> UiTranslationHistories { get; set; } = null!;
         public DbSet<DashboardSnapshot> DashboardSnapshots { get; set; } = null!;
         public DbSet<DashboardMonthlyStats> DashboardMonthlyStats { get; set; } = null!;
     }

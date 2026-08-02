@@ -102,6 +102,7 @@
                         bool isMenuAdmin = postsCtrl == "MenuAdmin";
                         bool isCategoryAdmin = postsCtrl == "CategoryAdmin";
                         bool isImageAdverAdmin = postsCtrl == "ImageAdverAdmin";
+                        bool isUiTranslationAdmin = postsCtrl == "UiTranslationAdmin";
                         bool isContentsYeuCauAdmin = postsCtrl == "ContentsYeuCauAdmin";
                         bool isPhieuYeuCauCNTBAdmin = postsCtrl == "PhieuYeuCauCNTBAdmin";
                         bool isSystemParameterAdmin = postsCtrl == "SystemParameterAdmin";
@@ -116,7 +117,7 @@
                         bool isNhaTuVanAdmin = postsCtrl == "NhaTuVanAdmin";
                         bool isUsers = postsCtrl == "Users";
                         bool isHuongDanCms = postsCtrl == "HuongDanCms";
-                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin;
+                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin;
                         bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin;
                         bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin;
                         bool isSystemGroup = isUsers || isLogAdmin || isSystemParameterAdmin || isSysFunctionAdmin || isRoleAdmin || isSysFuncPermissionAdmin;
@@ -269,6 +270,13 @@
                                    class="nav-link @(isImageAdverAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-ad"></i>
                                     <p>Banner quảng cáo</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="UiTranslationAdmin" asp-action="Index"
+                                   class="nav-link @(isUiTranslationAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-language"></i>
+                                    <p>Chuỗi giao diện (i18n)</p>
                                 </a>
                             </li>
                         </ul>

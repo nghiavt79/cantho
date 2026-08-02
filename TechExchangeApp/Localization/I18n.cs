@@ -1,74 +1,38 @@
-using System.Text.Json;
+using System.Net;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Hosting;
+using TechExchangeApp.Services.Localization;
 
 namespace TechExchangeApp.Localization
 {
+    /// <summary>
+    /// Adapter i18n: giữ nguyên chữ ký cũ (Html.Text / Html.Tr / I18n.T) — nay đọc từ
+    /// IUiTextService (bảng UiTranslations + cache) thay cho ui.json.
+    /// Thêm Html.TrHtml cho key có AllowHtml=1 (render raw có kiểm soát).
+    /// </summary>
     public static class I18n
     {
-        private const string DefaultLang = "vi";
-        private static readonly object Sync = new();
-        private static Dictionary<string, Dictionary<string, string>>? _strings;
-
-        public static IHtmlContent Tr(this IHtmlHelper html, string key)
-            => new HtmlString(System.Net.WebUtility.HtmlEncode(T(html.ViewContext.HttpContext, key)));
-
+        /// <summary>Text thuần (dùng trong controller/JSON). Thiếu key -> trả về key.</summary>
         public static string T(HttpContext httpContext, string key)
-        {
-            var lang = GetLanguage(httpContext);
-            var strings = Load(httpContext);
+            => Resolve(httpContext)?.Text(key) ?? key;
 
-            if (strings.TryGetValue(key, out var values))
-            {
-                if (values.TryGetValue(lang, out var localized) && !string.IsNullOrWhiteSpace(localized))
-                {
-                    return localized;
-                }
-
-                if (values.TryGetValue(DefaultLang, out var fallback) && !string.IsNullOrWhiteSpace(fallback))
-                {
-                    return fallback;
-                }
-            }
-
-            return key;
-        }
-
+        /// <summary>Html.Text(key): trả string, Razor tự encode (an toàn).</summary>
         public static string Text(this IHtmlHelper html, string key)
-            => T(html.ViewContext.HttpContext, key);
+            => Resolve(html.ViewContext.HttpContext)?.Text(key) ?? key;
 
-        private static string GetLanguage(HttpContext httpContext)
+        /// <summary>Html.Tr(key): IHtmlContent đã encode (giữ hành vi cũ, luôn an toàn).</summary>
+        public static IHtmlContent Tr(this IHtmlHelper html, string key)
+            => new HtmlString(WebUtility.HtmlEncode(Resolve(html.ViewContext.HttpContext)?.Text(key) ?? key));
+
+        /// <summary>Html.TrHtml(key): raw CHỈ KHI key có AllowHtml=1, ngược lại vẫn encode.</summary>
+        public static IHtmlContent TrHtml(this IHtmlHelper html, string key)
         {
-            // Ngôn ngữ do middleware "/en" gắn vào Items["Lang"] (không dùng cookie nữa)
-            var lang = httpContext.Items["Lang"] as string;
-            return string.Equals(lang, "en", StringComparison.OrdinalIgnoreCase) ? "en" : DefaultLang;
+            var svc = Resolve(html.ViewContext.HttpContext);
+            return svc != null ? svc.TrHtml(key) : new HtmlString(WebUtility.HtmlEncode(key));
         }
 
-        private static Dictionary<string, Dictionary<string, string>> Load(HttpContext httpContext)
-        {
-            if (_strings != null) return _strings;
-
-            lock (Sync)
-            {
-                if (_strings != null) return _strings;
-
-                var env = httpContext.RequestServices.GetService(typeof(IHostEnvironment)) as IHostEnvironment;
-                var contentRoot = env?.ContentRootPath ?? AppContext.BaseDirectory;
-                var path = Path.Combine(contentRoot, "Localization", "ui.json");
-
-                if (!File.Exists(path))
-                {
-                    _strings = new Dictionary<string, Dictionary<string, string>>();
-                    return _strings;
-                }
-
-                using var stream = File.OpenRead(path);
-                _strings = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(stream)
-                    ?? new Dictionary<string, Dictionary<string, string>>();
-                return _strings;
-            }
-        }
+        private static IUiTextService? Resolve(HttpContext? ctx)
+            => ctx?.RequestServices.GetService(typeof(IUiTextService)) as IUiTextService;
     }
 }
