@@ -2,7 +2,6 @@
 @{
     var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     ViewData["Title"] = isEn ? "Products" : "Sản phẩm";
-    string T(string vi, string en) => isEn ? en : vi;
 }
 
 @section Styles {
@@ -23,7 +22,7 @@
     string ProductUrl(TechExchangeApp.Entities.SanPhamCNTB p) =>
         isEn ? $"{Html.MainDomain()}en/products/{Html.MakeURLFriendly(p.Name)}-{p.ID}" : $"{Html.MainDomain()}san-pham/chi-tiet/{Html.MakeURLFriendly(p.Name)}-{p.ID}";
 
-    string TypeLabel(int t) => t switch { 2 => T("Thiết bị", "Equipment"), 3 => T("Sản phẩm trí tuệ", "IP Assets"), _ => T("Công nghệ", "Technology") };
+    string TypeLabel(int t) => t switch { 2 => Html.Text("common.equipment"), 3 => Html.Text("common.ipAssets"), _ => Html.Text("common.technology") };
 
     string PlainText(string? value)
     {
@@ -36,8 +35,7 @@
         var text = PlainText(!string.IsNullOrWhiteSpace(p.MoTaNgan) ? p.MoTaNgan : p.MoTa);
         if (string.IsNullOrWhiteSpace(text))
         {
-            return T("Sản phẩm công nghệ, thiết bị hoặc tài sản trí tuệ sẵn sàng kết nối chuyển giao.",
-                     "Technology, equipment or intellectual property ready for connection and transfer.");
+            return Html.Text("product.card.descFallback");
         }
         return text.Length > 110 ? text.Substring(0, 107).Trim() + "..." : text;
     }
@@ -51,23 +49,23 @@
                     <nav class="tech-breadcrumb" aria-label="breadcrumb">
                         <partial name="_BreadcrumbHome" />
                         <span>/</span>
-                        <strong>@T("Sản phẩm", "Products")</strong>
+                        <strong>@Html.Text("common.products")</strong>
                     </nav>
-                    <h1>@T("Sản phẩm Công nghệ, Thiết bị & Tài sản trí tuệ", "Technologies, Equipment & Intellectual Property")</h1>
-                    <p>@T("Toàn bộ sản phẩm đang có trên sàn — công nghệ, thiết bị và tài sản trí tuệ sẵn sàng kết nối, chuyển giao cho doanh nghiệp, hợp tác xã và tổ chức tại Cần Thơ.", "All products on the exchange — technologies, equipment and intellectual property ready to connect and transfer to businesses, cooperatives and organizations in Can Tho.")</p>
+                    <h1>@Html.Text("product.list.title")</h1>
+                    <p>@Html.Text("product.list.desc")</p>
 
-                    <div class="tech-hero-stats" aria-label="@T("Thống kê sản phẩm", "Product statistics")">
-                        <span><strong>@Model.TotalCongNghe</strong>@T("Công nghệ", "Technology")</span>
-                        <span><strong>@Model.TotalThietBi</strong>@T("Thiết bị", "Equipment")</span>
-                        <span><strong>@Model.TotalTaiSanTriTue</strong>@T("Tài sản trí tuệ", "IP Assets")</span>
+                    <div class="tech-hero-stats" aria-label="@Html.Text("product.list.statsAria")">
+                        <span><strong>@Model.TotalCongNghe</strong>@Html.Text("common.technology")</span>
+                        <span><strong>@Model.TotalThietBi</strong>@Html.Text("common.equipment")</span>
+                        <span><strong>@Model.TotalTaiSanTriTue</strong>@Html.Text("common.ipAssetsFull")</span>
                     </div>
                 </div>
 
-                <div class="san-pham-type-filter" role="group" aria-label="@T("Lọc theo loại sản phẩm", "Filter by product type")">
-                    <button type="button" class="@(Model.CurrentType == 0 ? "is-active" : "")" onclick="location.href='?type=0&amp;pageSize=@Model.PageSize'">@T("Tất cả", "All") (@Model.TotalProducts)</button>
-                    <button type="button" class="@(Model.CurrentType == 1 ? "is-active" : "")" onclick="location.href='?type=1&amp;pageSize=@Model.PageSize'">@T("Công nghệ", "Technology") (@Model.TotalCongNghe)</button>
-                    <button type="button" class="@(Model.CurrentType == 2 ? "is-active" : "")" onclick="location.href='?type=2&amp;pageSize=@Model.PageSize'">@T("Thiết bị", "Equipment") (@Model.TotalThietBi)</button>
-                    <button type="button" class="@(Model.CurrentType == 3 ? "is-active" : "")" onclick="location.href='?type=3&amp;pageSize=@Model.PageSize'">@T("Sản phẩm trí tuệ", "IP Assets") (@Model.TotalTaiSanTriTue)</button>
+                <div class="san-pham-type-filter" role="group" aria-label="@Html.Text("product.list.filterAria")">
+                    <button type="button" class="@(Model.CurrentType == 0 ? "is-active" : "")" onclick="location.href='?type=0&amp;pageSize=@Model.PageSize'">@Html.Text("common.all") (@Model.TotalProducts)</button>
+                    <button type="button" class="@(Model.CurrentType == 1 ? "is-active" : "")" onclick="location.href='?type=1&amp;pageSize=@Model.PageSize'">@Html.Text("common.technology") (@Model.TotalCongNghe)</button>
+                    <button type="button" class="@(Model.CurrentType == 2 ? "is-active" : "")" onclick="location.href='?type=2&amp;pageSize=@Model.PageSize'">@Html.Text("common.equipment") (@Model.TotalThietBi)</button>
+                    <button type="button" class="@(Model.CurrentType == 3 ? "is-active" : "")" onclick="location.href='?type=3&amp;pageSize=@Model.PageSize'">@Html.Text("common.ipAssets") (@Model.TotalTaiSanTriTue)</button>
                 </div>
 
                 @if (Model.Products.Any())
@@ -85,7 +83,7 @@
                                         <a href="@ProductUrl(p)" title="@p.Name">@p.Name</a>
                                     </h3>
                                     <p class="tech-card__desc">@ProductDescription(p)</p>
-                                    <a href="@ProductUrl(p)" class="tech-card__btn">@T("Chi tiết", "Details") <i class="bi bi-arrow-right"></i></a>
+                                    <a href="@ProductUrl(p)" class="tech-card__btn">@Html.Text("common.details") <i class="bi bi-arrow-right"></i></a>
                                 </div>
                             </article>
                         }
@@ -95,7 +93,7 @@
                 {
                     <div class="text-center text-muted py-5">
                         <i class="bi bi-inbox" style="font-size:32px;"></i>
-                        <p class="mt-2">@T("Chưa có sản phẩm nào được đăng tải.", "No products have been published yet.")</p>
+                        <p class="mt-2">@Html.Text("product.list.empty")</p>
                     </div>
                 }
 
@@ -105,10 +103,10 @@
                 }
                 @if (totalPages > 1)
                 {
-                    <nav class="catalog-pagination" aria-label="@T("Phân trang", "Pagination")">
+                    <nav class="catalog-pagination" aria-label="@Html.Text("common.pagination")">
                         <ul>
                             <li class="@(curPage == 1 ? "disabled" : "")">
-                                <a href="?type=@Model.CurrentType&page=@(curPage - 1)&pageSize=@Model.PageSize" aria-label="@T("Trang trước", "Previous page")"><i class="bi bi-chevron-left"></i></a>
+                                <a href="?type=@Model.CurrentType&page=@(curPage - 1)&pageSize=@Model.PageSize" aria-label="@Html.Text("common.prevPage")"><i class="bi bi-chevron-left"></i></a>
                             </li>
                             @foreach (var pg in Model.Pages)
                             {
@@ -117,7 +115,7 @@
                                 </li>
                             }
                             <li class="@(curPage == totalPages ? "disabled" : "")">
-                                <a href="?type=@Model.CurrentType&page=@(curPage + 1)&pageSize=@Model.PageSize" aria-label="@T("Trang sau", "Next page")"><i class="bi bi-chevron-right"></i></a>
+                                <a href="?type=@Model.CurrentType&page=@(curPage + 1)&pageSize=@Model.PageSize" aria-label="@Html.Text("common.nextPage")"><i class="bi bi-chevron-right"></i></a>
                             </li>
                         </ul>
                     </nav>
@@ -125,12 +123,12 @@
 
                 <section class="tech-transfer-cta">
                     <div>
-                        <span>@T("Không tìm thấy sản phẩm phù hợp?", "Can't find a suitable product?")</span>
-                        <h2>@T("Bạn chưa tìm thấy công nghệ, thiết bị hoặc giải pháp phù hợp trên Sàn?", "Haven't found the right technology, equipment or solution on the exchange?")</h2>
-                        <p>@T("Hãy gửi thông tin về nhu cầu tìm mua. Trung tâm sẽ hỗ trợ tiếp nhận yêu cầu, tìm kiếm sản phẩm phù hợp và kết nối bạn với các doanh nghiệp, tổ chức hoặc chuyên gia có khả năng cung cấp.", "Send us your sourcing request. The center will receive the request, search for suitable products and connect you with businesses, organizations or experts who can supply them.")</p>
+                        <span>@Html.Text("product.cta.kicker")</span>
+                        <h2>@Html.Text("product.cta.title")</h2>
+                        <p>@Html.Text("product.cta.button_desc")</p>
                     </div>
                     <div class="tech-transfer-cta__actions">
-                        <a class="tech-transfer-cta__primary" href="@(isEn ? $"{Html.MainDomain()}en/technology-demand" : $"{Html.MainDomain()}tim-mua-cong-nghe")">@T("Gửi yêu cầu tìm mua", "Submit a sourcing request")</a>
+                        <a class="tech-transfer-cta__primary" href="@(isEn ? $"{Html.MainDomain()}en/technology-demand" : $"{Html.MainDomain()}tim-mua-cong-nghe")">@Html.Text("product.cta.button")</a>
                     </div>
                 </section>
             </div>

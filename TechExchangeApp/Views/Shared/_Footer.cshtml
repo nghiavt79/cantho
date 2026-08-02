@@ -8,9 +8,8 @@
     var address = Configuration["SiteBranding:Address"] ?? "";
     var mapUrl = "https://www.google.com/maps/search/?api=1&query=" + Uri.EscapeDataString(address);
     var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
-    string T(string vi, string en) => isEn ? en : vi;
-    var fullOrgTitle = T("TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ", "CAN THO SCIENCE & TECHNOLOGY APPLICATION CENTER");
-    var fullOrgSlogan = T("Kết nối nghiên cứu · Ứng dụng thực tiễn · Đổi mới sáng tạo", "Connecting research · Practical application · Innovation");
+    var fullOrgTitle = Html.Text("footer.orgName");
+    var fullOrgSlogan = Html.Text("footer.tagline");
     var newsUrl = isEn ? "/en/news-event" : "/tin-su-kien";
 }
 
@@ -25,7 +24,7 @@
                         <small>@fullOrgSlogan</small>
                     </span>
                 </div>
-                <p>@(isEn ? "The Can Tho Science & Technology Application Center" : organizationName) @T("là đơn vị sự nghiệp khoa học và công nghệ, hỗ trợ kết nối nghiên cứu, ứng dụng và chuyển giao công nghệ.", "is a science & technology public service unit that connects research, application and technology transfer.")</p>
+                <p>@(isEn ? "The Can Tho Science & Technology Application Center" : organizationName) @Html.Text("footer.about")</p>
                 <div class="site-footer-v2__social">
                     <a href="https://www.facebook.com/profile.php?id=100069991094645" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
                     <a href="https://www.youtube.com/@@TrungtamUngdungCanTho" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
@@ -34,30 +33,30 @@
             </div>
 
             <div>
-                <h3>@T("Liên kết nhanh", "Quick Links")</h3>
-                <a href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">@T("Trang chủ", "Home")</a>
-                <a href="@(isEn ? "/en/about" : "/gioi-thieu-chung-3")">@T("Giới thiệu", "About")</a>
-                <a href="/dich-vu-tu-van">@T("Dịch vụ & Giải pháp", "Services & Solutions")</a>
-                <a href="@newsUrl">@T("Tin tức - Sự kiện", "News & Events")</a>
-                <a href="/lien-he">@T("Liên hệ", "Contact")</a>
+                <h3>@Html.Text("footer.quickLinks")</h3>
+                <a href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">@Html.Text("common.home")</a>
+                <a href="@(isEn ? "/en/about" : "/gioi-thieu-chung-3")">@Html.Text("common.about")</a>
+                <a href="/dich-vu-tu-van">@Html.Text("footer.servicesSolutions")</a>
+                <a href="@newsUrl">@Html.Text("news.title")</a>
+                <a href="/lien-he">@Html.Text("common.contact")</a>
             </div>
 
             <div>
-                <h3>@T("Dịch vụ", "Services")</h3>
-                <a href="/cong-nghe">@T("Cung cấp công nghệ", "Technology supply")</a>
-                <a href="/dich-vu-tu-van">@T("Tư vấn & chuyển giao công nghệ", "Consulting & tech transfer")</a>
-                <a href="/dich-vu-tu-van/truy-xuat-nguon-goc-29">@T("Truy xuất nguồn gốc", "Traceability")</a>
-                <a href="/chuyen-gia">@T("Mạng lưới chuyên gia", "Expert network")</a>
+                <h3>@Html.Text("common.services")</h3>
+                <a href="/cong-nghe">@Html.Text("footer.techSupply")</a>
+                <a href="/dich-vu-tu-van">@Html.Text("footer.consulting")</a>
+                <a href="/dich-vu-tu-van/truy-xuat-nguon-goc-29">@Html.Text("common.traceability")</a>
+                <a href="/chuyen-gia">@Html.Text("common.expertNetwork")</a>
             </div>
 
             <div>
-                <h3>@T("Liên hệ", "Contact")</h3>
+                <h3>@Html.Text("common.contact")</h3>
                 <p><a href="@mapUrl" target="_blank" rel="noopener"><i class="bi bi-geo-alt"></i> @address</a></p>
                 <p><i class="bi bi-telephone"></i> @phone</p>
                 <p><i class="bi bi-envelope"></i> @email</p>
                 <form class="site-footer-v2__newsletter">
-                    <input type="email" placeholder="@T("Nhập email của bạn", "Enter your email")" aria-label="@T("Email nhận bản tin", "Newsletter email")">
-                    <button type="submit" aria-label="@T("Đăng ký nhận bản tin", "Subscribe")"><i class="bi bi-send"></i></button>
+                    <input type="email" placeholder="@Html.Text("footer.emailPlaceholder")" aria-label="@Html.Text("footer.emailLabel")">
+                    <button type="submit" aria-label="@Html.Text("footer.subscribe")"><i class="bi bi-send"></i></button>
                 </form>
             </div>
         </div>

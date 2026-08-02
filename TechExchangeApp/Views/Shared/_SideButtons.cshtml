@@ -1,17 +1,15 @@
 @{
-    var isEn = Context.Request.Cookies["site_lang"] == "en";
-    string T(string vi, string en) => isEn ? en : vi;
     var vrTourUrl = "https://smarttravel-vr.mobifone.vn/vr-tour/san-giao-dich-cong-nghe";
 }
 
 <div class="action-dock">
     <div class="action-dock__card">
         <div class="action-dock__group">
-            <button type="button" class="action-dock__btn" data-ai-chat-toggle data-tooltip="@T("Chat hỗ trợ", "Support chat")" aria-label="@T("Chat hỗ trợ", "Support chat")">
+            <button type="button" class="action-dock__btn" data-ai-chat-toggle data-tooltip="@Html.Text("common.supportChat")" aria-label="@Html.Text("common.supportChat")">
                 <i class="bi bi-chat-dots-fill"></i>
                 <span class="action-dock__label">Chat</span>
             </button>
-            <a class="action-dock__btn" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")" aria-label="@T("Trải nghiệm VR360°", "VR360° experience")">
+            <a class="action-dock__btn" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@Html.Text("common.vr360")" aria-label="@Html.Text("common.vr360")">
                 <i class="bi bi-badge-vr"></i>
                 <span class="action-dock__label">VR</span>
             </a>
@@ -28,24 +26,24 @@
                 <img src="/image/zalo-icon.webp" alt="" aria-hidden="true">
                 <span class="action-dock__label">Zalo</span>
             </a>
-            <a class="action-dock__btn action-dock__btn--guide" href="/huong-dan" data-tooltip="@T("Hướng dẫn sử dụng", "User guide")" aria-label="@T("Hướng dẫn sử dụng", "User guide")">
+            <a class="action-dock__btn action-dock__btn--guide" href="/huong-dan" data-tooltip="@Html.Text("common.userGuide")" aria-label="@Html.Text("common.userGuide")">
                 <i class="bi bi-book-half"></i>
-                <span class="action-dock__label">@T("Hướng dẫn", "Guide")</span>
+                <span class="action-dock__label">@Html.Text("sidebtn.guide")</span>
             </a>
-            <button type="button" class="action-dock__btn action-dock__btn--top-mobile" data-back-to-top data-tooltip="@T("Về đầu trang", "Back to top")" aria-label="@T("Về đầu trang", "Back to top")">
+            <button type="button" class="action-dock__btn action-dock__btn--top-mobile" data-back-to-top data-tooltip="@Html.Text("common.backToTop")" aria-label="@Html.Text("common.backToTop")">
                 <i class="bi bi-chevron-up"></i>
-                <span class="action-dock__label">@T("Lên đầu", "Top")</span>
+                <span class="action-dock__label">@Html.Text("common.top")</span>
             </button>
         </div>
     </div>
 
-    <button type="button" id="btnBackToTop" class="action-dock__top action-dock__top--desktop" data-back-to-top data-tooltip="@T("Về đầu trang", "Back to top")" aria-label="@T("Về đầu trang", "Back to top")">
+    <button type="button" id="btnBackToTop" class="action-dock__top action-dock__top--desktop" data-back-to-top data-tooltip="@Html.Text("common.backToTop")" aria-label="@Html.Text("common.backToTop")">
         <i class="bi bi-chevron-up"></i>
-        <span class="action-dock__label">@T("Lên đầu", "Top")</span>
+        <span class="action-dock__label">@Html.Text("common.top")</span>
     </button>
 </div>
 
-<a class="action-dock-vr-shortcut" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@T("Trải nghiệm VR360°", "VR360° experience")" aria-label="@T("Trải nghiệm VR360°", "VR360° experience")">
+<a class="action-dock-vr-shortcut" href="@vrTourUrl" target="_blank" rel="noopener" data-tooltip="@Html.Text("common.vr360")" aria-label="@Html.Text("common.vr360")">
     <i class="bi bi-badge-vr"></i>
 </a>
 

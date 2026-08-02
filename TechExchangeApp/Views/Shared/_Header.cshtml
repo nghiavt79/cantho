@@ -5,7 +5,6 @@
     var shortName = Configuration["SiteBranding:ShortName"] ?? "CASTA";
     var canAccessCms = await CmsAccessService.CanAccessCmsAsync(ViewContext.HttpContext.User);
     var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
-    string T(string vi, string en) => isEn ? en : vi;
     var currentUrl = Context.Request.Path + Context.Request.QueryString;
     var accountDisplayName = User.Identity?.Name ?? "Tài khoản";
     var accountInitial = string.IsNullOrWhiteSpace(accountDisplayName)
@@ -25,8 +24,8 @@
                     @* Menu chính data-driven từ bảng Menu (MenuPosition="1"), song ngữ theo /en. *@
                     @await Component.InvokeAsync("SiteHeaderMenu", new { variant = "desktop" })
                     <form class="site-header-v2__quick-search" action="@TechExchangeApp.Helpers.LangHelper.SearchUrl(Context)" method="get" role="search">
-                        <input type="search" name="q" placeholder="@T("Tìm kiếm...", "Search...")" aria-label="@T("Tìm kiếm", "Search")" autocomplete="off">
-                        <button type="submit" class="site-header-v2__quick-search-btn" aria-label="@T("Tìm kiếm", "Search")">
+                        <input type="search" name="q" placeholder="@Html.Text("header.search.ph1")" aria-label="@Html.Text("common.search")" autocomplete="off">
+                        <button type="submit" class="site-header-v2__quick-search-btn" aria-label="@Html.Text("common.search")">
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
@@ -89,7 +88,7 @@
                     }
                     else
                     {
-                        <button type="button" class="nav-link site-header-v2__login-link site-header-v2__icon-link" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="@T("Đăng nhập", "Log in")">
+                        <button type="button" class="nav-link site-header-v2__login-link site-header-v2__icon-link" data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="@Html.Text("common.login")">
                             <i class="bi bi-person-circle"></i>
                         </button>
                     }
@@ -119,14 +118,14 @@
             </div>
             <form class="site-menu-offcanvas__search" action="@TechExchangeApp.Helpers.LangHelper.SearchUrl(Context)" method="get">
                 <i class="bi bi-search"></i>
-                <input type="search" name="q" placeholder="@T("Tìm kiếm dịch vụ, công nghệ...", "Search services, technologies...")" aria-label="@T("Tìm kiếm", "Search")">
+                <input type="search" name="q" placeholder="@Html.Text("header.search.ph2")" aria-label="@Html.Text("common.search")">
             </form>
 
             <nav class="site-menu-offcanvas__nav">
-                <a href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">@T("Trang chủ", "Home")</a>
+                <a href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">@Html.Text("common.home")</a>
                 @* Menu chính data-driven từ bảng Menu (MenuPosition="1"), song ngữ theo /en. *@
                 @await Component.InvokeAsync("SiteHeaderMenu", new { variant = "mobile" })
-                <a href="/Search">@T("Tìm kiếm", "Search")</a>
+                <a href="/Search">@Html.Text("common.search")</a>
             </nav>
 
             @if (User.Identity?.IsAuthenticated == true)
@@ -149,10 +148,10 @@
             else
             {
                 <button type="button" class="site-menu-offcanvas__login" data-modal-target="#loginModal">
-                    <i class="bi bi-person-circle"></i> @T("Đăng nhập", "Log in")
+                    <i class="bi bi-person-circle"></i> @Html.Text("common.login")
                 </button>
                 <button type="button" class="site-menu-offcanvas__login" data-modal-target="#registerModal">
-                    <i class="bi bi-person-plus"></i> @T("Đăng ký", "Sign up")
+                    <i class="bi bi-person-plus"></i> @Html.Text("common.signup")
                 </button>
             }
         </div>

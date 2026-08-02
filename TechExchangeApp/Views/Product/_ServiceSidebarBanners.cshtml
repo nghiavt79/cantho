@@ -1,37 +1,36 @@
 @{
     var mainDomain = Html.MainDomain();
     var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
-    string T(string vi, string en) => isEn ? en : vi;
     var supportItems = new[]
     {
         new
         {
             Icon = "bi-search",
-            Title = T("Tìm kiếm công nghệ phù hợp", "Find the right technology"),
-            Text = T("Hỗ trợ doanh nghiệp tìm giải pháp theo nhu cầu sản xuất.", "Helping businesses find solutions for their production needs.")
+            Title = Html.Text("service.sidebar.find"),
+            Text = Html.Text("service.sidebar.findDesc")
         },
         new
         {
             Icon = "bi-people",
-            Title = T("Tư vấn chuyển giao", "Transfer advisory"),
-            Text = T("Kết nối chuyên gia, đơn vị nghiên cứu và doanh nghiệp.", "Connecting experts, research units and businesses.")
+            Title = Html.Text("service.sidebar.advisory"),
+            Text = Html.Text("service.sidebar.advisoryDesc")
         },
         new
         {
             Icon = "bi-clipboard2-check",
-            Title = T("Đánh giá khả năng ứng dụng", "Application feasibility review"),
-            Text = T("Xem xét tính khả thi, chi phí và hiệu quả triển khai.", "Assessing feasibility, cost and implementation effectiveness.")
+            Title = Html.Text("service.sidebar.review"),
+            Text = Html.Text("service.sidebar.reviewDesc")
         }
     };
 }
 
-<aside class="support-box" aria-label="@T("Trung tâm hỗ trợ chuyển giao", "Technology transfer support center")">
-    <span class="support-box__kicker">@T("Trung tâm hỗ trợ", "Support center")</span>
-    <h2>@T("Bạn cần hỗ trợ chuyển giao công nghệ?", "Need help with technology transfer?")</h2>
-    <p>@T("Gửi nhu cầu để được tư vấn giải pháp, chuyên gia và đối tác phù hợp.", "Send your request for advice on solutions, experts and suitable partners.")</p>
+<aside class="support-box" aria-label="@Html.Text("service.sidebar.ariaLabel")">
+    <span class="support-box__kicker">@Html.Text("service.sidebar.kicker")</span>
+    <h2>@Html.Text("service.sidebar.heading")</h2>
+    <p>@Html.Text("service.sidebar.desc")</p>
 
     <a class="support-box__cta" href="@(isEn ? $"{mainDomain}en/technology-demand" : $"{mainDomain}lien-he")">
-        @T("Gửi yêu cầu tư vấn", "Send a request") <i class="bi bi-arrow-right"></i>
+        @Html.Text("service.sidebar.cta") <i class="bi bi-arrow-right"></i>
     </a>
 
     <div class="support-box__items">

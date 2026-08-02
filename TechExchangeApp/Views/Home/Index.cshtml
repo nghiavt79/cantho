@@ -4,7 +4,6 @@
     ViewData["Title"] = "Trang chủ";
     var branding = Model.Branding;
     var isEn = Model.IsEnglish;
-    string T(string vi, string en) => isEn ? en : vi;
 
     string StatTarget(string value) => new string((value ?? "").Where(char.IsDigit).ToArray());
     string StatSuffix(string value) => (value ?? "").Contains('+') ? "+" : "";
@@ -16,30 +15,30 @@
     <section class="home-v2-search-wrap home-v2-search-wrap--overlap">
         <div class="container">
             <div class="home-v2-search-panel">
-                <div class="home-v2-search-tabs" role="tablist" aria-label="@T("Nhóm tìm kiếm", "Search groups")">
-                    <button class="active" type="button" data-search-type="Technology">@T("Công nghệ", "Technology")</button>
-                    <button type="button" data-search-type="Equipment">@T("Thiết bị", "Equipment")</button>
-                    <button type="button" data-search-type="IntellectualProperty">@T("SP Trí tuệ", "IP Assets")</button>
-                    <button type="button" data-search-type="Ocop">@T("OCOP", "OCOP")</button>
-                    <button type="button" data-search-type="Service">@T("Dịch vụ", "Services")</button>
-                    <button type="button" data-search-type="Expert">@T("Chuyên gia", "Experts")</button>
+                <div class="home-v2-search-tabs" role="tablist" aria-label="@Html.Text("home.search.groups")">
+                    <button class="active" type="button" data-search-type="Technology">@Html.Text("common.technology")</button>
+                    <button type="button" data-search-type="Equipment">@Html.Text("common.equipment")</button>
+                    <button type="button" data-search-type="IntellectualProperty">@Html.Text("home.tab.ip")</button>
+                    <button type="button" data-search-type="Ocop">@Html.Text("common.ocop")</button>
+                    <button type="button" data-search-type="Service">@Html.Text("common.services")</button>
+                    <button type="button" data-search-type="Expert">@Html.Text("common.experts")</button>
                 </div>
                 <form class="home-v2-search-form" action="@(isEn ? "/en/search" : "/Search")" method="get">
                     <input type="hidden" name="type" value="Technology" id="homeSearchType">
-                    <input type="text" name="q" placeholder="@T("Nhập từ khóa: công nghệ, thiết bị, chuyên gia, dịch vụ...", "Enter a keyword: technology, equipment, expert, service...")" aria-label="@T("Từ khóa tìm kiếm", "Search keyword")">
-                    <select name="field" aria-label="@T("Lĩnh vực", "Field")">
-                        <option value="">@T("Tất cả lĩnh vực", "All fields")</option>
+                    <input type="text" name="q" placeholder="@Html.Text("home.search.placeholder")" aria-label="@Html.Text("home.search.keyword")">
+                    <select name="field" aria-label="@Html.Text("home.search.field")">
+                        <option value="">@Html.Text("common.allFields")</option>
                         @foreach (var fieldOption in Model.SearchFields)
                         {
                             <option value="@fieldOption.Value">@fieldOption.Label</option>
                         }
                     </select>
                     <button type="submit">
-                        <i class="bi bi-search"></i> @T("Tìm kiếm", "Search")
+                        <i class="bi bi-search"></i> @Html.Text("common.search")
                     </button>
                 </form>
                 <div class="home-v2-tags">
-                    <span>@T("Tìm kiếm phổ biến:", "Popular searches:")</span>
+                    <span>@Html.Text("home.search.popular")</span>
                     @foreach (var tag in Model.PopularTags)
                     {
                         <a href="@(isEn ? "/en/search" : "/Search")?q=@Uri.EscapeDataString(tag.Value)&type=Technology">@tag.Label</a>
@@ -51,11 +50,11 @@
 
     <section class="container home-v2-section home-v2-section--first">
         <div class="home-v2-section-head">
-            <h2>@T("Sản phẩm & Công nghệ nổi bật", "Featured Products & Technologies")</h2>
-            <a href="@(isEn ? "/en/products" : "/san-pham")">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
+            <h2>@Html.Text("home.featured.title")</h2>
+            <a href="@(isEn ? "/en/products" : "/san-pham")">@Html.Text("common.viewAll") <i class="bi bi-arrow-right"></i></a>
         </div>
         <div class="home-v2-carousel-wrap" data-carousel-per-page="4">
-            <button type="button" class="home-v2-carousel-nav home-v2-carousel-nav--prev" data-carousel-prev aria-label="@T("Trang trước", "Previous page")">
+            <button type="button" class="home-v2-carousel-nav home-v2-carousel-nav--prev" data-carousel-prev aria-label="@Html.Text("common.prevPage")">
                 <i class="bi bi-chevron-left"></i>
             </button>
             <div class="home-v2-carousel" data-carousel>
@@ -76,19 +75,19 @@
                             {
                                 <span class="home-v2-carousel-card__meta"><i class="bi bi-building"></i> @item.Company</span>
                             }
-                            <span class="home-v2-carousel-card__btn">@T("Xem chi tiết", "View details")</span>
+                            <span class="home-v2-carousel-card__btn">@Html.Text("common.viewDetails")</span>
                         </div>
                     </a>
                 }
             </div>
-            <button type="button" class="home-v2-carousel-nav home-v2-carousel-nav--next" data-carousel-next aria-label="@T("Trang sau", "Next page")">
+            <button type="button" class="home-v2-carousel-nav home-v2-carousel-nav--next" data-carousel-next aria-label="@Html.Text("common.nextPage")">
                 <i class="bi bi-chevron-right"></i>
             </button>
         </div>
         <div class="home-v2-carousel-dots" data-carousel-dots></div>
     </section>
 
-    <section class="home-v2-stats-wrap" aria-label="@T("Thống kê", "Statistics")">
+    <section class="home-v2-stats-wrap" aria-label="@Html.Text("common.statistics")">
         <div class="container">
             <div class="home-v2-stats">
                 @foreach (var stat in Model.Stats)
@@ -110,7 +109,7 @@
     <section class="container home-v2-band">
         <div class="home-v2-grid home-v2-grid--intro">
             <div class="home-v2-card home-v2-card--wide">
-                <h2>@T("Chúng tôi làm gì?", "What we do")</h2>
+                <h2>@Html.Text("home.whatwedo.title")</h2>
                 <div class="home-v2-feature-grid">
                     @foreach (var item in Model.WhatWeDo)
                     {
@@ -123,7 +122,7 @@
             </div>
 
             <div class="home-v2-card">
-                <h2>@T("Dịch vụ nổi bật", "Featured services")</h2>
+                <h2>@Html.Text("home.services.title")</h2>
                 <div class="home-v2-service-list">
                     @foreach (var item in Model.Services)
                     {
@@ -139,7 +138,7 @@
             </div>
 
             <div class="home-v2-card">
-                <h2>@T($"Vì sao chọn {branding.ShortName}?", $"Why choose {branding.ShortName}?")</h2>
+                <h2>@(isEn ? $"Why choose {branding.ShortName}?" : $"Vì sao chọn {branding.ShortName}?")</h2>
                 <div class="home-v2-reason-list">
                     @foreach (var item in Model.Reasons)
                     {
@@ -155,7 +154,7 @@
 
     <section class="container home-v2-section">
         <div class="home-v2-process">
-            <h2>@T("Quy trình hỗ trợ", "Support process")</h2>
+            <h2>@Html.Text("home.process.title")</h2>
             <div class="home-v2-process__row">
                 @foreach (var step in Model.ProcessSteps)
                 {
@@ -176,15 +175,15 @@
         <div class="home-v2-grid home-v2-grid--news">
             <div class="home-v2-card">
                 <div class="home-v2-section-head home-v2-section-head--compact">
-                    <h2>@T("Tin tức - Sự kiện", "News & Events")</h2>
-                    <a href="@(Model.IsEnglish ? "/en/news-event" : "/tin-su-kien")">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
+                    <h2>@Html.Text("news.title")</h2>
+                    <a href="@(Model.IsEnglish ? "/en/news-event" : "/tin-su-kien")">@Html.Text("common.viewAll") <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="home-v2-news-list">
                     @foreach (var item in Model.FeaturedNews)
                     {
                         <a class="home-v2-news-card" href="@item.Url">
                             <img src="@item.ImageUrl" alt="@item.Title" onerror="this.src='/images/254-170_noImage.jpg'">
-                            <span>@(item.PublishedDate?.ToString("dd/MM/yyyy") ?? T("Đang cập nhật", "Updating"))</span>
+                            <span>@(item.PublishedDate?.ToString("dd/MM/yyyy") ?? Html.Text("common.updating"))</span>
                             <strong>@item.Title</strong>
                             <p>@item.Description</p>
                         </a>
@@ -194,8 +193,8 @@
 
             <div class="home-v2-card">
                 <div class="home-v2-section-head home-v2-section-head--compact">
-                    <h2>@T("Mạng lưới chuyên gia", "Expert network")</h2>
-                    <a href="@(isEn ? "/en/experts" : "/chuyen-gia")">@T("Xem tất cả", "View all") <i class="bi bi-arrow-right"></i></a>
+                    <h2>@Html.Text("common.expertNetwork")</h2>
+                    <a href="@(isEn ? "/en/experts" : "/chuyen-gia")">@Html.Text("common.viewAll") <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="home-v2-expert-list">
                     @foreach (var item in Model.Experts)
@@ -216,7 +215,7 @@
     {
         <section class="container home-v2-section">
             <div class="home-v2-partners">
-                <h2>@T("Doanh nghiệp/Đơn vị tiêu biểu", "Featured organizations")</h2>
+                <h2>@Html.Text("home.customers.title")</h2>
                 <div class="home-v2-partner-row">
                     @foreach (var customer in Model.Customers)
                     {
@@ -235,7 +234,7 @@
 
     <section class="container home-v2-section">
         <div class="home-v2-partners">
-            <h2>@T("Đối tác đồng hành", "Partners")</h2>
+            <h2>@Html.Text("home.partners.title")</h2>
             <div class="home-v2-partner-row">
                 @foreach (var partner in Model.Partners)
                 {
@@ -255,11 +254,11 @@
         <div class="container">
             <div class="home-v2-cta">
                 <div>
-                    <h2>@T("Bạn cần tư vấn giải pháp công nghệ phù hợp?", "Need advice on the right technology solution?")</h2>
-                    <p>@T($"Đội ngũ chuyên gia của {branding.ShortName} luôn sẵn sàng đồng hành cùng bạn.", $"The {branding.ShortName} expert team is always ready to accompany you.")</p>
+                    <h2>@Html.Text("home.cta.title")</h2>
+                    <p>@(isEn ? $"The {branding.ShortName} expert team is always ready to accompany you." : $"Đội ngũ chuyên gia của {branding.ShortName} luôn sẵn sàng đồng hành cùng bạn.")</p>
                 </div>
                 <a class="home-v2-btn home-v2-btn--light" href="@(isEn ? "/en/contact" : "/lien-he")">
-                    @T("Đăng ký tư vấn ngay", "Request consulting now") <i class="bi bi-arrow-right"></i>
+                    @Html.Text("home.cta.button") <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
         </div>
