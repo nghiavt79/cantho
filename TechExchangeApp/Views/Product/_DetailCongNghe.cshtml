@@ -21,11 +21,11 @@
     bool giaBanIsHtml = (p.GiaBanDuKien ?? "").Contains('<');
     var priceFallback = p.SellPrice.HasValue && p.SellPrice.Value > 0
         ? string.Format("{0:N0} {1}", p.SellPrice.Value, p.Currency)
-        : "Liên hệ báo giá";
-    var updatedText = (p.Modified ?? p.PublishedDate ?? p.Created)?.ToString("dd/MM/yyyy") ?? "Đang cập nhật";
-    var categoryText = string.IsNullOrWhiteSpace(Model.CategoryTitle) ? "Đang cập nhật" : Model.CategoryTitle;
-    var supplierText = string.IsNullOrWhiteSpace(Model.SupplierName) ? "Đang cập nhật" : Model.SupplierName;
-    var originText = string.IsNullOrWhiteSpace(p.XuatXu) ? "Đang cập nhật" : p.XuatXu;
+        : I18n.T(Context, "product.detail.priceContact");
+    var updatedText = (p.Modified ?? p.PublishedDate ?? p.Created)?.ToString("dd/MM/yyyy") ?? I18n.T(Context, "common.updating");
+    var categoryText = string.IsNullOrWhiteSpace(Model.CategoryTitle) ? I18n.T(Context, "common.updating") : Model.CategoryTitle;
+    var supplierText = string.IsNullOrWhiteSpace(Model.SupplierName) ? I18n.T(Context, "common.updating") : Model.SupplierName;
+    var originText = string.IsNullOrWhiteSpace(p.XuatXu) ? I18n.T(Context, "common.updating") : p.XuatXu;
     var techCode = string.IsNullOrWhiteSpace(p.Code) ? p.ID.ToString("D5") : p.Code;
 
     var catIds = new List<int>();
@@ -48,14 +48,14 @@
 
 <div class="tech-detail-page">
     <nav class="tech-breadcrumb" aria-label="breadcrumb">
-        <partial name="_BreadcrumbHome" /><span>/</span><a href="/san-pham">Sản phẩm</a>
+        <partial name="_BreadcrumbHome" /><span>/</span><a href="@(isEn ? "/en/products" : "/san-pham")">@Html.Text("common.products")</a>
         @if (!string.IsNullOrWhiteSpace(Model.CategoryTitle))
         {
             <span>/</span><span>@Model.CategoryTitle</span>
         }
     </nav>
 
-    <h1 class="tech-page-title">Chi tiết công nghệ</h1>
+    <h1 class="tech-page-title">@Html.Text("product.tech.heading")</h1>
 
     <section class="tech-card tech-hero">
         <div class="row g-4">
@@ -75,13 +75,13 @@
                 <span class="tech-badge"><i class="fa fa-microchip"></i>@categoryText</span>
                 <h2 class="tech-name">@p.Name</h2>
                 <div class="tech-meta" id="headerMetaLine" data-entity-type="SanPhamCNTB" data-entity-id="@p.ID">
-                    <span><span class="tech-stars">★★★★★</span> <strong id="headerRatingAvg">@ratingText</strong> (<span id="headerRatingCount">@Model.RatingCount</span> đánh giá)</span>
-                    <span><i class="fa fa-eye"></i> <span id="headerViewCount">@((p.Viewed ?? 0).ToString("N0"))</span> lượt xem</span>
+                    <span><span class="tech-stars">★★★★★</span> <strong id="headerRatingAvg">@ratingText</strong> (<span id="headerRatingCount">@Model.RatingCount</span> @Html.Text("product.detail.reviews"))</span>
+                    <span><i class="fa fa-eye"></i> <span id="headerViewCount">@((p.Viewed ?? 0).ToString("N0"))</span> @Html.Text("product.detail.views")</span>
                 </div>
 
                 <div class="tech-info-grid">
                     <div class="tech-info-row">
-                        <span class="tech-info-label">Nhà cung cấp</span>
+                        <span class="tech-info-label">@Html.Text("product.detail.supplier")</span>
                         <span class="tech-info-value">
                             @if (!string.IsNullOrWhiteSpace(Model.SupplierUrl) && !string.IsNullOrWhiteSpace(Model.SupplierName))
                             {
@@ -93,19 +93,19 @@
                             }
                         </span>
                     </div>
-                    <div class="tech-info-row"><span class="tech-info-label">Danh mục</span><span class="tech-info-value">@categoryText</span></div>
-                    <div class="tech-info-row"><span class="tech-info-label">Xuất xứ</span><span class="tech-info-value">@originText</span></div>
-                    <div class="tech-info-row"><span class="tech-info-label">Giá tham khảo</span><span class="@(hasGiaBan && giaBanIsHtml ? "tech-info-value" : "tech-price")">@if (hasGiaBan) { @Html.Raw(p.GiaBanDuKien) } else { @priceFallback }</span></div>
+                    <div class="tech-info-row"><span class="tech-info-label">@Html.Text("common.category")</span><span class="tech-info-value">@categoryText</span></div>
+                    <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.origin")</span><span class="tech-info-value">@originText</span></div>
+                    <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.price")</span><span class="@(hasGiaBan && giaBanIsHtml ? "tech-info-value" : "tech-price")">@if (hasGiaBan) { @Html.Raw(p.GiaBanDuKien) } else { @priceFallback }</span></div>
                 </div>
 
                 <div class="tech-actions">
-                    <a href="/TechTransfer/Create?fromId=@p.ID&typeData=1" class="tech-btn tech-btn-primary"><i class="fa fa-file-signature"></i>Liên hệ báo giá</a>
+                    <a href="/TechTransfer/Create?fromId=@p.ID&typeData=1" class="tech-btn tech-btn-primary"><i class="fa fa-file-signature"></i>@Html.Text("product.detail.priceContact")</a>
                 </div>
                 @if (p.RequiresNDA == true)
                 {
                     <div class="alert alert-warning mt-3 mb-0 py-2">
                         <i class="fa fa-shield-alt me-1"></i>
-                        C&aacute;c b&ecirc;n c&oacute; th&#7875; y&ecirc;u c&#7847;u th&#7921;c hi&#7879;n th&#7887;a thu&#7853;n b&#7843;o m&#7853;t (NDA) tr&#432;&#7899;c khi trao &#273;&#7893;i th&ocirc;ng tin chi ti&#7871;t.
+                        @Html.Text("product.tech.ndaWarning")
                     </div>
                 }
             </div>
@@ -116,21 +116,21 @@
         <main>
             <section class="tech-tabs-card">
                 <ul class="nav nav-tabs" id="detailTabsCongNghe" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Tổng quan</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#spec" type="button" role="tab">Thông số kỹ thuật</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#application" type="button" role="tab">Ứng dụng</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#transfer" type="button" role="tab">Chuyển giao</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#docs" type="button" role="tab">Tài liệu</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">Đánh giá</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">@Html.Text("product.tech.tab.overview")</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#spec" type="button" role="tab">@Html.Text("product.tech.tab.spec")</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#application" type="button" role="tab">@Html.Text("product.tech.tab.application")</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#transfer" type="button" role="tab">@Html.Text("product.tech.tab.transfer")</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#docs" type="button" role="tab">@Html.Text("product.tech.tab.docs")</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">@Html.Text("product.tech.tab.review")</button></li>
                 </ul>
 
                 <div class="tab-content tech-tab-body">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel">
-                        <h3 class="tech-section-title">Thông tin công nghệ</h3>
+                        <h3 class="tech-section-title">@Html.Text("product.tech.techInfo")</h3>
                         <div class="tech-info-grid mb-3">
-                            <div class="tech-info-row"><span class="tech-info-label">Tên công nghệ</span><span class="tech-info-value">@p.Name</span></div>
-                            <div class="tech-info-row"><span class="tech-info-label">Mã công nghệ</span><span class="tech-info-value">@techCode</span></div>
-                            <div class="tech-info-row"><span class="tech-info-label">Xuất xứ</span><span class="tech-info-value">@originText</span></div>
+                            <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.tech.name")</span><span class="tech-info-value">@p.Name</span></div>
+                            <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.tech.code")</span><span class="tech-info-value">@techCode</span></div>
+                            <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.origin")</span><span class="tech-info-value">@originText</span></div>
                         </div>
                         @if (!string.IsNullOrWhiteSpace(p.MoTaNgan))
                         {
@@ -142,18 +142,18 @@
                         }
                         else
                         {
-                            <div class="tech-empty">Thông tin tổng quan đang được cập nhật.</div>
+                            <div class="tech-empty">@Html.Text("product.tech.overviewEmpty")</div>
                         }
                     </div>
 
                     <div class="tab-pane fade" id="spec" role="tabpanel">
-                        <h3 class="tech-section-title">Thông số kỹ thuật</h3>
-                        @if (!string.IsNullOrWhiteSpace(p.ThongSo)) { <div class="tech-content">@Html.Raw(p.ThongSo)</div> } else { <div class="tech-empty">Thông số kỹ thuật đang được cập nhật.</div> }
-                        @if (!string.IsNullOrWhiteSpace(p.UuDiem)) { <h3 class="tech-section-title mt-4">Ưu điểm nổi bật</h3><div class="tech-content">@Html.Raw(p.UuDiem)</div> }
+                        <h3 class="tech-section-title">@Html.Text("product.tech.tab.spec")</h3>
+                        @if (!string.IsNullOrWhiteSpace(p.ThongSo)) { <div class="tech-content">@Html.Raw(p.ThongSo)</div> } else { <div class="tech-empty">@Html.Text("product.tech.specEmpty")</div> }
+                        @if (!string.IsNullOrWhiteSpace(p.UuDiem)) { <h3 class="tech-section-title mt-4">@Html.Text("product.tech.advantages")</h3><div class="tech-content">@Html.Raw(p.UuDiem)</div> }
                     </div>
 
                     <div class="tab-pane fade" id="application" role="tabpanel">
-                        <h3 class="tech-section-title">Ứng dụng thực tế</h3>
+                        <h3 class="tech-section-title">@Html.Text("product.tech.applicationTitle")</h3>
                         @if (activeIndustries.Any())
                         {
                             <ul class="tech-category-list mb-3">
@@ -166,24 +166,24 @@
                         }
                         else if (!activeIndustries.Any())
                         {
-                            <div class="tech-empty">Thông tin ứng dụng đang được cập nhật.</div>
+                            <div class="tech-empty">@Html.Text("product.tech.applicationEmpty")</div>
                         }
                     </div>
 
                     <div class="tab-pane fade" id="transfer" role="tabpanel">
-                        <h3 class="tech-section-title">Phương thức chuyển giao</h3>
+                        <h3 class="tech-section-title">@Html.Text("product.tech.transferTitle")</h3>
                         @if (p.RequiresNDA == true)
                         {
                             <div class="tech-info-grid mb-3">
                                 <div class="tech-info-row">
-                                    <span class="tech-info-label">Th&#7887;a thu&#7853;n b&#7843;o m&#7853;t</span>
-                                    <span class="tech-info-value">C&oacute; th&#7875; c&#7847;n th&#7921;c hi&#7879;n NDA n&#7871;u m&#7897;t trong c&aacute;c b&ecirc;n y&ecirc;u c&#7847;u</span>
+                                    <span class="tech-info-label">@Html.Text("product.tech.ndaLabel")</span>
+                                    <span class="tech-info-value">@Html.Text("product.tech.ndaMaybe")</span>
                                 </div>
                             </div>
                             @if (!string.IsNullOrWhiteSpace(p.NDAContent))
                             {
                                 <div class="mb-3">
-                                    <h4 class="tech-subsection-title">N&#7897;i dung th&#7887;a thu&#7853;n b&#7843;o m&#7853;t</h4>
+                                    <h4 class="tech-subsection-title">@Html.Text("product.tech.ndaContentTitle")</h4>
                                     <div class="tech-content" style="white-space: pre-line">@p.NDAContent</div>
                                 </div>
                             }
@@ -191,21 +191,21 @@
                         @if (!string.IsNullOrWhiteSpace(p.TransferMethod) || !string.IsNullOrWhiteSpace(p.TransferMethodKhac) || !string.IsNullOrWhiteSpace(p.GiaBanDuKien) || !string.IsNullOrWhiteSpace(p.BaoHanhHoTro))
                         {
                             <div class="tech-content">
-                                @if (!string.IsNullOrWhiteSpace(p.TransferMethod)) { <p><strong>Hình thức:</strong> @p.TransferMethod</p> }
-                                @if (!string.IsNullOrWhiteSpace(p.TransferMethodKhac)) { <p><strong>Khác:</strong> @p.TransferMethodKhac</p> }
-                                @if (!string.IsNullOrWhiteSpace(p.GiaBanDuKien)) { <p><strong>Giá bán dự kiến:</strong></p>@Html.Raw(p.GiaBanDuKien) }
-                                @if (!string.IsNullOrWhiteSpace(p.ChiPhiPhatSinh)) { <p><strong>Chi phí phát sinh:</strong></p>@Html.Raw(p.ChiPhiPhatSinh) }
-                                @if (!string.IsNullOrWhiteSpace(p.BaoHanhHoTro)) { <p><strong>Bảo hành và hỗ trợ:</strong></p>@Html.Raw(p.BaoHanhHoTro) }
+                                @if (!string.IsNullOrWhiteSpace(p.TransferMethod)) { <p><strong>@Html.Text("product.tech.method")</strong> @p.TransferMethod</p> }
+                                @if (!string.IsNullOrWhiteSpace(p.TransferMethodKhac)) { <p><strong>@Html.Text("product.tech.other")</strong> @p.TransferMethodKhac</p> }
+                                @if (!string.IsNullOrWhiteSpace(p.GiaBanDuKien)) { <p><strong>@Html.Text("product.tech.expectedPrice")</strong></p>@Html.Raw(p.GiaBanDuKien) }
+                                @if (!string.IsNullOrWhiteSpace(p.ChiPhiPhatSinh)) { <p><strong>@Html.Text("product.tech.extraCost")</strong></p>@Html.Raw(p.ChiPhiPhatSinh) }
+                                @if (!string.IsNullOrWhiteSpace(p.BaoHanhHoTro)) { <p><strong>@Html.Text("product.tech.warranty")</strong></p>@Html.Raw(p.BaoHanhHoTro) }
                             </div>
                         }
                         else
                         {
-                            <div class="tech-empty">Thông tin chuyển giao đang được cập nhật.</div>
+                            <div class="tech-empty">@Html.Text("product.tech.transferEmpty")</div>
                         }
                     </div>
 
                     <div class="tab-pane fade" id="docs" role="tabpanel">
-                        <h3 class="tech-section-title">Tài liệu / chứng nhận</h3>
+                        <h3 class="tech-section-title">@Html.Text("product.tech.docsTitle")</h3>
                         @if (hasDocuments)
                         {
                             <div class="tech-content">
@@ -215,24 +215,24 @@
                                 }
                                 else if (!string.IsNullOrWhiteSpace(Model.VideoFileUrl))
                                 {
-                                    <p><a class="tech-btn tech-btn-outline" href="@Model.VideoFileUrl" target="_blank"><i class="fa fa-play"></i>Xem video</a></p>
+                                    <p><a class="tech-btn tech-btn-outline" href="@Model.VideoFileUrl" target="_blank"><i class="fa fa-play"></i>@Html.Text("product.tech.watchVideo")</a></p>
                                 }
-                                @if (!string.IsNullOrWhiteSpace(p.BrochureUrl)) { <p><a class="tech-btn tech-btn-outline" href="@p.BrochureUrl" target="_blank"><i class="fa fa-download"></i>Tải tài liệu</a></p> }
+                                @if (!string.IsNullOrWhiteSpace(p.BrochureUrl)) { <p><a class="tech-btn tech-btn-outline" href="@p.BrochureUrl" target="_blank"><i class="fa fa-download"></i>@Html.Text("product.tech.downloadDoc")</a></p> }
                                 <ul>
                                     @if (p.ChungNhanISO == true) { <li>ISO / CE / HACCP</li> }
-                                    @if (p.ChungNhanQuatest == true) { <li>Phiếu kiểm nghiệm Quatest</li> }
-                                    @if (p.ChungNhanKhac == true) { <li>@(string.IsNullOrWhiteSpace(p.ChungNhanKhacText) ? "Chứng nhận khác" : p.ChungNhanKhacText)</li> }
+                                    @if (p.ChungNhanQuatest == true) { <li>@Html.Text("product.tech.quatest")</li> }
+                                    @if (p.ChungNhanKhac == true) { <li>@(string.IsNullOrWhiteSpace(p.ChungNhanKhacText) ? I18n.T(Context, "product.tech.otherCert") : p.ChungNhanKhacText)</li> }
                                 </ul>
                             </div>
                         }
                         else
                         {
-                            <div class="tech-empty">Tài liệu và chứng nhận đang được cập nhật.</div>
+                            <div class="tech-empty">@Html.Text("product.tech.docsEmpty")</div>
                         }
                     </div>
 
                     <div class="tab-pane fade" id="review" role="tabpanel">
-                        @if (Model.RatingCount <= 0) { <div class="tech-empty mb-3">Chưa có đánh giá nào cho công nghệ này.</div> }
+                        @if (Model.RatingCount <= 0) { <div class="tech-empty mb-3">@Html.Text("product.tech.noReviews")</div> }
                         @await Html.PartialAsync("_EntityRating", null, new ViewDataDictionary(ViewData) {
                             { "EntityType", "SanPhamCNTB" },
                             { "EntityId", p.ID }
@@ -253,20 +253,20 @@
 
         <aside class="tech-sidebar">
             <section class="tech-sidebar-card">
-                <h3 class="tech-sidebar-title">Thông tin nhanh</h3>
+                <h3 class="tech-sidebar-title">@Html.Text("product.detail.quickInfo")</h3>
                 <dl class="tech-quick-list">
-                    <div><dt>Mã công nghệ</dt><dd>@techCode</dd></div>
-                    <div><dt>Danh mục</dt><dd>@categoryText</dd></div>
-                    <div><dt>Lượt xem</dt><dd>@((p.Viewed ?? 0).ToString("N0"))</dd></div>
-                    <div><dt>Cập nhật</dt><dd>@updatedText</dd></div>
-                    <div><dt>Trạng thái</dt><dd>Đang giới thiệu</dd></div>
+                    <div><dt>@Html.Text("product.tech.code")</dt><dd>@techCode</dd></div>
+                    <div><dt>@Html.Text("common.category")</dt><dd>@categoryText</dd></div>
+                    <div><dt>@Html.Text("product.detail.views")</dt><dd>@((p.Viewed ?? 0).ToString("N0"))</dd></div>
+                    <div><dt>@Html.Text("product.detail.updated")</dt><dd>@updatedText</dd></div>
+                    <div><dt>@Html.Text("common.status")</dt><dd>@Html.Text("product.detail.statusIntroducing")</dd></div>
                 </dl>
             </section>
 
             @if (categories.Any())
             {
                 <section class="tech-sidebar-card">
-                    <h3 class="tech-sidebar-title">Danh mục liên quan</h3>
+                    <h3 class="tech-sidebar-title">@Html.Text("product.detail.relatedCategories")</h3>
                     <ul class="tech-category-list">
                         @foreach (var cat in categories.Take(6))
                         {
