@@ -33,7 +33,7 @@
         var text = PlainText(!string.IsNullOrWhiteSpace(p.MoTaNgan) ? p.MoTaNgan : p.MoTa);
         if (string.IsNullOrWhiteSpace(text))
         {
-            return "Giải pháp công nghệ phục vụ sản xuất, vận hành và ứng dụng thực tế cho doanh nghiệp.";
+            return I18n.T(Context, "product.congnghe.descFallback");
         }
 
         return text.Length > 110 ? text.Substring(0, 107).Trim() + "..." : text;
@@ -41,7 +41,7 @@
 
     string ProductPrice(TechExchangeApp.Entities.SanPhamCNTB p) => p.OriginalPrice > 0
         ? Html.FormatCurrencyOto(p.OriginalPrice.ToString(), p.Currency)
-        : "Liên hệ báo giá";
+        : I18n.T(Context, "product.detail.priceContact");
 
     var _db = ((IServiceProvider)ViewContext.HttpContext.RequestServices)
         .GetService(typeof(TechExchangeApp.Data.AppDbContext)) as TechExchangeApp.Data.AppDbContext;
@@ -54,7 +54,7 @@
             if (ncu != null && !string.IsNullOrWhiteSpace(ncu.FullName))
                 return ncu.FullName;
         }
-        return "Đang cập nhật";
+        return I18n.T(Context, "common.updating");
     }
 }
 
@@ -68,23 +68,23 @@
                         <span>/</span>
                         <strong>@pageTitle</strong>
                     </nav>
-                    <h1>Công nghệ &amp; Giải pháp ứng dụng</h1>
-                    <p>Khám phá các công nghệ, thiết bị và quy trình sẵn sàng chuyển giao, phục vụ doanh nghiệp, hợp tác xã và tổ chức tại Cần Thơ.</p>
+                    <h1>@Html.Text("product.congnghe.title")</h1>
+                    <p>@Html.Text("product.congnghe.subtitle")</p>
 
                     <form class="tech-search" action="@($"{Html.MainDomain()}Search")" method="get">
                         <input type="hidden" name="type" value="Technology" />
-                        <input type="search" name="q" placeholder="Tìm kiếm công nghệ, thiết bị, giải pháp..." aria-label="Tìm kiếm công nghệ" />
-                        <button type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                        <input type="search" name="q" placeholder="@Html.Text("product.congnghe.searchPh")" aria-label="@Html.Text("product.congnghe.searchAria")" />
+                        <button type="submit"><i class="bi bi-search"></i> @Html.Text("common.search")</button>
                     </form>
 
-                    <div class="tech-hero-stats" aria-label="Thống kê công nghệ">
-                        <span><strong>@Model.TotalProducts</strong>Công nghệ sẵn sàng chuyển giao</span>
-                        <span><strong>@Model.TotalCategories</strong>Lĩnh vực ứng dụng</span>
-                        <span><strong>@Model.TotalSuppliers</strong>Đơn vị nghiên cứu &amp; doanh nghiệp</span>
+                    <div class="tech-hero-stats" aria-label="@Html.Text("product.congnghe.statsAria")">
+                        <span><strong>@Model.TotalProducts</strong>@Html.Text("product.congnghe.statReady")</span>
+                        <span><strong>@Model.TotalCategories</strong>@Html.Text("product.congnghe.statFields")</span>
+                        <span><strong>@Model.TotalSuppliers</strong>@Html.Text("product.congnghe.statOrgs")</span>
                     </div>
                 </div>
 
-                <div class="category-filter tech-filter" aria-label="Lĩnh vực công nghệ">
+                <div class="category-filter tech-filter" aria-label="@Html.Text("product.cate.techField")">
                     @foreach (var cat in Model.AllCategories)
                     {
                         <a href="@(isEn ? $"{Html.MainDomain()}en/products/category/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}" : $"{Html.MainDomain()}san-pham/{Html.MakeURLFriendly(cat.QueryString)}-{cat.CatId}")">
@@ -104,7 +104,7 @@
                             <h2 class="section-title">
                                 <a href="@categoryUrl">@block.Category.Title</a>
                             </h2>
-                            <a href="@categoryUrl">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                            <a href="@categoryUrl">@Html.Text("common.viewAll") <i class="bi bi-arrow-right"></i></a>
                         </div>
 
                         <div class="tech-grid">
@@ -121,12 +121,12 @@
                                         </h3>
                                         <p class="tech-card__desc">@ProductDescription(p)</p>
                                         <div class="tech-card__source">
-                                            <i class="bi bi-building"></i> Nhà cung ứng: @ProductSource(p)
+                                            <i class="bi bi-building"></i> @Html.Text("product.cate.supplier") @ProductSource(p)
                                         </div>
                                         <div class="tech-card__price">
-                                            Giá tham khảo: <strong>@ProductPrice(p)</strong>
+                                            @Html.Text("product.cate.refPrice") <strong>@ProductPrice(p)</strong>
                                         </div>
-                                        <a href="@ProductUrl(p)" class="tech-card__btn">Chi tiết <i class="bi bi-arrow-right"></i></a>
+                                        <a href="@ProductUrl(p)" class="tech-card__btn">@Html.Text("common.details") <i class="bi bi-arrow-right"></i></a>
                                     </div>
                                 </article>
                             }
@@ -136,13 +136,13 @@
 
                 <section class="tech-transfer-cta">
                     <div>
-                        <span>Kết nối chuyển giao</span>
-                        <h2>Bạn có công nghệ cần giới thiệu hoặc chuyển giao?</h2>
-                        <p>Gửi thông tin để trung tâm hỗ trợ đánh giá, kết nối doanh nghiệp và đề xuất lộ trình thương mại hóa phù hợp.</p>
+                        <span>@Html.Text("product.congnghe.ctaKicker")</span>
+                        <h2>@Html.Text("product.congnghe.ctaTitle")</h2>
+                        <p>@Html.Text("product.congnghe.ctaDesc")</p>
                     </div>
                     <div class="tech-transfer-cta__actions">
-                        <a class="tech-transfer-cta__primary" href="@($"{Html.MainDomain()}dang-ky-tu-van")">Gửi yêu cầu tư vấn</a>
-                        <a class="tech-transfer-cta__secondary" href="@($"{Html.MainDomain()}feedback")">Liên hệ trung tâm</a>
+                        <a class="tech-transfer-cta__primary" href="@($"{Html.MainDomain()}dang-ky-tu-van")">@Html.Text("service.sidebar.cta")</a>
+                        <a class="tech-transfer-cta__secondary" href="@($"{Html.MainDomain()}feedback")">@Html.Text("product.congnghe.contactCenter")</a>
                     </div>
                 </section>
             </div>
