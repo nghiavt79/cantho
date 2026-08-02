@@ -28,7 +28,8 @@ INSERT INTO @s VALUES
  (N'expert.deepConsulting',     N'Dịch vụ tư vấn chuyên sâu',                N'In-depth consulting services'),
  (N'expert.businessExperience', N'Kinh nghiệm thực chiến tại Doanh nghiệp',  N'Hands-on business experience'),
  (N'expert.attachments',        N'Hồ sơ đính kèm',                           N'Attachments'),
- (N'expert.associations',       N'Thành viên hiệp hội khoa học',             N'Scientific association memberships');
+ (N'expert.associations',       N'Thành viên hiệp hội khoa học',             N'Scientific association memberships'),
+ (N'expert.booksChapters',      N'Sách & Chương sách đã xuất bản',           N'Published books & book chapters');
 INSERT INTO dbo.UiTranslations([Key],Vi,En,Creator)
 SELECT s.k,s.vi,s.en,'i18n-page-seed' FROM @s s WHERE NOT EXISTS(SELECT 1 FROM dbo.UiTranslations t WHERE t.[Key]=s.k);
 SELECT @@ROWCOUNT AS Inserted, (SELECT COUNT(*) FROM dbo.UiTranslations) AS Total;

@@ -11,7 +11,7 @@
             <!-- LEFT: SIDEBAR -->
             <div class="column col-xs-12 col-sm-3" id="left_column">
                 <div class="block left-module">
-                    <p class="title_block">DANH MỤC</p>
+                    <p class="title_block">@Html.Text("common.category")</p>
                     <div class="block_content">
                         <ul class="tree-menu">
                             @foreach (var c in Model.Categories)
@@ -25,7 +25,7 @@
                 @if (Model.NhaTuVanKhac.Any())
                 {
                     <div class="block left-module">
-                        <p class="title_block">NHÀ TƯ VẤN KHÁC</p>
+                        <p class="title_block">@Html.Text("expert.otherExperts")</p>
                         <div class="block_content">
                             @foreach (var other in Model.NhaTuVanKhac)
                             {
@@ -50,7 +50,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><partial name="_BreadcrumbHome" /></li>
-                        <li class="breadcrumb-item"><a href="@(TechExchangeApp.Helpers.LangHelper.IsEnglish(Context) ? "/en/services" : "/dich-vu-tu-van")">Dịch vụ tư vấn</a></li>
+                        <li class="breadcrumb-item"><a href="@(TechExchangeApp.Helpers.LangHelper.IsEnglish(Context) ? "/en/services" : "/dich-vu-tu-van")">@Html.Text("common.services")</a></li>
                         <li class="breadcrumb-item active">@Model.FullName</li>
                     </ol>
                 </nav>
@@ -83,17 +83,17 @@
                                     <span class="tp-rating">
                                         <i class="fa fa-star"></i>
                                         <strong id="headerRatingAvg">@(Model.Rating > 0 ? Model.Rating.ToString("0.0") : "—")</strong>
-                                        <span class="tp-muted">(<span id="headerRatingCount">@Model.LuotDanhGia</span> đánh giá)</span>
+                                        <span class="tp-muted">(<span id="headerRatingCount">@Model.LuotDanhGia</span> @Html.Text("product.detail.reviews"))</span>
                                     </span>
                                     <span class="tp-dot">·</span>
                                     <span class="tp-view">
                                         <i class="fa fa-eye"></i>
-                                        <span id="headerViewCount">@Model.LuotXem.ToString("N0")</span> lượt xem
+                                        <span id="headerViewCount">@Model.LuotXem.ToString("N0")</span> @Html.Text("product.detail.views")
                                     </span>
                                     @if (Model.TongTrichDan.HasValue)
                                     {
                                         <span class="tp-dot">·</span>
-                                        <span><i class="fas fa-quote-right me-1"></i>@Model.TongTrichDan trích dẫn</span>
+                                        <span><i class="fas fa-quote-right me-1"></i>@Model.TongTrichDan @Html.Text("expert.citations")</span>
                                     }
                                     @if (Model.HIndex.HasValue)
                                     {
@@ -106,7 +106,7 @@
                                     <tbody>
                                         @if (!string.IsNullOrEmpty(Model.Phone))
                                         {
-                                            <tr><td class="fw-bold" style="width:110px;"><i class="fas fa-phone me-1 text-secondary"></i>ĐT</td><td><a href="tel:@Model.Phone">@Model.Phone</a></td></tr>
+                                            <tr><td class="fw-bold" style="width:110px;"><i class="fas fa-phone me-1 text-secondary"></i>@Html.Text("expert.phoneShort")</td><td><a href="tel:@Model.Phone">@Model.Phone</a></td></tr>
                                         }
                                         @if (!string.IsNullOrEmpty(Model.Email))
                                         {
@@ -114,7 +114,7 @@
                                         }
                                         @if (!string.IsNullOrEmpty(Model.DiaChi))
                                         {
-                                            <tr><td class="fw-bold"><i class="fas fa-map-marker-alt me-1 text-secondary"></i>Địa chỉ</td><td>@Model.DiaChi</td></tr>
+                                            <tr><td class="fw-bold"><i class="fas fa-map-marker-alt me-1 text-secondary"></i>@Html.Text("expert.address")</td><td>@Model.DiaChi</td></tr>
                                         }
                                     </tbody>
                                 </table>
@@ -125,36 +125,36 @@
 
                 <!-- ══════ 6 TABS ══════ -->
                 <ul class="nav nav-tabs mb-0" role="tablist">
-                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab1"><i class="fas fa-id-card me-1"></i>Thông tin</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab2"><i class="fas fa-chart-line me-1"></i>Chỉ số KH</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab3"><i class="fas fa-graduation-cap me-1"></i>Đào tạo & CT</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab4"><i class="fas fa-book me-1"></i>Công bố & SHTT</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab5"><i class="fas fa-briefcase me-1"></i>Tư vấn & DA</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab6"><i class="fas fa-certificate me-1"></i>Minh chứng</a></li>
+                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab1"><i class="fas fa-id-card me-1"></i>@Html.Text("product.equip.tab.info")</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab2"><i class="fas fa-chart-line me-1"></i>@Html.Text("expert.tab.metrics")</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab3"><i class="fas fa-graduation-cap me-1"></i>@Html.Text("expert.tab.training")</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab4"><i class="fas fa-book me-1"></i>@Html.Text("expert.tab.publications")</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab5"><i class="fas fa-briefcase me-1"></i>@Html.Text("expert.tab.consulting")</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab6"><i class="fas fa-certificate me-1"></i>@Html.Text("expert.tab.evidence")</a></li>
                 </ul>
 
                 <div class="tab-content border border-top-0 rounded-bottom p-3 mb-4">
 
-                    <!-- TAB 1: THÔNG TIN ĐỊNH DANH -->
+                    <!-- TAB 1: IDENTITY -->
                     <div class="tab-pane fade show active" id="tab1">
                         <table class="table table-sm table-bordered mb-0" style="font-size:14px;">
                             <tbody>
-                                <tr><td class="fw-bold bg-light" style="width:200px;">Họ và tên</td><td>@Model.FullName</td></tr>
+                                <tr><td class="fw-bold bg-light" style="width:200px;">@Html.Text("expert.name")</td><td>@Model.FullName</td></tr>
                                 @if (!string.IsNullOrEmpty(Model.HocHam))
                                 {
-                                    <tr><td class="fw-bold bg-light">Học hàm / Học vị</td><td>@Model.HocHam</td></tr>
+                                    <tr><td class="fw-bold bg-light">@Html.Text("expert.degree")</td><td>@Model.HocHam</td></tr>
                                 }
                                 @if (!string.IsNullOrEmpty(Model.CoQuan))
                                 {
-                                    <tr><td class="fw-bold bg-light">Cơ quan công tác</td><td>@Model.CoQuan</td></tr>
+                                    <tr><td class="fw-bold bg-light">@Html.Text("expert.organization")</td><td>@Model.CoQuan</td></tr>
                                 }
                                 @if (!string.IsNullOrEmpty(Model.ChucVu))
                                 {
-                                    <tr><td class="fw-bold bg-light">Chức vụ</td><td>@Model.ChucVu</td></tr>
+                                    <tr><td class="fw-bold bg-light">@Html.Text("expert.position")</td><td>@Model.ChucVu</td></tr>
                                 }
                                 @if (!string.IsNullOrEmpty(Model.Phone))
                                 {
-                                    <tr><td class="fw-bold bg-light">Điện thoại</td><td><a href="tel:@Model.Phone">@Model.Phone</a></td></tr>
+                                    <tr><td class="fw-bold bg-light">@Html.Text("expert.phone")</td><td><a href="tel:@Model.Phone">@Model.Phone</a></td></tr>
                                 }
                                 @if (!string.IsNullOrEmpty(Model.Email))
                                 {
@@ -162,16 +162,16 @@
                                 }
                                 @if (!string.IsNullOrEmpty(Model.DiaChi))
                                 {
-                                    <tr><td class="fw-bold bg-light">Địa chỉ</td><td>@Model.DiaChi</td></tr>
+                                    <tr><td class="fw-bold bg-light">@Html.Text("expert.address")</td><td>@Model.DiaChi</td></tr>
                                 }
                                 @if (!string.IsNullOrEmpty(Model.NgaySinh))
                                 {
-                                    <tr><td class="fw-bold bg-light">Ngày sinh</td><td>@Model.NgaySinh</td></tr>
+                                    <tr><td class="fw-bold bg-light">@Html.Text("expert.birthDate")</td><td>@Model.NgaySinh</td></tr>
                                 }
                                 @if (!string.IsNullOrEmpty(Model.MaDinhDanh))
                                 {
                                     <tr>
-                                        <td class="fw-bold bg-light">Mã định danh quốc tế</td>
+                                        <td class="fw-bold bg-light">@Html.Text("expert.intlId")</td>
                                         <td>
                                             @foreach (var line in Model.MaDinhDanh.Split('\n', StringSplitOptions.RemoveEmptyEntries))
                                             {
@@ -192,7 +192,7 @@
                         </table>
                     </div>
 
-                    <!-- TAB 2: CHỈ SỐ ẢNH HƯỞNG KHOA HỌC -->
+                    <!-- TAB 2: SCIENCE METRICS -->
                     <div class="tab-pane fade" id="tab2">
                         @if (Model.TongTrichDan.HasValue || Model.HIndex.HasValue)
                         {
@@ -203,7 +203,7 @@
                                         <div class="card text-center border-primary">
                                             <div class="card-body py-3">
                                                 <h3 class="text-primary mb-1">@Model.TongTrichDan</h3>
-                                                <small class="text-muted">Tổng số trích dẫn</small>
+                                                <small class="text-muted">@Html.Text("expert.totalCitations")</small>
                                             </div>
                                         </div>
                                     </div>
@@ -223,83 +223,83 @@
                         }
                         @if (!string.IsNullOrEmpty(Model.LinhVucText))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-layer-group me-1 text-primary"></i>Lĩnh vực nghiên cứu trọng tâm</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-layer-group me-1 text-primary"></i>@Html.Text("expert.researchFields")</h6>
                             <div class="ps-3 mb-3">@Html.Raw(Model.LinhVucText)</div>
                         }
                         @if (string.IsNullOrEmpty(Model.LinhVucText) && !Model.TongTrichDan.HasValue && !Model.HIndex.HasValue)
                         {
-                            <p class="text-muted">Chưa có thông tin.</p>
+                            <p class="text-muted">@Html.Text("common.noInfo")</p>
                         }
                     </div>
 
-                    <!-- TAB 3: ĐÀO TẠO & CÔNG TÁC -->
+                    <!-- TAB 3: TRAINING AND WORK -->
                     <div class="tab-pane fade" id="tab3">
                         @if (!string.IsNullOrEmpty(Model.QuaTrinhDaoTao))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-graduation-cap me-1 text-primary"></i>Quá trình đào tạo</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-graduation-cap me-1 text-primary"></i>@Html.Text("expert.trainingProcess")</h6>
                             <div class="mb-3">@Html.Raw(Model.QuaTrinhDaoTao)</div>
                         }
                         @if (!string.IsNullOrEmpty(Model.QuaTrinhCongTac))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-briefcase me-1 text-primary"></i>Quá trình công tác</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-briefcase me-1 text-primary"></i>@Html.Text("expert.workProcess")</h6>
                             <div>@Html.Raw(Model.QuaTrinhCongTac)</div>
                         }
                         @if (string.IsNullOrEmpty(Model.QuaTrinhDaoTao) && string.IsNullOrEmpty(Model.QuaTrinhCongTac))
                         {
-                            <p class="text-muted">Chưa có thông tin.</p>
+                            <p class="text-muted">@Html.Text("common.noInfo")</p>
                         }
                     </div>
 
-                    <!-- TAB 4: CÔNG BỐ & SHTT -->
+                    <!-- TAB 4: PUBLICATIONS AND IP -->
                     <div class="tab-pane fade" id="tab4">
-                        @* Mục 11: Sách & Chương sách đã xuất bản *@
+                        @* Section 11: books and book chapters *@
                         @if (!string.IsNullOrEmpty(Model.KetQuaNghienCuu))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-book-open me-1 text-primary"></i>Sách &amp; Chương sách đã xuất bản</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-book-open me-1 text-primary"></i>@Html.Text("expert.booksChapters")</h6>
                             <div class="mb-3">@Html.Raw(Model.KetQuaNghienCuu)</div>
                         }
-                        @* Mục 12: Bài báo khoa học / Báo cáo Hội nghị *@
+                        @* Section 12: scientific papers / conference reports *@
                         @if (!string.IsNullOrEmpty(Model.CongBoKhoaHoc))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-book me-1 text-primary"></i>Bài báo khoa học / Báo cáo Hội nghị</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-book me-1 text-primary"></i>@Html.Text("expert.publications")</h6>
                             <div class="mb-3">@Html.Raw(Model.CongBoKhoaHoc)</div>
                         }
-                        @* Mục 13: Bằng độc quyền Sáng chế / Tác quyền *@
+                        @* Section 13: patents / copyrights *@
                         @if (!string.IsNullOrEmpty(Model.SangChe))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-lightbulb me-1 text-warning"></i>Bằng độc quyền Sáng chế / Tác quyền</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-lightbulb me-1 text-warning"></i>@Html.Text("expert.patents")</h6>
                             <div class="mb-3">@Html.Raw(Model.SangChe)</div>
                         }
                         @if (string.IsNullOrEmpty(Model.KetQuaNghienCuu) && string.IsNullOrEmpty(Model.CongBoKhoaHoc) && string.IsNullOrEmpty(Model.SangChe))
                         {
-                            <p class="text-muted">Chưa có thông tin.</p>
+                            <p class="text-muted">@Html.Text("common.noInfo")</p>
                         }
                     </div>
 
-                    <!-- TAB 5: TƯ VẤN & DỰ ÁN -->
+                    <!-- TAB 5: CONSULTING AND PROJECTS -->
                     <div class="tab-pane fade" id="tab5">
                         @if (!string.IsNullOrEmpty(Model.DuAnNghienCuu))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-project-diagram me-1 text-primary"></i>Dự án nghiên cứu đã chủ trì</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-project-diagram me-1 text-primary"></i>@Html.Text("expert.researchProjects")</h6>
                             <div class="mb-3">@Html.Raw(Model.DuAnNghienCuu)</div>
                         }
                         @if (!string.IsNullOrEmpty(Model.DichVuText))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-concierge-bell me-1 text-primary"></i>Dịch vụ tư vấn chuyên sâu</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-concierge-bell me-1 text-primary"></i>@Html.Text("expert.deepConsulting")</h6>
                             <div class="mb-3 ps-3">@Html.Raw(Model.DichVuText)</div>
                         }
                         @if (!string.IsNullOrEmpty(Model.KinhNghiem))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-handshake me-1 text-primary"></i>Kinh nghiệm thực chiến tại Doanh nghiệp</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-handshake me-1 text-primary"></i>@Html.Text("expert.businessExperience")</h6>
                             <div>@Html.Raw(Model.KinhNghiem)</div>
                         }
                         @if (string.IsNullOrEmpty(Model.DuAnNghienCuu) && string.IsNullOrEmpty(Model.DichVuText) && string.IsNullOrEmpty(Model.KinhNghiem))
                         {
-                            <p class="text-muted">Chưa có thông tin.</p>
+                            <p class="text-muted">@Html.Text("common.noInfo")</p>
                         }
                     </div>
 
-                    <!-- TAB 6: MINH CHỨNG -->
+                    <!-- TAB 6: EVIDENCE -->
                     <div class="tab-pane fade" id="tab6">
                         @if (!string.IsNullOrEmpty(Model.HoSoDinhKem))
                         {
@@ -307,7 +307,7 @@
                                 .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                             if (files.Length > 0)
                             {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-paperclip me-1 text-primary"></i>Hồ sơ đính kèm</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-paperclip me-1 text-primary"></i>@Html.Text("expert.attachments")</h6>
                             <div class="list-group mb-3">
                                 @foreach (var f in files)
                                 {
@@ -325,12 +325,12 @@
                         }
                         @if (!string.IsNullOrEmpty(Model.HiepHoiKhoaHoc))
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-users me-1 text-primary"></i>Thành viên hiệp hội khoa học</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-users me-1 text-primary"></i>@Html.Text("expert.associations")</h6>
                             <p>@Model.HiepHoiKhoaHoc</p>
                         }
                         @if (Model.TuKhoa.Any())
                         {
-                            <h6 class="fw-semibold mb-2"><i class="fas fa-tags me-1 text-secondary"></i>Từ khóa</h6>
+                            <h6 class="fw-semibold mb-2"><i class="fas fa-tags me-1 text-secondary"></i>@Html.Text("common.keyword")</h6>
                             <div>
                                 @foreach (var kw in Model.TuKhoa)
                                 {
@@ -340,7 +340,7 @@
                         }
                         @if (string.IsNullOrEmpty(Model.HoSoDinhKem) && string.IsNullOrEmpty(Model.HiepHoiKhoaHoc) && !Model.TuKhoa.Any())
                         {
-                            <p class="text-muted">Chưa có thông tin.</p>
+                            <p class="text-muted">@Html.Text("common.noInfo")</p>
                         }
                     </div>
 
