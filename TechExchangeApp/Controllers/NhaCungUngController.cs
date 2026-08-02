@@ -126,11 +126,18 @@ namespace TechExchangeApp.Controllers
             string dichVuText  = ResolveCategoryText(entity.DichVu, langId, "<br>");
 
             // ── Resolve LoaiHinhToChuc ────────────────────────────────────
-            var loaiHinhMap = new Dictionary<string, string> {
-                {"VienNC","Viện/Trung tâm nghiên cứu"}, {"TruongDH","Trường Đại học"},
-                {"DNKHCN","Doanh nghiệp KH&CN"}, {"DNSX","Doanh nghiệp sản xuất"},
-                {"ToChucTG","Tổ chức trung gian/Tư vấn"}, {"Khac","Khác"}
-            };
+            var isEn = LangHelper.IsEnglish(HttpContext);
+            var loaiHinhMap = isEn
+                ? new Dictionary<string, string> {
+                    {"VienNC","Research institute/center"}, {"TruongDH","University"},
+                    {"DNKHCN","Science and technology enterprise"}, {"DNSX","Manufacturing enterprise"},
+                    {"ToChucTG","Intermediary/consulting organization"}, {"Khac","Other"}
+                }
+                : new Dictionary<string, string> {
+                    {"VienNC","Viện/Trung tâm nghiên cứu"}, {"TruongDH","Trường Đại học"},
+                    {"DNKHCN","Doanh nghiệp KH&CN"}, {"DNSX","Doanh nghiệp sản xuất"},
+                    {"ToChucTG","Tổ chức trung gian/Tư vấn"}, {"Khac","Khác"}
+                };
             string loaiHinhText = "";
             if (!string.IsNullOrWhiteSpace(entity.LoaiHinhToChuc))
             {
