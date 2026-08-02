@@ -19,7 +19,9 @@
 
     string categoryDesc = !string.IsNullOrWhiteSpace(Model.Description)
         ? Model.Description
-        : $"Tổng hợp các thiết bị, phần mềm, giải pháp và công nghệ thuộc lĩnh vực {Model.CateTitle}, phục vụ kết nối, giới thiệu và chuyển giao công nghệ.";
+        : (isEn
+            ? $"A collection of equipment, software, solutions and technologies in the {Model.CateTitle} field, for connection, promotion and technology transfer."
+            : $"Tổng hợp các thiết bị, phần mềm, giải pháp và công nghệ thuộc lĩnh vực {Model.CateTitle}, phục vụ kết nối, giới thiệu và chuyển giao công nghệ.");
 }
 
 <div class="columns-container tech-page">
@@ -29,7 +31,7 @@
         <nav class="catalog-breadcrumb" aria-label="breadcrumb">
             <partial name="_BreadcrumbHome" />
             <span>/</span>
-            <a href="@ProductsUrl()">Sản phẩm</a>
+            <a href="@ProductsUrl()">@Html.Text("common.products")</a>
             <span>/</span>
             <strong>@Model.CateTitle</strong>
         </nav>
@@ -39,10 +41,10 @@
             <div class="category-header-top">
                 <h1 class="category-title">@Model.CateTitle</h1>
                 <div class="category-meta">
-                    <span class="category-meta-chip"><i class="bi bi-box-seam"></i> @Model.Total sản phẩm</span>
+                    <span class="category-meta-chip"><i class="bi bi-box-seam"></i> @Model.Total @Html.Text("product.cate.productsUnit")</span>
                     @if (Model.Total > 0)
                     {
-                        <span class="category-meta-chip"><i class="bi bi-eye"></i> Hiển thị @startItem–@endItem</span>
+                        <span class="category-meta-chip"><i class="bi bi-eye"></i> @Html.Text("product.cate.showing") @startItem–@endItem</span>
                     }
                 </div>
             </div>
@@ -52,26 +54,26 @@
                     <form method="get" class="category-search input-group input-group-sm" role="search">
                         <input type="hidden" name="sort" value="@sortParam" />
                         <input type="hidden" name="pageSize" value="@Model.PageSize" />
-                        <input type="search" class="form-control" name="keyword" value="@Model.Keyword" placeholder="Tìm theo tên sản phẩm, thiết bị, giải pháp..." aria-label="Tìm kiếm" />
+                        <input type="search" class="form-control" name="keyword" value="@Model.Keyword" placeholder="@Html.Text("product.cate.searchPlaceholder")" aria-label="@Html.Text("common.search")" />
                         <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
                     </form>
-                    <select class="form-select form-select-sm category-sort" onchange="location.href='?sort=' + this.value + '&pageSize=@Model.PageSize&keyword=@kw'" aria-label="Sắp xếp">
-                        <option value="newest" selected="@(sortParam == "newest")">Mới cập nhật</option>
-                        <option value="name-asc" selected="@(sortParam == "name-asc")">Tên A–Z</option>
-                        <option value="name-desc" selected="@(sortParam == "name-desc")">Tên Z–A</option>
-                        <option value="price-asc" selected="@(sortParam == "price-asc")">Giá tăng dần</option>
-                        <option value="price-desc" selected="@(sortParam == "price-desc")">Giá giảm dần</option>
+                    <select class="form-select form-select-sm category-sort" onchange="location.href='?sort=' + this.value + '&pageSize=@Model.PageSize&keyword=@kw'" aria-label="@Html.Text("product.cate.sort")">
+                        <option value="newest" selected="@(sortParam == "newest")">@Html.Text("product.cate.sortNewest")</option>
+                        <option value="name-asc" selected="@(sortParam == "name-asc")">@Html.Text("product.cate.sortNameAsc")</option>
+                        <option value="name-desc" selected="@(sortParam == "name-desc")">@Html.Text("product.cate.sortNameDesc")</option>
+                        <option value="price-asc" selected="@(sortParam == "price-asc")">@Html.Text("product.cate.sortPriceAsc")</option>
+                        <option value="price-desc" selected="@(sortParam == "price-desc")">@Html.Text("product.cate.sortPriceDesc")</option>
                     </select>
-                    <select class="form-select form-select-sm category-page-size" onchange="location.href='?page=1&pageSize=' + this.value + '&sort=@sortParam&keyword=@kw'" aria-label="Số sản phẩm/trang">
+                    <select class="form-select form-select-sm category-page-size" onchange="location.href='?page=1&pageSize=' + this.value + '&sort=@sortParam&keyword=@kw'" aria-label="@Html.Text("product.cate.perPageAria")">
                         @foreach (var size in new[] { 12, 24, 36 })
                         {
                             if (size == Model.PageSize)
                             {
-                                <option value="@size" selected>@size / trang</option>
+                                <option value="@size" selected>@size @Html.Text("product.cate.perPage")</option>
                             }
                             else
                             {
-                                <option value="@size">@size / trang</option>
+                                <option value="@size">@size @Html.Text("product.cate.perPage")</option>
                             }
                         }
                     </select>
@@ -88,7 +90,7 @@
                 @if (Model.Total > 0)
                 {
                     <div class="catalog-info">
-                        Hiển thị <strong>@startItem–@endItem</strong> trong tổng số <strong>@Model.Total</strong> sản phẩm
+                        @Html.Text("product.cate.showing") <strong>@startItem–@endItem</strong> @Html.Text("product.cate.ofTotal") <strong>@Model.Total</strong> @Html.Text("product.cate.productsUnit")
                     </div>
                 }
 
@@ -96,8 +98,8 @@
                 {
                     <div class="catalog-empty">
                         <i class="bi bi-inbox"></i>
-                        <p>Chưa có sản phẩm nào trong lĩnh vực này.</p>
-                        <a href="@TechnologyUrl()" class="btn-back-catalog">← Quay lại danh sách công nghệ</a>
+                        <p>@Html.Text("product.cate.emptyField")</p>
+                        <a href="@TechnologyUrl()" class="btn-back-catalog">@Html.Text("product.cate.backToTech")</a>
                     </div>
                 }
                 else
@@ -124,12 +126,12 @@
                                         <p class="tech-card__desc">@p.Description</p>
                                     }
                                     <div class="tech-card__source">
-                                        <i class="bi bi-building"></i> Nhà cung ứng: @p.SupplierName
+                                        <i class="bi bi-building"></i> @Html.Text("product.cate.supplier") @p.SupplierName
                                     </div>
                                     <div class="tech-card__price">
-                                        Giá tham khảo: <strong>@(hasPriceText ? p.PriceText : "Liên hệ báo giá")</strong>
+                                        @Html.Text("product.cate.refPrice") <strong>@(hasPriceText ? p.PriceText : I18n.T(Context, "product.detail.priceContact"))</strong>
                                     </div>
-                                    <a href="@p.Url" class="tech-card__btn">Chi tiết <i class="bi bi-arrow-right"></i></a>
+                                    <a href="@p.Url" class="tech-card__btn">@Html.Text("common.details") <i class="bi bi-arrow-right"></i></a>
                                 </div>
                             </article>
                         }
@@ -139,10 +141,10 @@
                 <!-- ===== PAGINATION ===== -->
                 @if (totalPages > 1)
                 {
-                    <nav class="catalog-pagination" aria-label="Phân trang">
+                    <nav class="catalog-pagination" aria-label="@Html.Text("common.pagination")">
                         <ul>
                             <li class="@(curPage == 1 ? "disabled" : "")">
-                                <a href="?page=@(curPage - 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="Trang trước"><i class="bi bi-chevron-left"></i></a>
+                                <a href="?page=@(curPage - 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="@Html.Text("common.prevPage")"><i class="bi bi-chevron-left"></i></a>
                             </li>
                             @foreach (var pg in Model.Pages)
                             {
@@ -151,7 +153,7 @@
                                 </li>
                             }
                             <li class="@(curPage == totalPages ? "disabled" : "")">
-                                <a href="?page=@(curPage + 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="Trang sau"><i class="bi bi-chevron-right"></i></a>
+                                <a href="?page=@(curPage + 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="@Html.Text("common.nextPage")"><i class="bi bi-chevron-right"></i></a>
                             </li>
                         </ul>
                     </nav>
@@ -160,11 +162,11 @@
                 <!-- ===== CTA ===== -->
                 <section class="catalog-cta">
                     <div>
-                        <h2>Bạn chưa tìm thấy công nghệ, thiết bị hoặc giải pháp phù hợp trên Sàn?</h2>
-                        <p>Hãy gửi thông tin về nhu cầu tìm mua. Trung tâm sẽ hỗ trợ tiếp nhận yêu cầu, tìm kiếm sản phẩm phù hợp và kết nối bạn với các doanh nghiệp, tổ chức hoặc chuyên gia có khả năng cung cấp.</p>
+                        <h2>@Html.Text("product.cta.title")</h2>
+                        <p>@Html.Text("product.cta.button_desc")</p>
                     </div>
                     <div class="catalog-cta__actions">
-                        <a class="catalog-cta__primary" href="@($"{mainDomain}tim-mua-cong-nghe")">Gửi yêu cầu tìm mua</a>
+                        <a class="catalog-cta__primary" href="@(isEn ? $"{mainDomain}en/technology-demand" : $"{mainDomain}tim-mua-cong-nghe")">@Html.Text("product.cta.button")</a>
                     </div>
                 </section>
             </div>
@@ -175,7 +177,7 @@
 
                     <!-- Lĩnh vực -->
                     <div class="filter-sidebar__group">
-                        <h4 class="filter-title">Lĩnh vực công nghệ</h4>
+                        <h4 class="filter-title">@Html.Text("product.cate.techField")</h4>
                         <ul class="filter-sidebar__links category-list">
                             @foreach (var cat in Model.AllCategories)
                             {
@@ -193,7 +195,7 @@
                     @if (Model.Categories.Any())
                     {
                         <div class="filter-sidebar__group">
-                            <h4 class="filter-title">Danh mục con</h4>
+                            <h4 class="filter-title">@Html.Text("product.cate.subCategories")</h4>
                             <ul class="filter-sidebar__links">
                                 @foreach (var cate in Model.Categories)
                                 {
@@ -205,24 +207,24 @@
 
                     <!-- Khoảng giá -->
                     <div class="filter-sidebar__group filter-section">
-                        <h4 class="filter-title">Khoảng giá</h4>
-                        <label class="filter-check"><input type="checkbox" name="price" value="contact" /> Liên hệ báo giá</label>
-                        <label class="filter-check"><input type="checkbox" name="price" value="0-5" /> Dưới 5 triệu</label>
-                        <label class="filter-check"><input type="checkbox" name="price" value="5-20" /> 5 – 20 triệu</label>
-                        <label class="filter-check"><input type="checkbox" name="price" value="20+" /> Trên 20 triệu</label>
+                        <h4 class="filter-title">@Html.Text("product.cate.priceRange")</h4>
+                        <label class="filter-check"><input type="checkbox" name="price" value="contact" /> @Html.Text("product.detail.priceContact")</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="0-5" /> @Html.Text("product.cate.priceUnder5")</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="5-20" /> @Html.Text("product.cate.price5to20")</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="20+" /> @Html.Text("product.cate.priceOver20")</label>
                     </div>
 
                     <!-- Trạng thái -->
                     <div class="filter-sidebar__group filter-section">
-                        <h4 class="filter-title">Trạng thái</h4>
-                        <label class="filter-check"><input type="checkbox" name="status" value="ready" /> Sẵn sàng chuyển giao</label>
-                        <label class="filter-check"><input type="checkbox" name="status" value="intro" /> Đang giới thiệu</label>
-                        <label class="filter-check"><input type="checkbox" name="status" value="consult" /> Có tư vấn triển khai</label>
+                        <h4 class="filter-title">@Html.Text("common.status")</h4>
+                        <label class="filter-check"><input type="checkbox" name="status" value="ready" /> @Html.Text("product.cate.statusReady")</label>
+                        <label class="filter-check"><input type="checkbox" name="status" value="intro" /> @Html.Text("product.detail.statusIntroducing")</label>
+                        <label class="filter-check"><input type="checkbox" name="status" value="consult" /> @Html.Text("product.cate.statusConsult")</label>
                     </div>
 
                     <div class="filter-sidebar__actions">
-                        <button type="button" class="btn-filter-apply">Áp dụng</button>
-                        <button type="button" class="btn-filter-clear" onclick="location.href=location.pathname">Xóa lọc</button>
+                        <button type="button" class="btn-filter-apply">@Html.Text("product.cate.apply")</button>
+                        <button type="button" class="btn-filter-clear" onclick="location.href=location.pathname">@Html.Text("product.cate.clearFilter")</button>
                     </div>
                 </aside>
             </div>
