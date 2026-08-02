@@ -84,7 +84,7 @@
                 @if (Model.Related.Any())
                 {
                     <div class="news-detail-related">
-                        <h2 class="news-detail-related__title">Tin khác</h2>
+                        <h2 class="news-detail-related__title">@Html.Text("news.related")</h2>
                         <ul class="news-detail-related__list">
                             @foreach (var item in Model.Related)
                             {

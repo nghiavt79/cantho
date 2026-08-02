@@ -50,10 +50,13 @@ namespace TechExchangeApp.Controllers
             var product = await _context.SanPhamCNTBs.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.ID == id && x.ProductType == OcopProductType && x.StatusId == 3);
 
+            bool isEn = LangHelper.IsEnglish(HttpContext);
             if (product == null)
-                return Redirect($"{_mainDomain}ocop");
+                return Redirect(isEn ? $"{_mainDomain}en/ocop" : $"{_mainDomain}ocop");
 
-            var traceUrl = $"{_mainDomain}ocop/{ProductController.MakeURLFriendly(product.Name)}-{product.ID}";
+            var traceUrl = isEn
+                ? $"{_mainDomain}en/ocop/{ProductController.MakeURLFriendly(product.Name)}-{product.ID}"
+                : $"{_mainDomain}ocop/{ProductController.MakeURLFriendly(product.Name)}-{product.ID}";
 
             var relatedProducts = await _context.SanPhamCNTBs.AsNoTracking()
                 .Where(x => x.ProductType == OcopProductType && x.StatusId == 3 && x.ID != id)
@@ -76,7 +79,9 @@ namespace TechExchangeApp.Controllers
                 if (supplier != null)
                 {
                     model.SupplierName = supplier.FullName;
-                    model.SupplierUrl = $"{_mainDomain}nha-cung-ung/{ProductController.MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
+                    model.SupplierUrl = isEn
+                        ? $"{_mainDomain}en/suppliers/{ProductController.MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}"
+                        : $"{_mainDomain}nha-cung-ung/{ProductController.MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
                 }
             }
 

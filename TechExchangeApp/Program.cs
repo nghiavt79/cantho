@@ -378,6 +378,11 @@ app.MapControllerRoute(
     pattern: "en/ocop",
     defaults: new { controller = "Ocop", action = "Index" }
 );
+app.MapControllerRoute(
+    name: "en_ocop_detail",
+    pattern: "en/ocop/{slug}-{id:int}",
+    defaults: new { controller = "Ocop", action = "Detail" }
+);
 // TÃ¬m kiáº¿m tiáº¿ng Anh: /en/search -> Search.Index (middleware gáº¯n Lang=en).
 app.MapControllerRoute(
     name: "en_search",

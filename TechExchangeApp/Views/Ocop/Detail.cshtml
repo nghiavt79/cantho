@@ -1,13 +1,14 @@
 @model TechExchangeApp.ViewModel.OcopDetailViewModel
 @{
     var p = Model.Product;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     ViewData["Title"] = p.Name;
 
     string ProductImage(TechExchangeApp.Entities.SanPhamCNTB x) => Html.CookedImageURL("org", x.QuyTrinhHinhAnh);
     string ThumbImage(TechExchangeApp.Entities.SanPhamCNTB x) => Html.CookedImageURL("254-170", x.QuyTrinhHinhAnh);
 
     string RelatedUrl(TechExchangeApp.Entities.SanPhamCNTB x) =>
-        $"{Html.MainDomain()}ocop/{Html.MakeURLFriendly(x.Name)}-{x.ID}";
+        isEn ? $"{Html.MainDomain()}en/ocop/{Html.MakeURLFriendly(x.Name)}-{x.ID}" : $"{Html.MainDomain()}ocop/{Html.MakeURLFriendly(x.Name)}-{x.ID}";
 
     string Stars(int? soSao)
     {
@@ -28,7 +29,7 @@
                     <nav class="tech-breadcrumb" aria-label="breadcrumb">
                         <partial name="_BreadcrumbHome" />
                         <span>/</span>
-                        <a href="@(Html.MainDomain())ocop">OCOP</a>
+                        <a href="@(Html.MainDomain())@(isEn ? "en/ocop" : "ocop")">OCOP</a>
                         <span>/</span>
                         <strong>@p.Name</strong>
                     </nav>
@@ -49,7 +50,7 @@
                                 <div class="ocop-detail__origin"><i class="bi bi-geo-alt-fill"></i> @p.XuatXu</div>
                             }
 
-                            <p class="ocop-detail__desc">@(string.IsNullOrWhiteSpace(p.MoTa) ? "Đang cập nhật thông tin sản phẩm." : p.MoTa)</p>
+                            <p class="ocop-detail__desc">@(string.IsNullOrWhiteSpace(p.MoTa) ? I18n.T(Context, "ocop.descFallback") : p.MoTa)</p>
 
                             <div class="ocop-cert-badges">
                                 @if (!string.IsNullOrWhiteSpace(p.ChungNhanKhacText))
@@ -68,46 +69,46 @@
 
                             <div class="d-flex gap-2 mt-3 flex-wrap">
                                 <a href="@(Html.MainDomain())OcopOrder/Create?productId=@p.ID" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-paper-plane me-1"></i> Gửi yêu cầu đặt mua
+                                    <i class="fa fa-paper-plane me-1"></i> @Html.Text("ocop.sendOrder")
                                 </a>
                             </div>
                         </div>
 
                         <div class="ocop-trace-panel">
-                            <div class="ocop-trace-panel__head"><i class="bi bi-check-circle-fill"></i> Đã xác thực nguồn gốc</div>
+                            <div class="ocop-trace-panel__head"><i class="bi bi-check-circle-fill"></i> @Html.Text("ocop.verified")</div>
 
                             <div class="ocop-qr-box">
-                                <img src="@Model.QrDataUri" alt="Mã QR truy xuất nguồn gốc" />
+                                <img src="@Model.QrDataUri" alt="@Html.Text("ocop.qrAlt")" />
                             </div>
-                            <div class="ocop-qr-caption">Quét mã để xem lại hồ sơ truy xuất này</div>
+                            <div class="ocop-qr-caption">@Html.Text("ocop.qrCaption")</div>
 
                             @if (!string.IsNullOrWhiteSpace(p.MaTruyXuat))
                             {
-                                <div class="ocop-trace-row"><span class="k">Mã truy xuất</span><span class="v">@p.MaTruyXuat</span></div>
+                                <div class="ocop-trace-row"><span class="k">@Html.Text("ocop.traceCode")</span><span class="v">@p.MaTruyXuat</span></div>
                             }
                             @if (!string.IsNullOrWhiteSpace(Model.SupplierName))
                             {
-                                <div class="ocop-trace-row"><span class="k">Đơn vị sản xuất</span><span class="v"><a href="@Model.SupplierUrl">@Model.SupplierName</a></span></div>
+                                <div class="ocop-trace-row"><span class="k">@Html.Text("ocop.producer")</span><span class="v"><a href="@Model.SupplierUrl">@Model.SupplierName</a></span></div>
                             }
                             else if (!string.IsNullOrWhiteSpace(p.HoTen))
                             {
-                                <div class="ocop-trace-row"><span class="k">Đơn vị sản xuất</span><span class="v">@p.HoTen</span></div>
+                                <div class="ocop-trace-row"><span class="k">@Html.Text("ocop.producer")</span><span class="v">@p.HoTen</span></div>
                             }
                             @if (!string.IsNullOrWhiteSpace(p.DiaChi))
                             {
-                                <div class="ocop-trace-row"><span class="k">Địa chỉ</span><span class="v">@p.DiaChi</span></div>
+                                <div class="ocop-trace-row"><span class="k">@Html.Text("product.equip.address")</span><span class="v">@p.DiaChi</span></div>
                             }
                             @if (!string.IsNullOrWhiteSpace(p.XuatXu))
                             {
-                                <div class="ocop-trace-row"><span class="k">Vùng nguyên liệu</span><span class="v">@p.XuatXu</span></div>
+                                <div class="ocop-trace-row"><span class="k">@Html.Text("ocop.materialRegion")</span><span class="v">@p.XuatXu</span></div>
                             }
                             @if (p.SoSaoOCOP is > 0)
                             {
-                                <div class="ocop-trace-row"><span class="k">Xếp hạng</span><span class="v">OCOP @p.SoSaoOCOP sao</span></div>
+                                <div class="ocop-trace-row"><span class="k">@Html.Text("ocop.ranking")</span><span class="v">OCOP @p.SoSaoOCOP @Html.Text("ocop.stars")</span></div>
                             }
                             @if (p.Modified.HasValue)
                             {
-                                <div class="ocop-trace-row"><span class="k">Cập nhật</span><span class="v">@p.Modified.Value.ToString("dd/MM/yyyy")</span></div>
+                                <div class="ocop-trace-row"><span class="k">@Html.Text("product.detail.updated")</span><span class="v">@p.Modified.Value.ToString("dd/MM/yyyy")</span></div>
                             }
                         </div>
                     </div>
@@ -115,7 +116,7 @@
                     @if (Model.RelatedProducts.Any())
                     {
                         <div class="ocop-section-head">
-                            <h2>Sản phẩm OCOP khác</h2>
+                            <h2>@Html.Text("ocop.otherProducts")</h2>
                         </div>
                         <div class="ocop-related-grid" style="margin-bottom: 40px;">
                             @foreach (var rp in Model.RelatedProducts)
@@ -140,7 +141,7 @@
                         </div>
                     }
 
-                    <a class="ocop-back-link" href="@(Html.MainDomain())ocop"><i class="bi bi-arrow-left"></i> Quay lại Góc trưng bày OCOP</a>
+                    <a class="ocop-back-link" href="@(Html.MainDomain())@(isEn ? "en/ocop" : "ocop")"><i class="bi bi-arrow-left"></i> @Html.Text("ocop.backToShowcase")</a>
                 </div>
             </div>
         </div>
