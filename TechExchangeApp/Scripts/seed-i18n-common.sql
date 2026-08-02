@@ -26,7 +26,10 @@ INSERT INTO @seed VALUES
  (N'common.userGuide',     N'Hướng dẫn sử dụng',    N'User guide'),
  (N'common.vr360',         N'Trải nghiệm VR360°',   N'VR360° experience'),
  (N'common.expertNetwork', N'Mạng lưới chuyên gia', N'Expert network'),
- (N'common.traceability',  N'Truy xuất nguồn gốc',  N'Traceability');
+ (N'common.traceability',  N'Truy xuất nguồn gốc',  N'Traceability'),
+ (N'common.featured',      N'Nổi bật',              N'Featured'),
+ (N'common.new',           N'Mới',                  N'New'),
+ (N'common.techUpdating',  N'Công nghệ đang cập nhật', N'Technology updating');
 
 INSERT INTO dbo.UiTranslations ([Key], Vi, En, Creator)
 SELECT s.[Key], s.Vi, s.En, 'i18n-common-seed'

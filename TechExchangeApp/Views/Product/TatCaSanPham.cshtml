@@ -1,7 +1,7 @@
 @model TechExchangeApp.ViewModel.AllProductsViewModel
 @{
     var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
-    ViewData["Title"] = isEn ? "Products" : "Sản phẩm";
+    ViewData["Title"] = I18n.T(Context, "common.products");
 }
 
 @section Styles {

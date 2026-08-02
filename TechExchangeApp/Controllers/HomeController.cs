@@ -9,6 +9,7 @@ using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using TechExchangeApp.Helpers;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 using TechExchangeApp.ViewModel;
 
 namespace TechExchangeApp.Controllers
@@ -350,10 +351,10 @@ namespace TechExchangeApp.Controllers
             return "";
         }
 
-        private static (string Badge, string BadgeType) ProductBadge(SanPhamCNTB x, bool isEn)
+        private static (string Badge, string BadgeType) ProductBadge(SanPhamCNTB x, HttpContext http)
         {
-            if (x.IsHot == true) return (isEn ? "Featured" : "Nổi bật", "hot");
-            if (x.Created.HasValue && x.Created.Value >= DateTime.Now.AddDays(-30)) return (isEn ? "New" : "Mới", "new");
+            if (x.IsHot == true) return (I18n.T(http, "common.featured"), "hot");
+            if (x.Created.HasValue && x.Created.Value >= DateTime.Now.AddDays(-30)) return (I18n.T(http, "common.new"), "new");
             return ("", "new");
         }
 
@@ -361,16 +362,16 @@ namespace TechExchangeApp.Controllers
         {
             var result = items.Select(x =>
             {
-                var (badge, badgeType) = ProductBadge(x, isEn);
+                var (badge, badgeType) = ProductBadge(x, HttpContext);
                 return new HomeTechCardVm
                 {
-                    Title = x.Name ?? (isEn ? "Technology updating" : "Công nghệ đang cập nhật"),
+                    Title = x.Name ?? I18n.T(HttpContext, "common.techUpdating"),
                     Description = CleanSummary(x.MoTaNgan ?? x.MoTa, 120),
                     ImageUrl = ProductController.CookedImageURL("254-170", x.QuyTrinhHinhAnh, _mainDomain),
                     Url = isEn ? $"{_mainDomain}en/products/{x.QueryString}-{x.ID}" : $"{_mainDomain}san-pham/chi-tiet/{x.QueryString}-{x.ID}",
-                    Category = x.ProductType == 2 ? (isEn ? "Equipment" : "Thiết bị")
-                             : x.ProductType == 3 ? (isEn ? "IP Assets" : "Tài sản trí tuệ")
-                             : (isEn ? "Technology" : "Công nghệ"),
+                    Category = x.ProductType == 2 ? I18n.T(HttpContext, "common.equipment")
+                             : x.ProductType == 3 ? I18n.T(HttpContext, "common.ipAssetsFull")
+                             : I18n.T(HttpContext, "common.technology"),
                     Company = ProductCompany(x),
                     Badge = badge,
                     BadgeType = badgeType
