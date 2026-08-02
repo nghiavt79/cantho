@@ -10,13 +10,13 @@
 {
     <div class="dvtv-empty">
         <i class="fa fa-user-tie fa-2x mb-3 text-muted"></i>
-        <p>Không tìm thấy nhà tư vấn nào phù hợp.</p>
+        <p>@Html.Text("dichvu.noConsultants")</p>
     </div>
 }
 else
 {
     <div class="dvtv-result-info">
-        Hiển thị <strong>@startIdx–@endIdx</strong> trong tổng số <strong>@Model.TotalCount</strong> nhà tư vấn
+        @Html.Text("product.cate.showing") <strong>@startIdx–@endIdx</strong> @Html.Text("product.cate.ofTotal") <strong>@Model.TotalCount</strong> @Html.Text("dichvu.consultantsCount")
     </div>
 
     <div class="dvtv-card-list">
@@ -47,7 +47,7 @@ else
                         {
                             <span class="dvtv-card__role">@row.ChucVu</span>
                         }
-                        <span class="dvtv-card__stars" title="Đánh giá: @star/5">@stars</span>
+                        <span class="dvtv-card__stars" title="@Html.Text("dichvu.rating") @star/5">@stars</span>
                     </div>
                 </div>
                 <div class="dvtv-card__body">
@@ -65,7 +65,7 @@ else
                     }
                 </div>
                 <div class="dvtv-card__footer">
-                    <a href="@detailUrl" class="dvtv-btn dvtv-btn--sm dvtv-btn--accent">Xem hồ sơ</a>
+                    <a href="@detailUrl" class="dvtv-btn dvtv-btn--sm dvtv-btn--accent">@Html.Text("dichvu.viewProfile")</a>
                 </div>
             </article>
         }
@@ -77,7 +77,7 @@ else
         <nav class="dvtv-pagination">
             @if (Model.CurrentPage > 1)
             {
-                <a href="javascript:void(0)" class="dvtv-page-link" data-page="@(Model.CurrentPage - 1)"><i class="fa fa-chevron-left"></i> Trước</a>
+                <a href="javascript:void(0)" class="dvtv-page-link" data-page="@(Model.CurrentPage - 1)"><i class="fa fa-chevron-left"></i> @Html.Text("common.prev")</a>
             }
             @foreach (var pg in Model.Pages)
             {
@@ -85,7 +85,7 @@ else
             }
             @if (Model.CurrentPage < Model.TotalPage)
             {
-                <a href="javascript:void(0)" class="dvtv-page-link" data-page="@(Model.CurrentPage + 1)">Sau <i class="fa fa-chevron-right"></i></a>
+                <a href="javascript:void(0)" class="dvtv-page-link" data-page="@(Model.CurrentPage + 1)">@Html.Text("common.next") <i class="fa fa-chevron-right"></i></a>
             }
         </nav>
     }

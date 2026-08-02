@@ -1,7 +1,7 @@
 @model TechExchangeApp.ViewModel.DichVuTuVanIndexVm
 
 @{
-    ViewData["Title"] = "Dịch vụ tư vấn khoa học công nghệ";
+    ViewData["Title"] = I18n.T(Context, "dichvu.pageTitle");
     var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     var contactUrl = isEn ? "/en/contact" : "/lien-he";
 }
@@ -76,14 +76,14 @@
 <section class="dvtv-hero">
     <div class="container">
         <nav class="dvtv-breadcrumb" aria-label="breadcrumb">
-            <partial name="_BreadcrumbHome" /><span>/</span><span>Dịch vụ tư vấn</span>
+            <partial name="_BreadcrumbHome" /><span>/</span><span>@Html.Text("dichvu.breadcrumb")</span>
         </nav>
-        <h1 class="dvtv-hero__title">Dịch vụ tư vấn khoa học, công nghệ và đổi mới sáng tạo</h1>
-        <p class="dvtv-hero__desc">Kết nối doanh nghiệp, tổ chức, cá nhân với đơn vị tư vấn và chuyên gia hàng đầu trong lĩnh vực khoa học công nghệ tại Thành phố Cần Thơ.</p>
+        <h1 class="dvtv-hero__title">@Html.Text("dichvu.title")</h1>
+        <p class="dvtv-hero__desc">@Html.Text("dichvu.subtitle")</p>
         <div class="dvtv-hero__actions">
-            <a href="@contactUrl" class="dvtv-btn dvtv-btn--primary"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
+            <a href="@contactUrl" class="dvtv-btn dvtv-btn--primary"><i class="fa fa-paper-plane me-2"></i>@Html.Text("service.sidebar.cta")</a>
             <a href="#tab-donvi" class="dvtv-btn dvtv-btn--outline" onclick="$('#dvtvTabs button[data-bs-target=\'#tab-donvi\']').tab('show');">
-                <i class="fa fa-building me-2"></i>Tìm đơn vị tư vấn
+                <i class="fa fa-building me-2"></i>@Html.Text("dichvu.findUnit")
             </a>
         </div>
     </div>
@@ -99,13 +99,13 @@
                 <div class="dvtv-filter-card">
                     <div class="row g-3 align-items-end">
                         <div class="col-md-5">
-                            <label class="dvtv-filter-label">Từ khóa</label>
-                            <input type="text" id="filterKeyword" class="form-control" placeholder="Nhập tên đơn vị, chuyên gia...">
+                            <label class="dvtv-filter-label">@Html.Text("common.keyword")</label>
+                            <input type="text" id="filterKeyword" class="form-control" placeholder="@Html.Text("dichvu.searchPh")">
                         </div>
                         <div class="col-md-4">
-                            <label class="dvtv-filter-label">Lĩnh vực tư vấn</label>
+                            <label class="dvtv-filter-label">@Html.Text("dichvu.field")</label>
                             <select id="filterLinhVuc" class="form-select">
-                                <option value="0">Tất cả lĩnh vực</option>
+                                <option value="0">@Html.Text("common.allFields")</option>
                                 @if (Model.DichVuTuVan?.DichVuOptions != null)
                                 {
                                     foreach (var opt in Model.DichVuTuVan.DichVuOptions.Where(o => o.Value != "0"))
@@ -117,7 +117,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="d-flex gap-2">
-                                <button type="button" id="btnFilterSearch" class="dvtv-btn dvtv-btn--primary flex-fill"><i class="fa fa-search me-1"></i>Tìm kiếm</button>
+                                <button type="button" id="btnFilterSearch" class="dvtv-btn dvtv-btn--primary flex-fill"><i class="fa fa-search me-1"></i>@Html.Text("common.search")</button>
                                 <button type="button" id="btnFilterClear" class="dvtv-btn dvtv-btn--outline-sm"><i class="fa fa-times"></i></button>
                             </div>
                         </div>
@@ -128,12 +128,12 @@
                 <ul class="nav dvtv-tabs" id="dvtvTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-donvi" type="button" role="tab">
-                            <i class="fa fa-building me-2"></i>Đơn vị tư vấn
+                            <i class="fa fa-building me-2"></i>@Html.Text("dichvu.tabUnit")
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-nhatuvan" type="button" role="tab">
-                            <i class="fa fa-user-tie me-2"></i>Nhà tư vấn
+                            <i class="fa fa-user-tie me-2"></i>@Html.Text("dichvu.tabConsultant")
                         </button>
                     </li>
                 </ul>
@@ -153,13 +153,13 @@
             <div class="col-lg-3">
                 <aside class="dvtv-sidebar">
                     <div class="dvtv-sidebar-card dvtv-sidebar-card--cta">
-                        <h3 class="dvtv-sidebar-title"><i class="fa fa-headset me-2"></i>Bạn cần tư vấn?</h3>
-                        <p class="dvtv-sidebar-text">Gửi yêu cầu tư vấn để được kết nối với đơn vị và chuyên gia phù hợp nhất.</p>
-                        <a href="@contactUrl" class="dvtv-btn dvtv-btn--primary w-100"><i class="fa fa-paper-plane me-2"></i>Gửi yêu cầu tư vấn</a>
+                        <h3 class="dvtv-sidebar-title"><i class="fa fa-headset me-2"></i>@Html.Text("dichvu.needConsult")</h3>
+                        <p class="dvtv-sidebar-text">@Html.Text("dichvu.ctaSidebar")</p>
+                        <a href="@contactUrl" class="dvtv-btn dvtv-btn--primary w-100"><i class="fa fa-paper-plane me-2"></i>@Html.Text("service.sidebar.cta")</a>
                     </div>
 
                     <div class="dvtv-sidebar-card">
-                        <h3 class="dvtv-sidebar-title"><i class="fa fa-tags me-2"></i>Lĩnh vực tư vấn phổ biến</h3>
+                        <h3 class="dvtv-sidebar-title"><i class="fa fa-tags me-2"></i>@Html.Text("dichvu.popularFields")</h3>
                         <div class="dvtv-tag-cloud">
                             @if (Model.DichVuTuVan?.DichVuOptions != null)
                             {
