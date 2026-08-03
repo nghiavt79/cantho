@@ -161,6 +161,34 @@ namespace TechExchangeApp.Services
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Listing phân trang theo ProductType. IsHot xếp trước rồi tới ngày cập nhật mới nhất —
+        /// cùng thứ tự với GetNewProductsAsync(hotFirst: true) để trang OCOP nhất quán với
+        /// trang sản phẩm. Lọc LanguageId nên bản tiếng Anh chỉ lấy dòng LanguageId = 2.
+        /// </summary>
+        public async Task<List<SanPhamCNTB>> GetPagedProductsByProductTypeAsync(
+            int productType, int languageId, int page, int pageSize)
+        {
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 12;
+
+            return await _context.SanPhamCNTBs
+                .AsNoTracking()
+                .Where(x => x.ProductType == productType && x.LanguageId == languageId && x.StatusId == 3)
+                .OrderByDescending(x => x.IsHot == true)
+                .ThenByDescending(x => x.Modified ?? x.Created)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetProductCountByProductTypeAsync(int productType, int languageId)
+        {
+            return await _context.SanPhamCNTBs
+                .AsNoTracking()
+                .CountAsync(x => x.ProductType == productType && x.LanguageId == languageId && x.StatusId == 3);
+        }
+
         public async Task<List<SanPhamCNTB>> GetProductsByCategoryAndProductTypeAsync(
             int cateId, int productType, int languageId, int take)
         {

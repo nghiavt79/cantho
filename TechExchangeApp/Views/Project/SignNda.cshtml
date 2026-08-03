@@ -1,5 +1,6 @@
 @{
-    ViewData["Title"] = "Ký NDA";
+    ViewData["Title"] = Html.Text("proj.nda.title");
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     var projectId = ViewBag.ProjectId;
     var projectName = ViewBag.ProjectName;
     var deadline = ViewBag.Deadline;
@@ -11,45 +12,46 @@
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">
-                        <i class="fas fa-file-signature"></i> Ký thỏa thuận bảo mật (NDA)
+                        <i class="fas fa-file-signature"></i> @Html.Text("proj.nda.heading")
                     </h4>
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i>
-                        <strong>Dự án:</strong> @projectName<br>
-                        <strong>Hạn chót:</strong> @deadline?.ToString("dd/MM/yyyy HH:mm")
+                        <strong>@Html.Text("proj.nda.projectLabel")</strong> @projectName<br>
+                        <strong>@Html.Text("proj.nda.deadlineLabel")</strong> @deadline?.ToString(isEn ? "MM/dd/yyyy HH:mm" : "dd/MM/yyyy HH:mm")
                     </div>
 
                     <div class="nda-content p-4 border rounded bg-light mb-4" style="max-height: 400px; overflow-y: auto;">
-                        <h5 class="text-center mb-4">THỎA THUẬN BẢO MẬT THÔNG TIN</h5>
-                        
-                        <p><strong>1. MỤC ĐÍCH</strong></p>
-                        <p>Thỏa thuận này nhằm bảo vệ thông tin bí mật được trao đổi giữa các bên trong quá trình tham gia dự án chuyển giao công nghệ.</p>
+                        @* Toàn văn NDA. Bản tiếng Anh CẦN RÀ SOÁT PHÁP LÝ trước khi dùng thật. *@
+                        <h5 class="text-center mb-4">@Html.Text("proj.nda.docTitle")</h5>
 
-                        <p><strong>2. ĐỊNH NGHĨA THÔNG TIN BÍ MẬT</strong></p>
-                        <p>Thông tin bí mật bao gồm nhưng không giới hạn:</p>
+                        <p><strong>@Html.Text("proj.nda.s1Title")</strong></p>
+                        <p>@Html.Text("proj.nda.s1Body")</p>
+
+                        <p><strong>@Html.Text("proj.nda.s2Title")</strong></p>
+                        <p>@Html.Text("proj.nda.s2Body")</p>
                         <ul>
-                            <li>Thông tin kỹ thuật, công nghệ</li>
-                            <li>Thông tin kinh doanh, tài chính</li>
-                            <li>Kế hoạch, chiến lược phát triển</li>
-                            <li>Thông tin khách hàng, đối tác</li>
+                            <li>@Html.Text("proj.nda.s2i1")</li>
+                            <li>@Html.Text("proj.nda.s2i2")</li>
+                            <li>@Html.Text("proj.nda.s2i3")</li>
+                            <li>@Html.Text("proj.nda.s2i4")</li>
                         </ul>
 
-                        <p><strong>3. NGHĨA VỤ BẢO MẬT</strong></p>
-                        <p>Bên nhận thông tin cam kết:</p>
+                        <p><strong>@Html.Text("proj.nda.s3Title")</strong></p>
+                        <p>@Html.Text("proj.nda.s3Body")</p>
                         <ul>
-                            <li>Không tiết lộ thông tin cho bên thứ ba</li>
-                            <li>Chỉ sử dụng thông tin cho mục đích dự án</li>
-                            <li>Bảo vệ thông tin với mức độ bảo mật cao nhất</li>
-                            <li>Trả lại hoặc hủy thông tin khi kết thúc dự án</li>
+                            <li>@Html.Text("proj.nda.s3i1")</li>
+                            <li>@Html.Text("proj.nda.s3i2")</li>
+                            <li>@Html.Text("proj.nda.s3i3")</li>
+                            <li>@Html.Text("proj.nda.s3i4")</li>
                         </ul>
 
-                        <p><strong>4. THỜI HẠN</strong></p>
-                        <p>Thỏa thuận này có hiệu lực kể từ ngày ký và kéo dài trong suốt thời gian thực hiện dự án cộng thêm 5 năm sau khi kết thúc.</p>
+                        <p><strong>@Html.Text("proj.nda.s4Title")</strong></p>
+                        <p>@Html.Text("proj.nda.s4Body")</p>
 
-                        <p><strong>5. TRÁCH NHIỆM</strong></p>
-                        <p>Bên vi phạm thỏa thuận phải chịu trách nhiệm bồi thường thiệt hại theo quy định pháp luật.</p>
+                        <p><strong>@Html.Text("proj.nda.s5Title")</strong></p>
+                        <p>@Html.Text("proj.nda.s5Body")</p>
                     </div>
 
                     <form asp-action="SignNda" method="post">
@@ -59,16 +61,16 @@
                         <div class="form-check mb-4">
                             <input class="form-check-input" type="checkbox" id="agreeCheck" required>
                             <label class="form-check-label" for="agreeCheck">
-                                <strong>Tôi đã đọc và đồng ý với các điều khoản trong thỏa thuận bảo mật này</strong>
+                                <strong>@Html.Text("proj.nda.agreeCheckbox")</strong>
                             </label>
                         </div>
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg" id="signButton" disabled>
-                                <i class="fas fa-signature"></i> Ký thỏa thuận
+                                <i class="fas fa-signature"></i> @Html.Text("proj.nda.signButton")
                             </button>
                             <a asp-action="InvitedProjects" asp-controller="Seller" class="btn btn-outline-secondary">
-                                <i class="fas fa-times"></i> Hủy
+                                <i class="fas fa-times"></i> @Html.Text("common.cancel")
                             </a>
                         </div>
                     </form>

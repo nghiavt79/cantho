@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 
 namespace TechExchangeApp.Controllers
 {
@@ -69,10 +70,10 @@ namespace TechExchangeApp.Controllers
                 // Return JSON for AJAX requests
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    return Json(new { success = true, message = "Đã thêm consultant thành công!" });
+                    return Json(new { success = true, message = I18n.T(HttpContext, "projmem.addSuccess") });
                 }
 
-                TempData["SuccessMessage"] = "Đã thêm consultant thành công!";
+                TempData["SuccessMessage"] = I18n.T(HttpContext, "projmem.addSuccess");
                 return RedirectToAction("Index", new { projectId });
             }
             catch (InvalidOperationException ex)
@@ -93,10 +94,10 @@ namespace TechExchangeApp.Controllers
                 
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    return Json(new { success = false, message = "Đã xảy ra lỗi khi thêm consultant. Vui lòng thử lại." });
+                    return Json(new { success = false, message = I18n.T(HttpContext, "projmem.addError") });
                 }
                 
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi khi thêm consultant. Vui lòng thử lại.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "projmem.addError");
                 return RedirectToAction("Index", new { projectId });
             }
         }
@@ -116,10 +117,10 @@ namespace TechExchangeApp.Controllers
 
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    return Json(new { success = true, message = "Đã xóa thành viên thành công!" });
+                    return Json(new { success = true, message = I18n.T(HttpContext, "projmem.removeSuccess") });
                 }
 
-                TempData["SuccessMessage"] = "Đã xóa thành viên thành công!";
+                TempData["SuccessMessage"] = I18n.T(HttpContext, "projmem.removeSuccess");
                 return RedirectToAction("Index", new { projectId });
             }
             catch (InvalidOperationException ex)
@@ -140,10 +141,10 @@ namespace TechExchangeApp.Controllers
 
                 if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                 {
-                    return Json(new { success = false, message = "Đã xảy ra lỗi khi xóa thành viên. Vui lòng thử lại." });
+                    return Json(new { success = false, message = I18n.T(HttpContext, "projmem.removeError") });
                 }
 
-                TempData["ErrorMessage"] = "Đã xảy ra lỗi khi xóa thành viên. Vui lòng thử lại.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "projmem.removeError");
                 return RedirectToAction("Index", new { projectId });
             }
         }

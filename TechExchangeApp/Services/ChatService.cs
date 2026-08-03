@@ -10,11 +10,16 @@ namespace TechExchangeApp.Services
     {
         private readonly AppDbContext _context;
         private readonly INotificationQueueService _notifQueue;
+        // Dùng cho các chuỗi hiển thị theo request (lỗi trả về client, tên hiển thị mặc định).
+        // KHÔNG dùng cho nội dung ghi vào DB — phần đó vẫn tiếng Việt, xử lý ở đợt riêng.
+        private readonly TechExchangeApp.Services.Localization.IUiTextService _ui;
 
-        public ChatService(AppDbContext context, INotificationQueueService notifQueue)
+        public ChatService(AppDbContext context, INotificationQueueService notifQueue,
+            TechExchangeApp.Services.Localization.IUiTextService ui)
         {
             _context = context;
             _notifQueue = notifQueue;
+            _ui = ui;
         }
 
         // ── Start or Resume Conversation ────────────────────────────────────────
@@ -26,17 +31,17 @@ namespace TechExchangeApp.Services
                 .FirstOrDefaultAsync(p => p.ID == productId && p.StatusId == 3);
 
             if (product == null)
-                return new ChatStartResult { Success = false, Error = "Sản phẩm không tồn tại." };
+                return new ChatStartResult { Success = false, Error = _ui.Text("chat.err.productNotFound") };
 
             // 2) Determine supplier UserId
             int? supplierUserId = await ResolveSupplierUserIdAsync(product);
 
             if (supplierUserId == null || supplierUserId == 0)
-                return new ChatStartResult { Success = false, Error = "Không tìm thấy nhà cung ứng." };
+                return new ChatStartResult { Success = false, Error = _ui.Text("chat.err.supplierNotFound") };
 
             // 3) Cannot chat with self
             if (supplierUserId == buyerUserId)
-                return new ChatStartResult { Success = false, Error = "Bạn không thể liên hệ chính mình." };
+                return new ChatStartResult { Success = false, Error = _ui.Text("chat.err.selfContact") };
 
             string buyerIdStr = buyerUserId.ToString();
             string supplierIdStr = supplierUserId.Value.ToString();
@@ -220,7 +225,7 @@ namespace TechExchangeApp.Services
                         .Where(u => u.Id == sidInt)
                         .Select(u => u.UserName)
                         .FirstOrDefaultAsync();
-                    senderNames[sid] = name ?? "Người dùng";
+                    senderNames[sid] = name ?? _ui.Text("chat.defaultUserName");
                 }
             }
 
@@ -245,7 +250,7 @@ namespace TechExchangeApp.Services
                 Messages = messages.Select(m => new ChatMessageVm
                 {
                     Id = m.Id,
-                    SenderName = senderNames.GetValueOrDefault(m.SenderUserId, "Người dùng"),
+                    SenderName = senderNames.GetValueOrDefault(m.SenderUserId, _ui.Text("chat.defaultUserName")),
                     IsMe = m.SenderUserId == uid,
                     IsSystem = m.IsSystem,
                     Message = m.Message,
@@ -429,7 +434,7 @@ namespace TechExchangeApp.Services
                     .FirstOrDefaultAsync();
                 if (!string.IsNullOrEmpty(name)) return name!;
             }
-            return "Người dùng";
+            return _ui.Text("chat.defaultUserName");
         }
 
         /// <summary>Tên đối tác hiển thị, an toàn cho hội thoại hỗ trợ chưa gán.</summary>
@@ -442,7 +447,7 @@ namespace TechExchangeApp.Services
                 {
                     if (c.AssignedStaffUserId is int staffId && staffId > 0)
                         return await ResolveUserNameAsync(staffId.ToString());
-                    return "Trung tâm hỗ trợ";
+                    return _ui.Text("chat.supportCenter");
                 }
                 // Nhân viên nhìn vào → đối tác là người gửi
                 return await ResolveUserNameAsync(c.BuyerUserId);

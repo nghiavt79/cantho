@@ -1,7 +1,9 @@
 @model List<TechExchangeApp.ViewModel.ProjectStepNavVm>
 
 @{
-    const string mergedStepName = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
+    // Tên bước gộp 5+6 — dùng chung một key với Dashboard và Project/Details
+    // thay cho ba bản sao chuỗi cứng như trước.
+    var mergedStepName = Html.Text("dash.step.5");
     var sourceSteps = Model.Where(s => s.IsVisible).ToList();
     var visibleSteps = sourceSteps.Where(s => s.StepNumber != 6).ToList();
     var totalVisible = visibleSteps.Count;
@@ -25,12 +27,12 @@
             <!-- Header summary -->
             <div class="tx-workflow-header">
                 <div class="tx-workflow-heading">
-                    <h3 class="tx-workflow-title">Tiến trình giao dịch</h3>
-                    <p class="tx-workflow-subtitle">Theo dõi toàn bộ quy trình chuyển giao công nghệ</p>
+                    <h3 class="tx-workflow-title">@Html.Text("proj.nav.title")</h3>
+                    <p class="tx-workflow-subtitle">@Html.Text("proj.nav.subtitle")</p>
                 </div>
                 <div class="tx-workflow-summary">
                     <span class="tx-workflow-chip">
-                        <i class="fas fa-list-check" aria-hidden="true"></i>@completedCount/@totalVisible bước
+                        <i class="fas fa-list-check" aria-hidden="true"></i>@completedCount/@totalVisible @Html.Text("proj.nav.stepsSuffix")
                     </span>
                     <span class="tx-workflow-chip tx-workflow-chip-percent">@progressPercent%</span>
                 </div>
@@ -58,9 +60,9 @@
                         @if (step.IsNotApplicable)
                         {
                             <span class="nav-link disabled tx-workflow-node-link not-applicable" aria-disabled="true"
-                                  title="Sản phẩm không yêu cầu thỏa thuận bảo mật">
+                                  title="@Html.Text("proj.nav.ndaNotRequired")">
                                 <span class="step-circle tx-workflow-node @badgeClass"><i class="fas fa-minus" aria-hidden="true"></i></span>
-                                <span class="step-name tx-workflow-label">@displayStepName <small class="text-muted d-block">(Không áp dụng)</small></span>
+                                <span class="step-name tx-workflow-label">@displayStepName <small class="text-muted d-block">@Html.Text("proj.nav.notApplicable")</small></span>
                             </span>
                         }
                         else if (displayAccessible)
@@ -94,11 +96,11 @@
             <!-- Overall progress -->
             <div class="tx-workflow-progress-wrap">
                 <div class="tx-workflow-progress-label">
-                    <span>Tiến độ tổng thể</span>
+                    <span>@Html.Text("proj.nav.overallProgress")</span>
                     <span class="tx-workflow-progress-value">@progressPercent%</span>
                 </div>
                 <div class="progress tx-workflow-progress" role="progressbar"
-                     aria-label="Tiến độ tổng thể dự án" aria-valuenow="@progressPercent" aria-valuemin="0" aria-valuemax="100">
+                     aria-label="@Html.Text("proj.nav.overallProgressAria")" aria-valuenow="@progressPercent" aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-bar @(isComplete ? "bg-success" : "bg-primary")" style="width: @progressPercent%"></div>
                 </div>
             </div>
@@ -108,8 +110,8 @@
                 <div class="tx-workflow-complete">
                     <i class="fas fa-circle-check" aria-hidden="true"></i>
                     <div>
-                        <div class="tx-workflow-complete-title">Quy trình giao dịch đã hoàn tất</div>
-                        <div class="tx-workflow-complete-text">Toàn bộ @totalVisible bước đã được xử lý thành công.</div>
+                        <div class="tx-workflow-complete-title">@Html.Text("proj.nav.completeTitle")</div>
+                        <div class="tx-workflow-complete-text">@string.Format(Html.Text("proj.nav.completeTextFmt"), totalVisible)</div>
                     </div>
                 </div>
             }

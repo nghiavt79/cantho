@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TechExchangeApp.Entities;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 
 namespace TechExchangeApp.Controllers
 {
@@ -27,7 +28,7 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> StartConversation([FromBody] ChatStartRequest request)
         {
             var userId = await GetCurrentUserIdAsync();
-            if (userId == 0) return Unauthorized(new { success = false, error = "Vui lòng đăng nhập." });
+            if (userId == 0) return Unauthorized(new { success = false, error = I18n.T(HttpContext, "chat.err.loginRequired") });
 
             var result = await _chatService.StartConversationAsync(request.ProductId, userId);
 
@@ -78,10 +79,10 @@ namespace TechExchangeApp.Controllers
             if (userId == 0) return Unauthorized(new { success = false });
 
             if (string.IsNullOrWhiteSpace(request.Message))
-                return BadRequest(new { success = false, error = "Tin nhắn không được để trống." });
+                return BadRequest(new { success = false, error = I18n.T(HttpContext, "chat.err.emptyMessage") });
 
             var ok = await _chatService.SendMessageAsync(id, userId, request.Message.Trim());
-            if (!ok) return BadRequest(new { success = false, error = "Không tìm thấy cuộc trò chuyện." });
+            if (!ok) return BadRequest(new { success = false, error = I18n.T(HttpContext, "chat.err.conversationNotFound") });
 
             return Ok(new { success = true });
         }

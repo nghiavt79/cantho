@@ -60,10 +60,14 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
         //           WHERE m.SanPhamCNTBId = p.ID
         //             AND m.CatId IN (1, 3, 7))   ← literal IN list
         // → Index seek on IX_SanPhamCNTBCategory_CatId, no hash join, no sort for DISTINCT.
+        // Bản tiếng Anh là dòng riêng (LanguageId = 2), nên phải lọc theo ngôn ngữ
+        // hiện tại — nếu không, trang /en/... sẽ hiện sản phẩm liên quan tiếng Việt.
+        var langId = LangHelper.CurrentLangId(HttpContext);
+
         var products = _context.SanPhamCNTBs
             .AsNoTracking()
             .Where(p =>
-                p.LanguageId == 1 &&
+                p.LanguageId == langId &&
                 p.StatusId   == 3 &&
                 p.ID         != productId &&
                 p.ProductType != OcopProductType &&
@@ -81,9 +85,10 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
     // ── Fallback: top N products by Viewed ─────────────────────────────────────
     private IViewComponentResult TopProducts(int? productType, int? excludeId)
     {
+        var langId = LangHelper.CurrentLangId(HttpContext);
         var q = _context.SanPhamCNTBs
             .AsNoTracking()
-            .Where(p => p.LanguageId == 1 && p.StatusId == 3 && p.ProductType != OcopProductType);
+            .Where(p => p.LanguageId == langId && p.StatusId == 3 && p.ProductType != OcopProductType);
 
         if (productType.HasValue) q = q.Where(p => p.TypeId == productType.Value);
         if (excludeId.HasValue)   q = q.Where(p => p.ID != excludeId.Value);
@@ -92,8 +97,16 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
     }
 
     // ── ViewModel mapping ───────────────────────────────────────────────────────
-    private List<ProductPortletItemVm> MapToVm(List<SanPhamCNTB> products) =>
-        products.Select(row => new ProductPortletItemVm
+    private List<ProductPortletItemVm> MapToVm(List<SanPhamCNTB> products)
+    {
+        // URL chi tiết theo ngôn ngữ: route en_product_detail là "en/products/{slug}-{id}",
+        // bản tiếng Việt là "san-pham/chi-tiet/{slug}-{id}". Trước đây luôn sinh URL tiếng
+        // Việt nên bấm từ trang /en/... là rớt khỏi bản tiếng Anh.
+        var detailPrefix = LangHelper.IsEnglish(HttpContext)
+            ? "en/products/"
+            : "san-pham/chi-tiet/";
+
+        return products.Select(row => new ProductPortletItemVm
         {
             Id       = row.ID,
             Name     = row.Name,
@@ -113,8 +126,9 @@ public class ProductPortletIOSanphamViewComponent : ViewComponent
                 : ProductController.FormatCurrencyOto((decimal?)row.OriginalPrice, row.Currency),
 
             Url = _mainDomain +
-                  "san-pham/chi-tiet/" +
+                  detailPrefix +
                   ProductController.MakeURLFriendly(row.Name) +
                   "-" + row.ID
         }).ToList();
+    }
 }

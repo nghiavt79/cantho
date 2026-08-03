@@ -6,7 +6,8 @@
 
 @model List<TechExchangeApp.Entities.Notification>
 @{
-    ViewData["Title"] = "Thông báo";
+    ViewData["Title"] = Html.Text("header.notify.title");
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
     var unreadCount = Model.Count(n => !n.IsRead);
@@ -26,13 +27,13 @@
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <h4 class="mb-1"><i class="bi bi-bell-fill text-primary me-2"></i>Thông báo của tôi</h4>
+                        <h4 class="mb-1"><i class="bi bi-bell-fill text-primary me-2"></i>@Html.Text("notif.myTitle")</h4>
                         <p class="text-muted mb-0">
                             @if (unreadCount > 0)
                             {
                                 <span class="badge bg-danger me-1">@unreadCount</span>
                             }
-                            Tổng @Model.Count thông báo
+                            @Html.Text("common.total") @Model.Count @Html.Text("notif.countSuffix")
                         </p>
                     </div>
                     @if (unreadCount > 0)
@@ -40,7 +41,7 @@
                         <form asp-action="MarkAllRead" method="post">
                             @Html.AntiForgeryToken()
                             <button type="submit" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-check2-all me-1"></i>Đánh dấu tất cả đã đọc
+                                <i class="bi bi-check2-all me-1"></i>@Html.Text("notif.markAllReadLong")
                             </button>
                         </form>
                     }
@@ -69,7 +70,7 @@
                                                         <p class="text-muted mb-1 small">@n.Content</p>
                                                         <small class="text-muted">
                                                             <i class="bi bi-clock me-1"></i>
-                                                            @n.CreatedDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                                            @n.CreatedDate.ToLocalTime().ToString(isEn ? "MM/dd/yyyy HH:mm" : "dd/MM/yyyy HH:mm")
                                                         </small>
                                                     </div>
                                                     <div class="d-flex gap-2 ms-3 flex-shrink-0">
@@ -77,21 +78,21 @@
                                                         {
                                                             <a href="/Project/Details/@n.ProjectId"
                                                                class="btn btn-sm btn-outline-primary">
-                                                                <i class="bi bi-eye"></i> Xem dự án
+                                                                <i class="bi bi-eye"></i> @Html.Text("notif.viewProject")
                                                             </a>
                                                         }
                                                         @if (!string.IsNullOrEmpty(n.Url))
                                                         {
                                                             <a href="@n.Url"
                                                                class="btn btn-sm btn-outline-primary">
-                                                                <i class="bi bi-chat-dots"></i> Xem tin nhắn
+                                                                <i class="bi bi-chat-dots"></i> @Html.Text("notif.viewMessage")
                                                             </a>
                                                         }
                                                         @if (!n.IsRead)
                                                         {
                                                             <form asp-action="MarkRead" asp-route-id="@n.Id" method="post" class="d-inline">
                                                                 @Html.AntiForgeryToken()
-                                                                <button type="submit" class="btn btn-sm btn-outline-secondary" title="Đánh dấu đã đọc">
+                                                                <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Html.Text("header.notify.markAllRead")">
                                                                     <i class="bi bi-check2"></i>
                                                                 </button>
                                                             </form>
@@ -108,7 +109,7 @@
                         {
                             <div class="text-center py-5">
                                 <i class="bi bi-bell-slash fs-1 text-muted"></i>
-                                <p class="text-muted mt-3">Bạn chưa có thông báo nào.</p>
+                                <p class="text-muted mt-3">@Html.Text("notif.empty")</p>
                             </div>
                         }
                     </div>

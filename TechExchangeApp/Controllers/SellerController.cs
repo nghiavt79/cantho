@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 using TechExchangeApp.ViewModel;
 
 namespace TechExchangeApp.Controllers
@@ -131,7 +132,7 @@ namespace TechExchangeApp.Controllers
                         $"InvitationId: {id}");
                 }
 
-                TempData["SuccessMessage"] = "Bạn đã chấp nhận lời mời thành công!";
+                TempData["SuccessMessage"] = I18n.T(HttpContext, "seller.msg.acceptSuccess");
 
                 return RedirectToAction("InvitedProjects");
             }
@@ -168,7 +169,7 @@ namespace TechExchangeApp.Controllers
             await LogAccessAsync(invitation.ProjectId, "DeclineInvitation",
                 $"InvitationId: {id}, Reason: {reason}");
 
-            TempData["InfoMessage"] = "Bạn đã từ chối lời mời.";
+            TempData["InfoMessage"] = I18n.T(HttpContext, "seller.msg.declineInfo");
 
             return RedirectToAction("InvitedProjects");
         }
@@ -188,20 +189,20 @@ namespace TechExchangeApp.Controllers
 
             if (invitation == null)
             {
-                TempData["ErrorMessage"] = "Bạn chưa được mời tham gia dự án này.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.notInvited");
                 return RedirectToAction("InvitedProjects");
             }
 
             // Guard 2: Check if invitation is declined or expired
             if (invitation.StatusId == 4) // Declined
             {
-                TempData["ErrorMessage"] = "Bạn đã từ chối lời mời này.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.alreadyDeclined");
                 return RedirectToAction("InvitedProjects");
             }
 
             if (invitation.StatusId == 5) // Expired
             {
-                TempData["ErrorMessage"] = "Lời mời đã hết hạn.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.invExpired");
                 return RedirectToAction("InvitedProjects");
             }
 
@@ -209,7 +210,7 @@ namespace TechExchangeApp.Controllers
             var ndaSigned = await _eSignGateway.HasUserSignedProjectNda(id, userId);
             if (!ndaSigned)
             {
-                TempData["WarningMessage"] = "Bạn cần ký NDA trước khi xem chi tiết dự án.";
+                TempData["WarningMessage"] = I18n.T(HttpContext, "seller.msg.ndaRequired");
                 return RedirectToAction("SignNda", "Project", new { projectId = id });
             }
 
@@ -250,13 +251,8 @@ namespace TechExchangeApp.Controllers
         {
             return statusId switch
             {
-                0 => "Đã mời",
-                1 => "Đã xem",
-                2 => "Đã chấp nhận",
-                3 => "Đã gửi báo giá",
-                4 => "Đã từ chối",
-                5 => "Đã hết hạn",
-                _ => "Không xác định"
+                >= 0 and <= 5 => I18n.T(HttpContext, $"seller.invStatus.{statusId}"),
+                _ => I18n.T(HttpContext, "common.unknownStatus")
             };
         }
 
@@ -273,19 +269,19 @@ namespace TechExchangeApp.Controllers
                 // Validate inputs
                 if (technicalSolution == null || technicalSolution.Length == 0)
                 {
-                    TempData["ErrorMessage"] = "Vui lòng tải lên giải pháp kỹ thuật.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.needTechSolution");
                     return RedirectToAction("ProjectDetails", new { id = projectId });
                 }
 
                 if (capabilityProfile == null || capabilityProfile.Length == 0)
                 {
-                    TempData["ErrorMessage"] = "Vui lòng tải lên hồ sơ năng lực.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.needCapability");
                     return RedirectToAction("ProjectDetails", new { id = projectId });
                 }
 
                 if (string.IsNullOrWhiteSpace(implementationTime))
                 {
-                    TempData["ErrorMessage"] = "Vui lòng nhập thời gian triển khai.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.needImplTime");
                     return RedirectToAction("ProjectDetails", new { id = projectId });
                 }
 
@@ -293,7 +289,7 @@ namespace TechExchangeApp.Controllers
                 var canSubmit = await _proposalService.CanSubmitProposalAsync(projectId, userId);
                 if (!canSubmit)
                 {
-                    TempData["ErrorMessage"] = "Bạn không thể gửi báo giá cho dự án này.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.cannotSubmit");
                     return RedirectToAction("ProjectDetails", new { id = projectId });
                 }
 
@@ -351,7 +347,7 @@ namespace TechExchangeApp.Controllers
                 // Log submission
                 await LogAccessAsync(projectId, "SubmitProposal", $"Price: {preliminaryPrice}, Time: {implementationTime}");
 
-                TempData["SuccessMessage"] = "Gửi báo giá thành công!";
+                TempData["SuccessMessage"] = I18n.T(HttpContext, "seller.msg.submitSuccess");
                 return RedirectToAction("ProjectDetails", new { id = projectId });
             }
             catch (InvalidOperationException ex)
@@ -361,7 +357,7 @@ namespace TechExchangeApp.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.errorPrefix") + " " + ex.Message;
                 return RedirectToAction("ProjectDetails", new { id = projectId });
             }
         }
@@ -380,7 +376,7 @@ namespace TechExchangeApp.Controllers
 
             if (invitation == null)
             {
-                TempData["ErrorMessage"] = "Bạn chưa được mời tham gia dự án này.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.notInvited");
                 return RedirectToAction("InvitedProjects");
             }
 
@@ -390,7 +386,7 @@ namespace TechExchangeApp.Controllers
 
             if (proposal == null)
             {
-                TempData["ErrorMessage"] = "Bạn chưa gửi báo giá cho dự án này.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.notSubmitted");
                 return RedirectToAction("ProjectDetails", new { id = projectId });
             }
 
@@ -408,11 +404,8 @@ namespace TechExchangeApp.Controllers
         {
             return statusId switch
             {
-                0 => "Nháp",
-                1 => "Đã gửi",
-                2 => "Được chọn",
-                3 => "Bị từ chối",
-                _ => "Không xác định"
+                >= 0 and <= 3 => I18n.T(HttpContext, $"seller.propStatus.{statusId}"),
+                _ => I18n.T(HttpContext, "common.unknownStatus")
             };
         }
     }

@@ -78,6 +78,9 @@
 
             <hr>
 
+            <a class="nav-link" href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">
+                <i class="fas fa-globe me-2"></i> @Html.Text("topbar.backToSite")
+            </a>
             <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fas fa-arrow-right-from-bracket me-2"></i> @Html.Text("sidebar.logout")
             </a>

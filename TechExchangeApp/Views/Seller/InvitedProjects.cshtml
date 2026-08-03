@@ -7,8 +7,10 @@
 @model List<TechExchangeApp.ViewModel.SellerInvitationVm>
 
 @{
-    ViewData["Title"] = "Lời mời tham gia";
+    ViewData["Title"] = Html.Text("sidebar.invitations");
     ViewData["AuthWorkspace"] = true;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    var dateFmt = isEn ? "MM/dd/yyyy" : "dd/MM/yyyy";
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
@@ -41,8 +43,8 @@
             }
 
             <div class="user-profile-header mb-3">
-                <h2 class="h4 mb-1" style="color:var(--up-navy);font-weight:700;">Lời mời tham gia</h2>
-                <p class="mb-0">@Model.Count lời mời báo giá từ bên mua đang chờ bạn phản hồi.</p>
+                <h2 class="h4 mb-1" style="color:var(--up-navy);font-weight:700;">@Html.Text("sidebar.invitations")</h2>
+                <p class="mb-0">@string.Format(Html.Text("seller.inv.subtitleFmt"), Model.Count)</p>
             </div>
 
             @if (!Model.Any())
@@ -50,8 +52,8 @@
                 <div class="card border-0">
                     <div class="empty-state">
                         <i class="fas fa-envelope-open-text empty-state-icon"></i>
-                        <p class="empty-state-title">Chưa có lời mời nào</p>
-                        <p class="empty-state-text mb-0">Hiện tại bạn chưa được mời tham gia dự án nào. Vui lòng kiểm tra lại sau.</p>
+                        <p class="empty-state-title">@Html.Text("seller.inv.empty.title")</p>
+                        <p class="empty-state-text mb-0">@Html.Text("seller.inv.empty.text")</p>
                     </div>
                 </div>
             }
@@ -69,19 +71,19 @@
 
                                 <div class="user-invitation-card-meta">
                                     <span><i class="fas fa-file-invoice"></i>@item.RFQ.MaRFQ</span>
-                                    <span><i class="fas fa-calendar"></i>Mời ngày @item.Invitation.InvitedDate.ToString("dd/MM/yyyy")</span>
+                                    <span><i class="fas fa-calendar"></i>@Html.Text("seller.inv.invitedOn") @item.Invitation.InvitedDate.ToString(dateFmt)</span>
                                     <span class="@(!item.DeadlinePassed && item.DaysUntilDeadline <= 3 ? "is-urgent" : "")">
                                         <i class="fas fa-clock"></i>
                                         @if (item.DeadlinePassed)
                                         {
-                                            <text>Đã hết hạn nộp hồ sơ</text>
+                                            <text>@Html.Text("seller.inv.deadlinePassed")</text>
                                         }
                                         else
                                         {
-                                            <text>Hạn: @item.RFQ.HanChotNopHoSo.ToString("dd/MM/yyyy") (còn @item.DaysUntilDeadline ngày)</text>
+                                            <text>@Html.Text("seller.inv.deadlinePrefix") @item.RFQ.HanChotNopHoSo.ToString(dateFmt) @string.Format(Html.Text("seller.inv.daysLeftFmt"), item.DaysUntilDeadline)</text>
                                         }
                                     </span>
-                                    <span><i class="fas @(item.NdaSigned ? "fa-file-circle-check" : "fa-file-signature")"></i>@(item.NdaSigned ? "Đã ký NDA" : "Chưa ký NDA")</span>
+                                    <span><i class="fas @(item.NdaSigned ? "fa-file-circle-check" : "fa-file-signature")"></i>@(item.NdaSigned ? Html.Text("seller.inv.ndaSigned") : Html.Text("seller.inv.ndaNotSigned"))</span>
                                 </div>
 
                                 <div class="user-invitation-card-actions mt-auto">
@@ -90,7 +92,7 @@
                                         @if (!item.NdaSigned)
                                         {
                                             <a href="/Project/SignNda?projectId=@item.Project.Id" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-file-signature"></i> Ký NDA
+                                                <i class="fas fa-file-signature"></i> @Html.Text("seller.inv.signNda")
                                             </a>
                                         }
                                         else if (item.CanSubmitProposal)
@@ -98,14 +100,14 @@
                                             <form method="post" asp-action="AcceptInvitation" asp-route-id="@item.Invitation.Id" class="d-inline">
                                                 @Html.AntiForgeryToken()
                                                 <button type="submit" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-check"></i> Chấp nhận &amp; xem chi tiết
+                                                    <i class="fas fa-check"></i> @Html.Text("seller.inv.acceptView")
                                                 </button>
                                             </form>
                                         }
                                         else if (item.DeadlinePassed)
                                         {
                                             <button class="btn btn-outline-secondary btn-sm" disabled>
-                                                <i class="fas fa-clock"></i> Đã hết hạn
+                                                <i class="fas fa-clock"></i> @Html.Text("seller.inv.expired")
                                             </button>
                                         }
 
@@ -113,7 +115,7 @@
                                         {
                                             <button type="button" class="btn btn-outline-danger btn-sm"
                                                     data-bs-toggle="modal" data-bs-target="#declineModal@(item.Invitation.Id)">
-                                                <i class="fas fa-times"></i> Từ chối
+                                                <i class="fas fa-times"></i> @Html.Text("seller.inv.decline")
                                             </button>
 
                                             <!-- Decline Modal -->
@@ -123,20 +125,20 @@
                                                         <form method="post" asp-action="DeclineInvitation" asp-route-id="@item.Invitation.Id">
                                                             @Html.AntiForgeryToken()
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Từ chối lời mời</h5>
+                                                                <h5 class="modal-title">@Html.Text("seller.inv.declineTitle")</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <p>Bạn có chắc chắn muốn từ chối lời mời tham gia dự án <strong>@item.Project.ProjectName</strong>?</p>
+                                                                <p>@Html.Text("seller.inv.declineConfirm") <strong>@item.Project.ProjectName</strong>?</p>
                                                                 <div class="mb-3">
-                                                                    <label class="form-label">Lý do (không bắt buộc):</label>
+                                                                    <label class="form-label">@Html.Text("seller.inv.reasonLabel")</label>
                                                                     <textarea name="reason" class="form-control" rows="3"
-                                                                              placeholder="Nhập lý do từ chối..."></textarea>
+                                                                              placeholder="@Html.Text("seller.inv.reasonPh")"></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                <button type="submit" class="btn btn-danger">Xác nhận từ chối</button>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Html.Text("common.cancel")</button>
+                                                                <button type="submit" class="btn btn-danger">@Html.Text("seller.inv.confirmDecline")</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -149,38 +151,38 @@
                                         @if (item.CanSubmitProposal)
                                         {
                                             <a href="/Seller/ProjectDetails/@item.Project.Id" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-paper-plane"></i> Gửi báo giá
+                                                <i class="fas fa-paper-plane"></i> @Html.Text("seller.inv.sendQuote")
                                             </a>
                                         }
                                         else if (item.ProposalSubmitted)
                                         {
                                             <a href="/Proposal/Index?duAnId=@item.Project.Id" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-file-alt"></i> Xem báo giá đã gửi
+                                                <i class="fas fa-file-alt"></i> @Html.Text("seller.inv.viewSentQuote")
                                             </a>
                                         }
                                         <a href="/Seller/ProjectDetails/@item.Project.Id" class="btn btn-outline-secondary btn-sm">
-                                            <i class="fas fa-eye"></i> Xem chi tiết dự án
+                                            <i class="fas fa-eye"></i> @Html.Text("seller.inv.viewProject")
                                         </a>
                                     }
                                     else if (item.Invitation.StatusId == 3) // ProposalSubmitted
                                     {
                                         <a href="/Seller/ViewMyProposal?projectId=@item.Project.Id" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-check-circle"></i> Đã gửi báo giá
+                                            <i class="fas fa-check-circle"></i> @Html.Text("seller.inv.quoteSent")
                                         </a>
                                         <a href="/Seller/ProjectDetails/@item.Project.Id" class="btn btn-outline-secondary btn-sm">
-                                            <i class="fas fa-eye"></i> Xem chi tiết dự án
+                                            <i class="fas fa-eye"></i> @Html.Text("seller.inv.viewProject")
                                         </a>
                                     }
                                     else if (item.Invitation.StatusId == 4) // Declined
                                     {
                                         <button class="btn btn-outline-secondary btn-sm" disabled>
-                                            <i class="fas fa-ban"></i> Đã từ chối
+                                            <i class="fas fa-ban"></i> @Html.Text("seller.inv.declined")
                                         </button>
                                     }
                                     else if (item.Invitation.StatusId == 5) // Expired
                                     {
                                         <button class="btn btn-outline-secondary btn-sm" disabled>
-                                            <i class="fas fa-clock"></i> Đã hết hạn
+                                            <i class="fas fa-clock"></i> @Html.Text("seller.inv.expired")
                                         </button>
                                     }
                                 </div>

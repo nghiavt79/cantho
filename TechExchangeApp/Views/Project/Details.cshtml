@@ -7,7 +7,7 @@
 @model TechExchangeApp.ViewModel.ProjectDetailWithStepsVm
 
 @{
-    ViewData["Title"] = "Chi tiết hồ sơ giao dịch: " + Model.Project.ProjectName;
+    ViewData["Title"] = Html.Text("projdetail.titlePrefix") + " " + Model.Project.ProjectName;
     ViewData["AuthWorkspace"] = true;
     ViewData["HideSideButtons"] = true; // Ẩn thanh action-dock nổi trên trang chi tiết hồ sơ
 
@@ -22,8 +22,8 @@
     var headerIsComplete = headerTotalVisible > 0 && headerCompletedCount == headerTotalVisible;
 
     string projectStatusLabel = headerIsComplete
-        ? "Đã hoàn tất"
-        : headerCompletedCount > 0 ? "Đang xử lý" : "Chờ xử lý";
+        ? Html.Text("projdetail.doneAll")
+        : headerCompletedCount > 0 ? Html.Text("projdetail.processing") : Html.Text("projdetail.pending");
     string projectStatusClass = headerIsComplete
         ? "tx-project-status-done"
         : headerCompletedCount > 0 ? "tx-project-status-progress" : "tx-project-status-pending";
@@ -45,7 +45,7 @@
     <div class="tx-project-header">
         <div>
             <a class="tx-project-back" asp-controller="Projects" asp-action="MyProjects">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i> Quay lại danh sách hồ sơ
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> @Html.Text("projdetail.backToList")
             </a>
             <div class="tx-project-title-row">
                 <h2 class="tx-project-title">@Model.Project.ProjectName</h2>
@@ -56,18 +56,18 @@
             <div class="tx-project-meta">
                 <span><i class="fas fa-code" aria-hidden="true"></i>@Model.Project.ProjectCode</span>
                 <span>•</span>
-                <span>Vai trò: <span class="tx-project-role">@(Model.UserRole == 1 ? "Bên mua" : Model.UserRole == 2 ? "Bên bán" : "Chuyên gia tư vấn")</span></span>
+                <span>@Html.Text("projdetail.roleLabel") <span class="tx-project-role">@(Model.UserRole == 1 ? Html.Text("projdetail.roleBuyer") : Model.UserRole == 2 ? Html.Text("projdetail.roleSeller") : Html.Text("projdetail.roleConsultant"))</span></span>
             </div>
         </div>
         <div class="tx-project-actions">
             @if (Model.UserRole == 1)
             {
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#memberManagementModal">
-                    <i class="fas fa-users"></i> Thành viên hồ sơ
+                    <i class="fas fa-users"></i> @Html.Text("projdetail.members")
                 </button>
             }
             <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#supportRequestModal">
-                <i class="fas fa-headset"></i> Yêu cầu Trung tâm tư vấn
+                <i class="fas fa-headset"></i> @Html.Text("projdetail.requestSupport")
             </button>
         </div>
     </div>
@@ -86,7 +86,7 @@
                 ProjectId = Model.Project.Id,
                 StepNumber = Model.CurrentStep == 6 ? 5 : Model.CurrentStep,
                 StepName = Model.CurrentStep == 5 || Model.CurrentStep == 6
-                    ? "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng"
+                    ? Html.Text("dash.step.5")
                     : Model.Steps[Model.CurrentStep - 1].StepName,
                 Project = Model.Project,
                 UserRole = Model.UserRole,
@@ -111,14 +111,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="memberManagementModalLabel">
-                    <i class="fas fa-users"></i> Quản lý thành viên hồ sơ
+                    <i class="fas fa-users"></i> @Html.Text("projdetail.manageMembers")
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="memberManagementModalBody">
                 <div class="text-center p-5">
                     <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
-                    <p class="mt-3">Đang tải...</p>
+                    <p class="mt-3">@Html.Text("proj.js.loading")</p>
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="supportRequestModalLabel">
-                    <i class="fas fa-headset"></i> Yêu cầu Trung tâm tư vấn
+                    <i class="fas fa-headset"></i> @Html.Text("projdetail.requestSupport")
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -139,35 +139,35 @@
                 @Html.AntiForgeryToken()
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Nội dung cần hỗ trợ</label>
+                        <label class="form-label fw-semibold">@Html.Text("projdetail.supportContent")</label>
                         <select class="form-select" id="supportRequestType">
-                            <option value="1">Hỗ trợ sử dụng hệ thống</option>
-                            <option value="2">Tư vấn giao dịch/chuyển giao</option>
+                            <option value="1">@Html.Text("projdetail.supportType1")</option>
+                            <option value="2">@Html.Text("projdetail.supportType2")</option>
                         </select>
                     </div>
                     <div class="mb-3 d-none" id="supportServiceTypeWrap">
-                        <label class="form-label fw-semibold">Loại tư vấn</label>
+                        <label class="form-label fw-semibold">@Html.Text("projdetail.serviceLabel")</label>
                         <select class="form-select" id="supportServiceType">
-                            <option value="">-- Chọn loại tư vấn --</option>
-                            <option value="1">Tìm kiếm, lựa chọn nhà cung cấp</option>
-                            <option value="2">Đánh giá hồ sơ đề xuất</option>
-                            <option value="3">Tư vấn đàm phán thương mại</option>
-                            <option value="4">Kiểm tra pháp lý hợp đồng</option>
-                            <option value="5">Hỗ trợ hợp đồng điện tử</option>
-                            <option value="99">Khác</option>
+                            <option value="">@Html.Text("projdetail.serviceChoose")</option>
+                            <option value="1">@Html.Text("projdetail.service1")</option>
+                            <option value="2">@Html.Text("projdetail.service2")</option>
+                            <option value="3">@Html.Text("projdetail.service3")</option>
+                            <option value="4">@Html.Text("projdetail.service4")</option>
+                            <option value="5">@Html.Text("projdetail.service5")</option>
+                            <option value="99">@Html.Text("projdetail.service99")</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Tiêu đề</label>
+                        <label class="form-label fw-semibold">@Html.Text("projdetail.subjectLabel")</label>
                         <input type="text" class="form-control" id="supportSubject" maxlength="300"
-                               placeholder="Ví dụ: Cần tư vấn đánh giá hồ sơ đề xuất" />
+                               placeholder="@Html.Text("projdetail.subjectPh")" />
                     </div>
-                    <p class="text-muted small">Gửi yêu cầu hỗ trợ/tư vấn đến Trung tâm cho hồ sơ này. Trung tâm sẽ phản hồi và trao đổi trực tiếp với bạn qua tin nhắn.</p>
+                    <p class="text-muted small">@Html.Text("projdetail.supportNote")</p>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Bước cần hỗ trợ</label>
+                        <label class="form-label fw-semibold">@Html.Text("projdetail.stepLabel")</label>
                         <select class="form-select" id="supportStepNumber">
                             @{
-                                const string mergedSupportStepName = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
+                                var mergedSupportStepName = Html.Text("dash.step.5");
                                 var supportSteps = Model.Steps.Where(x => x.IsVisible && x.StepNumber != 6).ToList();
                             }
                             @for (var i = 0; i < supportSteps.Count; i++)
@@ -179,25 +179,25 @@
                                 var optionValue = s.StepNumber == 5 && Model.CurrentStep == 6 ? 6 : s.StepNumber;
                                 if (isCurrent)
                                 {
-                                    <option value="@optionValue" selected>Bước @displayStepNumber — @displayStepName</option>
+                                    <option value="@optionValue" selected>@Html.Text("dash.stepPrefix") @displayStepNumber — @displayStepName</option>
                                 }
                                 else
                                 {
-                                    <option value="@optionValue">Bước @displayStepNumber — @displayStepName</option>
+                                    <option value="@optionValue">@Html.Text("dash.stepPrefix") @displayStepNumber — @displayStepName</option>
                                 }
                             }
                         </select>
                     </div>
                     <div class="mb-2">
-                        <label class="form-label fw-semibold">Nội dung cần hỗ trợ</label>
+                        <label class="form-label fw-semibold">@Html.Text("projdetail.messageLabel")</label>
                         <textarea class="form-control" id="supportMessage" rows="4" maxlength="2000"
-                                  placeholder="Mô tả vấn đề bạn cần Trung tâm hỗ trợ..."></textarea>
+                                  placeholder="@Html.Text("projdetail.messagePh")"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Html.Text("common.close")</button>
                     <button type="submit" class="btn btn-primary" id="supportSubmitBtn">
-                        <i class="fas fa-paper-plane me-1"></i> Gửi yêu cầu
+                        <i class="fas fa-paper-plane me-1"></i> @Html.Text("projdetail.submitRequest")
                     </button>
                 </div>
             </form>
@@ -206,6 +206,20 @@
 </div>
 
 <script>
+// Chuỗi hiển thị dùng trong JS — emit từ server để theo đúng ngôn ngữ hiện tại.
+const PD_MSG = {
+    chooseService: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("projdetail.js.chooseService"))),
+    enterMessage:  @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("projdetail.js.enterMessage"))),
+    sending:       @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("projdetail.js.sending"))),
+    submitRequest: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("projdetail.submitRequest"))),
+    sendFailed:    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("projdetail.js.sendFailed"))),
+    connError:     @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("projdetail.js.connError"))),
+    loading:       @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("proj.js.loading"))),
+    loadContentError: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("proj.js.loadContentError"))),
+    loadFormError: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("proj.js.loadFormError"))),
+    searchUser:    @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("projdetail.js.searchUser")))
+};
+
 (function () {
     var form = document.getElementById('supportRequestForm');
     if (!form) return;
@@ -229,12 +243,12 @@
         var serviceType = serviceTypeEl && serviceTypeEl.value ? parseInt(serviceTypeEl.value, 10) : null;
         var subject = (document.getElementById('supportSubject').value || '').trim();
         var message = (document.getElementById('supportMessage').value || '').trim();
-        if (requestType === 2 && !serviceType) { alert('Vui lòng chọn loại tư vấn.'); return; }
-        if (!message) { alert('Vui lòng nhập nội dung cần hỗ trợ.'); return; }
+        if (requestType === 2 && !serviceType) { alert(PD_MSG.chooseService); return; }
+        if (!message) { alert(PD_MSG.enterMessage); return; }
 
         var token = form.querySelector('input[name="__RequestVerificationToken"]').value;
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Đang gửi...';
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> ' + PD_MSG.sending;
 
         try {
             var res = await fetch('/api/support/start', {
@@ -257,14 +271,14 @@
             if (res.ok && data.success) {
                 window.location.href = data.redirectUrl || ('/chat/' + data.conversationId);
             } else {
-                alert(data.error || 'Không gửi được yêu cầu hỗ trợ.');
+                alert(data.error || PD_MSG.sendFailed);
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Gửi yêu cầu';
+                btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> ' + PD_MSG.submitRequest;
             }
         } catch (ex) {
-            alert('Lỗi kết nối: ' + ex.message);
+            alert(PD_MSG.connError + ex.message);
             btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Gửi yêu cầu';
+            btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i> ' + PD_MSG.submitRequest;
         }
     });
 })();
@@ -332,7 +346,7 @@
 
             // Function to load member management content
             function loadMemberManagementContent() {
-                $('#memberManagementModalBody').html('<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i><p class="mt-3">Đang tải...</p></div>');
+                $('#memberManagementModalBody').html('<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i><p class="mt-3">' + PD_MSG.loading + '</p></div>');
                 
                 $.get('/ProjectMembers/Index', { projectId: currentProjectId }, function(data) {
                     $('#memberManagementModalBody').html(data);
@@ -342,7 +356,7 @@
                         if ($('#userIdSelect').length) {
                             $('#userIdSelect').select2({
                                 theme: 'bootstrap-5',
-                                placeholder: '-- Tìm kiếm người dùng --',
+                                placeholder: PD_MSG.searchUser,
                                 allowClear: true,
                                 width: '100%',
                                 dropdownParent: $('#memberManagementModal')
@@ -350,14 +364,14 @@
                         }
                     }, 100);
                 }).fail(function() {
-                    $('#memberManagementModalBody').html('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Lỗi tải nội dung. Vui lòng thử lại.</div>');
+                    $('#memberManagementModalBody').html('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> ' + PD_MSG.loadContentError + '</div>');
                 });
             }
 
             // Function to load step content
             function loadStepContent(step) {
                 // Show loading
-                $('#step-content').html('<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i><p class="mt-3">Đang tải...</p></div>');
+                $('#step-content').html('<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i><p class="mt-3">' + PD_MSG.loading + '</p></div>');
                 
                 // Load step content via AJAX
                 $.get('/Project/Step', { projectId: currentProjectId, stepNumber: step }, function(data) {
@@ -372,7 +386,7 @@
                         scrollTop: $('#step-content').offset().top - 100
                     }, 300);
                 }).fail(function() {
-                    $('#step-content').html('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Lỗi tải nội dung. Vui lòng thử lại.</div>');
+                    $('#step-content').html('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> ' + PD_MSG.loadContentError + '</div>');
                 });
             }
 
@@ -381,7 +395,7 @@
                 currentStepNumber = stepNumber;
                 
                 // Show loading in modal
-                $('#editStepModalBody').html('<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i><p class="mt-3">Đang tải...</p></div>');
+                $('#editStepModalBody').html('<div class="text-center p-5"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i><p class="mt-3">' + PD_MSG.loading + '</p></div>');
                 
                 // Show modal
                 if (editModal) {
@@ -397,7 +411,7 @@
                     // Extract the data and render the form
                     loadEditForm(stepNumber, projectId);
                 }).fail(function() {
-                    $('#editStepModalBody').html('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> Lỗi tải form. Vui lòng thử lại.</div>');
+                    $('#editStepModalBody').html('<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> ' + PD_MSG.loadFormError + '</div>');
                 });
             }
 

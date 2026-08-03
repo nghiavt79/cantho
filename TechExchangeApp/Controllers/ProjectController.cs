@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
+using TechExchangeApp.Localization;
 using TechExchangeApp.Services;
 
 namespace TechExchangeApp.Controllers
@@ -113,7 +114,7 @@ namespace TechExchangeApp.Controllers
                                                      i.IsActive);
                         if (invitation == null)
                         {
-                            TempData["ErrorMessage"] = "Bạn chưa được mời tham gia dự án này.";
+                            TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.notInvited");
                             return RedirectToAction("InvitedProjects", "Seller");
                         }
 
@@ -121,7 +122,7 @@ namespace TechExchangeApp.Controllers
                         var ndaSigned = await _eSignGateway.HasUserSignedProjectNda(id.Value, userId);
                         if (!ndaSigned)
                         {
-                            TempData["WarningMessage"] = "Bạn cần ký NDA trước khi xem chi tiết dự án.";
+                            TempData["WarningMessage"] = I18n.T(HttpContext, "seller.msg.ndaRequired");
                             return RedirectToAction("SignNda", "Project", new { projectId = id });
                         }
 
@@ -170,7 +171,7 @@ namespace TechExchangeApp.Controllers
                         var ndaSigned = await _eSignGateway.HasUserSignedProjectNda(id.Value, userId);
                         if (!ndaSigned)
                         {
-                            TempData["WarningMessage"] = "Bạn cần ký NDA trước khi xem chi tiết dự án.";
+                            TempData["WarningMessage"] = I18n.T(HttpContext, "seller.msg.ndaRequired");
                             return RedirectToAction("SignNda", "Project", new { projectId = id });
                         }
 
@@ -396,7 +397,7 @@ namespace TechExchangeApp.Controllers
 
                 if (invitation == null)
                 {
-                    TempData["ErrorMessage"] = "Bạn chưa được mời tham gia dự án này.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.notInvited");
                     return RedirectToAction("InvitedProjects", "Seller");
                 }
 
@@ -404,14 +405,14 @@ namespace TechExchangeApp.Controllers
                 var alreadySigned = await _eSignGateway.HasUserSignedProjectNda(projectId, userId);
                 if (alreadySigned)
                 {
-                    TempData["InfoMessage"] = "Bạn đã ký NDA cho dự án này rồi.";
+                    TempData["InfoMessage"] = I18n.T(HttpContext, "proj.msg.ndaAlreadySigned");
                     return RedirectToAction("Details", "Project", new { id = projectId });
                 }
 
                 // Guard 3: Check deadline
                 if (invitation.RFQRequest?.HanChotNopHoSo < DateTime.Now)
                 {
-                    TempData["ErrorMessage"] = "Hạn chốt nộp hồ sơ đã qua. Không thể ký NDA.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "proj.msg.deadlinePassedNda");
                     return RedirectToAction("InvitedProjects", "Seller");
                 }
 
@@ -454,7 +455,7 @@ namespace TechExchangeApp.Controllers
 
                 if (invitation == null)
                 {
-                    TempData["ErrorMessage"] = "Bạn chưa được mời tham gia dự án này.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "seller.msg.notInvited");
                     return RedirectToAction("InvitedProjects", "Seller");
                 }
 
@@ -462,14 +463,14 @@ namespace TechExchangeApp.Controllers
                 var alreadySigned = await _eSignGateway.HasUserSignedProjectNda(projectId, userId);
                 if (alreadySigned)
                 {
-                    TempData["InfoMessage"] = "Bạn đã ký NDA cho dự án này rồi.";
+                    TempData["InfoMessage"] = I18n.T(HttpContext, "proj.msg.ndaAlreadySigned");
                     return RedirectToAction("InvitedProjects", "Seller");
                 }
 
                 // Guard 3: Check deadline
                 if (invitation.RFQRequest?.HanChotNopHoSo < DateTime.Now)
                 {
-                    TempData["ErrorMessage"] = "Hạn chót nộp hồ sơ đã qua.";
+                    TempData["ErrorMessage"] = I18n.T(HttpContext, "proj.msg.deadlinePassed");
                     return RedirectToAction("InvitedProjects", "Seller");
                 }
 
@@ -493,12 +494,12 @@ namespace TechExchangeApp.Controllers
                 // Log the action
                 await LogProjectAccessAsync(projectId, userId, "SignNda", $"DocumentId: {document.Id}");
 
-                TempData["SuccessMessage"] = "Bạn đã ký NDA thành công! Bây giờ bạn có thể chấp nhận lời mời.";
+                TempData["SuccessMessage"] = I18n.T(HttpContext, "proj.msg.ndaSignSuccess");
                 return RedirectToAction("InvitedProjects", "Seller");
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = $"Có lỗi khi ký NDA: {ex.Message}";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "proj.err.ndaSignPrefix") + " " + ex.Message;
                 return RedirectToAction("SignNda", new { projectId });
             }
         }
@@ -653,22 +654,25 @@ namespace TechExchangeApp.Controllers
         // Helper: Build step navigation list
         private List<TechExchangeApp.ViewModel.ProjectStepNavVm> BuildStepNavigation(Dictionary<string, int> statuses, bool requiresNda = true)
         {
+            // Tên bước lấy từ key workflow.step.{n} để _ProjectStepsNav hiển thị đúng ngôn ngữ.
+            string StepName(int n) => I18n.T(HttpContext, $"workflow.step.{n}");
+
             var steps = new List<TechExchangeApp.ViewModel.ProjectStepNavVm>
             {
-                new() { StepNumber = 1, StepName = "Yêu cầu chuyển giao công nghệ", StatusId = statuses["TechTransfer"], ControllerName = "TechTransfer", ActionName = "Details", IsAccessible = true },
-                new() { StepNumber = 2, StepName = "Thỏa thuận bảo mật (NDA)", StatusId = statuses["NDA"], ControllerName = "NDA", ActionName = "Create", IsAccessible = statuses["TechTransfer"] > 0 },
-                new() { StepNumber = 3, StepName = "Yêu cầu báo giá (RFQ)", StatusId = statuses["RFQ"], ControllerName = "RFQ", ActionName = "Create", IsAccessible = statuses["NDA"] > 0 },
-                new() { StepNumber = 4, StepName = "Nộp hồ sơ đề xuất", StatusId = statuses["Proposal"], ControllerName = "Proposal", ActionName = "Index", IsAccessible = statuses["RFQ"] > 0 },
-                new() { StepNumber = 5, StepName = "Đàm phán thương mại", StatusId = statuses["Negotiation"], ControllerName = "Negotiation", ActionName = "Create", IsAccessible = statuses["Proposal"] > 0 },
-                new() { StepNumber = 6, StepName = "Kiểm tra pháp lý", StatusId = statuses["LegalReview"], ControllerName = "LegalReview", ActionName = "Create", IsAccessible = statuses["Negotiation"] > 0 },
-                new() { StepNumber = 7, StepName = "Ký hợp đồng", StatusId = statuses["Signing"], ControllerName = "Signing", ActionName = "Index", IsAccessible = statuses["LegalReview"] > 0 },
-                new() { StepNumber = 8, StepName = "Xác nhận tạm ứng", StatusId = statuses["AdvancePayment"], ControllerName = "AdvancePayment", ActionName = "Create", IsAccessible = statuses["Signing"] >= 5 },
-                new() { StepNumber = 9, StepName = "Thử nghiệm Pilot", StatusId = statuses["PilotTest"], ControllerName = "PilotTest", ActionName = "Create", IsAccessible = statuses["AdvancePayment"] > 0 },
-                new() { StepNumber = 10, StepName = "Bàn giao & triển khai thiết bị", StatusId = statuses["Handover"], ControllerName = "Handover", ActionName = "Create", IsAccessible = statuses["PilotTest"] > 0 },
-                new() { StepNumber = 11, StepName = "Đào tạo & chuyển giao vận hành", StatusId = statuses["Training"], ControllerName = "Training", ActionName = "Create", IsAccessible = statuses["Handover"] > 0 },
-                new() { StepNumber = 12, StepName = "Bàn giao hồ sơ kỹ thuật", StatusId = statuses["TechDoc"], ControllerName = "TechDoc", ActionName = "Create", IsAccessible = statuses["Training"] > 0 },
-                new() { StepNumber = 13, StepName = "Nghiệm thu", StatusId = statuses["Acceptance"], ControllerName = "Acceptance", ActionName = "Create", IsAccessible = statuses["TechDoc"] > 0 },
-                new() { StepNumber = 14, StepName = "Thanh lý hợp đồng", StatusId = statuses["Liquidation"], ControllerName = "Liquidation", ActionName = "Create", IsAccessible = statuses["Acceptance"] > 0 }
+                new() { StepNumber = 1, StepName = StepName(1), StatusId = statuses["TechTransfer"], ControllerName = "TechTransfer", ActionName = "Details", IsAccessible = true },
+                new() { StepNumber = 2, StepName = StepName(2), StatusId = statuses["NDA"], ControllerName = "NDA", ActionName = "Create", IsAccessible = statuses["TechTransfer"] > 0 },
+                new() { StepNumber = 3, StepName = StepName(3), StatusId = statuses["RFQ"], ControllerName = "RFQ", ActionName = "Create", IsAccessible = statuses["NDA"] > 0 },
+                new() { StepNumber = 4, StepName = StepName(4), StatusId = statuses["Proposal"], ControllerName = "Proposal", ActionName = "Index", IsAccessible = statuses["RFQ"] > 0 },
+                new() { StepNumber = 5, StepName = StepName(5), StatusId = statuses["Negotiation"], ControllerName = "Negotiation", ActionName = "Create", IsAccessible = statuses["Proposal"] > 0 },
+                new() { StepNumber = 6, StepName = StepName(6), StatusId = statuses["LegalReview"], ControllerName = "LegalReview", ActionName = "Create", IsAccessible = statuses["Negotiation"] > 0 },
+                new() { StepNumber = 7, StepName = StepName(7), StatusId = statuses["Signing"], ControllerName = "Signing", ActionName = "Index", IsAccessible = statuses["LegalReview"] > 0 },
+                new() { StepNumber = 8, StepName = StepName(8), StatusId = statuses["AdvancePayment"], ControllerName = "AdvancePayment", ActionName = "Create", IsAccessible = statuses["Signing"] >= 5 },
+                new() { StepNumber = 9, StepName = StepName(9), StatusId = statuses["PilotTest"], ControllerName = "PilotTest", ActionName = "Create", IsAccessible = statuses["AdvancePayment"] > 0 },
+                new() { StepNumber = 10, StepName = StepName(10), StatusId = statuses["Handover"], ControllerName = "Handover", ActionName = "Create", IsAccessible = statuses["PilotTest"] > 0 },
+                new() { StepNumber = 11, StepName = StepName(11), StatusId = statuses["Training"], ControllerName = "Training", ActionName = "Create", IsAccessible = statuses["Handover"] > 0 },
+                new() { StepNumber = 12, StepName = StepName(12), StatusId = statuses["TechDoc"], ControllerName = "TechDoc", ActionName = "Create", IsAccessible = statuses["Training"] > 0 },
+                new() { StepNumber = 13, StepName = StepName(13), StatusId = statuses["Acceptance"], ControllerName = "Acceptance", ActionName = "Create", IsAccessible = statuses["TechDoc"] > 0 },
+                new() { StepNumber = 14, StepName = StepName(14), StatusId = statuses["Liquidation"], ControllerName = "Liquidation", ActionName = "Create", IsAccessible = statuses["Acceptance"] > 0 }
             };
 
             // Bước 2 (NDA) chỉ áp dụng khi có yêu cầu thỏa thuận bảo mật từ cấu hình ban đầu hoặc các bên.
@@ -759,7 +763,7 @@ namespace TechExchangeApp.Controllers
                 ProjectId = projectId,
                 StepNumber = contentStepNumber,
                 StepName = stepNumber == 5 || stepNumber == 6
-                    ? "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng"
+                    ? I18n.T(HttpContext, "dash.step.5")
                     : steps[stepNumber - 1].StepName,
                 Project = member.Project,
                 UserRole = member.Role,
@@ -996,7 +1000,7 @@ namespace TechExchangeApp.Controllers
                 var userId = GetCurrentUserId();
                 var isMember = await _context.ProjectMembers.AnyAsync(m => m.ProjectId == projectId && m.UserId == userId);
                 
-                if (!isMember) return Json(new { success = false, message = "Không có quyền truy cập" });
+                if (!isMember) return Json(new { success = false, message = I18n.T(HttpContext, "proj.err.noPermission") });
                 
                 // Convert IFormCollection to Dictionary for helper methods
                 var formData = form.Keys.ToDictionary(k => k, k => form[k].ToString());
@@ -1023,16 +1027,16 @@ namespace TechExchangeApp.Controllers
                 
                 if (success)
                 {
-                    return Json(new { success = true, message = "Cập nhật thành công" });
+                    return Json(new { success = true, message = I18n.T(HttpContext, "proj.msg.updateSuccess") });
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Không tìm thấy dữ liệu để cập nhật" });
+                    return Json(new { success = false, message = I18n.T(HttpContext, "proj.err.noDataToUpdate") });
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Lỗi: " + ex.Message });
+                return Json(new { success = false, message = I18n.T(HttpContext, "proj.err.prefix") + " " + ex.Message });
             }
         }
 

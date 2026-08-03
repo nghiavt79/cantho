@@ -6,8 +6,9 @@
 
 @model List<TechExchangeApp.Interfaces.ChatConversationVm>
 @{
-    ViewData["Title"] = "Tin nhắn";
+    ViewData["Title"] = Html.Text("sidebar.messages");
     ViewData["AuthWorkspace"] = true;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
 }
@@ -25,7 +26,7 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4 chat-page-header">
                     <div>
-                        <h4 class="mb-1"><i class="fas fa-comments text-primary me-2"></i>Tin nhắn</h4>
+                        <h4 class="mb-1"><i class="fas fa-comments text-primary me-2"></i>@Html.Text("sidebar.messages")</h4>
                         <p class="text-muted mb-0">
                             @{
                                 var totalUnread = Model.Sum(c => c.UnreadCount);
@@ -34,7 +35,7 @@
                             {
                                 <span class="badge bg-danger me-1">@totalUnread</span>
                             }
-                            Tổng @Model.Count cuộc trò chuyện
+                            @Html.Text("common.total") @Model.Count @Html.Text("chat.conversationsSuffix")
                         </p>
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                                                             @if (c.LastMessageAt.HasValue)
                                                             {
                                                                 <small class="text-muted d-block">
-                                                                    <i class="fas fa-clock me-1"></i>@c.LastMessageAt.Value.ToString("dd/MM HH:mm")
+                                                                    <i class="fas fa-clock me-1"></i>@c.LastMessageAt.Value.ToString(isEn ? "MM/dd HH:mm" : "dd/MM HH:mm")
                                                                 </small>
                                                             }
                                                             @if (c.UnreadCount > 0)
@@ -95,8 +96,8 @@
                         {
                             <div class="empty-state">
                                 <i class="fas fa-comments empty-state-icon"></i>
-                                <p class="empty-state-title">Chưa có cuộc trò chuyện nào</p>
-                                <p class="empty-state-text mb-0">Tin nhắn với người mua/bán trong một dự án sẽ xuất hiện ở đây.</p>
+                                <p class="empty-state-title">@Html.Text("chat.empty.title")</p>
+                                <p class="empty-state-text mb-0">@Html.Text("chat.empty.text")</p>
                             </div>
                         }
                     </div>

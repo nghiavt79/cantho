@@ -6,8 +6,9 @@
 
 @model TechExchangeApp.Interfaces.ChatConversationDetailVm
 @{
-    ViewData["Title"] = "Trò chuyện — " + Model.ProductName;
+    ViewData["Title"] = Html.Text("chat.conversationTitle") + " — " + Model.ProductName;
     ViewData["AuthWorkspace"] = true;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
 }
@@ -26,7 +27,7 @@
                 @* Header *@
                 <div class="d-flex align-items-center mb-3 gap-2 chat-conversation-header">
                     <a href="/chat" class="btn btn-outline-secondary btn-sm">
-                        <i class="fa fa-arrow-left"></i> Quay lại
+                        <i class="fa fa-arrow-left"></i> @Html.Text("common.back")
                     </a>
                     <h4 class="mb-0 fw-bold">
                         <i class="fa fa-comments text-primary me-1"></i>
@@ -35,12 +36,12 @@
                     @if (Model.ConversationType == 2)
                     {
                         <span class="badge bg-primary ms-2">
-                            <i class="fa fa-headset me-1"></i>Hỗ trợ Sàn
+                            <i class="fa fa-headset me-1"></i>@Html.Text("chat.supportBadge")
                         </span>
                         @if (!string.IsNullOrEmpty(Model.ProjectName))
                         {
                             <span class="badge bg-info text-dark ms-1">
-                                <i class="fa fa-project-diagram me-1"></i>@Model.ProjectName@(Model.StepNumber.HasValue ? $" — Bước {Model.StepNumber}" : "")
+                                <i class="fa fa-project-diagram me-1"></i>@Model.ProjectName@(Model.StepNumber.HasValue ? $" — {Html.Text("dash.stepPrefix")} {Model.StepNumber}" : "")
                             </span>
                         }
                     }
@@ -74,7 +75,7 @@
                                     <span style="white-space:pre-wrap;">@m.Message</span>
                                 }
                                 <div class="text-end mt-1" style="font-size:11px; opacity:0.7;">
-                                    @m.Created.ToString("dd/MM HH:mm")
+                                    @m.Created.ToString(isEn ? "MM/dd HH:mm" : "dd/MM HH:mm")
                                 </div>
                             </div>
                         </div>
@@ -85,11 +86,11 @@
                 <form id="chatSendForm" class="d-flex gap-2 chat-conversation-composer">
                     <input type="text" id="chatInput"
                            class="form-control"
-                           placeholder="Nhập tin nhắn..."
+                           placeholder="@Html.Text("chat.inputPh")"
                            autocomplete="off"
                            maxlength="2000" />
                     <button type="submit" class="btn btn-primary px-4">
-                        <i class="fa fa-paper-plane"></i> Gửi
+                        <i class="fa fa-paper-plane"></i> @Html.Text("common.send")
                     </button>
                 </form>
 
@@ -106,6 +107,11 @@
 @section Scripts {
     <script>
         (function () {
+            const CHAT_MSG = {
+                sendFailed: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("chat.js.sendFailed"))),
+                connectionError: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("chat.js.connectionError")))
+            };
+
             const conversationId = @Model.ConversationId;
             const form = document.getElementById('chatSendForm');
             const input = document.getElementById('chatInput');
@@ -137,10 +143,10 @@
                         input.value = '';
                         await pollNewMessages();
                     } else {
-                        alert(data.error || 'Không gửi được tin nhắn.');
+                        alert(data.error || CHAT_MSG.sendFailed);
                     }
                 } catch {
-                    alert('Lỗi kết nối.');
+                    alert(CHAT_MSG.connectionError);
                 }
 
                 input.disabled = false;

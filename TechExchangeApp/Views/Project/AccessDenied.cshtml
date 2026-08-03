@@ -1,10 +1,12 @@
 @model dynamic
 
 @{
-    ViewData["Title"] = "Truy cập bị từ chối";
+    ViewData["Title"] = Html.Text("proj.denied.title");
     var projectId = ViewBag.ProjectId ?? 0;
     var stepNumber = ViewBag.StepNumber ?? 0;
-    var reason = ViewBag.Reason ?? "Bạn không có quyền truy cập tài nguyên này";
+    // reason đến từ UnauthorizedAccessException của PermissionService (tiếng Việt) —
+    // các Contains(...) bên dưới khớp theo chuỗi đó nên KHÔNG dịch biến này.
+    var reason = ViewBag.Reason ?? Html.Text("proj.denied.defaultReason");
 }
 
 <div class="container py-5">
@@ -16,7 +18,7 @@
                         <i class="fas fa-lock text-danger" style="font-size: 80px;"></i>
                     </div>
                     
-                    <h2 class="text-danger mb-3">Truy cập bị từ chối</h2>
+                    <h2 class="text-danger mb-3">@Html.Text("proj.denied.title")</h2>
                     
                     <div class="alert alert-warning" role="alert">
                         <i class="fas fa-exclamation-triangle me-2"></i>
@@ -26,37 +28,37 @@
                     @if (stepNumber > 0)
                     {
                         <p class="text-muted mb-4">
-                            Bạn đang cố gắng truy cập <strong>Bước @stepNumber</strong> của hồ sơ.
+                            @Html.Text("proj.denied.attemptPre") <strong>@Html.Text("dash.stepPrefix") @stepNumber</strong> @Html.Text("proj.denied.attemptPost")
                         </p>
                     }
 
                     <div class="mb-4">
-                        <h5 class="mb-3">Các bước tiếp theo:</h5>
+                        <h5 class="mb-3">@Html.Text("proj.denied.nextSteps")</h5>
                         <ul class="list-unstyled text-start">
                             @if (reason.Contains("NDA") || reason.Contains("ký"))
                             {
                                 <li class="mb-2">
                                     <i class="fas fa-check-circle text-success me-2"></i>
-                                    Hoàn thành ký NDA (Bước 2)
+                                    @Html.Text("proj.denied.completeNda")
                                 </li>
                             }
                             @if (reason.Contains("mời") || reason.Contains("invitation"))
                             {
                                 <li class="mb-2">
                                     <i class="fas fa-check-circle text-success me-2"></i>
-                                    Chấp nhận lời mời tham gia hồ sơ
+                                    @Html.Text("proj.denied.acceptInvite")
                                 </li>
                             }
                             @if (reason.Contains("tư vấn") || reason.Contains("consultant"))
                             {
                                 <li class="mb-2">
                                     <i class="fas fa-check-circle text-success me-2"></i>
-                                    Liên hệ quản trị viên để được phân công
+                                    @Html.Text("proj.denied.contactAdmin")
                                 </li>
                             }
                             <li class="mb-2">
                                 <i class="fas fa-envelope text-primary me-2"></i>
-                                Liên hệ quản trị viên nếu bạn cho rằng đây là lỗi
+                                @Html.Text("proj.denied.contactIfError")
                             </li>
                         </ul>
                     </div>
@@ -65,11 +67,11 @@
                         @if (projectId > 0)
                         {
                             <a href="@Url.Action("Details", "Project", new { id = projectId })" class="btn btn-primary">
-                                <i class="fas fa-arrow-left me-2"></i>Quay lại hồ sơ
+                                <i class="fas fa-arrow-left me-2"></i>@Html.Text("proj.backToRecord")
                             </a>
                         }
                         <a href="@Url.Action("Index", "Dashboard")" class="btn btn-outline-secondary">
-                            <i class="fas fa-home me-2"></i>Về Dashboard
+                            <i class="fas fa-home me-2"></i>@Html.Text("proj.denied.toDashboard")
                         </a>
                     </div>
                 </div>

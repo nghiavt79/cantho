@@ -15,22 +15,32 @@ namespace TechExchangeApp.Helpers
             => (ctx?.Items["Lang"] as string) == "en";
 
         /// <summary>
-        /// Các path workspace (sau [Authorize]) đã dịch xong, được phép đổi ngôn ngữ
-        /// bằng cookie "site_lang" vì không có URL /en riêng.
-        /// Cố ý hẹp: trang chưa dịch nằm ngoài danh sách sẽ giữ nguyên tiếng Việt
-        /// trọn vẹn thay vì hiển thị nửa Việt nửa Anh. Dịch tới đâu thêm path tới đó.
-        /// KHÔNG đưa vào: /Account/Login, /Account/Register (đã có route /en/login, /en/register)
-        /// và toàn bộ /cms (khu quản trị giữ tiếng Việt).
+        /// Toàn bộ path khu vực đã đăng nhập, được đổi ngôn ngữ bằng cookie "site_lang"
+        /// vì không có URL /en riêng.
+        /// Phủ hết mọi controller [Authorize] để menu/topbar/sidebar luôn theo ngôn ngữ
+        /// người dùng chọn; trang nào chưa dịch thì phần ruột vẫn tiếng Việt cho tới khi
+        /// dịch tới — đây là cách triển khai i18n thông thường, không gỡ bản dịch của
+        /// chrome chỉ vì body chưa xong.
+        /// KHÔNG đưa vào: khu quản trị /cms và toàn bộ site công khai.
+        /// Lưu ý dùng StartsWithSegments nên khớp theo trọn segment:
+        /// "/Project" KHÔNG khớp "/Projects" hay "/ProjectMembers" — phải liệt kê riêng.
         /// </summary>
         private static readonly string[] LocalizedWorkspacePaths =
         {
-            "/Dashboard",
-            "/Projects",
-            "/Project",
-            "/Account/Profile",
-            "/Account/ChangePassword",
-            "/Chat",
-            "/Notifications"
+            // Khu tài khoản & tổng quan
+            "/Account", "/Dashboard", "/Chat", "/Notifications", "/NotificationApi", "/Secure", "/Support",
+            // Hồ sơ giao dịch
+            "/Project", "/Projects", "/ProjectMembers", "/Seller",
+            // Các bước trong quy trình chuyển giao
+            "/TechTransfer", "/NDA", "/RFQ", "/Proposal", "/ProposalList", "/Scoring",
+            "/Negotiation", "/LegalReview", "/Signing", "/Contract", "/EContract",
+            "/AdvancePayment", "/PilotTest", "/Handover", "/Training", "/TechDoc",
+            "/ImplementationLog", "/Acceptance", "/Liquidation",
+            // Dịch vụ của tôi (kèm URL slug tiếng Việt được đăng ký trong Program.cs)
+            "/OcopOrder",
+            "/QuanLySanPham",       "/quan-ly-san-pham",
+            "/DangKyTuVan",         "/dang-ky-tu-van",
+            "/DangKyNhaCungUng",    "/dang-ky-nha-cung-ung"
         };
 
         public static bool IsLocalizedWorkspacePath(PathString path)

@@ -14,6 +14,11 @@ namespace TechExchangeApp.Interfaces
 
         // --- ProductType-scoped queries (CongNghe / ThietBi / SanPhamTriTue pages) ---
         Task<List<SanPhamCNTB>> GetNewProductsByProductTypeAsync(int productType, int take, int languageId = 1);
+
+        /// <summary>Listing phân trang theo ProductType, IsHot xếp trước (dùng cho trang OCOP).</summary>
+        Task<List<SanPhamCNTB>> GetPagedProductsByProductTypeAsync(
+            int productType, int languageId, int page, int pageSize);
+        Task<int> GetProductCountByProductTypeAsync(int productType, int languageId);
         Task<List<SanPhamCNTB>> GetProductsByCategoryAndProductTypeAsync(
             int cateId, int productType, int languageId, int take);
     }
