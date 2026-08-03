@@ -13,36 +13,36 @@
 
     <div class="tech-form-grid">
         <div class="tech-form-field">
-            <label class="tech-form-label" for="txtName">Họ và tên <span class="req">*</span></label>
-            <input id="txtName" name="FullName" value="@Model.FullName" class="tech-form-input" placeholder="Nhập họ và tên" maxlength="150" required />
+            <label class="tech-form-label" for="txtName">@Html.Text("technews.form.fullName") <span class="req">*</span></label>
+            <input id="txtName" name="FullName" value="@Model.FullName" class="tech-form-input" placeholder="@Html.Text("technews.form.fullNamePh")" maxlength="150" required />
         </div>
         <div class="tech-form-field">
-            <label class="tech-form-label" for="txtPhone">Số điện thoại <span class="req">*</span></label>
-            <input id="txtPhone" name="Phone" value="@Model.Phone" class="tech-form-input" placeholder="Nhập số điện thoại" maxlength="150" required />
+            <label class="tech-form-label" for="txtPhone">@Html.Text("technews.form.phone") <span class="req">*</span></label>
+            <input id="txtPhone" name="Phone" value="@Model.Phone" class="tech-form-input" placeholder="@Html.Text("technews.form.phonePh")" maxlength="150" required />
         </div>
         <div class="tech-form-field">
             <label class="tech-form-label" for="txtEmail">Email</label>
-            <input id="txtEmail" type="email" name="Email" value="@Model.Email" class="tech-form-input" placeholder="Nhập email" maxlength="150" />
+            <input id="txtEmail" type="email" name="Email" value="@Model.Email" class="tech-form-input" placeholder="@Html.Text("technews.form.emailPh")" maxlength="150" />
         </div>
         <div class="tech-form-field">
-            <label class="tech-form-label" for="txtCode">Xác thực <span class="req">*</span></label>
+            <label class="tech-form-label" for="txtCode">@Html.Text("technews.form.captcha") <span class="req">*</span></label>
             <div class="tech-form-captcha">
                 <span class="tech-form-captcha__q" id="techCaptchaQuestion">@Model.CaptchaQuestion = ?</span>
-                <input id="txtCode" name="CaptchaAnswer" type="number" inputmode="numeric" class="tech-form-input tech-form-captcha__input" placeholder="Kết quả" required autocomplete="off" />
+                <input id="txtCode" name="CaptchaAnswer" type="number" inputmode="numeric" class="tech-form-input tech-form-captcha__input" placeholder="@Html.Text("technews.form.captchaPh")" required autocomplete="off" />
             </div>
         </div>
         <div class="tech-form-field tech-form-field--full">
-            <label class="tech-form-label" for="txtNoiDung">Mô tả nhu cầu <span class="req">*</span></label>
+            <label class="tech-form-label" for="txtNoiDung">@Html.Text("technews.form.desc") <span class="req">*</span></label>
             <textarea id="txtNoiDung" name="NoiDung" class="tech-form-textarea" rows="4"
-                      placeholder="Mô tả máy móc, thiết bị hoặc giải pháp bạn đang cần..." required></textarea>
+                      placeholder="@Html.Text("technews.form.descPh")" required></textarea>
         </div>
     </div>
 
-    <p class="tech-form-note"><i class="bi bi-info-circle"></i> Thông tin chỉ dùng để hỗ trợ kết nối, không chia sẻ cho bên thứ ba.</p>
+    <p class="tech-form-note"><i class="bi bi-info-circle"></i> @Html.Text("technews.form.note")</p>
 
     <div class="tech-form-actions">
-        <button type="button" class="tech-form-btn-cancel" data-bs-dismiss="modal">Hủy</button>
-        <button type="submit" id="btnSave" class="tech-form-btn-submit">Gửi yêu cầu <i class="bi bi-arrow-right"></i></button>
+        <button type="button" class="tech-form-btn-cancel" data-bs-dismiss="modal">@Html.Text("common.cancel")</button>
+        <button type="submit" id="btnSave" class="tech-form-btn-submit">@Html.Text("technews.form.submit") <i class="bi bi-arrow-right"></i></button>
     </div>
 </form>
 <script>document.getElementById('_formTs').value = Math.floor(Date.now() / 1000);</script>

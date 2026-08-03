@@ -7,6 +7,7 @@ using TechExchangeApp.Entities;
 using TechExchangeApp.Enums;
 using TechExchangeApp.Helpers;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 using TechExchangeApp.ViewModel;
 
 namespace TechExchangeApp.Controllers.FrontEnd
@@ -84,9 +85,10 @@ namespace TechExchangeApp.Controllers.FrontEnd
             string sort = "newest",
             int page = 1)
         {
-            ViewData["TechNeedPageTitle"] = "Tìm mua công nghệ";
-            ViewData["TechNeedFormTitle"] = "TÌM MUA CÔNG NGHỆ";
-            ViewData["TechNeedFormIntro"] = "Vui lòng mô tả nhu cầu tìm mua công nghệ, thiết bị hoặc giải pháp để Sàn tiếp nhận và hỗ trợ kết nối.";
+            bool isEn = LangHelper.IsEnglish(HttpContext);
+            ViewData["TechNeedPageTitle"] = I18n.T(HttpContext, "technews.pageTitle");
+            ViewData["TechNeedFormTitle"] = I18n.T(HttpContext, "technews.formTitle");
+            ViewData["TechNeedFormIntro"] = I18n.T(HttpContext, "technews.formIntro");
 
             var vm = new CateTechNeedsViewModel
             {
@@ -135,7 +137,8 @@ namespace TechExchangeApp.Controllers.FrontEnd
         private void BindToGrid(CateTechNeedsViewModel vm, int page)
         {
             int pageSize = 9;
-            int lang = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            int lang = LangHelper.CurrentLangId(HttpContext);
+            bool isEn = lang == LangHelper.En;
 
             var subMenus = _context.UspSelectSubMenu(vm.MenuId);
 
@@ -194,7 +197,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
             vm.Items = rows.Select(q =>
             {
-                var it = MapItem(q);
+                var it = MapItem(q, isEn);
                 it.Author = q.Author;
                 it.LinhVucText = ResolveLinhVucBadge(q.LinhVucId, lvMap);
                 return it;
@@ -215,7 +218,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
             return null;
         }
 
-        private TechNeedItemVm MapItem(dynamic q)
+        private TechNeedItemVm MapItem(dynamic q, bool isEn = false)
         {
             int menuId = q.MenuId == null ? 0 : Convert.ToInt32(q.MenuId);
             int id = q.Id == null ? 0 : Convert.ToInt32(q.Id);
@@ -229,7 +232,9 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 Image = q.Image,
                 Description = q.Description,
                 PublishedDate = q.PublishedDate,
-                DetailUrl = $"{_mainDomain}tim-mua-cong-nghe/{q.QueryString}-{id}"
+                DetailUrl = isEn
+                    ? $"{_mainDomain}en/technology-demand/{q.QueryString}-{id}"
+                    : $"{_mainDomain}tim-mua-cong-nghe/{q.QueryString}-{id}"
             };
         }
 

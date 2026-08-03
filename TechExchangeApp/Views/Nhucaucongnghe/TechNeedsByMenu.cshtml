@@ -1,7 +1,8 @@
 @model TechExchangeApp.ViewModel.CateTechNeedsViewModel
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Tìm mua máy móc, công nghệ và dây chuyền sản xuất";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    ViewData["Title"] = Html.Text("technews.pageTitle");
 
     string kw = Model.Keyword ?? "";
     string kwEnc = Uri.EscapeDataString(kw);
@@ -17,18 +18,21 @@
         return System.Net.WebUtility.HtmlDecode(text).Trim();
     }
 
-    // Thời gian đăng dạng "x giờ trước"
+    // Thời gian đăng dạng "x giờ trước" (song ngữ)
     string RelTime(DateTime d)
     {
         var diff = DateTime.Now - d;
-        if (diff.TotalMinutes < 1) return "vừa đăng";
-        if (diff.TotalMinutes < 60) return $"{(int)diff.TotalMinutes} phút trước";
-        if (diff.TotalHours < 24) return $"{(int)diff.TotalHours} giờ trước";
-        if (diff.TotalDays < 30) return $"{(int)diff.TotalDays} ngày trước";
+        if (diff.TotalMinutes < 1) return Html.Text("technews.justPosted");
+        if (diff.TotalMinutes < 60) return string.Format(Html.Text("technews.minutesAgo"), (int)diff.TotalMinutes);
+        if (diff.TotalHours < 24) return string.Format(Html.Text("technews.hoursAgo"), (int)diff.TotalHours);
+        if (diff.TotalDays < 30) return string.Format(Html.Text("technews.daysAgo"), (int)diff.TotalDays);
         return d.ToString("dd/MM/yyyy");
     }
 
-    var popularKeywords = new[] { "Dây chuyền chế biến", "Máy đóng gói", "Tự động hóa", "Năng lượng", "Công nghệ sinh học" };
+    var popularKeywords = new[] {
+        Html.Text("technews.kw1"), Html.Text("technews.kw2"), Html.Text("technews.kw3"),
+        Html.Text("technews.kw4"), Html.Text("technews.kw5")
+    };
 }
 
 @section Styles {
@@ -43,15 +47,15 @@
             <nav class="tech-request-breadcrumb" aria-label="breadcrumb">
                 <partial name="_BreadcrumbHome" />
                 <span>/</span>
-                <strong>Tìm mua công nghệ</strong>
+                <strong>@Html.Text("technews.breadcrumb")</strong>
             </nav>
             <div class="tech-search-hero__inner">
                 <div>
-                    <h1 class="tech-search-hero__title">Tìm mua máy móc, công nghệ <br />và dây chuyền sản xuất</h1>
-                    <p class="tech-search-hero__subtitle">Kết nối nhu cầu của doanh nghiệp với các đơn vị cung cấp giải pháp công nghệ phù hợp.</p>
+                    <h1 class="tech-search-hero__title">@Html.Text("technews.heroTitleLine1") <br />@Html.Text("technews.heroTitleLine2")</h1>
+                    <p class="tech-search-hero__subtitle">@Html.Text("technews.heroSubtitle")</p>
                 </div>
                 <button type="button" class="tech-search-hero__cta" data-bs-toggle="modal" data-bs-target="#techRequestModal">
-                    <i class="bi bi-upload"></i> Đăng nhu cầu tìm mua
+                    <i class="bi bi-upload"></i> @Html.Text("technews.postNeed")
                 </button>
             </div>
         </div>
@@ -65,12 +69,12 @@
                     <input type="hidden" name="sort" value="@sortParam" />
                     <div class="tech-filter-field">
                         <i class="bi bi-search"></i>
-                        <label class="visually-hidden" for="techKeyword">Từ khóa tìm kiếm</label>
+                        <label class="visually-hidden" for="techKeyword">@Html.Text("technews.searchKeyword")</label>
                         <input id="techKeyword" class="tech-filter-input" type="search" name="keyword" value="@kw"
-                               placeholder="Nhập tên công nghệ, máy móc, thiết bị hoặc giải pháp cần tìm..." />
+                               placeholder="@Html.Text("technews.searchPh")" />
                     </div>
                     <div class="tech-filter-field--select">
-                        <label class="visually-hidden" for="techLinhVuc">Lĩnh vực công nghệ</label>
+                        <label class="visually-hidden" for="techLinhVuc">@Html.Text("technews.field")</label>
                         <select id="techLinhVuc" class="tech-filter-select" name="linhvuc">
                             @foreach (var opt in Model.LinhVucs)
                             {
@@ -78,11 +82,11 @@
                             }
                         </select>
                     </div>
-                    <button type="submit" class="tech-filter-submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                    <button type="submit" class="tech-filter-submit"><i class="bi bi-search"></i> @Html.Text("common.search")</button>
                 </form>
 
                 <div class="tech-chips">
-                    <span class="tech-chips__label">Từ khóa phổ biến:</span>
+                    <span class="tech-chips__label">@Html.Text("technews.popularKeywords")</span>
                     @foreach (var k in popularKeywords)
                     {
                         <a class="tech-chip" href="?keyword=@Uri.EscapeDataString(k)">@k</a>
@@ -97,12 +101,12 @@
         <div class="tech-page-container">
 
             <div class="tech-results-toolbar">
-                <div class="tech-results-count">Có <strong>@Model.TotalCount</strong> nhu cầu phù hợp</div>
+                <div class="tech-results-count">@Html.Text("technews.resultsPrefix") <strong>@Model.TotalCount</strong> @Html.Text("technews.resultsSuffix")</div>
                 <div class="tech-results-sort">
-                    <label for="techSort">Sắp xếp:</label>
+                    <label for="techSort">@Html.Text("common.sort")</label>
                     <select id="techSort" onchange="location.href='?sort=' + this.value + '&keyword=@kwEnc&linhvuc=@lvEnc'">
-                        <option value="newest" selected="@(sortParam == "newest")">Mới nhất</option>
-                        <option value="oldest" selected="@(sortParam == "oldest")">Cũ nhất</option>
+                        <option value="newest" selected="@(sortParam == "newest")">@Html.Text("common.sortNewest")</option>
+                        <option value="oldest" selected="@(sortParam == "oldest")">@Html.Text("common.sortOldest")</option>
                     </select>
                 </div>
             </div>
@@ -112,7 +116,7 @@
                 {
                     <div class="tech-request-empty">
                         <i class="bi bi-inbox"></i>
-                        <p>Không tìm thấy nhu cầu phù hợp. Vui lòng thử từ khóa hoặc lĩnh vực khác.</p>
+                        <p>@Html.Text("technews.empty")</p>
                     </div>
                 }
                 else
@@ -145,7 +149,7 @@
                                     <span><i class="bi bi-clock"></i> @RelTime(item.PublishedDate)</span>
                                 </div>
                                 <div class="tech-request-card__footer">
-                                    <a class="tech-request-card__link" href="@item.DetailUrl">Xem chi tiết <i class="bi bi-arrow-right"></i></a>
+                                    <a class="tech-request-card__link" href="@item.DetailUrl">@Html.Text("common.viewDetails") <i class="bi bi-arrow-right"></i></a>
                                 </div>
                             </div>
                         </article>
@@ -156,8 +160,8 @@
             @* ============ PAGINATION ============ *@
             @if (Model.TotalPage > 1)
             {
-                <nav class="tech-pagination" aria-label="Phân trang">
-                    <a class="@(Model.CurrentPage <= 1 ? "is-disabled" : "")" aria-label="Trang trước"
+                <nav class="tech-pagination" aria-label="@Html.Text("common.pagination")">
+                    <a class="@(Model.CurrentPage <= 1 ? "is-disabled" : "")" aria-label="@Html.Text("common.prevPage")"
                        href="?page=@(Model.CurrentPage - 1)&keyword=@kwEnc&linhvuc=@lvEnc&sort=@sortParam"><i class="bi bi-chevron-left"></i></a>
                     @foreach (var p in Model.Pages)
                     {
@@ -170,7 +174,7 @@
                             <a href="?page=@p&keyword=@kwEnc&linhvuc=@lvEnc&sort=@sortParam">@p</a>
                         }
                     }
-                    <a class="@(Model.CurrentPage >= Model.TotalPage ? "is-disabled" : "")" aria-label="Trang sau"
+                    <a class="@(Model.CurrentPage >= Model.TotalPage ? "is-disabled" : "")" aria-label="@Html.Text("common.nextPage")"
                        href="?page=@(Model.CurrentPage + 1)&keyword=@kwEnc&linhvuc=@lvEnc&sort=@sortParam"><i class="bi bi-chevron-right"></i></a>
                 </nav>
             }
@@ -179,10 +183,10 @@
             <div class="tech-request-cta">
                 <i class="bi bi-lightbulb tech-request-cta__icon"></i>
                 <div class="tech-request-cta__text">
-                    <h2>Không tìm thấy công nghệ phù hợp với nhu cầu?</h2>
-                    <p>Gửi yêu cầu của bạn, chúng tôi sẽ kết nối và hỗ trợ tìm kiếm giải pháp phù hợp nhất.</p>
+                    <h2>@Html.Text("technews.ctaEndTitle")</h2>
+                    <p>@Html.Text("technews.ctaEndDesc")</p>
                 </div>
-                <button type="button" class="tech-request-cta__btn" data-bs-toggle="modal" data-bs-target="#techRequestModal">Gửi nhu cầu tìm mua ngay <i class="bi bi-arrow-right"></i></button>
+                <button type="button" class="tech-request-cta__btn" data-bs-toggle="modal" data-bs-target="#techRequestModal">@Html.Text("technews.ctaEndBtn") <i class="bi bi-arrow-right"></i></button>
             </div>
 
         </div>
@@ -194,10 +198,10 @@
             <div class="modal-content tech-request-modal__content">
                 <div class="modal-header tech-request-modal__header">
                     <div>
-                        <h2 class="tech-request-modal__title" id="techRequestModalLabel">Gửi nhu cầu tìm mua công nghệ</h2>
-                        <p class="tech-request-modal__subtitle">Cung cấp thông tin về máy móc, thiết bị hoặc giải pháp bạn đang cần. CASTA sẽ hỗ trợ kết nối với đơn vị phù hợp.</p>
+                        <h2 class="tech-request-modal__title" id="techRequestModalLabel">@Html.Text("technews.modalTitle")</h2>
+                        <p class="tech-request-modal__subtitle">@Html.Text("technews.modalSubtitle")</p>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Html.Text("common.close")"></button>
                 </div>
                 <div class="modal-body tech-request-modal__body">
                     @* Form (dùng chung partial) *@
@@ -207,9 +211,9 @@
                     @* Thông báo thành công (ẩn tới khi gửi xong) *@
                     <div id="techRequestSuccess" class="tech-request-success" hidden>
                         <i class="bi bi-check-circle-fill"></i>
-                        <h3>Đã tiếp nhận nhu cầu của bạn</h3>
-                        <p>CASTA sẽ kiểm tra thông tin và liên hệ hỗ trợ trong thời gian sớm nhất.</p>
-                        <button type="button" class="tech-form-btn-submit" data-bs-dismiss="modal">Đóng</button>
+                        <h3>@Html.Text("technews.successTitle")</h3>
+                        <p>@Html.Text("technews.successDesc")</p>
+                        <button type="button" class="tech-form-btn-submit" data-bs-dismiss="modal">@Html.Text("common.close")</button>
                     </div>
                 </div>
             </div>
@@ -226,7 +230,7 @@
             if ($ && $.fn && $.fn.select2) {
                 var current = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(lv));
                 var $lv = $('#techLinhVuc');
-                $lv.select2({ theme: 'bootstrap-5', width: '100%', placeholder: '--- Chọn lĩnh vực ---', allowClear: true });
+                $lv.select2({ theme: 'bootstrap-5', width: '100%', placeholder: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("technews.chooseField"))), allowClear: true });
                 $lv.val(current && current.length ? current : '').trigger('change.select2');
             }
 
@@ -236,7 +240,7 @@
             if (!modalEl || !form) return;
 
             var btn = document.getElementById('btnSave');
-            var btnDefault = btn ? btn.innerHTML : 'Gửi nhu cầu tìm mua';
+            var btnDefault = btn ? btn.innerHTML : @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("technews.form.submit")));
             var errBox = document.getElementById('techFormError');
             var formWrap = document.getElementById('techRequestFormWrap');
             var successBox = document.getElementById('techRequestSuccess');
@@ -271,7 +275,7 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 errBox.hidden = true;
-                if (btn) { btn.disabled = true; btn.innerHTML = 'Đang gửi...'; }
+                if (btn) { btn.disabled = true; btn.innerHTML = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("technews.js.sending"))); }
                 fetch(form.getAttribute('action'), {
                     method: 'POST',
                     headers: { 'X-Requested-With': 'XMLHttpRequest' },
@@ -285,12 +289,12 @@
                         formWrap.hidden = true;
                         successBox.hidden = false;
                     } else {
-                        showError((d && d.message) || 'Gửi thất bại, vui lòng thử lại.', codeInput);
+                        showError((d && d.message) || @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("technews.js.errorGeneric"))), codeInput);
                         if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; }
                     }
                 })
                 .catch(function () {
-                    showError('Gửi thất bại, vui lòng kiểm tra kết nối và thử lại.', null);
+                    showError(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("technews.js.errorNetwork"))), null);
                     if (btn) { btn.disabled = false; btn.innerHTML = btnDefault; }
                 });
             });

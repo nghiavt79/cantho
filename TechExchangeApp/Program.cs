@@ -374,6 +374,11 @@ app.MapControllerRoute(
     defaults: new { controller = "Nhucaucongnghe", action = "CateTechNeeds", menuId = 67 }
 );
 app.MapControllerRoute(
+    name: "en_technology_demand_detail",
+    pattern: "en/technology-demand/{slug}-{id:int}",
+    defaults: new { controller = "Nhucaucongnghe", action = "Detail" }
+);
+app.MapControllerRoute(
     name: "en_ocop",
     pattern: "en/ocop",
     defaults: new { controller = "Ocop", action = "Index" }
