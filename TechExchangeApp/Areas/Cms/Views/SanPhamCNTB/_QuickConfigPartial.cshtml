@@ -7,6 +7,7 @@
     var eDate = (DateTime?)ViewBag.EEffectiveDate;
     var keywords = (string?)ViewBag.Keywords ?? "";
     var itemName = (string?)ViewBag.ItemName ?? "";
+    var isHot = (bool)(ViewBag.IsHot ?? false);
 }
 
 <form id="quickConfigForm">
@@ -45,6 +46,15 @@
             <label class="form-label fw-semibold small">Ngày hết hiệu lực</label>
             <input type="datetime-local" name="eEffectiveDate" class="form-control form-control-sm"
                    value="@(eDate?.ToString("yyyy-MM-ddTHH:mm"))" />
+        </div>
+    </div>
+    <div class="mb-3">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="isHot" value="true"
+                   @(isHot ? "checked" : "") id="qcIsHot">
+            <label class="form-check-label" for="qcIsHot">
+                <i class="fas fa-thumbtack text-danger me-1"></i> Ghim sản phẩm
+            </label>
         </div>
     </div>
     <div class="mb-2">

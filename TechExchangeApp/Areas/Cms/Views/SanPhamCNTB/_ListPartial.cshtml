@@ -143,6 +143,10 @@
                     </td>
                     <td class="small text-muted">@p.Code</td>
                     <td>
+                        @if (p.IsHot)
+                        {
+                            <i class="fas fa-thumbtack text-danger me-1" title="Đã ghim"></i>
+                        }
                         <a asp-action="Detail" asp-route-id="@p.ID" class="fw-semibold text-decoration-none">@p.Name</a>
                     </td>
                     @if (productType == 3)

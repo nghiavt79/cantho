@@ -163,7 +163,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                             .Select(n => n.FullName)
                             .FirstOrDefault()
                         : null,
-                    SiteId = p.SiteId
+                    SiteId = p.SiteId,
+                    IsHot = p.IsHot ?? false
                 })
                 .ToListAsync();
 
@@ -275,7 +276,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                             .FirstOrDefault()
                         : null,
                     ImageUrl = p.QuyTrinhHinhAnh,
-                    SiteId = p.SiteId
+                    SiteId = p.SiteId,
+                    IsHot = p.IsHot ?? false
                 })
                 .ToListAsync();
 
@@ -677,6 +679,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             ViewBag.ItemName = p.Name;
             ViewBag.StatusId = p.StatusId;
             ViewBag.ProductType = p.ProductType;
+            ViewBag.IsHot = p.IsHot ?? false;
             ViewBag.BEffectiveDate = p.bEffectiveDate ?? DateTime.Now;
             ViewBag.EEffectiveDate = p.eEffectiveDate ?? DateTime.Now.AddYears(3);
             ViewBag.Keywords = p.Keywords;
@@ -691,7 +694,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuickConfig(int id, int? statusId, int? productType,
-            DateTime? bEffectiveDate, DateTime? eEffectiveDate, string? keywords)
+            DateTime? bEffectiveDate, DateTime? eEffectiveDate, string? keywords, bool isHot)
         {
             var entity = await _context.SanPhamCNTBs.FindAsync(id);
             if (entity == null)
@@ -706,6 +709,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.bEffectiveDate = bEffectiveDate;
             entity.eEffectiveDate = eEffectiveDate;
             entity.Keywords = keywords;
+            entity.IsHot = isHot;
             entity.Modified = DateTime.Now;
             entity.Modifier = User.Identity?.Name;
 
@@ -1074,6 +1078,7 @@ MaTruyXuat = p.MaTruyXuat
         public string? ImageUrl { get; set; }
         public int? SiteId { get; set; }
         public string? PublicUrl { get; set; }
+        public bool IsHot { get; set; }
     }
 
     public class SanPhamCNTBFormVm
