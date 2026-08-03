@@ -6,6 +6,7 @@ using TechExchangeApp.Entities;
 using TechExchangeApp.Helpers;
 using TechExchangeApp.ViewModel;
 using TechExchangeApp.Interfaces;
+using TechExchangeApp.Localization;
 
 namespace TechExchangeApp.Controllers
 {
@@ -51,14 +52,14 @@ namespace TechExchangeApp.Controllers
                 // Manual check because Normalized columns are ignored
                 if (context.Users.Any(u => u.UserName == model.UserName))
                 {
-                     ModelState.AddModelError("UserName", "Tên đăng nhập đã tồn tại.");
+                     ModelState.AddModelError("UserName", I18n.T(HttpContext, "auth.err.usernameExists"));
                      return View(model);
                 }
-                // Check Email if needed. IdentityUser allows duplicate emails by default if configured so, 
+                // Check Email if needed. IdentityUser allows duplicate emails by default if configured so,
                 // but usually we want unique. Note: NormalizedEmail is ignored so checking Email directly.
                 if (context.Users.Any(u => u.Email == model.Email))
                 {
-                     ModelState.AddModelError("Email", "Email đã tồn tại.");
+                     ModelState.AddModelError("Email", I18n.T(HttpContext, "auth.err.emailExists"));
                      return View(model);
                 }
 
@@ -135,7 +136,7 @@ namespace TechExchangeApp.Controllers
                     }
                 }
                 
-                ModelState.AddModelError(string.Empty, "Tên đăng nhập hoặc mật khẩu không chính xác.");
+                ModelState.AddModelError(string.Empty, I18n.T(HttpContext, "auth.err.loginFailed"));
             }
             return View(model);
         }
@@ -180,7 +181,7 @@ namespace TechExchangeApp.Controllers
                 }
             }
             
-            return Json(new { success = false, errors = new[] { "Tên đăng nhập hoặc mật khẩu không chính xác." } });
+            return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.loginFailed") } });
         }
 
         // POST: /Account/RegisterAjax - AJAX Register
@@ -203,12 +204,12 @@ namespace TechExchangeApp.Controllers
 
             if (context.Users.Any(u => u.UserName.ToLower() == userNameLower))
             {
-                return Json(new { success = false, errors = new[] { "Tên đăng nhập đã tồn tại." } });
+                return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.usernameExists") } });
             }
 
             if (context.Users.Any(u => u.Email.ToLower() == emailLower))
             {
-                return Json(new { success = false, errors = new[] { "Email đã được sử dụng." } });
+                return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.emailExists") } });
             }
 
             try
@@ -243,7 +244,7 @@ namespace TechExchangeApp.Controllers
             }
             catch (Exception)
             {
-                return Json(new { success = false, errors = new[] { "Không thể tạo tài khoản. Vui lòng thử lại sau." } });
+                return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.registerFailed") } });
             }
         }
 
@@ -287,15 +288,15 @@ namespace TechExchangeApp.Controllers
                 
                 if (success)
                 {
-                    TempData["SuccessMessage"] = "Cập nhật thông tin thành công!";
+                    TempData["SuccessMessage"] = I18n.T(HttpContext, "profile.success");
                     return RedirectToAction(nameof(Profile));
                 }
-                
-                ModelState.AddModelError("", "Không thể cập nhật thông tin");
+
+                ModelState.AddModelError("", I18n.T(HttpContext, "profile.err.updateFailed"));
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError("", I18n.T(HttpContext, ex.Message));
             }
 
             return View(model);
@@ -326,15 +327,15 @@ namespace TechExchangeApp.Controllers
                 
                 if (success)
                 {
-                    TempData["SuccessMessage"] = "Đổi mật khẩu thành công!";
+                    TempData["SuccessMessage"] = I18n.T(HttpContext, "changepwd.success");
                     return RedirectToAction(nameof(Profile));
                 }
-                
-                ModelState.AddModelError("", "Không thể đổi mật khẩu");
+
+                ModelState.AddModelError("", I18n.T(HttpContext, "changepwd.err.updateFailed"));
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+                ModelState.AddModelError("", I18n.T(HttpContext, ex.Message));
             }
 
             return View(model);
@@ -362,9 +363,9 @@ namespace TechExchangeApp.Controllers
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
             if (string.IsNullOrWhiteSpace(dto.Phone))
-                return Json(new { success = false, message = "Số điện thoại không hợp lệ." });
+                return Json(new { success = false, message = I18n.T(HttpContext, "verify.phoneInvalid") });
             var ok = await _verify.UpdatePhoneAsync(userId, dto.Phone.Trim());
-            return Json(new { success = ok, message = ok ? "✅ Đã cập nhật SĐT." : "Lỗi cập nhật." });
+            return Json(new { success = ok, message = I18n.T(HttpContext, ok ? "verify.phoneUpdated" : "verify.updateFailed") });
         }
 
         // ─── POST /Account/SendEmailOtp (AJAX) ─────────────────────────────────
@@ -373,7 +374,7 @@ namespace TechExchangeApp.Controllers
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
             var ok = await _verify.SendEmailOtpAsync(userId);
-            return Json(new { success = ok, message = ok ? "📧 Mã OTP đã được gửi đến email của bạn." : "Không thể gửi OTP. Kiểm tra lại email." });
+            return Json(new { success = ok, message = I18n.T(HttpContext, ok ? "verify.emailOtpSent" : "verify.emailOtpSendFailed") });
         }
 
         // ─── POST /Account/SendPhoneOtp (AJAX) ─────────────────────────────────
@@ -382,7 +383,7 @@ namespace TechExchangeApp.Controllers
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
             var ok = await _verify.SendPhoneOtpAsync(userId);
-            return Json(new { success = ok, message = ok ? "📱 Mã OTP đã được gửi đến số điện thoại." : "Không thể gửi OTP. Kiểm tra lại SĐT." });
+            return Json(new { success = ok, message = I18n.T(HttpContext, ok ? "verify.phoneOtpSent" : "verify.phoneOtpSendFailed") });
         }
 
         // ─── POST /Account/VerifyEmailOtp (AJAX) ───────────────────────────────
@@ -390,8 +391,8 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> VerifyEmailOtp([FromBody] OtpDto dto)
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
-            var (ok, msg) = await _verify.VerifyEmailOtpAsync(userId, dto.Otp);
-            return Json(new { success = ok, message = msg });
+            var (ok, msgKey) = await _verify.VerifyEmailOtpAsync(userId, dto.Otp);
+            return Json(new { success = ok, message = I18n.T(HttpContext, msgKey) });
         }
 
         // ─── POST /Account/VerifyPhoneOtp (AJAX) ───────────────────────────────
@@ -399,8 +400,8 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> VerifyPhoneOtp([FromBody] OtpDto dto)
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
-            var (ok, msg) = await _verify.VerifyPhoneOtpAsync(userId, dto.Otp);
-            return Json(new { success = ok, message = msg });
+            var (ok, msgKey) = await _verify.VerifyPhoneOtpAsync(userId, dto.Otp);
+            return Json(new { success = ok, message = I18n.T(HttpContext, msgKey) });
         }
 
         // ─── POST /Account/UploadDoc (form) ─────────────────────────────────────
@@ -411,12 +412,13 @@ namespace TechExchangeApp.Controllers
             var userId = int.Parse(_userManager.GetUserId(User)!);
             if (docFile == null)
             {
-                TempData["ErrorMessage"] = "Vui lòng chọn file.";
+                TempData["ErrorMessage"] = I18n.T(HttpContext, "verify.selectFileRequired");
                 return RedirectToAction(nameof(Profile));
             }
-            var (ok, msg) = await _verify.UploadDocAsync(userId, docType, docFile, env);
-            if (ok) TempData["SuccessMessage"] = msg;
-            else    TempData["ErrorMessage"]   = msg;
+            var (ok, msgKey) = await _verify.UploadDocAsync(userId, docType, docFile, env);
+            var message = BuildDocUploadMessage(ok, msgKey, docType);
+            if (ok) TempData["SuccessMessage"] = message;
+            else    TempData["ErrorMessage"]   = message;
             return RedirectToAction(nameof(Profile));
         }
 
@@ -427,9 +429,19 @@ namespace TechExchangeApp.Controllers
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
             if (docFile == null)
-                return Json(new { success = false, message = "Vui lòng chọn file." });
-            var (ok, msg) = await _verify.UploadDocAsync(userId, docType, docFile, env);
-            return Json(new { success = ok, message = msg });
+                return Json(new { success = false, message = I18n.T(HttpContext, "verify.selectFileRequired") });
+            var (ok, msgKey) = await _verify.UploadDocAsync(userId, docType, docFile, env);
+            return Json(new { success = ok, message = BuildDocUploadMessage(ok, msgKey, docType) });
+        }
+
+        // Upload thành công trả về key rỗng; controller tự ghép "<nhãn loại giấy tờ> <hậu tố i18n>".
+        private string BuildDocUploadMessage(bool ok, string msgKey, int docType)
+        {
+            if (!ok) return I18n.T(HttpContext, msgKey);
+            var labelKey = docType == DocType.CccdFront ? "doc.cccdFront"
+                         : docType == DocType.CccdBack  ? "doc.cccdBack"
+                         : "doc.businessLicense";
+            return $"✅ {I18n.T(HttpContext, labelKey)} {I18n.T(HttpContext, "doc.uploadedSuffix")}";
         }
     }
 }

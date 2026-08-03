@@ -261,9 +261,17 @@ app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 app.Use(async (ctx, next) =>
 {
     var path = ctx.Request.Path.Value ?? "";
-    ctx.Items["Lang"] = (path.Equals("/en", StringComparison.OrdinalIgnoreCase)
-                         || path.StartsWith("/en/", StringComparison.OrdinalIgnoreCase))
-                        ? "en" : "vi";
+    var isEnPrefix = path.Equals("/en", StringComparison.OrdinalIgnoreCase)
+                     || path.StartsWith("/en/", StringComparison.OrdinalIgnoreCase);
+
+    // Workspace (sau [Authorize]) không có URL /en riêng nên đổi ngôn ngữ bằng cookie
+    // "site_lang" (do LanguageController đặt). Chỉ áp dụng cho path trong allowlist
+    // => site công khai và /cms không bị cookie tác động.
+    var isWorkspaceEn = !isEnPrefix
+                        && TechExchangeApp.Helpers.LangHelper.IsLocalizedWorkspacePath(ctx.Request.Path)
+                        && ctx.Request.Cookies["site_lang"] == "en";
+
+    ctx.Items["Lang"] = (isEnPrefix || isWorkspaceEn) ? "en" : "vi";
     await next();
 });
 
@@ -393,6 +401,13 @@ app.MapControllerRoute(
     name: "en_search",
     pattern: "en/search",
     defaults: new { controller = "Search", action = "Index" }
+);
+// AJAX partial (đổi tab lọc/sắp xếp/phân trang) cho trang search tiếng Anh — bắt buộc có
+// prefix /en/ để middleware gắn Lang=en, nếu không kết quả AJAX sẽ trả về tiếng Việt.
+app.MapControllerRoute(
+    name: "en_search_results_partial",
+    pattern: "en/search/results-partial",
+    defaults: new { controller = "Search", action = "ResultsPartial" }
 );
 // Trang ná»™i dung menu tiáº¿ng Anh (Ä‘á»™ng): /en/page/{slug}-{menuId}. slug chá»‰ Ä‘á»ƒ Ä‘áº¹p URL.
 app.MapControllerRoute(
@@ -609,6 +624,18 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "register_page",
     pattern: "dang-ky",
+    defaults: new { controller = "Account", action = "Register" }
+);
+
+app.MapControllerRoute(
+    name: "en_login_page",
+    pattern: "en/login",
+    defaults: new { controller = "Account", action = "Login" }
+);
+
+app.MapControllerRoute(
+    name: "en_register_page",
+    pattern: "en/register",
     defaults: new { controller = "Account", action = "Register" }
 );
 

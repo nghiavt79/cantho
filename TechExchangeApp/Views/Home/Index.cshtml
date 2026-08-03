@@ -1,7 +1,8 @@
 @model TechExchangeApp.ViewModel.HomeViewModel
 
 @{
-    ViewData["Title"] = "Trang chủ";
+    ViewData["FullTitle"] = Html.Text("home.seo.title");
+    ViewData["MetaDescription"] = Html.Text("home.seo.description");
     var branding = Model.Branding;
     var isEn = Model.IsEnglish;
 

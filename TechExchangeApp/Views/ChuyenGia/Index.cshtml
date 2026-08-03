@@ -2,7 +2,9 @@
 @model ChuyenGiaIndexVm
 
 @{
-    ViewData["Title"] = Model.PageTitle;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    var listUrl = isEn ? "/en/experts" : "/chuyen-gia";
+    ViewData["Title"] = isEn ? Html.Text("common.experts").ToString() : Model.PageTitle;
 }
 
 @section Styles {
@@ -14,9 +16,9 @@
     @* =============== PAGE HEADING =============== *@
     <section class="expert-hero">
         <div class="expert-container">
-            <h1 class="expert-hero__title">@Model.PageTitle</h1>
+            <h1 class="expert-hero__title">@(isEn ? Html.Text("common.experts") : Model.PageTitle)</h1>
             <p class="expert-hero__subtitle">
-                Kết nối với đội ngũ chuyên gia trong chuyển giao công nghệ, sở hữu trí tuệ, đầu tư và đổi mới sáng tạo.
+                @Html.Text("expert.list.subtitle")
             </p>
             <span class="expert-hero__accent"></span>
         </div>
@@ -27,15 +29,15 @@
 
             @* =============== LEFT: CATEGORY SIDEBAR =============== *@
             <aside class="expert-sidebar">
-                <p class="expert-sidebar__title">Lĩnh vực tư vấn</p>
+                <p class="expert-sidebar__title">@Html.Text("expert.list.fieldTitle")</p>
                 <ul class="expert-sidebar__list">
                     <li class="expert-sidebar__item @(Model.CateId == 0 ? "is-active" : "")">
-                        <a href="/chuyen-gia">Tất cả</a>
+                        <a href="@listUrl">@Html.Text("common.all")</a>
                     </li>
                     @foreach (var c in Model.Categories)
                     {
                         <li class="expert-sidebar__item @(Model.CateId == c.Id ? "is-active" : "")">
-                            <a href="/chuyen-gia?cateId=@c.Id">@c.Title</a>
+                            <a href="@listUrl?cateId=@c.Id">@c.Title</a>
                         </li>
                     }
                 </ul>
@@ -45,16 +47,16 @@
             <section class="expert-content">
 
                 <div class="expert-content__header">
-                    <h2 class="expert-content__title">Đội ngũ chuyên gia</h2>
+                    <h2 class="expert-content__title">@Html.Text("expert.list.heading")</h2>
                     @if (Model.TotalCount > 0)
                     {
-                        <p class="expert-content__subtitle">@Model.TotalCount chuyên gia đang tham gia tư vấn</p>
+                        <p class="expert-content__subtitle">@Model.TotalCount @Html.Text("expert.list.countSuffix")</p>
                     }
                 </div>
 
                 @if (!Model.Items.Any())
                 {
-                    <div class="expert-empty">Không có chuyên gia nào.</div>
+                    <div class="expert-empty">@Html.Text("expert.list.empty")</div>
                 }
                 else
                 {
@@ -89,7 +91,7 @@
                                         </div>
                                     }
                                     <div class="expert-card__actions">
-                                        <a href="@item.DetailUrl" class="expert-card__btn">Xem hồ sơ</a>
+                                        <a href="@item.DetailUrl" class="expert-card__btn">@Html.Text("expert.list.viewProfile")</a>
                                     </div>
                                 </div>
                             </div>
@@ -101,33 +103,33 @@
                     {
                         <div class="expert-pagination">
                             <div class="expert-pagination__info">
-                                Trang <strong>@Model.CurrentPage</strong> / <strong>@Model.TotalPage</strong>
-                                &nbsp;·&nbsp; Tổng <strong>@Model.TotalCount</strong> chuyên gia
+                                @Html.Text("common.page") <strong>@Model.CurrentPage</strong> / <strong>@Model.TotalPage</strong>
+                                &nbsp;·&nbsp; @Html.Text("common.total") <strong>@Model.TotalCount</strong> @Html.Text("common.experts")
                             </div>
                             <ul class="pagination pagination-sm mb-0 expert-pagination__list">
                                 <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                                    <a class="page-link" href="/chuyen-gia?cateId=@Model.CateId&page=1">
+                                    <a class="page-link" href="@listUrl?cateId=@Model.CateId&page=1">
                                         <i class="fas fa-angles-left"></i>
                                     </a>
                                 </li>
                                 <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                                    <a class="page-link" href="/chuyen-gia?cateId=@Model.CateId&page=@(Model.CurrentPage - 1)">
+                                    <a class="page-link" href="@listUrl?cateId=@Model.CateId&page=@(Model.CurrentPage - 1)">
                                         <i class="fas fa-angle-left"></i>
                                     </a>
                                 </li>
                                 @foreach (var p in Model.Pages)
                                 {
                                     <li class="page-item @(p == Model.CurrentPage ? "active" : "")">
-                                        <a class="page-link" href="/chuyen-gia?cateId=@Model.CateId&page=@p">@p</a>
+                                        <a class="page-link" href="@listUrl?cateId=@Model.CateId&page=@p">@p</a>
                                     </li>
                                 }
                                 <li class="page-item @(Model.CurrentPage == Model.TotalPage ? "disabled" : "")">
-                                    <a class="page-link" href="/chuyen-gia?cateId=@Model.CateId&page=@(Model.CurrentPage + 1)">
+                                    <a class="page-link" href="@listUrl?cateId=@Model.CateId&page=@(Model.CurrentPage + 1)">
                                         <i class="fas fa-angle-right"></i>
                                     </a>
                                 </li>
                                 <li class="page-item @(Model.CurrentPage == Model.TotalPage ? "disabled" : "")">
-                                    <a class="page-link" href="/chuyen-gia?cateId=@Model.CateId&page=@Model.TotalPage">
+                                    <a class="page-link" href="@listUrl?cateId=@Model.CateId&page=@Model.TotalPage">
                                         <i class="fas fa-angles-right"></i>
                                     </a>
                                 </li>

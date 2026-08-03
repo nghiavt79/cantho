@@ -62,47 +62,47 @@ namespace TechExchangeApp.Services
         }
 
         // ─── Verify Email OTP ────────────────────────────────────────────────
-        public async Task<(bool ok, string msg)> VerifyEmailOtpAsync(int userId, string otp)
+        public async Task<(bool ok, string msgKey)> VerifyEmailOtpAsync(int userId, string otp)
         {
             var result = await ConsumeOtpAsync(userId, 1, otp);
-            if (!result) return (false, "Mã OTP không đúng hoặc đã hết hạn.");
+            if (!result) return (false, "verify.otpInvalid");
 
             var user = await _context.Users.FindAsync(userId);
-            if (user == null) return (false, "Không tìm thấy tài khoản.");
+            if (user == null) return (false, "verify.userNotFound");
 
             user.EmailVerified = true;
             UpdateVerificationLevel(user);
             await _context.SaveChangesAsync();
-            return (true, "✅ Email đã được xác thực thành công!");
+            return (true, "verify.emailVerified");
         }
 
         // ─── Verify Phone OTP ────────────────────────────────────────────────
-        public async Task<(bool ok, string msg)> VerifyPhoneOtpAsync(int userId, string otp)
+        public async Task<(bool ok, string msgKey)> VerifyPhoneOtpAsync(int userId, string otp)
         {
             var result = await ConsumeOtpAsync(userId, 2, otp);
-            if (!result) return (false, "Mã OTP không đúng hoặc đã hết hạn.");
+            if (!result) return (false, "verify.otpInvalid");
 
             var user = await _context.Users.FindAsync(userId);
-            if (user == null) return (false, "Không tìm thấy tài khoản.");
+            if (user == null) return (false, "verify.userNotFound");
 
             user.PhoneVerified = true;
             UpdateVerificationLevel(user);
             await _context.SaveChangesAsync();
-            return (true, "✅ Số điện thoại đã được xác thực thành công!");
+            return (true, "verify.phoneVerified");
         }
 
         // ─── Upload Doc ──────────────────────────────────────────────────────
-        public async Task<(bool ok, string msg)> UploadDocAsync(int userId, int docType, IFormFile file, IWebHostEnvironment env)
+        public async Task<(bool ok, string msgKey)> UploadDocAsync(int userId, int docType, IFormFile file, IWebHostEnvironment env)
         {
             if (file == null || file.Length == 0)
-                return (false, "Vui lòng chọn file hợp lệ.");
+                return (false, "verify.docFileRequired");
 
             var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
             var allowed = new[] { ".jpg", ".jpeg", ".png", ".pdf" };
             if (!allowed.Contains(ext))
-                return (false, "Chỉ chấp nhận JPG, PNG hoặc PDF.");
+                return (false, "verify.docInvalidType");
             if (file.Length > 5 * 1024 * 1024)
-                return (false, "File không được vượt quá 5MB.");
+                return (false, "verify.docTooLarge");
 
             var folder = Path.Combine(env.WebRootPath, "uploads", "verify", userId.ToString());
             Directory.CreateDirectory(folder);
@@ -136,10 +136,7 @@ namespace TechExchangeApp.Services
 
             await _context.SaveChangesAsync();
 
-            var label = docType == DocType.CccdFront ? "CCCD mặt trước"
-                      : docType == DocType.CccdBack  ? "CCCD mặt sau"
-                      : "Giấy phép kinh doanh";
-            return (true, $"✅ {label} đã được tải lên. Đang chờ xem xét.");
+            return (true, "");
         }
 
         // ─── Get Docs ────────────────────────────────────────────────────────

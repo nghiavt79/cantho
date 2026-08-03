@@ -379,3 +379,18 @@ TechMart.LocalSigner/*.zip
 
 # User-uploaded / generated media (served from server, not tracked)
 TechExchangeApp/wwwroot/uploads/
+
+# ASP.NET Core Data Protection keys — SECRETS, never commit
+.dev-data-protection-keys/
+TechExchangeApp/.dev-data-protection-keys/
+
+# Agent / tooling working dirs
+.claude/
+.codex-work/
+TechExchangeApp/.agents/
+
+# Archives & data dumps (too large / not source)
+*.rar
+*.7z
+*.xlsx
+CSDL demo/

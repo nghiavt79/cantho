@@ -14,6 +14,35 @@ namespace TechExchangeApp.Helpers
         public static bool IsEnglish(HttpContext? ctx)
             => (ctx?.Items["Lang"] as string) == "en";
 
+        /// <summary>
+        /// Các path workspace (sau [Authorize]) đã dịch xong, được phép đổi ngôn ngữ
+        /// bằng cookie "site_lang" vì không có URL /en riêng.
+        /// Cố ý hẹp: trang chưa dịch nằm ngoài danh sách sẽ giữ nguyên tiếng Việt
+        /// trọn vẹn thay vì hiển thị nửa Việt nửa Anh. Dịch tới đâu thêm path tới đó.
+        /// KHÔNG đưa vào: /Account/Login, /Account/Register (đã có route /en/login, /en/register)
+        /// và toàn bộ /cms (khu quản trị giữ tiếng Việt).
+        /// </summary>
+        private static readonly string[] LocalizedWorkspacePaths =
+        {
+            "/Dashboard",
+            "/Projects",
+            "/Project",
+            "/Account/Profile",
+            "/Account/ChangePassword",
+            "/Chat",
+            "/Notifications"
+        };
+
+        public static bool IsLocalizedWorkspacePath(PathString path)
+        {
+            foreach (var prefix in LocalizedWorkspacePaths)
+            {
+                if (path.StartsWithSegments(prefix, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
+
         public static int CurrentLangId(HttpContext? ctx)
             => IsEnglish(ctx) ? En : Vi;
 

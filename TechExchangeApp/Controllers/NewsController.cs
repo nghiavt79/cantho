@@ -54,9 +54,9 @@ namespace TechExchangeApp.Controllers
             string? publishedDate = null;
             if (p.PublishedDate.HasValue)
             {
-                publishedDate = p.PublishedDate.Value
-                    .ToString("dddd, d/M/yyyy, HH:mm",
-                        new CultureInfo("vi-VN")) + " (GMT+7)";
+                publishedDate = LangHelper.IsEnglish(HttpContext)
+                    ? p.PublishedDate.Value.ToString("dddd, MMMM d, yyyy, HH:mm", new CultureInfo("en-US")) + " (GMT+7)"
+                    : p.PublishedDate.Value.ToString("dddd, d/M/yyyy, HH:mm", new CultureInfo("vi-VN")) + " (GMT+7)";
             }
 
             // === IMAGE (TypeId = 4) ===

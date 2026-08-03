@@ -98,7 +98,8 @@ namespace TechExchangeApp.Controllers
                 Experts = data.Experts,
                 Stats = data.Stats,
                 SearchFields = _context.Categories
-                    .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == lang)
+                    // Category chỉ lưu 1 dòng/ngôn ngữ gốc (LanguageId=1), bản EN nằm ở cột TitleEn cùng dòng — không lọc theo `lang`.
+                    .Where(x => x.ParentId == 1 && x.MainCate == true && x.StatusId == 1 && x.LanguageId == 1)
                     .OrderBy(x => x.Sort ?? int.MaxValue)
                     .ThenBy(x => x.Title)
                     .Select(x => new HomeFieldOptionVm

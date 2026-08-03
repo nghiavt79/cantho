@@ -6,17 +6,20 @@
     var doc          = ViewData["Doc"] as VerifyDocVm;
     bool hasDoc      = doc != null;
 
-    string statusBadge = hasDoc
-        ? (doc!.ReviewStatus == 1 ? "<span class='badge bg-success'>Đã duyệt</span>"
-         : doc.ReviewStatus == 2  ? "<span class='badge bg-danger'>Bị từ chối</span>"
-         : "<span class='badge bg-warning text-dark'>Chờ xem xét</span>")
-        : "<span class='badge bg-secondary'>Chưa tải lên</span>";
+    string statusClass = hasDoc
+        ? (doc!.ReviewStatus == 1 ? "bg-success" : doc.ReviewStatus == 2 ? "bg-danger" : "bg-warning text-dark")
+        : "bg-secondary";
+    string statusText = hasDoc
+        ? (doc!.ReviewStatus == 1 ? Html.Text("doc.status.approved")
+         : doc.ReviewStatus == 2  ? Html.Text("doc.status.rejected")
+         : Html.Text("doc.status.pending"))
+        : Html.Text("doc.status.notUploaded");
 }
 
 <div class="user-profile-doc-card mb-3">
     <div class="d-flex align-items-center justify-content-between mb-2">
         <span class="fw-semibold small">@label</span>
-        @Html.Raw(statusBadge)
+        <span class="badge @statusClass">@statusText</span>
     </div>
 
     @if (hasDoc)
@@ -40,7 +43,7 @@
         </div>
         <div class="user-profile-doc-actions">
             <a href="@doc.FilePath" target="_blank" class="btn btn-sm btn-outline-secondary">
-                <i class="fas @(ext == ".pdf" ? "fa-file-pdf" : "fa-eye")"></i> Xem tài liệu
+                <i class="fas @(ext == ".pdf" ? "fa-file-pdf" : "fa-eye")"></i> @Html.Text("doc.viewFile")
             </a>
         </div>
     }
@@ -49,7 +52,7 @@
         <div class="user-profile-doc-card-row">
             <span class="user-profile-doc-thumb-icon"><i class="@icon"></i></span>
             <div class="user-profile-doc-meta">
-                <div class="doc-date">Chưa có tài liệu nào được tải lên</div>
+                <div class="doc-date">@Html.Text("doc.noneUploaded")</div>
             </div>
         </div>
     }
@@ -61,9 +64,9 @@
             <input type="file" name="docFile" class="form-control form-control-sm"
                    accept=".jpg,.jpeg,.png,.pdf" required>
             <button type="submit" class="btn btn-sm btn-primary">
-                <i class="fas fa-upload"></i> @(hasDoc ? "Thay thế" : "Tải lên")
+                <i class="fas fa-upload"></i> @(hasDoc ? Html.Text("doc.replace") : Html.Text("doc.upload"))
             </button>
         </div>
-        <div class="form-text">JPG, PNG hoặc PDF. Tối đa 5MB.</div>
+        <div class="form-text">@Html.Text("doc.hint")</div>
     </form>
 </div>

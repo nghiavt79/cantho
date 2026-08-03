@@ -7,8 +7,9 @@
 @model List<TechExchangeApp.ViewModel.MyProjectVm>
 
 @{
-    ViewData["Title"] = "Hồ sơ giao dịch của tôi";
+    ViewData["Title"] = Html.Text("sidebar.myProjects");
     ViewData["AuthWorkspace"] = true;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
 
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
@@ -27,11 +28,11 @@
                 <div class="card-header bg-white">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h5 class="mb-0"><i class="fas fa-folder"></i> Danh sách hồ sơ giao dịch</h5>
-                            <span class="badge bg-primary">Tổng: @Model.Count hồ sơ</span>
+                            <h5 class="mb-0"><i class="fas fa-folder"></i> @Html.Text("myproj.listHeading")</h5>
+                            <span class="badge bg-primary">@Html.Text("myproj.totalPrefix") @Model.Count @Html.Text("myproj.recordsSuffix")</span>
                         </div>
                         <a href="@Url.Action("Create", "TechTransfer")" class="btn btn-success">
-                            <i class="fas fa-plus-circle"></i> Đăng yêu cầu chuyển giao công nghệ
+                            <i class="fas fa-plus-circle"></i> @Html.Text("dash.postRequest")
                         </a>
                     </div>
                 </div>
@@ -40,10 +41,10 @@
                     {
                         <div class="empty-state">
                             <i class="fas fa-folder-open empty-state-icon"></i>
-                            <p class="empty-state-title">Chưa có hồ sơ giao dịch nào</p>
-                            <p class="empty-state-text">Bạn chưa tham gia hồ sơ giao dịch/chuyển giao nào. Bắt đầu bằng cách đăng yêu cầu chuyển giao công nghệ đầu tiên.</p>
+                            <p class="empty-state-title">@Html.Text("myproj.empty.title")</p>
+                            <p class="empty-state-text">@Html.Text("myproj.empty.text")</p>
                             <a href="@Url.Action("Create", "TechTransfer")" class="btn btn-primary btn-sm">
-                                <i class="fas fa-plus-circle"></i> Đăng yêu cầu chuyển giao công nghệ
+                                <i class="fas fa-plus-circle"></i> @Html.Text("dash.postRequest")
                             </a>
                         </div>
                     }
@@ -53,23 +54,23 @@
                             <table class="table table-hover">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Mã hồ sơ</th>
-                                        <th>Tên hồ sơ</th>
-                                        <th>Vai trò</th>
-                                        <th>Bước hiện tại</th>
-                                        <th>Trạng thái</th>
-                                        <th>Tiến độ</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Thao tác</th>
+                                        <th>@Html.Text("myproj.col.code")</th>
+                                        <th>@Html.Text("myproj.col.name")</th>
+                                        <th>@Html.Text("dash.col.role")</th>
+                                        <th>@Html.Text("dash.col.currentStep")</th>
+                                        <th>@Html.Text("dash.col.status")</th>
+                                        <th>@Html.Text("dash.col.progress")</th>
+                                        <th>@Html.Text("profile.createdDate")</th>
+                                        <th>@Html.Text("common.actions")</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var project in Model)
                                     {
                                         <tr>
-                                            <td data-label="Mã hồ sơ"><strong>@project.Code</strong></td>
-                                            <td data-label="Tên hồ sơ">@project.Name</td>
-                                            <td data-label="Vai trò">
+                                            <td data-label="@Html.Text("myproj.col.code")"><strong>@project.Code</strong></td>
+                                            <td data-label="@Html.Text("myproj.col.name")">@project.Name</td>
+                                            <td data-label="@Html.Text("dash.col.role")">
                                                 @switch (project.RoleId)
                                                 {
                                                     case 1:
@@ -86,10 +87,10 @@
                                                         break;
                                                 }
                                             </td>
-                                            <td data-label="Bước hiện tại">
-                                                <span class="badge bg-warning text-dark">Bước @project.CurrentStep/@project.TotalDisplaySteps</span>
+                                            <td data-label="@Html.Text("dash.col.currentStep")">
+                                                <span class="badge bg-warning text-dark">@Html.Text("dash.stepPrefix") @project.CurrentStep/@project.TotalDisplaySteps</span>
                                             </td>
-                                            <td data-label="Trạng thái">
+                                            <td data-label="@Html.Text("dash.col.status")">
                                                 @switch (project.StatusId)
                                                 {
                                                     case 1:
@@ -109,7 +110,7 @@
                                                         break;
                                                 }
                                             </td>
-                                            <td data-label="Tiến độ">
+                                            <td data-label="@Html.Text("dash.col.progress")">
                                                 <div class="progress" style="height: 20px;">
                                                     <div class="progress-bar @(project.ProgressPercent >= 100 ? "bg-success" : project.ProgressPercent >= 50 ? "bg-info" : "bg-warning")"
                                                          role="progressbar"
@@ -121,10 +122,10 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td data-label="Ngày tạo">@project.CreatedDate.ToString("dd/MM/yyyy")</td>
-                                            <td data-label="Thao tác">
+                                            <td data-label="@Html.Text("profile.createdDate")">@project.CreatedDate.ToString(isEn ? "MMM d, yyyy" : "dd/MM/yyyy", isEn ? new System.Globalization.CultureInfo("en-US") : new System.Globalization.CultureInfo("vi-VN"))</td>
+                                            <td data-label="@Html.Text("common.actions")">
                                                 <a href="@Url.Action("Details", "Project", new { id = project.Id })" class="btn btn-sm btn-primary">
-                                                    <i class="fas fa-eye"></i> Xem
+                                                    <i class="fas fa-eye"></i> @Html.Text("myproj.view")
                                                 </a>
                                             </td>
                                         </tr>
@@ -143,7 +144,7 @@
                         <div class="card user-projects-summary-card" data-accent="info">
                             <div class="card-body">
                                 <h3>@Model.Count</h3>
-                                <p class="mb-0">Tổng hồ sơ</p>
+                                <p class="mb-0">@Html.Text("myproj.summary.total")</p>
                             </div>
                         </div>
                     </div>
@@ -151,7 +152,7 @@
                         <div class="card user-projects-summary-card" data-accent="success">
                             <div class="card-body">
                                 <h3>@Model.Count(p => p.StatusId == 2)</h3>
-                                <p class="mb-0">Hồ sơ đang xử lý</p>
+                                <p class="mb-0">@Html.Text("myproj.summary.active")</p>
                             </div>
                         </div>
                     </div>
@@ -159,7 +160,7 @@
                         <div class="card user-projects-summary-card" data-accent="warning">
                             <div class="card-body">
                                 <h3>@Model.Count(p => p.ProgressPercent < 100)</h3>
-                                <p class="mb-0">Hồ sơ chưa hoàn thành</p>
+                                <p class="mb-0">@Html.Text("myproj.summary.incomplete")</p>
                             </div>
                         </div>
                     </div>

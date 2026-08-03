@@ -15,14 +15,14 @@
 
         <!-- Navigation Menu -->
         <nav class="nav flex-column">
-            <div class="user-sidebar-section-label">Tổng quan</div>
+            <div class="user-sidebar-section-label">@Html.Text("sidebar.overview")</div>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Dashboard") ? "active" : "")" href="@Url.Action("Index", "Dashboard")">
-                <i class="fas fa-house me-2"></i> Tổng quan
+                <i class="fas fa-house me-2"></i> @Html.Text("sidebar.overview")
             </a>
 
-            <div class="user-sidebar-section-label">Giao dịch</div>
+            <div class="user-sidebar-section-label">@Html.Text("sidebar.transactions")</div>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Projects/MyProjects") ? "active" : "")" href="@Url.Action("MyProjects", "Projects")">
-                <i class="fas fa-folder-open me-2"></i> Hồ sơ giao dịch của tôi
+                <i class="fas fa-folder-open me-2"></i> @Html.Text("sidebar.myProjects")
                 @if (Model.ProjectCount > 0)
                 {
                     <span class="badge bg-primary float-end">@Model.ProjectCount</span>
@@ -31,44 +31,44 @@
             @if (Model.IsSeller && Model.InvitationCount > 0)
             {
                 <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Seller/InvitedProjects") ? "active" : "")" href="@Url.Action("InvitedProjects", "Seller")">
-                    <i class="fas fa-envelope-open-text me-2"></i> Lời mời tham gia
+                    <i class="fas fa-envelope-open-text me-2"></i> @Html.Text("sidebar.invitations")
                     <span class="badge bg-danger float-end">@Model.InvitationCount</span>
                 </a>
             }
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/OcopOrder/Index") ? "active" : "")" href="@Url.Action("Index", "OcopOrder")">
-                <i class="fas fa-paper-plane me-2"></i> Yêu cầu đặt mua của tôi
+                <i class="fas fa-paper-plane me-2"></i> @Html.Text("sidebar.myOrders")
                 @if (Model.OcopOrderCount > 0)
                 {
                     <span class="badge bg-primary float-end">@Model.OcopOrderCount</span>
                 }
             </a>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/chat") ? "active" : "")" href="/chat">
-                <i class="fas fa-comments me-2"></i> Tin nhắn
+                <i class="fas fa-comments me-2"></i> @Html.Text("sidebar.messages")
                 <span id="chatUnreadBadge" class="badge bg-danger float-end" style="display:none;"></span>
             </a>
 
-            <div class="user-sidebar-section-label">Tài khoản</div>
+            <div class="user-sidebar-section-label">@Html.Text("sidebar.account")</div>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Account/Profile") ? "active" : "")" href="@Url.Action("Profile", "Account")">
-                <i class="fas fa-user me-2"></i> Hồ sơ tài khoản
+                <i class="fas fa-user me-2"></i> @Html.Text("profile.title")
             </a>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/Account/ChangePassword") ? "active" : "")" href="@Url.Action("ChangePassword", "Account")">
-                <i class="fas fa-shield-halved me-2"></i> Bảo mật &amp; mật khẩu
+                <i class="fas fa-shield-halved me-2"></i> @Html.Text("profile.securityLink")
             </a>
 
-            <div class="user-sidebar-section-label">Dịch vụ của tôi</div>
+            <div class="user-sidebar-section-label">@Html.Text("sidebar.myServices")</div>
             <a class="nav-link" href="/dang-ky-nha-cung-ung">
-                <i class="fas fa-handshake me-2"></i> Hồ sơ nhà cung ứng
+                <i class="fas fa-handshake me-2"></i> @Html.Text("sidebar.supplierProfile")
             </a>
             <a class="nav-link" href="/quan-ly-san-pham">
-                <i class="fas fa-boxes-stacked me-2"></i> Công nghệ &amp; thiết bị
+                <i class="fas fa-boxes-stacked me-2"></i> @Html.Text("sidebar.productsEquip")
             </a>
             <a class="nav-link" href="/dang-ky-tu-van">
-                <i class="fas fa-user-graduate me-2"></i> Hồ sơ chuyên gia
+                <i class="fas fa-user-graduate me-2"></i> @Html.Text("sidebar.consultantProfile")
             </a>
             @if (Model.IsSeller)
             {
                 <a class="nav-link @(Context.Request.Path.StartsWithSegments("/OcopOrder/Manage") ? "active" : "")" href="@Url.Action("Manage", "OcopOrder")">
-                    <i class="fas fa-clipboard-list me-2"></i> Yêu cầu khách gửi
+                    <i class="fas fa-clipboard-list me-2"></i> @Html.Text("sidebar.customerRequests")
                     @if (Model.PendingOcopOrderCount > 0)
                     {
                         <span class="badge bg-danger float-end">@Model.PendingOcopOrderCount</span>
@@ -79,7 +79,7 @@
             <hr>
 
             <a class="nav-link text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fas fa-arrow-right-from-bracket me-2"></i> Đăng xuất
+                <i class="fas fa-arrow-right-from-bracket me-2"></i> @Html.Text("sidebar.logout")
             </a>
         </nav>
     </div>

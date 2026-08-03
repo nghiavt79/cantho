@@ -8,7 +8,7 @@
 @model TechExchangeApp.ViewModel.ProfileVm
 
 @{
-    ViewData["Title"] = "Hồ sơ tài khoản";
+    ViewData["Title"] = Html.Text("profile.title");
     ViewData["AuthWorkspace"] = true;
     var userId = int.Parse(UserManager.GetUserId(User)!);
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
@@ -53,8 +53,8 @@
 
             <!-- Page header -->
             <div class="user-profile-header mb-3">
-                <h2 class="h4 mb-1" style="color:var(--up-navy);font-weight:700;">Hồ sơ tài khoản</h2>
-                <p class="mb-0">Quản lý thông tin cá nhân, doanh nghiệp và mức độ xác thực tài khoản.</p>
+                <h2 class="h4 mb-1" style="color:var(--up-navy);font-weight:700;">@Html.Text("profile.title")</h2>
+                <p class="mb-0">@Html.Text("profile.subtitle")</p>
             </div>
 
             <!-- Profile completion card -->
@@ -64,11 +64,11 @@
                         <img src="@Model.AvatarUrl" alt="Avatar" class="user-profile-trust-avatar">
                         <div class="user-profile-trust-info">
                             <div class="name">@Model.FullName</div>
-                            <div class="type">@(Model.AccountTypeId == 2 ? "Tài khoản doanh nghiệp" : "Tài khoản cá nhân")</div>
+                            <div class="type">@(Model.AccountTypeId == 2 ? Html.Text("profile.accountType.business") : Html.Text("profile.accountType.personal"))</div>
                             <div class="email">@Model.Email</div>
                         </div>
                         <div class="user-profile-trust-score">
-                            <div class="label">Hồ sơ hoàn thiện · @trustScore%</div>
+                            <div class="label">@Html.Text("profile.trust.completion") · @trustScore%</div>
                             <div class="progress">
                                 <div class="progress-bar bg-@trustColor" style="width:@trustScore%"></div>
                             </div>
@@ -79,10 +79,10 @@
                             <i class="fas fa-@(Model.EmailVerified ? "check-circle" : "circle")"></i> Email
                         </span>
                         <span class="user-profile-trust-chip @(Model.PhoneVerified ? "is-done" : "")">
-                            <i class="fas fa-@(Model.PhoneVerified ? "check-circle" : "circle")"></i> Điện thoại
+                            <i class="fas fa-@(Model.PhoneVerified ? "check-circle" : "circle")"></i> @Html.Text("profile.trust.phone")
                         </span>
                         <span class="user-profile-trust-chip @(hasDoc ? "is-done" : "is-pending")">
-                            <i class="fas fa-@(hasDoc ? "check-circle" : "clock")"></i> Hồ sơ pháp lý
+                            <i class="fas fa-@(hasDoc ? "check-circle" : "clock")"></i> @Html.Text("profile.trust.legalDocs")
                         </span>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                 <div>
                     <div class="card shadow-sm h-100">
                         <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0"><i class="fas fa-user me-2"></i>Thông tin cơ bản</h5>
+                            <h5 class="mb-0"><i class="fas fa-user me-2"></i>@Html.Text("profile.basicInfo")</h5>
                         </div>
                         <form asp-action="Profile" method="post" enctype="multipart/form-data">
                             @Html.AntiForgeryToken()
@@ -105,7 +105,7 @@
                                     <div class="user-profile-avatar-wrap">
                                         <img src="@Model.AvatarUrl" alt="Avatar" class="rounded-circle user-profile-avatar"
                                              id="avatarPreview">
-                                        <label class="user-profile-avatar-edit" for="avatarInput" title="Đổi ảnh đại diện" aria-label="Đổi ảnh đại diện">
+                                        <label class="user-profile-avatar-edit" for="avatarInput" title="@Html.Text("profile.changeAvatar")" aria-label="@Html.Text("profile.changeAvatar")">
                                             <i class="fas fa-camera"></i>
                                         </label>
                                         <input type="file" name="avatar" id="avatarInput" class="d-none" accept="image/*">
@@ -113,43 +113,43 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Tên đăng nhập</label>
+                                    <label class="form-label">@Html.Text("auth.username")</label>
                                     <input asp-for="UserName" class="form-control" readonly>
                                 </div>
                                 <div class="mb-3">
-                                    <label asp-for="FullName" class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên">
+                                    <label asp-for="FullName" class="form-label">@Html.Text("auth.fullName") <span class="text-danger">*</span></label>
+                                    <input asp-for="FullName" class="form-control" placeholder="@Html.Text("profile.fullNamePh")">
                                     <span asp-validation-for="FullName" class="text-danger small"></span>
                                 </div>
                                 <div class="mb-3">
                                     <label asp-for="Email" class="form-label">Email <span class="text-danger">*</span></label>
-                                    <input asp-for="Email" class="form-control" type="email" placeholder="Nhập email">
+                                    <input asp-for="Email" class="form-control" type="email" placeholder="@Html.Text("profile.emailPh")">
                                     <span asp-validation-for="Email" class="text-danger small"></span>
                                 </div>
 
                                 <!-- Account Type -->
                                 <div class="mb-3">
-                                    <label class="form-label">Loại tài khoản</label>
+                                    <label class="form-label">@Html.Text("profile.accountTypeLabel")</label>
                                     <div class="user-profile-type-select">
                                         <div class="form-check user-profile-type-option">
                                             <input class="form-check-input" type="radio" asp-for="AccountTypeId" value="1" id="typePersonal">
-                                            <label class="form-check-label" for="typePersonal"><i class="fas fa-user"></i> Cá nhân</label>
+                                            <label class="form-check-label" for="typePersonal"><i class="fas fa-user"></i> @Html.Text("profile.typePersonal")</label>
                                         </div>
                                         <div class="form-check user-profile-type-option">
                                             <input class="form-check-input" type="radio" asp-for="AccountTypeId" value="2" id="typeBusiness">
-                                            <label class="form-check-label" for="typeBusiness"><i class="fas fa-building"></i> Doanh nghiệp</label>
+                                            <label class="form-check-label" for="typeBusiness"><i class="fas fa-building"></i> @Html.Text("profile.typeBusiness")</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row text-muted small">
-                                    <div class="col-6">Đăng nhập cuối: @(Model.LastLogin?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa có")</div>
-                                    <div class="col-6">Ngày tạo: @(Model.Created?.ToString("dd/MM/yyyy") ?? "N/A")</div>
+                                    <div class="col-6">@Html.Text("profile.lastLogin"): @(Model.LastLogin?.ToString("dd/MM/yyyy HH:mm") ?? Html.Text("profile.none"))</div>
+                                    <div class="col-6">@Html.Text("profile.createdDate"): @(Model.Created?.ToString("dd/MM/yyyy") ?? "N/A")</div>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Lưu thay đổi</button>
-                                <a href="@Url.Action("ChangePassword","Account")" class="btn btn-outline-secondary ms-2"><i class="fas fa-shield-halved me-1"></i>Bảo mật &amp; mật khẩu</a>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>@Html.Text("profile.save")</button>
+                                <a href="@Url.Action("ChangePassword","Account")" class="btn btn-outline-secondary ms-2"><i class="fas fa-shield-halved me-1"></i>@Html.Text("profile.securityLink")</a>
                             </div>
                         </form>
                     </div>
@@ -160,7 +160,7 @@
 
                     <div class="card shadow-sm h-100">
                         <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Xác thực tài khoản</h5>
+                            <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>@Html.Text("profile.verifyAccount")</h5>
                         </div>
                         <div class="card-body p-0">
 
@@ -168,14 +168,14 @@
                             <div class="user-profile-verify-section">
                                 <div class="user-profile-verify-section-header">
                                     <i class="fas fa-mobile-alt"></i>
-                                    <span>Số điện thoại</span>
+                                    <span>@Html.Text("profile.phoneNumberLabel")</span>
                                     @if (Model.PhoneVerified)
                                     {
-                                        <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> Đã xác thực</span>
+                                        <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> @Html.Text("profile.verified")</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary ms-auto">Chưa xác thực</span>
+                                        <span class="badge bg-secondary ms-auto">@Html.Text("profile.notVerified")</span>
                                     }
                                 </div>
                                 @if (Model.PhoneVerified)
@@ -184,24 +184,24 @@
                                 }
                                 else
                                 {
-                                    <p class="text-muted small mb-2">Bảo vệ tài khoản và nhận mã OTP khi cần xác nhận giao dịch.</p>
+                                    <p class="text-muted small mb-2">@Html.Text("profile.phoneProtectMsg")</p>
                                     <button type="button" class="btn btn-sm btn-outline-primary" data-target="phoneVerifyForm" onclick="pv_toggleVerifyForm(this)">
-                                        <i class="fas fa-shield-halved"></i> Xác thực số điện thoại
+                                        <i class="fas fa-shield-halved"></i> @Html.Text("profile.verifyPhoneBtn")
                                     </button>
                                     <div id="phoneVerifyForm" class="mt-2 d-none">
                                         <div class="input-group mb-2">
                                             <input type="tel" id="phoneInput" class="form-control"
-                                                   placeholder="Nhập số điện thoại" value="@Model.PhoneNumber">
-                                            <button class="btn btn-outline-primary" onclick="pv_savePhone()">Lưu SĐT</button>
+                                                   placeholder="@Html.Text("profile.phonePh")" value="@Model.PhoneNumber">
+                                            <button class="btn btn-outline-primary" onclick="pv_savePhone()">@Html.Text("profile.savePhone")</button>
                                         </div>
                                         <button class="btn btn-sm btn-primary mt-1" id="btnSendPhoneOtp"
                                                 onclick="pv_sendPhoneOtp()" @(!string.IsNullOrEmpty(Model.PhoneNumber) ? "" : "disabled")>
-                                            <i class="fas fa-paper-plane"></i> Gửi mã OTP qua SMS
+                                            <i class="fas fa-paper-plane"></i> @Html.Text("profile.sendSmsOtp")
                                         </button>
                                         <div id="phoneOtpBox" class="mt-2 d-none">
                                             <div class="input-group">
-                                                <input type="text" id="phoneOtpInput" class="form-control" placeholder="Nhập mã 6 số" maxlength="6">
-                                                <button class="btn btn-success" onclick="pv_verifyPhoneOtp()">Xác nhận</button>
+                                                <input type="text" id="phoneOtpInput" class="form-control" placeholder="@Html.Text("profile.otpPh")" maxlength="6">
+                                                <button class="btn btn-success" onclick="pv_verifyPhoneOtp()">@Html.Text("profile.confirm")</button>
                                             </div>
                                         </div>
                                     </div>
@@ -215,35 +215,35 @@
                                     <span>Email</span>
                                     @if (Model.EmailVerified)
                                     {
-                                        <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> Đã xác thực</span>
+                                        <span class="badge bg-success ms-auto"><i class="fas fa-check-circle"></i> @Html.Text("profile.verified")</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary ms-auto">Chưa xác thực</span>
+                                        <span class="badge bg-secondary ms-auto">@Html.Text("profile.notVerified")</span>
                                     }
                                 </div>
                                 <p class="text-muted small mb-2">@Model.Email</p>
                                 @if (!Model.EmailVerified)
                                 {
                                     <button type="button" class="btn btn-sm btn-outline-primary" data-target="emailVerifyForm" onclick="pv_toggleVerifyForm(this)">
-                                        <i class="fas fa-shield-halved"></i> Xác thực email
+                                        <i class="fas fa-shield-halved"></i> @Html.Text("profile.verifyEmailBtn")
                                     </button>
                                     <div id="emailVerifyForm" class="mt-2 d-none">
                                         <button class="btn btn-sm btn-primary" id="btnSendEmailOtp"
                                                 onclick="pv_sendEmailOtp()">
-                                            <i class="fas fa-paper-plane"></i> Gửi mã OTP xác thực Email
+                                            <i class="fas fa-paper-plane"></i> @Html.Text("profile.sendEmailOtpBtn")
                                         </button>
                                         <div id="emailOtpBox" class="mt-2 d-none">
                                             <div class="input-group">
-                                                <input type="text" id="emailOtpInput" class="form-control" placeholder="Nhập mã 6 số" maxlength="6">
-                                                <button class="btn btn-success" onclick="pv_verifyEmailOtp()">Xác nhận</button>
+                                                <input type="text" id="emailOtpInput" class="form-control" placeholder="@Html.Text("profile.otpPh")" maxlength="6">
+                                                <button class="btn btn-success" onclick="pv_verifyEmailOtp()">@Html.Text("profile.confirm")</button>
                                             </div>
                                         </div>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="text-success small"><i class="fas fa-check-circle"></i> Email đã được xác thực</div>
+                                    <div class="text-success small"><i class="fas fa-check-circle"></i> @Html.Text("profile.emailVerifiedMsg")</div>
                                 }
                             </div>
 
@@ -251,7 +251,7 @@
                             <div class="user-profile-verify-section">
                                 <div class="user-profile-verify-section-header">
                                     <i class="fas fa-id-card"></i>
-                                    <span>Tài liệu xác minh</span>
+                                    <span>@Html.Text("profile.verifyDocs")</span>
                                 </div>
                                 @{
                                     // Personal: CCCD front + back
@@ -263,13 +263,13 @@
                                 {
                                     <!-- CCCD Front -->
                                     @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
-                                        { "DocType", 1 }, { "Label", "CCCD / CMND Mặt trước" },
+                                        { "DocType", 1 }, { "Label", Html.Text("doc.cccdFront") },
                                         { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 1) },
                                         { "Icon", "fas fa-id-card" }
                                     })
                                     <!-- CCCD Back -->
                                     @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
-                                        { "DocType", 2 }, { "Label", "CCCD / CMND Mặt sau" },
+                                        { "DocType", 2 }, { "Label", Html.Text("doc.cccdBack") },
                                         { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 2) },
                                         { "Icon", "fas fa-id-card-alt" }
                                     })
@@ -278,7 +278,7 @@
                                 {
                                     <!-- Business License -->
                                     @await Html.PartialAsync("_DocUpload", new ViewDataDictionary(ViewData) {
-                                        { "DocType", 3 }, { "Label", "Giấy phép kinh doanh" },
+                                        { "DocType", 3 }, { "Label", Html.Text("doc.businessLicense") },
                                         { "Doc", Model.Docs.FirstOrDefault(d => d.DocType == 3) },
                                         { "Icon", "fas fa-file-contract" }
                                     })
@@ -296,6 +296,13 @@
 </div>
 
 <script>
+    const PV_MSG = {
+        enterPhoneFirst: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.enterPhoneFirst"))),
+        sending: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.sending"))),
+        resendInPrefix: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.resendInPrefix"))),
+        resendOtp: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.resendOtp")))
+    };
+
     // Avatar preview
     document.getElementById('avatarInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -326,7 +333,7 @@
 
     async function pv_savePhone() {
         const phone = document.getElementById('phoneInput').value.trim();
-        if (!phone) { pv_toast('Nhập SĐT trước.', 'warning'); return; }
+        if (!phone) { pv_toast(PV_MSG.enterPhoneFirst, 'warning'); return; }
         const r = await fetch('/Account/UpdatePhone', {
             method:'POST', headers:{'Content-Type':'application/json'},
             body: JSON.stringify({ phone })
@@ -338,13 +345,13 @@
 
     async function pv_sendPhoneOtp() {
         const btn = document.getElementById('btnSendPhoneOtp');
-        btn.disabled = true; btn.textContent = 'Đang gửi...';
+        btn.disabled = true; btn.textContent = PV_MSG.sending;
         const r = await fetch('/Account/SendPhoneOtp', { method:'POST' });
         const d = await r.json();
         pv_toast(d.message, d.success ? 'info' : 'danger');
         if (d.success) {
             document.getElementById('phoneOtpBox').classList.remove('d-none');
-            pv_startCountdown(btn, 'Gửi lại OTP', 60);
+            pv_startCountdown(btn, PV_MSG.resendOtp, 60);
         } else btn.disabled = false;
     }
 
@@ -361,13 +368,13 @@
 
     async function pv_sendEmailOtp() {
         const btn = document.getElementById('btnSendEmailOtp');
-        btn.disabled = true; btn.textContent = 'Đang gửi...';
+        btn.disabled = true; btn.textContent = PV_MSG.sending;
         const r = await fetch('/Account/SendEmailOtp', { method:'POST' });
         const d = await r.json();
         pv_toast(d.message, d.success ? 'info' : 'danger');
         if (d.success) {
             document.getElementById('emailOtpBox').classList.remove('d-none');
-            pv_startCountdown(btn, 'Gửi lại OTP', 60);
+            pv_startCountdown(btn, PV_MSG.resendOtp, 60);
         } else btn.disabled = false;
     }
 
@@ -385,7 +392,7 @@
     function pv_startCountdown(btn, label, seconds) {
         let s = seconds;
         const iv = setInterval(() => {
-            btn.textContent = `Gửi lại sau ${s--}s`;
+            btn.textContent = `${PV_MSG.resendInPrefix} ${s--}s`;
             if (s < 0) {
                 clearInterval(iv);
                 btn.disabled = false;

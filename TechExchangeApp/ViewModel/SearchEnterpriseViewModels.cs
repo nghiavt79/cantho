@@ -58,6 +58,19 @@ namespace TechExchangeApp.ViewModel
             { SearchEntityType.Ocop, "OCOP" },
         };
 
+        // Nhãn hiển thị tiếng Anh — chỉ dùng cho UI (TypeName lưu DB vẫn giữ tiếng Việt ở trên).
+        private static readonly Dictionary<SearchEntityType, string> EnumToLabelEn = new()
+        {
+            { SearchEntityType.All, "All" },
+            { SearchEntityType.Technology, "Technology" },
+            { SearchEntityType.Equipment, "Equipment" },
+            { SearchEntityType.IntellectualProperty, "IP Assets" },
+            { SearchEntityType.Supplier, "Supplier" },
+            { SearchEntityType.Expert, "Expert" },
+            { SearchEntityType.Article, "Article" },
+            { SearchEntityType.Ocop, "OCOP" },
+        };
+
         private static readonly Dictionary<SearchEntityType, string> EnumToIcon = new()
         {
             { SearchEntityType.All, "bi-grid" },
@@ -80,8 +93,11 @@ namespace TechExchangeApp.ViewModel
         public static string? ToTypeName(SearchEntityType type) =>
             EnumToName.TryGetValue(type, out var n) ? n : null;
 
-        public static string ToLabel(SearchEntityType type) =>
-            EnumToLabel.TryGetValue(type, out var l) ? l : type.ToString();
+        public static string ToLabel(SearchEntityType type, bool isEn = false)
+        {
+            var map = isEn ? EnumToLabelEn : EnumToLabel;
+            return map.TryGetValue(type, out var l) ? l : type.ToString();
+        }
 
         public static string ToIcon(SearchEntityType type) =>
             EnumToIcon.TryGetValue(type, out var i) ? i : "bi-file-earmark";

@@ -128,7 +128,7 @@ namespace TechExchangeApp.Services
             var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash ?? "", model.CurrentPassword);
             if (verificationResult == PasswordVerificationResult.Failed)
             {
-                throw new InvalidOperationException("Mật khẩu hiện tại không đúng");
+                throw new InvalidOperationException("changepwd.err.wrongCurrentPassword");
             }
 
             // Hash new password

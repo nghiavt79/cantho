@@ -82,14 +82,18 @@
         // Show skeleton
         host.innerHTML = buildSkeleton();
 
+        // Trang /en/... phải gọi đúng route có prefix /en/ (middleware chỉ gắn Lang=en
+        // khi URL bắt đầu bằng /en/) — nếu không AJAX sẽ luôn trả về nội dung tiếng Việt.
+        const isEn = window.location.pathname.indexOf('/en/') === 0 || window.location.pathname === '/en';
+
         // Update URL
         if (!skipPush) {
-            const url = buildUrl('/Search/Index');
+            const url = buildUrl(isEn ? '/en/search' : '/Search/Index');
             history.pushState(null, '', url);
         }
 
         // Fetch partial
-        const partialUrl = buildUrl('/Search/ResultsPartial');
+        const partialUrl = buildUrl(isEn ? '/en/search/results-partial' : '/Search/ResultsPartial');
         fetch(partialUrl)
             .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
             .then(html => {

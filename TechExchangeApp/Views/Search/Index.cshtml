@@ -1,8 +1,9 @@
 @model TechExchangeApp.ViewModel.SearchResultPageVm
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
     ViewData["Title"] = string.IsNullOrWhiteSpace(Model.Query)
-        ? "Tìm kiếm" : $"Tìm kiếm: {Model.Query}";
+        ? Html.Text("common.search") : $"{Html.Text("search.pageTitleQuery")} {Model.Query}";
     var MainDomain = Configuration["AppSettings:MainDomain"] ?? "https://localhost:7232/";
     var enableAI = (int?)ViewBag.EnableAISearch ?? 0;
 
@@ -28,43 +29,43 @@
     <div class="se-header">
         @if (!string.IsNullOrWhiteSpace(Model.Query))
         {
-            <h1>Kết quả tìm kiếm: <span>"@Model.Query"</span></h1>
+            <h1>@Html.Text("search.resultsFor") <span>"@Model.Query"</span></h1>
             var total = Model.CountsByType.GetValueOrDefault(TechExchangeApp.ViewModel.SearchEntityType.All, Model.Total);
             <p class="se-summary">
                 @if (total == 0 && Model.AIResultCount == 0)
                 {
-                    <text>Chưa tìm thấy nội dung phù hợp với từ khóa này.</text>
+                    <text>@Html.Text("search.noResults")</text>
                 }
                 else
                 {
-                    <text>Tìm thấy <strong>@total</strong> kết quả</text>
+                    <text>@Html.Text("search.foundPrefix") <strong>@total</strong> @Html.Text("search.foundSuffix")</text>
                     @if (Model.AIResultCount > 0)
                     {
-                        <text> và <strong>@Model.AIResultCount</strong> gợi ý AI</text>
+                        <text> @Html.Text("search.aiSuggestionsAnd") <strong>@Model.AIResultCount</strong> @Html.Text("search.aiSuggestionsSuffix")</text>
                     }
                 }
             </p>
         }
         else
         {
-            <h1>Tìm kiếm</h1>
-            <p class="se-summary">Nhập từ khóa để tìm công nghệ, thiết bị, nhà cung ứng…</p>
+            <h1>@Html.Text("common.search")</h1>
+            <p class="se-summary">@Html.Text("search.subtitlePrompt")</p>
         }
     </div>
 
-    <form class="se-searchbar" action="@($"{MainDomain}Search")" method="get" role="search">
-        <label class="visually-hidden" for="seKeyword">Từ khóa tìm kiếm</label>
+    <form class="se-searchbar" action="@($"{MainDomain}{(isEn ? "en/search" : "Search")}")" method="get" role="search">
+        <label class="visually-hidden" for="seKeyword">@Html.Text("home.search.keyword")</label>
         <input id="seKeyword" type="search" name="q" value="@Model.Query"
-               placeholder="Nhập tên công nghệ, thiết bị, chuyên gia hoặc sản phẩm..." autocomplete="off" />
-        <button type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+               placeholder="@Html.Text("search.mainPlaceholder")" autocomplete="off" />
+        <button type="submit"><i class="bi bi-search"></i> @Html.Text("common.search")</button>
     </form>
 
     @if (string.IsNullOrWhiteSpace(Model.Query))
     {
         <div class="se-empty">
             <i class="bi bi-search"></i>
-            <h5>Vui lòng nhập từ khóa tìm kiếm</h5>
-            <p>Nhập từ khóa để tìm công nghệ, thiết bị, nhà cung ứng...</p>
+            <h5>@Html.Text("search.emptyPromptTitle")</h5>
+            <p>@Html.Text("search.subtitlePrompt")</p>
         </div>
     }
     else
@@ -75,8 +76,8 @@
             <ul class="nav nav-tabs se-mode-tabs mb-3">
                 <li class="nav-item">
                     <a class="nav-link @(Model.Mode != "ai" ? "active" : "")"
-                       href="/Search?q=@Uri.EscapeDataString(Model.Query)">
-                        <i class="bi bi-search me-1"></i>Tìm kiếm thông thường
+                       href="@((isEn ? "/en/search" : "/Search"))?q=@Uri.EscapeDataString(Model.Query)">
+                        <i class="bi bi-search me-1"></i>@Html.Text("search.modeNormal")
                         @{
                             var normalCount = Model.CountsByType.GetValueOrDefault(TechExchangeApp.ViewModel.SearchEntityType.All, Model.Total);
                         }
@@ -88,8 +89,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @(Model.Mode == "ai" ? "active" : "")"
-                       href="/Search?q=@Uri.EscapeDataString(Model.Query)&mode=ai">
-                        <i class="bi bi-stars me-1"></i>Tìm kiếm thông minh bằng AI
+                       href="@((isEn ? "/en/search" : "/Search"))?q=@Uri.EscapeDataString(Model.Query)&mode=ai">
+                        <i class="bi bi-stars me-1"></i>@Html.Text("search.modeAi")
                         @if (Model.AIResultCount > 0)
                         {
                             <span class="badge bg-success ms-1">@Model.AIResultCount</span>
@@ -118,15 +119,15 @@
                                         <small class="text-muted">
                                             <i class="bi bi-star-fill text-warning"></i> @company.Rating.ToString("0.0")/5
                                             &nbsp;•&nbsp;
-                                            <i class="bi bi-eye"></i> @company.ViewCount.ToString("N0") lượt xem
+                                            <i class="bi bi-eye"></i> @company.ViewCount.ToString("N0") @Html.Text("product.detail.views")
                                         </small>
                                     </div>
                                     <span class="badge bg-success fs-6 px-3 py-2">
-                                        @company.MatchPercentage.ToString("0.0")% phù hợp
+                                        @company.MatchPercentage.ToString("0.0")% @Html.Text("search.matchPercent")
                                     </span>
                                 </div>
                                 <div class="bg-light p-3 rounded">
-                                    <h6 class="text-muted mb-2"><i class="bi bi-box-seam me-1"></i>Sản phẩm phù hợp:</h6>
+                                    <h6 class="text-muted mb-2"><i class="bi bi-box-seam me-1"></i>@Html.Text("search.matchingProducts")</h6>
                                     <ul class="list-unstyled mb-0">
                                         @foreach (var prod in company.Products)
                                         {
@@ -147,8 +148,8 @@
             {
                 <div class="se-empty">
                     <i class="bi bi-stars"></i>
-                    <h5>Không có kết quả AI</h5>
-                    <p>Thử mô tả chi tiết hơn hoặc sử dụng tab "Tìm kiếm thông thường".</p>
+                    <h5>@Html.Text("search.aiNoResults")</h5>
+                    <p>@Html.Text("search.aiNoResultsDesc")</p>
                 </div>
             }
         }
@@ -158,7 +159,7 @@
             <div class="se-filters">
                 @foreach (var et in typeOrder)
                 {
-                    var label = TechExchangeApp.ViewModel.SearchEntityTypeHelper.ToLabel(et);
+                    var label = TechExchangeApp.ViewModel.SearchEntityTypeHelper.ToLabel(et, isEn);
                     var icon  = TechExchangeApp.ViewModel.SearchEntityTypeHelper.ToIcon(et);
                     var count = Model.CountsByType.GetValueOrDefault(et, 0);
                     var isActive = et == Model.Type;

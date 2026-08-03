@@ -1,7 +1,9 @@
 @model TechExchangeApp.ViewModel.RegisterViewModel
 
 @{
-    ViewData["Title"] = "Đăng ký";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    ViewData["Title"] = Html.Text("common.signup");
+    var loginUrl = isEn ? "/en/login" : "/dang-nhap";
 }
 
 <div class="container mt-5">
@@ -9,23 +11,23 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-success text-white">
-                    <h3 class="card-title mb-0">Đăng ký thành viên</h3>
+                    <h3 class="card-title mb-0">@Html.Text("auth.registerTitle")</h3>
                 </div>
                 <div class="card-body">
                     <form asp-action="Register" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                        
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label asp-for="UserName" class="control-label">Tên đăng nhập</label>
+                                    <label asp-for="UserName" class="control-label">@Html.Text("auth.username")</label>
                                     <input asp-for="UserName" class="form-control" />
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label asp-for="FullName" class="control-label">Họ và tên</label>
+                                    <label asp-for="FullName" class="control-label">@Html.Text("auth.fullName")</label>
                                     <input asp-for="FullName" class="form-control" />
                                     <span asp-validation-for="FullName" class="text-danger"></span>
                                 </div>
@@ -41,27 +43,27 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label asp-for="Password" class="control-label">Mật khẩu</label>
+                                    <label asp-for="Password" class="control-label">@Html.Text("auth.password")</label>
                                     <input asp-for="Password" class="form-control" />
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label asp-for="ConfirmPassword" class="control-label">Nhập lại mật khẩu</label>
+                                    <label asp-for="ConfirmPassword" class="control-label">@Html.Text("auth.confirmPassword")</label>
                                     <input asp-for="ConfirmPassword" class="form-control" />
                                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="d-grid gap-2 mt-3">
-                            <button type="submit" class="btn btn-success btn-block">Đăng ký</button>
+                            <button type="submit" class="btn btn-success btn-block">@Html.Text("common.signup")</button>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <p>Đã có tài khoản? <a asp-route="login_page">Đăng nhập</a></p>
+                    <p>@Html.Text("auth.haveAccountQ") <a href="@loginUrl">@Html.Text("common.login")</a></p>
                 </div>
             </div>
         </div>

@@ -568,6 +568,7 @@ namespace TechExchangeApp.Application.Services
         /// </summary>
         public async Task<Dictionary<string, int>> GetCountsByTypeAsync(
             string keyword,
+            string? languageId = null,
             CancellationToken cancellationToken = default)
         {
             try
@@ -577,6 +578,7 @@ namespace TechExchangeApp.Application.Services
 
                 keyword = TechExchangeApp.Helpers.VietnameseTextHelper.NormalizeKeyword(keyword);
                 var keywordParam = new SqlParameter("@Keyword", keyword);
+                var languageParam = new SqlParameter("@LanguageId", (object?)languageId ?? DBNull.Value);
 
                 var counts = await _context.Database
                     .SqlQueryRaw<TypeCountRow>(@"
@@ -596,8 +598,9 @@ namespace TechExchangeApp.Application.Services
                         FROM dbo.SearchIndexContents s
                         INNER JOIN CONTAINSTABLE(dbo.SearchIndexContents, (Title, RemovedUnicode, Contents), @SearchTerm) AS KEY_TBL
                             ON s.Id = KEY_TBL.[KEY]
+                        WHERE (@LanguageId IS NULL OR s.LanguageId = @LanguageId)
                         GROUP BY s.TypeName;",
-                        keywordParam)
+                        keywordParam, languageParam)
                     .ToListAsync(cancellationToken);
 
                 return counts.ToDictionary(c => c.TypeName, c => c.Cnt);
@@ -626,10 +629,12 @@ namespace TechExchangeApp.Application.Services
                 keyword = TechExchangeApp.Helpers.VietnameseTextHelper.NormalizeKeyword(keyword);
                 var offset = (options.PageNumber - 1) * options.PageSize;
                 var hasTypeFilter = !string.IsNullOrEmpty(options.TypeName);
+                var hasLanguageFilter = !string.IsNullOrEmpty(options.LanguageId);
 
-                var whereClause = hasTypeFilter
-                    ? "WHERE s.TypeName = @TypeName"
-                    : "";
+                var conditions = new List<string>();
+                if (hasTypeFilter) conditions.Add("s.TypeName = @TypeName");
+                if (hasLanguageFilter) conditions.Add("s.LanguageId = @LanguageId");
+                var whereClause = conditions.Count > 0 ? "WHERE " + string.Join(" AND ", conditions) : "";
 
                 var sql = $@"
                     DECLARE @SearchTerm NVARCHAR(1000);
@@ -677,6 +682,8 @@ namespace TechExchangeApp.Application.Services
                     cmd.Parameters.Add(new SqlParameter("@Keyword", keyword));
                     if (hasTypeFilter)
                         cmd.Parameters.Add(new SqlParameter("@TypeName", options.TypeName));
+                    if (hasLanguageFilter)
+                        cmd.Parameters.Add(new SqlParameter("@LanguageId", options.LanguageId));
                     cmd.Parameters.Add(new SqlParameter("@Offset", offset));
                     cmd.Parameters.Add(new SqlParameter("@PageSize", options.PageSize));
 

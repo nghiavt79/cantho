@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
 using TechExchangeApp.Helpers;
+using TechExchangeApp.Localization;
 using TechExchangeApp.ViewModel;
 
 namespace TechExchangeApp.Controllers
@@ -48,7 +49,7 @@ namespace TechExchangeApp.Controllers
                 }
             }
 
-            // ===== LOAD MENU ID = 74 =====
+            // ===== LOAD MENU ID = 74 (chỉ có bản VI; EN dùng key i18n riêng ở view) =====
             var menu = _context.Menus.FirstOrDefault(x => x.MenuId == 74);
             if (menu != null)
             {
@@ -69,7 +70,8 @@ namespace TechExchangeApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Index(FeedbackCreateViewModel vm)
         {
-            var languageId = HttpContext.Session.GetInt32("LanguageId") ?? 1;
+            var isEn = LangHelper.IsEnglish(HttpContext);
+            var backUrl = isEn ? "/en/contact" : "/lien-he";
             var lastPost   = HttpContext.Session.GetString("PostedFeedback");
             var settingTime = _config.GetValue<int>("SettingTimeUpdatePageView");
 
@@ -81,10 +83,7 @@ namespace TechExchangeApp.Controllers
             {
                 // Regenerate question for re-display
                 vm.CaptchaQuestion = GenerateCaptcha();
-                ModelState.AddModelError("CaptchaAnswer",
-                    languageId == 1
-                        ? "Mã xác thực không đúng. Vui lòng tính lại."
-                        : "Incorrect captcha. Please try again.");
+                ModelState.AddModelError("CaptchaAnswer", I18n.T(HttpContext, "contact.err.captchaWrong"));
                 LoadMenuDescription(vm);
                 return View("Index", vm);
             }
@@ -96,11 +95,9 @@ namespace TechExchangeApp.Controllers
             if (lastPost != null &&
                 (DateTime.Now - DateTime.Parse(lastPost)).TotalSeconds < settingTime)
             {
-                TempData["Alert"] = languageId == 1
-                    ? "Ý kiến của bạn trước đó đang được xử lý. Vui lòng đợi ít phút trước khi gửi tiếp!"
-                    : "Your comments are being processed. Please wait a few minutes.";
+                TempData["Alert"] = I18n.T(HttpContext, "contact.msg.tooSoon");
 
-                return Redirect("/lien-he");
+                return Redirect(backUrl);
             }
 
             try
@@ -125,21 +122,17 @@ namespace TechExchangeApp.Controllers
                 // ===== SAVE POST TIME =====
                 HttpContext.Session.SetString("PostedFeedback", DateTime.Now.ToString("O"));
 
-                TempData["Alert"] = languageId == 1
-                    ? "Ý kiến của bạn đã được gửi. Cám ơn bạn đã đóng góp!"
-                    : "Your comment has been submitted. Thanks!";
+                TempData["Alert"] = I18n.T(HttpContext, "contact.msg.success");
 
-                return Redirect("/lien-he");
+                return Redirect(backUrl);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "[FeedbackController] Lỗi khi lưu feedback: {Message}", ex.Message);
 
-                TempData["Alert"] = languageId == 1
-                    ? "Lưu thất bại. Vui lòng kiểm tra lại."
-                    : "Save failed. Please try again.";
+                TempData["Alert"] = I18n.T(HttpContext, "contact.msg.failed");
 
-                return Redirect("/lien-he");
+                return Redirect(backUrl);
             }
         }
 

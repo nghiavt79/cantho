@@ -41,8 +41,11 @@
         function loadCungUng(industryId, page) {
             $('#tab-donvi').html('<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>');
             var iid = (industryId && industryId != '0') ? industryId : 0;
+            // Trang /en/... phải gọi đúng route có prefix /en/, nếu không middleware sẽ trả về nội dung tiếng Việt.
+            var isEn = window.location.pathname.indexOf('/en/') === 0 || window.location.pathname === '/en';
+            var url = isEn ? '/en/services/units' : '/DichVuTuVan/DichVuCungUng';
             $('#tab-donvi').load(
-                '/DichVuTuVan/DichVuCungUng?menuId=@Model.DichVuTuVan.MenuId&industryId=' + iid + '&page=' + page,
+                url + '?menuId=@Model.DichVuTuVan.MenuId&industryId=' + iid + '&page=' + page,
                 function () { bindCungUngEvents(); }
             );
         }
@@ -50,8 +53,10 @@
         function loadTuVan(cateId, page) {
             $('#tab-nhatuvan').html('<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>');
             var cid = (cateId && cateId != '0') ? cateId : '';
+            var isEn = window.location.pathname.indexOf('/en/') === 0 || window.location.pathname === '/en';
+            var url = isEn ? '/en/services/consultants' : '/DichVuTuVan/DichVuTuVan';
             $('#tab-nhatuvan').load(
-                '/DichVuTuVan/DichVuTuVan?menuId=@Model.DichVuTuVan.MenuId&cateId=' + cid + '&page=' + page,
+                url + '?menuId=@Model.DichVuTuVan.MenuId&cateId=' + cid + '&page=' + page,
                 function () { bindTuVanEvents(); }
             );
         }

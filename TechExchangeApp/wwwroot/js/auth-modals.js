@@ -2,6 +2,21 @@
 // AUTH MODALS - AJAX LOGIC
 // ===============================
 
+// Trang /en/... phải hiện thông báo tiếng Anh — detect qua URL giống search-enterprise.js
+function isEnPage() {
+    return window.location.pathname.indexOf('/en/') === 0 || window.location.pathname === '/en';
+}
+
+const AUTH_MSG = {
+    genericError: { vi: 'Đã xảy ra lỗi. Vui lòng thử lại.', en: 'An error occurred. Please try again.' },
+    serverBusy: { vi: 'Hệ thống đang bận. Vui lòng thử lại sau.', en: 'The system is busy. Please try again later.' },
+    networkError: { vi: 'Không thể kết nối máy chủ. Vui lòng kiểm tra mạng và thử lại.', en: 'Unable to connect to the server. Please check your network and try again.' },
+    passwordMismatch: { vi: 'Mật khẩu và xác nhận mật khẩu không khớp.', en: 'Password and confirmation password do not match.' }
+};
+function authMsg(key) {
+    return AUTH_MSG[key][isEnPage() ? 'en' : 'vi'];
+}
+
 // Switch from Login to Register modal
 function switchToRegister(event) {
     if (event) event.preventDefault();
@@ -105,7 +120,7 @@ async function handleLoginSubmit(event) {
         }
     } catch (error) {
         console.error('Login error:', error);
-        displayErrors('loginErrors', ['Đã xảy ra lỗi. Vui lòng thử lại.']);
+        displayErrors('loginErrors', [authMsg('genericError')]);
     } finally {
         // Hide loading state
         submitBtn.classList.remove('loading');
@@ -128,7 +143,7 @@ async function handleRegisterSubmit(event) {
     const confirmPassword = form.querySelector('#registerConfirmPassword').value;
     
     if (password !== confirmPassword) {
-        displayErrors('registerErrors', ['Mật khẩu và xác nhận mật khẩu không khớp.']);
+        displayErrors('registerErrors', [authMsg('passwordMismatch')]);
         return;
     }
     
@@ -151,7 +166,7 @@ async function handleRegisterSubmit(event) {
         
         if (!response.ok) {
             // Server error (500, etc.)
-            displayErrors('registerErrors', ['Hệ thống đang bận. Vui lòng thử lại sau.']);
+            displayErrors('registerErrors', [authMsg('serverBusy')]);
             return;
         }
 
@@ -165,7 +180,7 @@ async function handleRegisterSubmit(event) {
         }
     } catch (error) {
         console.error('Register error:', error);
-        displayErrors('registerErrors', ['Không thể kết nối máy chủ. Vui lòng kiểm tra mạng và thử lại.']);
+        displayErrors('registerErrors', [authMsg('networkError')]);
     } finally {
         // Hide loading state
         submitBtn.classList.remove('loading');

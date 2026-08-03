@@ -52,6 +52,7 @@ namespace TechExchangeApp.Application.Services
         /// </summary>
         Task<Dictionary<string, int>> GetCountsByTypeAsync(
             string keyword,
+            string? languageId = null,
             CancellationToken cancellationToken = default);
 
         /// <summary>

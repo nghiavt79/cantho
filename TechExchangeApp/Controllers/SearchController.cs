@@ -10,6 +10,7 @@ using TechExchangeApp.Application.Helpers;
 using TechExchangeApp.Application.Services;
 using TechExchangeApp.Configuration;
 using TechExchangeApp.Data.Entities;
+using TechExchangeApp.Helpers;
 using TechExchangeApp.ViewModel;
 
 namespace TechExchangeApp.Controllers
@@ -44,6 +45,7 @@ namespace TechExchangeApp.Controllers
             string q, string mode = "normal", string type = "all",
             string sort = "relevance", int page = 1)
         {
+            var isEn = LangHelper.IsEnglish(HttpContext);
             var vm = BuildVm(q, mode, type, sort, page);
 
             if (string.IsNullOrWhiteSpace(vm.Query))
@@ -58,7 +60,7 @@ namespace TechExchangeApp.Controllers
                 // ── Counts for tabs (always run on the full keyword, no type filter) ──
                 try
                 {
-                    var rawCounts = await _searchService.GetCountsByTypeAsync(vm.Query);
+                    var rawCounts = await _searchService.GetCountsByTypeAsync(vm.Query, isEn ? "2" : "1");
                     vm.CountsByType = MapCounts(rawCounts);
                 }
                 catch (Exception ex)
@@ -71,7 +73,7 @@ namespace TechExchangeApp.Controllers
                 {
                     try
                     {
-                        await FillNormalResultsAsync(vm);
+                        await FillNormalResultsAsync(vm, isEn);
                     }
                     catch (Exception normalEx)
                     {
@@ -113,15 +115,16 @@ namespace TechExchangeApp.Controllers
         public async Task<IActionResult> ResultsPartial(
             string q, string type = "all", string sort = "relevance", int page = 1)
         {
+            var isEn = LangHelper.IsEnglish(HttpContext);
             var vm = BuildVm(q, "normal", type, sort, page);
 
             if (!string.IsNullOrWhiteSpace(vm.Query))
             {
                 try
                 {
-                    var rawCounts = await _searchService.GetCountsByTypeAsync(vm.Query);
+                    var rawCounts = await _searchService.GetCountsByTypeAsync(vm.Query, isEn ? "2" : "1");
                     vm.CountsByType = MapCounts(rawCounts);
-                    await FillNormalResultsAsync(vm);
+                    await FillNormalResultsAsync(vm, isEn);
                 }
                 catch (Exception ex)
                 {
@@ -187,22 +190,23 @@ namespace TechExchangeApp.Controllers
         /// <summary>
         /// Execute normal FullText search using inline CONTAINSTABLE with type filter.
         /// </summary>
-        private async Task FillNormalResultsAsync(SearchResultPageVm vm)
+        private async Task FillNormalResultsAsync(SearchResultPageVm vm, bool isEn)
         {
             var options = new SearchOptions
             {
                 PageNumber = vm.Page,
                 PageSize = vm.PageSize,
-                TypeName = SearchEntityTypeHelper.ToTypeName(vm.Type) // null for "All"
+                TypeName = SearchEntityTypeHelper.ToTypeName(vm.Type), // null for "All"
+                LanguageId = isEn ? "2" : "1"
             };
 
             var result = await _searchService.SearchByTypeAsync(vm.Query, options);
 
-            vm.Items = result.Items.Select(item => MapItem(item, vm.Query)).ToList();
+            vm.Items = result.Items.Select(item => MapItem(item, vm.Query, isEn)).ToList();
             vm.Total = result.TotalCount;
         }
 
-        private static SearchResultItemVm MapItem(SearchIndexContent item, string query)
+        private static SearchResultItemVm MapItem(SearchIndexContent item, string query, bool isEn)
         {
             var entityType = SearchEntityTypeHelper.FromTypeName(item.TypeName);
 
@@ -215,9 +219,9 @@ namespace TechExchangeApp.Controllers
                     item.Description ?? item.Contents ?? string.Empty, query, 250),
                 Url = NormalizeLegacyUrl(item.URL),
                 UpdatedDate = item.Modified ?? item.Created,
-                Tags = new List<string> { SearchEntityTypeHelper.ToLabel(entityType) }
+                Tags = new List<string> { SearchEntityTypeHelper.ToLabel(entityType, isEn) }
             };
-        
+
         }
 
         private static string NormalizeLegacyUrl(string? url)

@@ -11,6 +11,12 @@
     var fullOrgTitle = Html.Text("footer.orgName");
     var fullOrgSlogan = Html.Text("footer.tagline");
     var newsUrl = isEn ? "/en/news-event" : "/tin-su-kien";
+    var addressText = isEn ? Html.Text("footer.address").ToString() : address;
+    var servicesUrl = isEn ? "/en/services" : "/dich-vu-tu-van";
+    var techUrl = isEn ? "/en/technologies" : "/cong-nghe";
+    var traceabilityUrl = isEn ? "/en/services/traceability-29" : "/dich-vu-tu-van/truy-xuat-nguon-goc-29";
+    var expertsUrl = isEn ? "/en/experts" : "/chuyen-gia";
+    var contactUrl = isEn ? "/en/contact" : "/lien-he";
 }
 
 <footer class="site-footer-v2">
@@ -36,22 +42,22 @@
                 <h3>@Html.Text("footer.quickLinks")</h3>
                 <a href="@TechExchangeApp.Helpers.LangHelper.HomeUrl(Context)">@Html.Text("common.home")</a>
                 <a href="@(isEn ? "/en/about" : "/gioi-thieu-chung-3")">@Html.Text("common.about")</a>
-                <a href="/dich-vu-tu-van">@Html.Text("footer.servicesSolutions")</a>
+                <a href="@servicesUrl">@Html.Text("footer.servicesSolutions")</a>
                 <a href="@newsUrl">@Html.Text("news.title")</a>
-                <a href="/lien-he">@Html.Text("common.contact")</a>
+                <a href="@contactUrl">@Html.Text("common.contact")</a>
             </div>
 
             <div>
                 <h3>@Html.Text("common.services")</h3>
-                <a href="/cong-nghe">@Html.Text("footer.techSupply")</a>
-                <a href="/dich-vu-tu-van">@Html.Text("footer.consulting")</a>
-                <a href="/dich-vu-tu-van/truy-xuat-nguon-goc-29">@Html.Text("common.traceability")</a>
-                <a href="/chuyen-gia">@Html.Text("common.expertNetwork")</a>
+                <a href="@techUrl">@Html.Text("footer.techSupply")</a>
+                <a href="@servicesUrl">@Html.Text("footer.consulting")</a>
+                <a href="@traceabilityUrl">@Html.Text("common.traceability")</a>
+                <a href="@expertsUrl">@Html.Text("common.expertNetwork")</a>
             </div>
 
             <div>
                 <h3>@Html.Text("common.contact")</h3>
-                <p><a href="@mapUrl" target="_blank" rel="noopener"><i class="bi bi-geo-alt"></i> @address</a></p>
+                <p><a href="@mapUrl" target="_blank" rel="noopener"><i class="bi bi-geo-alt"></i> @addressText</a></p>
                 <p><i class="bi bi-telephone"></i> @phone</p>
                 <p><i class="bi bi-envelope"></i> @email</p>
                 <form class="site-footer-v2__newsletter">

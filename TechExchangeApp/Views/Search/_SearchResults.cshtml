@@ -2,6 +2,7 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     var MainDomain = Configuration["AppSettings:MainDomain"] ?? "https://localhost:7232/";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
 }
 
 @* ── Controls row ─────────────────────────────────── *@
@@ -11,7 +12,7 @@
     var lastItem = Math.Min(Model.Page * Model.PageSize, Model.Total);
     <div class="se-controls">
         <span class="se-count">
-            Hiển thị <strong>@firstItem-@lastItem</strong> trong <strong>@Model.Total</strong> kết quả
+            @Html.Text("search.showingPrefix") <strong>@firstItem-@lastItem</strong> @Html.Text("search.showingIn") <strong>@Model.Total</strong> @Html.Text("search.resultsUnit")
         </span>
     </div>
 }
@@ -59,7 +60,7 @@
                 @* Action buttons *@
                 <div class="se-card-actions">
                     <a href="@fullUrl" target="_blank" class="se-btn se-btn-primary">
-                        <i class="bi bi-eye me-1"></i>Xem chi tiết
+                        <i class="bi bi-eye me-1"></i>@Html.Text("common.viewDetails")
                     </a>
                 </div>
             </div>
@@ -110,22 +111,29 @@ else
     @* Empty state *@
     <div class="se-empty">
         <i class="bi bi-search"></i>
-        <h5>Chưa tìm thấy nội dung phù hợp</h5>
-        <p>Thử sử dụng từ khóa ngắn hơn, bỏ bớt bộ lọc hoặc chọn một nhóm nội dung khác.</p>
-        <div class="se-empty-suggestions" aria-label="Gợi ý từ khóa">
-            <span>Gợi ý:</span>
-            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("cây trồng")}")">cây trồng</a>
-            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("nông nghiệp")}")">nông nghiệp</a>
-            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("công nghệ sinh học")}")">công nghệ sinh học</a>
-            <a href="@($"{MainDomain}Search?q={Uri.EscapeDataString("giống cây")}")">giống cây</a>
+        <h5>@Html.Text("search.emptyResultsTitle")</h5>
+        <p>@Html.Text("search.emptyResultsDesc")</p>
+        <div class="se-empty-suggestions" aria-label="@Html.Text("search.suggestionsLabel")">
+            <span>@Html.Text("search.suggestionsLabel")</span>
+            @{
+                var sq1 = Html.Text("search.suggest.plants");
+                var sq2 = Html.Text("search.suggest.agriculture");
+                var sq3 = Html.Text("search.suggest.biotech");
+                var sq4 = Html.Text("search.suggest.variety");
+                var searchBase = isEn ? $"{MainDomain}en/search" : $"{MainDomain}Search";
+            }
+            <a href="@($"{searchBase}?q={Uri.EscapeDataString(sq1)}")">@sq1</a>
+            <a href="@($"{searchBase}?q={Uri.EscapeDataString(sq2)}")">@sq2</a>
+            <a href="@($"{searchBase}?q={Uri.EscapeDataString(sq3)}")">@sq3</a>
+            <a href="@($"{searchBase}?q={Uri.EscapeDataString(sq4)}")">@sq4</a>
         </div>
     </div>
 
     <section class="se-request-cta">
         <div>
-            <h2>Không tìm thấy công nghệ, thiết bị hoặc giải pháp phù hợp?</h2>
-            <p>Gửi nhu cầu tìm mua để Trung tâm hỗ trợ tiếp nhận, tìm kiếm nhà cung cấp và kết nối với đơn vị phù hợp.</p>
+            <h2>@Html.Text("search.ctaTitle")</h2>
+            <p>@Html.Text("search.ctaDesc")</p>
         </div>
-        <a href="@($"{MainDomain}tim-mua-cong-nghe")">Gửi nhu cầu tìm mua</a>
+        <a href="@(isEn ? $"{MainDomain}en/technology-demand" : $"{MainDomain}tim-mua-cong-nghe")">@Html.Text("search.ctaButton")</a>
     </section>
 }

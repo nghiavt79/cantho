@@ -1,8 +1,11 @@
 @model TechExchangeApp.ViewModel.FeedbackCreateViewModel
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Liên hệ - Trung tâm Ứng dụng Tiến bộ KH&CN Cần Thơ";
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    ViewData["Title"] = Html.Text("contact.pageTitle");
+    var formAction = isEn ? "/en/contact" : "/lien-he";
 
+    // Tên đơn vị / thông tin liên hệ: giữ nguyên (tên riêng, địa chỉ, số điện thoại không dịch)
     const string centerName = "Trung tâm Ứng dụng Tiến bộ Khoa học và Công nghệ Cần Thơ";
     const string address = "166 Nguyễn Văn Cừ, P. An Bình, TP. Cần Thơ";
     const string phone = "+(84) 292 3907 037";
@@ -14,12 +17,12 @@
 
 <link rel="stylesheet" href="~/css/contact-v2.css" asp-append-version="true" />
 
-<input type="hidden" id="hidMaXacThuc" value="Vui lòng nhập đúng mã xác thực" />
-<input type="hidden" id="hidHoTen" value="Vui lòng nhập họ tên" />
-<input type="hidden" id="hidDienThoai" value="Vui lòng nhập điện thoại" />
-<input type="hidden" id="hidEmail" value="Vui lòng nhập đúng Email" />
-<input type="hidden" id="hidTieuDe" value="Vui lòng nhập tiêu đề" />
-<input type="hidden" id="hidLoiNhat" value="Vui lòng nhập lời nhắn" />
+<input type="hidden" id="hidMaXacThuc" value="@Html.Text("contact.err.captcha")" />
+<input type="hidden" id="hidHoTen" value="@Html.Text("contact.err.fullName")" />
+<input type="hidden" id="hidDienThoai" value="@Html.Text("contact.err.phone")" />
+<input type="hidden" id="hidEmail" value="@Html.Text("contact.err.email")" />
+<input type="hidden" id="hidTieuDe" value="@Html.Text("contact.err.title")" />
+<input type="hidden" id="hidLoiNhat" value="@Html.Text("contact.err.message")" />
 
 <div class="columns-container">
     <div class="contact-page">
@@ -27,16 +30,15 @@
             <div class="container">
                 <div class="ct-hero__inner">
                     <div>
-                        <span class="ct-eyebrow">Kết nối Trung tâm</span>
-                        <h1 class="ct-hero__title">Liên hệ với chúng tôi</h1>
+                        <span class="ct-eyebrow">@Html.Text("contact.eyebrow")</span>
+                        <h1 class="ct-hero__title">@Html.Text("contact.heroTitle")</h1>
                         <p class="ct-hero__sub">
-                            @centerName luôn sẵn sàng tiếp nhận yêu cầu tư vấn, hợp tác, chuyển giao công nghệ
-                            và hỗ trợ doanh nghiệp trong quá trình đổi mới sáng tạo.
+                            @centerName @Html.Text("contact.heroSub")
                         </p>
-                        <div class="ct-hero__badges" aria-label="Dịch vụ hỗ trợ">
-                            <span>Tư vấn KH&amp;CN</span>
-                            <span>Chuyển giao công nghệ</span>
-                            <span>Hỗ trợ doanh nghiệp</span>
+                        <div class="ct-hero__badges" aria-label="@Html.Text("contact.info.kicker")">
+                            <span>@Html.Text("contact.badge.consulting")</span>
+                            <span>@Html.Text("contact.badge.transfer")</span>
+                            <span>@Html.Text("contact.badge.support")</span>
                         </div>
                     </div>
                 </div>
@@ -52,39 +54,39 @@
                 </div>
             }
 
-            <section class="ct-quick-support" aria-label="Kênh hỗ trợ nhanh">
-                <button type="button" data-contact-title="Yêu cầu tư vấn dịch vụ khoa học và công nghệ">
-                    <i class="bi bi-lightbulb"></i>Tư vấn dịch vụ KH&amp;CN
+            <section class="ct-quick-support" aria-label="@Html.Text("contact.form.kicker")">
+                <button type="button" data-contact-title="@Html.Text("contact.quick.consultingTitle")">
+                    <i class="bi bi-lightbulb"></i>@Html.Text("contact.quick.consulting")
                 </button>
-                <button type="button" data-contact-title="Yêu cầu hợp tác chuyển giao công nghệ">
-                    <i class="bi bi-arrow-left-right"></i>Hợp tác chuyển giao
+                <button type="button" data-contact-title="@Html.Text("contact.quick.transferTitle")">
+                    <i class="bi bi-arrow-left-right"></i>@Html.Text("contact.quick.transfer")
                 </button>
-                <button type="button" data-contact-title="Yêu cầu hỗ trợ doanh nghiệp">
-                    <i class="bi bi-briefcase"></i>Hỗ trợ doanh nghiệp
+                <button type="button" data-contact-title="@Html.Text("contact.quick.businessTitle")">
+                    <i class="bi bi-briefcase"></i>@Html.Text("contact.quick.business")
                 </button>
-                <button type="button" data-contact-title="Góp ý / phản ánh">
-                    <i class="bi bi-chat-dots"></i>Góp ý / phản ánh
+                <button type="button" data-contact-title="@Html.Text("contact.quick.feedback")">
+                    <i class="bi bi-chat-dots"></i>@Html.Text("contact.quick.feedback")
                 </button>
             </section>
 
             <section class="ct-main">
                 <div class="ct-grid">
                     <aside class="ct-card ct-info-card">
-                        <span class="ct-card-kicker">Thông tin liên hệ</span>
+                        <span class="ct-card-kicker">@Html.Text("contact.info.kicker")</span>
                         <h2 class="ct-info__brand">@centerName</h2>
 
                         <ul class="ct-info__list">
                             <li>
                                 <span class="ct-icon"><i class="bi bi-geo-alt-fill"></i></span>
                                 <div>
-                                    <strong>Địa chỉ</strong>
+                                    <strong>@Html.Text("contact.info.address")</strong>
                                     <span>@address</span>
                                 </div>
                             </li>
                             <li>
                                 <span class="ct-icon"><i class="bi bi-telephone-fill"></i></span>
                                 <div>
-                                    <strong>Điện thoại</strong>
+                                    <strong>@Html.Text("contact.info.phone")</strong>
                                     <a href="tel:@phoneHref">@phone</a>
                                 </div>
                             </li>
@@ -93,7 +95,7 @@
                             <li>
                                 <span class="ct-icon"><i class="bi bi-printer-fill"></i></span>
                                 <div>
-                                    <strong>Fax</strong>
+                                    <strong>@Html.Text("contact.info.fax")</strong>
                                     <span>@fax</span>
                                 </div>
                             </li>
@@ -108,70 +110,70 @@
                             <li>
                                 <span class="ct-icon"><i class="bi bi-clock-fill"></i></span>
                                 <div>
-                                    <strong>Giờ làm việc</strong>
-                                    <span>Thứ 2 - Thứ 6, 8:00 - 17:00</span>
+                                    <strong>@Html.Text("contact.info.hours")</strong>
+                                    <span>@Html.Text("contact.info.hoursValue")</span>
                                 </div>
                             </li>
                         </ul>
 
                         <div class="ct-help-box">
-                            <h3>Bạn cần hỗ trợ nhanh?</h3>
-                            <p>Gọi trực tiếp cho chúng tôi trong giờ hành chính để được hướng dẫn nhanh nhất.</p>
+                            <h3>@Html.Text("contact.help.title")</h3>
+                            <p>@Html.Text("contact.help.desc")</p>
                         </div>
 
                         <div class="ct-support-stack">
                             <div class="ct-support-item">
                                 <i class="bi bi-alarm"></i>
                                 <div>
-                                    <strong>Thời gian phản hồi</strong>
-                                    <span>Thông thường trong vòng 01 ngày làm việc.</span>
+                                    <strong>@Html.Text("contact.support.responseTime")</strong>
+                                    <span>@Html.Text("contact.support.responseValue")</span>
                                 </div>
                             </div>
                             <div class="ct-support-item">
                                 <i class="bi bi-inboxes"></i>
                                 <div>
-                                    <strong>Kênh tiếp nhận</strong>
-                                    <span>Tư vấn dịch vụ KH&amp;CN, hợp tác chuyển giao, góp ý và phản ánh.</span>
+                                    <strong>@Html.Text("contact.support.channel")</strong>
+                                    <span>@Html.Text("contact.support.channelValue")</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="ct-info__actions">
                             <a href="tel:@phoneHref" class="ct-btn-primary">
-                                <i class="bi bi-telephone"></i>Gọi ngay
+                                <i class="bi bi-telephone"></i>@Html.Text("contact.callNow")
                             </a>
                             <a href="@mapsUrl" target="_blank" rel="noopener" class="ct-btn-outline">
-                                <i class="bi bi-map"></i>Chỉ đường
+                                <i class="bi bi-map"></i>@Html.Text("contact.getDirections")
                             </a>
                         </div>
                     </aside>
 
                     <section class="ct-card ct-form-card">
-                        <span class="ct-card-kicker">Biểu mẫu liên hệ</span>
-                        <h2 class="ct-form__title">Gửi yêu cầu tư vấn</h2>
+                        <span class="ct-card-kicker">@Html.Text("contact.form.kicker")</span>
+                        <h2 class="ct-form__title">@Html.Text("contact.form.title")</h2>
                         <p class="ct-form__sub">
-                            Vui lòng để lại thông tin, chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.
+                            @Html.Text("contact.form.sub")
                         </p>
 
                         <ul id="lstErrorContent"
                             class="ct-validation-summary @(ViewData.ModelState.IsValid ? "d-none" : "")">
                         </ul>
 
-                        <form asp-controller="Feedback" asp-action="Index" method="post" id="contact-form">
+                        <form action="@formAction" method="post" id="contact-form">
                             @Html.AntiForgeryToken()
 
-                            <div class="ct-section-label">Thông tin cá nhân</div>
+                            <div class="ct-section-label">@Html.Text("contact.form.personalInfo")</div>
 
                             <div class="ct-row-2">
                                 <div class="ct-form-group">
-                                    <label class="ct-label" for="txtFullName">Họ và tên <span class="req">*</span></label>
+                                    <label class="ct-label" for="txtFullName">@Html.Text("contact.form.fullName") <span class="req">*</span></label>
                                     <input id="txtFullName" name="FullName" type="text" class="ct-input"
-                                           placeholder="Nguyễn Văn A" value="@Model.FullName" autocomplete="name" />
+                                           placeholder="@Html.Text("contact.form.fullNamePh")" value="@Model.FullName" autocomplete="name" />
                                 </div>
                                 <div class="ct-form-group">
-                                    <label class="ct-label" for="txtPhone">Điện thoại <span class="req">*</span></label>
+                                    <label class="ct-label" for="txtPhone">@Html.Text("contact.info.phone") <span class="req">*</span></label>
                                     <input id="txtPhone" name="Phone" type="tel" class="ct-input"
-                                           placeholder="09xx xxx xxx" value="@Model.Phone" autocomplete="tel" />
+                                           placeholder="@Html.Text("contact.form.phonePh")" value="@Model.Phone" autocomplete="tel" />
                                 </div>
                             </div>
 
@@ -182,36 +184,36 @@
                                            placeholder="email@company.com" value="@Model.Email" autocomplete="email" />
                                 </div>
                                 <div class="ct-form-group">
-                                    <label class="ct-label" for="txtAddress">Địa chỉ</label>
+                                    <label class="ct-label" for="txtAddress">@Html.Text("contact.info.address")</label>
                                     <input id="txtAddress" name="Address" type="text" class="ct-input"
-                                           placeholder="Quận/Huyện, Tỉnh/Thành phố" value="@Model.Address"
+                                           placeholder="@Html.Text("contact.form.addressPh")" value="@Model.Address"
                                            autocomplete="address-level2" />
                                 </div>
                             </div>
 
-                            <div class="ct-section-label">Nội dung liên hệ</div>
+                            <div class="ct-section-label">@Html.Text("contact.form.contactContent")</div>
 
                             <div class="ct-form-group">
-                                <label class="ct-label" for="txtTitle">Tiêu đề <span class="req">*</span></label>
+                                <label class="ct-label" for="txtTitle">@Html.Text("contact.form.reqTitle") <span class="req">*</span></label>
                                 <input id="txtTitle" name="Title" type="text" class="ct-input"
-                                       placeholder="Nhập tiêu đề yêu cầu" value="@Model.Title" />
+                                       placeholder="@Html.Text("contact.form.reqTitlePh")" value="@Model.Title" />
                             </div>
 
                             <div class="ct-form-group">
-                                <label class="ct-label" for="txtYourMessage">Nội dung <span class="req">*</span></label>
+                                <label class="ct-label" for="txtYourMessage">@Html.Text("contact.form.content") <span class="req">*</span></label>
                                 <textarea id="txtYourMessage" name="Content" class="ct-textarea" rows="6"
-                                          placeholder="Mô tả nhu cầu tư vấn, hợp tác hoặc hỗ trợ của bạn...">@Model.Content</textarea>
+                                          placeholder="@Html.Text("contact.form.contentPh")">@Model.Content</textarea>
                             </div>
 
                             <div class="ct-form-group">
-                                <label class="ct-label">Xác thực <span class="req">*</span></label>
+                                <label class="ct-label">@Html.Text("contact.form.verify") <span class="req">*</span></label>
                                 <div class="ct-captcha-box">
-                                    <div class="ct-math-question" aria-label="Câu hỏi xác thực">
+                                    <div class="ct-math-question" aria-label="@Html.Text("contact.form.verifyAria")">
                                         <span class="ct-math-expr">@Model.CaptchaQuestion = ?</span>
                                     </div>
                                     <input id="txtCode" name="CaptchaAnswer" type="number" inputmode="numeric"
                                            class="ct-input ct-captcha-input @(ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                           placeholder="Kết quả" autocomplete="off" />
+                                           placeholder="@Html.Text("contact.form.resultPh")" autocomplete="off" />
                                 </div>
                                 @if (ViewData.ModelState["CaptchaAnswer"]?.Errors.Count > 0)
                                 {
@@ -224,11 +226,11 @@
 
                             <button id="btnSend" type="submit" class="ct-btn-submit">
                                 <span id="ctBtnText">
-                                    <i class="bi bi-send me-1"></i>Gửi yêu cầu tư vấn
+                                    <i class="bi bi-send me-1"></i>@Html.Text("contact.form.submit")
                                 </span>
                                 <span id="ctBtnSpinner" class="d-none">
                                     <span class="spinner-border spinner-border-sm me-1"></span>
-                                    Đang gửi...
+                                    @Html.Text("contact.form.sending")
                                 </span>
                             </button>
                         </form>
@@ -238,11 +240,10 @@
 
             <section class="ct-map-section">
                 <div class="ct-map-heading">
-                    <span class="ct-card-kicker">Bản đồ</span>
-                    <h2>Vị trí của chúng tôi</h2>
+                    <span class="ct-card-kicker">@Html.Text("contact.map.kicker")</span>
+                    <h2>@Html.Text("contact.map.title")</h2>
                     <p>
-                        Trung tâm tọa lạc tại khu vực trung tâm Thành phố Cần Thơ, thuận tiện cho việc liên hệ,
-                        làm việc và hợp tác.
+                        @Html.Text("contact.map.desc")
                     </p>
                 </div>
 
@@ -251,16 +252,16 @@
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.8!2d105.7875!3d10.0333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0881b09c3e6a1%3A0x4d8b0e79a9e3b87e!2s166%20Nguy%E1%BB%85n%20V%C4%83n%20C%E1%BB%AB%2C%20An%20B%C3%ACnh%2C%20Ninh%20Ki%E1%BB%81u%2C%20C%E1%BA%A7n%20Th%C6%A1!5e0!3m2!1svi!2svn!4v1698760000000"
                         allowfullscreen loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"
-                        title="Bản đồ @address">
+                        title="@Html.Text("contact.map.altPrefix") @address">
                     </iframe>
                 </div>
 
                 <div class="ct-map-actions">
                     <a href="@mapsUrl" target="_blank" rel="noopener" class="ct-btn-primary">
-                        <i class="bi bi-box-arrow-up-right"></i>Mở trong Google Maps
+                        <i class="bi bi-box-arrow-up-right"></i>@Html.Text("contact.map.openGoogle")
                     </a>
                     <button type="button" class="ct-btn-outline" id="copyAddressBtn" data-address="@address">
-                        <i class="bi bi-copy"></i>Sao chép địa chỉ
+                        <i class="bi bi-copy"></i>@Html.Text("contact.map.copyAddress")
                     </button>
                 </div>
             </section>
@@ -288,9 +289,9 @@
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(address);
                 }
-                $(this).addClass("is-copied").html('<i class="bi bi-check2"></i>Đã sao chép');
+                $(this).addClass("is-copied").html('<i class="bi bi-check2"></i>' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("contact.map.copied"))));
                 setTimeout(() => {
-                    $(this).removeClass("is-copied").html('<i class="bi bi-copy"></i>Sao chép địa chỉ');
+                    $(this).removeClass("is-copied").html('<i class="bi bi-copy"></i>' + @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("contact.map.copyAddress"))));
                 }, 1800);
             });
         });
