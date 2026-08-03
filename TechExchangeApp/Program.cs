@@ -297,12 +297,12 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "en_news_category",
     pattern: "en/news-event",
-    defaults: new { controller = "News", action = "Category", menuId = 352 } // 352 = menu EN "News & Events"
+    defaults: new { controller = "News", action = "Category", menuId = 62 } // 62 = menu EN "News & Events" (khớp Contents.MenuId thật)
 );
 app.MapControllerRoute(
     name: "en_news_detail",
     pattern: "en/news-event/{queryString}-{id:long}",
-    defaults: new { controller = "News", action = "Detail", menuId = 352 }
+    defaults: new { controller = "News", action = "Detail", menuId = 62 }
 );
 app.MapControllerRoute(
     name: "en_about",

@@ -4,15 +4,16 @@
     ViewData["Title"] = Model.CategoryTitle;
     var mainDomain = Html.MainDomain();
     var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
-    // Nhãn tab/danh mục tin theo ngôn ngữ (menu Tin sự kiện = 44). Menu khác chưa có EN → giữ Title.
+    // Nhãn/URL tab "chính mình" theo ngôn ngữ (menu tin tức: 44=VI, 62=EN — so theo Model.MenuId
+    // của trang đang xem, không hardcode ID, vì mỗi ngôn ngữ có MenuId nội dung riêng).
     Func<TechExchangeApp.ViewModel.SiblingMenuVm, string> sibLabel = m =>
-        (isEn && m.MenuId == 44) ? Html.Text("news.title") : m.Title;
+        (isEn && m.MenuId == Model.MenuId) ? Html.Text("news.title") : m.Title;
     // URL danh mục tin theo ngôn ngữ (EN → /en/news-event; VI giữ nguyên route cũ)
     Func<int, string> catUrl = p => isEn
         ? (p <= 1 ? "/en/news-event" : $"/en/news-event?page={p}")
         : Url.Action("Category", new { menuId = Model.MenuId, page = p });
     Func<TechExchangeApp.ViewModel.SiblingMenuVm, string> sibUrl = m =>
-        (isEn && m.MenuId == 44) ? "/en/news-event" : $"{mainDomain}{m.QueryString}-{m.MenuId}";
+        (isEn && m.MenuId == Model.MenuId) ? "/en/news-event" : $"{mainDomain}{m.QueryString}-{m.MenuId}";
 
     string StripHtml(string? value)
     {
@@ -121,7 +122,7 @@
                                     <a href="@item.DetailUrl(mainDomain, isEn)">@item.Title</a>
                                 </h3>
                                 <p class="news-card__desc">@Truncate(item.Description, 160)</p>
-                                <a href="@item.DetailUrl(mainDomain, isEn)" class="news-card__readmore">Đọc thêm <i class="bi bi-arrow-right"></i></a>
+                                <a href="@item.DetailUrl(mainDomain, isEn)" class="news-card__readmore">@Html.Text("news.readMore") <i class="bi bi-arrow-right"></i></a>
                             </div>
                         </article>
                     }
@@ -130,11 +131,11 @@
                 <!-- PAGINATION -->
                 @if (Model.Pager.TotalPage > 1)
                 {
-                    <nav class="news-pagination" aria-label="Phân trang">
+                    <nav class="news-pagination" aria-label="@Html.Text("common.pagination")">
                         <ul>
                             <li class="@(Model.Pager.CurrentPage == 1 ? "disabled" : "")">
                                 <a href="@catUrl(Model.Pager.CurrentPage - 1)">
-                                    <i class="bi bi-chevron-left"></i> Trước
+                                    <i class="bi bi-chevron-left"></i> @Html.Text("common.prev")
                                 </a>
                             </li>
                             @foreach (var p in Model.Pager.Pages)
@@ -145,7 +146,7 @@
                             }
                             <li class="@(Model.Pager.CurrentPage == Model.Pager.TotalPage ? "disabled" : "")">
                                 <a href="@catUrl(Model.Pager.CurrentPage + 1)">
-                                    Sau <i class="bi bi-chevron-right"></i>
+                                    @Html.Text("common.next") <i class="bi bi-chevron-right"></i>
                                 </a>
                             </li>
                         </ul>
@@ -188,7 +189,7 @@
                         {
                             <a class="news-sidebar-latest__item" href="@item.DetailUrl(mainDomain, isEn)">
                                 <div class="news-sidebar-latest__thumb">
-                                    <img src="@Html.CookedImageURL("150-100", item.Image)" alt="@item.Title" loading="lazy" />
+                                    <img src="@Html.CookedImageURL("108-84", item.Image)" alt="@item.Title" loading="lazy" />
                                 </div>
                                 <div class="news-sidebar-latest__body">
                                     <h5>@item.Title</h5>

@@ -172,7 +172,8 @@ namespace TechExchangeApp.Controllers
                         && q.IsReport != true
                         && q.PublishedDate <= DateTime.Now
                         && (q.eEffectiveDate == null || q.eEffectiveDate >= DateTime.Now))
-                    .OrderByDescending(q => q.PublishedDate)
+                    .OrderByDescending(q => q.IsHot == true)
+                    .ThenByDescending(q => q.PublishedDate)
                     .Take(4)
                     .Select(q => new NewsItemVm
                     {
@@ -211,7 +212,7 @@ namespace TechExchangeApp.Controllers
             var parentMenuId = menu.ParentId ?? 0;
             var siblingMenus = await _context.Menus
                 .AsNoTracking()
-                .Where(m => m.ParentId == parentMenuId && m.StatusId == 1)
+                .Where(m => m.ParentId == parentMenuId && m.StatusId == 1 && m.LanguageId == langId)
                 .OrderBy(m => m.Sort)
                 .Select(m => new SiblingMenuVm
                 {
@@ -282,7 +283,8 @@ namespace TechExchangeApp.Controllers
             var total = await query.CountAsync();
 
             var items = await query
-                .OrderByDescending(q => q.PublishedDate)
+                .OrderByDescending(q => q.IsHot == true)
+                .ThenByDescending(q => q.PublishedDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(q => new NewsItemVm
