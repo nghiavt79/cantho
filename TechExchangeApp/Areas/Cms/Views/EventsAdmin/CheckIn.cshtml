@@ -1,0 +1,58 @@
+@model TechExchangeApp.Entities.EventRegistration?
+@{
+    ViewData["Title"] = "Điểm danh sự kiện";
+    var code = (string?)ViewBag.Code;
+}
+
+<div class="card card-outline card-success shadow-sm mx-auto" style="max-width:560px">
+    <div class="card-header"><h3 class="card-title"><i class="fas fa-qrcode me-1"></i> Điểm danh sự kiện</h3></div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <form method="get" class="input-group mb-3">
+            <input type="text" name="code" value="@code" class="form-control" placeholder="Nhập hoặc quét mã điểm danh" autofocus />
+            <button class="btn btn-primary"><i class="fas fa-search"></i> Tra mã</button>
+        </form>
+        <p class="small text-muted">Quét mã QR trên vé bằng camera điện thoại (đã đăng nhập CMS) sẽ mở thẳng trang này.</p>
+
+        @if (!string.IsNullOrWhiteSpace(code) && Model == null)
+        {
+            <div class="alert alert-danger mb-0">Không tìm thấy mã điểm danh <code>@code</code>.</div>
+        }
+        else if (Model != null)
+        {
+            <div class="border rounded p-3 @(Model.Status == 2 ? "border-success" : Model.Status == 0 ? "border-secondary" : "border-primary")">
+                <div class="small text-muted">@ViewBag.EventTitle</div>
+                <div class="h5 mb-1">@Model.FullName</div>
+                <div class="small">@Model.Organization</div>
+                <div class="small text-muted">@Model.Email · @Model.Phone</div>
+                <div class="mt-3">
+                    @if (Model.Status == 2)
+                    {
+                        <div class="alert alert-warning mb-0"><i class="fas fa-circle-check"></i> Đã điểm danh lúc @Model.CheckedInAt?.ToString("HH:mm dd/MM/yyyy") (@Model.CheckedInBy).</div>
+                    }
+                    else if (Model.Status == 0)
+                    {
+                        <div class="alert alert-secondary mb-0">Đăng ký này đã bị hủy.</div>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-success btn-lg w-100" id="btnCheckIn" data-id="@Model.Id"><i class="fas fa-user-check"></i> Xác nhận điểm danh</button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+$('#btnCheckIn').on('click', function () {
+    var btn = $(this).prop('disabled', true);
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    $.post('@Url.Action("SetRegistrationStatus", "EventsAdmin", new { area = "Cms" })', { id: btn.data('id'), status: 2, __RequestVerificationToken: token }, function (r) {
+        if (r.success) { toastr.success(r.message); setTimeout(function () { location.reload(); }, 600); }
+        else { toastr.error(r.message); btn.prop('disabled', false); }
+    });
+});
+</script>
+}

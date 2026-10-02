@@ -234,6 +234,10 @@ builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBa
 // --- Cảnh báo sản phẩm trùng lặp / quá hạn (HSMT A.8.2) ---
 builder.Services.AddScoped<TechExchangeApp.Services.IProductWarningScanner, TechExchangeApp.Services.ProductWarningScanner>();
 builder.Services.AddScoped<TechExchangeApp.Services.ICommentService, TechExchangeApp.Services.CommentService>();
+
+// --- Sự kiện: đăng ký, nhắc lịch, gian hàng (HSMT Đợt 3) ---
+builder.Services.AddScoped<TechExchangeApp.Services.IEventService, TechExchangeApp.Services.EventService>();
+builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.EventReminderBackgroundService>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.ProductWarningBackgroundService>();
 
 // --- Tài liệu API (HSMT 2.3, 2.4) — chỉ các endpoint /api/*, xem tại /swagger (cần quyền CMS) ---
@@ -703,6 +707,23 @@ app.MapControllerRoute(
     name: "en_comment",
     pattern: "en/comment/{action}",
     defaults: new { controller = "Comment" }
+);
+
+// Sự kiện (HSMT Đợt 3): thao tác AJAX bản /en/ và trang vé
+app.MapControllerRoute(
+    name: "en_event",
+    pattern: "en/event/{action}",
+    defaults: new { controller = "Event" }
+);
+app.MapControllerRoute(
+    name: "event_ticket",
+    pattern: "su-kien/ve/{code}",
+    defaults: new { controller = "Event", action = "Ticket" }
+);
+app.MapControllerRoute(
+    name: "en_event_ticket",
+    pattern: "en/event/ticket/{code}",
+    defaults: new { controller = "Event", action = "Ticket" }
 );
 
 // Bài viết nhà cung cấp gửi duyệt (HSMT A.2.8)

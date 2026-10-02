@@ -1,0 +1,174 @@
+@using TechExchangeApp.Entities
+@{
+    ViewData["Title"] = "Quản lý sự kiện";
+    var info = (EventInfo)ViewBag.Info;
+    var tab = (string)ViewBag.Tab;
+    var contentId = info.ContentId;
+    string TabUrl(string t) => Url.Action("Manage", "EventsAdmin", new { area = "Cms", contentId, tab = t })!;
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-calendar-days me-1"></i> <strong>@ViewBag.Title2</strong>
+            <span class="small text-muted ms-2">@info.StartAt.ToString("dd/MM/yyyy HH:mm") · @info.Location</span></h3>
+        <div class="card-tools">
+            <a href="@Url.Action("Edit", "EventsAdmin", new { area = "Cms", contentId })" class="btn btn-sm btn-outline-primary"><i class="fas fa-gear"></i> Thiết lập</a>
+            <a href="@Url.Action("Index", "EventsAdmin", new { area = "Cms" })" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Danh sách</a>
+        </div>
+    </div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item"><a class="nav-link @(tab == "registrations" ? "active" : "")" href="@TabUrl("registrations")">Đăng ký <span class="badge bg-secondary">@ViewBag.RegTotal</span></a></li>
+            <li class="nav-item"><a class="nav-link @(tab == "stats" ? "active" : "")" href="@TabUrl("stats")">Thống kê</a></li>
+            <li class="nav-item"><a class="nav-link @(tab == "booths" ? "active" : "")" href="@TabUrl("booths")">Gian hàng</a></li>
+        </ul>
+
+        @if (tab == "stats")
+        {
+            var daily = (List<TechExchangeApp.Areas.Cms.Controllers.EventDailyStat>)ViewBag.Daily;
+            var max = Math.Max(1, daily.Max(d => d.Views));
+            <div class="row g-3 mb-3 text-center">
+                <div class="col-6 col-md"><div class="border rounded p-2"><div class="h4 mb-0">@ViewBag.Views</div><div class="small text-muted">Lượt xem trang</div></div></div>
+                <div class="col-6 col-md"><div class="border rounded p-2"><div class="h4 mb-0">@ViewBag.Interest</div><div class="small text-muted">Quan tâm</div></div></div>
+                <div class="col-6 col-md"><div class="border rounded p-2"><div class="h4 mb-0">@ViewBag.Remind</div><div class="small text-muted">Bấm nhắc lịch</div></div></div>
+                <div class="col-6 col-md"><div class="border rounded p-2"><div class="h4 mb-0">@ViewBag.RegTotal</div><div class="small text-muted">Đăng ký</div></div></div>
+                <div class="col-6 col-md"><div class="border rounded p-2"><div class="h4 mb-0">@ViewBag.RegCheckedIn</div><div class="small text-muted">Điểm danh</div></div></div>
+                <div class="col-6 col-md"><div class="border rounded p-2"><div class="h4 mb-0">@ViewBag.RemindersSent</div><div class="small text-muted">Nhắc lịch đã gửi</div></div></div>
+            </div>
+            <h6 class="small fw-semibold">30 ngày gần nhất</h6>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered small align-middle mb-0">
+                    <thead class="table-light"><tr><th style="width:100px">Ngày</th><th>Lượt xem</th><th class="text-center" style="width:90px">Quan tâm</th><th class="text-center" style="width:100px">Nhắc lịch</th><th class="text-center" style="width:90px">Đăng ký</th></tr></thead>
+                    <tbody>
+                        @foreach (var d in daily.OrderByDescending(x => x.Date))
+                        {
+                            <tr>
+                                <td>@d.Date.ToString("dd/MM/yyyy")</td>
+                                <td><div class="d-flex align-items-center gap-2"><div class="bg-primary rounded" style="height:10px;width:@(Math.Round(d.Views * 100.0 / max))%;min-width:@(d.Views > 0 ? 2 : 0)px"></div><span>@d.Views</span></div></td>
+                                <td class="text-center">@d.Interest</td>
+                                <td class="text-center">@d.Remind</td>
+                                <td class="text-center">@d.Registrations</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else if (tab == "booths")
+        {
+            var rows = (List<TechExchangeApp.Areas.Cms.Controllers.EventBoothBookingRow>)ViewBag.Bookings;
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered small align-middle mb-0">
+                    <thead class="table-light"><tr><th>Đơn vị</th><th>Liên hệ</th><th>Loại gian hàng</th><th class="text-center">SL</th><th class="text-end">Thành tiền (đ)</th><th>Ghi chú</th><th style="width:120px">Trạng thái</th><th class="text-center" style="width:110px"></th></tr></thead>
+                    <tbody>
+                        @if (rows.Count == 0) { <tr><td colspan="8" class="text-center text-muted">Chưa có đăng ký thuê gian hàng.</td></tr> }
+                        @foreach (var r in rows)
+                        {
+                            var b = r.Booking;
+                            var (st, css) = b.Status switch { 2 => ("Đã duyệt", "bg-success"), 3 => ("Từ chối", "bg-danger"), 0 => ("Đã hủy", "bg-secondary"), _ => ("Chờ duyệt", "bg-warning text-dark") };
+                            <tr data-id="@b.Id">
+                                <td class="fw-semibold">@b.Organization</td>
+                                <td>@b.ContactName<div class="text-muted">@b.Email · @b.Phone</div></td>
+                                <td>@r.BoothName</td>
+                                <td class="text-center">@b.Quantity</td>
+                                <td class="text-end">@((r.Price * b.Quantity).ToString("N0"))</td>
+                                <td>@b.Note</td>
+                                <td><span class="badge @css">@st</span>@if (b.ReviewedAt.HasValue) { <div class="text-muted">@b.ReviewedBy</div> }</td>
+                                <td class="text-center">
+                                    @if (b.Status == 1)
+                                    {
+                                        <a href="#" class="btn btn-outline-success btn-sm py-0 btn-review" data-status="2" title="Duyệt"><i class="fas fa-check"></i></a>
+                                        <a href="#" class="btn btn-outline-danger btn-sm py-0 btn-review" data-status="3" title="Từ chối"><i class="fas fa-xmark"></i></a>
+                                    }
+                                    else if (b.Status == 2)
+                                    {
+                                        <a href="#" class="btn btn-outline-secondary btn-sm py-0 btn-review" data-status="0" title="Hủy"><i class="fas fa-ban"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            var regs = (List<EventRegistration>)ViewBag.Registrations;
+            var status = (byte?)ViewBag.Status;
+            <form method="get" class="row g-2 mb-3">
+                <input type="hidden" name="contentId" value="@contentId" />
+                <div class="col-md-4"><input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control form-control-sm" placeholder="Tên, email, điện thoại, đơn vị, mã..." /></div>
+                <div class="col-md-2">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">-- Trạng thái --</option>
+                        <option value="1" selected="@(status == 1)">Đã đăng ký</option>
+                        <option value="2" selected="@(status == 2)">Đã điểm danh</option>
+                        <option value="0" selected="@(status == 0)">Đã hủy</option>
+                    </select>
+                </div>
+                <div class="col-auto"><button class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Lọc</button></div>
+                <div class="col-auto ms-auto">
+                    <span class="small me-2">Điểm danh: <strong>@ViewBag.RegCheckedIn</strong> / @ViewBag.RegTotal</span>
+                    <a href="@Url.Action("ExportRegistrations", "EventsAdmin", new { area = "Cms", contentId })" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover table-bordered small align-middle mb-0">
+                    <thead class="table-light"><tr><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th>Đơn vị</th><th style="width:120px">Đăng ký lúc</th><th style="width:150px">Trạng thái</th><th class="text-center" style="width:110px"></th></tr></thead>
+                    <tbody>
+                        @if (regs.Count == 0) { <tr><td colspan="7" class="text-center text-muted">Chưa có đăng ký.</td></tr> }
+                        @foreach (var r in regs)
+                        {
+                            <tr data-id="@r.Id">
+                                <td class="fw-semibold">@r.FullName</td>
+                                <td>@r.Email</td>
+                                <td>@r.Phone</td>
+                                <td>@r.Organization</td>
+                                <td>@r.Created.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @if (r.Status == 2) { <span class="badge bg-success">Đã điểm danh</span><div class="text-muted">@r.CheckedInAt?.ToString("HH:mm dd/MM")</div> }
+                                    else if (r.Status == 0) { <span class="badge bg-secondary">Đã hủy</span> }
+                                    else { <span class="badge bg-primary">Đã đăng ký</span> }
+                                </td>
+                                <td class="text-center">
+                                    @if (r.Status == 1)
+                                    {
+                                        <a href="#" class="btn btn-outline-success btn-sm py-0 btn-reg" data-status="2" title="Điểm danh"><i class="fas fa-user-check"></i></a>
+                                        <a href="#" class="btn btn-outline-secondary btn-sm py-0 btn-reg" data-status="0" title="Hủy đăng ký"><i class="fas fa-ban"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#" class="btn btn-outline-primary btn-sm py-0 btn-reg" data-status="1" title="Đưa về đã đăng ký"><i class="fas fa-rotate-left"></i></a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    $(document).on('click', '.btn-reg', function (e) {
+        e.preventDefault();
+        $.post('@Url.Action("SetRegistrationStatus", "EventsAdmin", new { area = "Cms" })',
+            { id: $(this).closest('tr').data('id'), status: $(this).data('status'), __RequestVerificationToken: token },
+            function (r) { if (r.success) location.reload(); else toastr.error(r.message); });
+    });
+    $(document).on('click', '.btn-review', function (e) {
+        e.preventDefault();
+        var id = $(this).closest('tr').data('id'), status = $(this).data('status');
+        var note = status == 3 ? (prompt('Lý do từ chối (không bắt buộc):') || '') : '';
+        $.post('@Url.Action("ReviewBooking", "EventsAdmin", new { area = "Cms" })',
+            { id: id, status: status, note: note, __RequestVerificationToken: token },
+            function (r) { if (r.success) location.reload(); else toastr.error(r.message); });
+    });
+})();
+</script>
+}

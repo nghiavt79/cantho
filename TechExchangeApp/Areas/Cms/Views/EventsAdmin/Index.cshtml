@@ -1,0 +1,88 @@
+@model List<TechExchangeApp.Areas.Cms.Controllers.EventAdminRow>
+@{
+    ViewData["Title"] = "Sự kiện";
+    var find = (string?)ViewBag.Find;
+    var results = ViewBag.FindResults as System.Collections.IEnumerable;
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-calendar-days me-1"></i> Sự kiện <span class="badge bg-secondary">@Model.Count</span></h3>
+        <div class="card-tools">
+            <a href="@Url.Action("CheckIn", "EventsAdmin", new { area = "Cms" })" class="btn btn-sm btn-outline-success"><i class="fas fa-qrcode"></i> Điểm danh</a>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="btnRemindNow"><i class="fas fa-bell"></i> Gửi nhắc lịch đến hạn</button>
+        </div>
+    </div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-md-6"><input type="text" name="find" value="@find" class="form-control form-control-sm" placeholder="Tìm tin bài (tiếng Việt) để thiết lập sự kiện..." /></div>
+            <div class="col-auto"><button class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Tìm tin bài</button></div>
+        </form>
+
+        @if (results != null)
+        {
+            <div class="border rounded p-2 mb-4 bg-light">
+                <div class="small fw-semibold mb-2">Kết quả tìm tin bài chưa có sự kiện:</div>
+                <ul class="list-unstyled mb-0 small">
+                    @foreach (dynamic r in results)
+                    {
+                        <li class="d-flex justify-content-between align-items-center border-bottom py-1">
+                            <span>#@r.Id @r.Title <span class="text-muted">@(((DateTime?)r.PublishedDate)?.ToString("dd/MM/yyyy"))</span></span>
+                            <a href="@Url.Action("Edit", "EventsAdmin", new { area = "Cms", contentId = (long)r.Id })" class="btn btn-sm btn-outline-primary py-0">Thiết lập sự kiện</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="small">SỰ KIỆN</th>
+                        <th class="small" style="width:140px">BẮT ĐẦU</th>
+                        <th class="small text-center" style="width:90px">ĐĂNG KÝ</th>
+                        <th class="small text-center" style="width:90px">ĐIỂM DANH</th>
+                        <th class="small text-center" style="width:90px">QUAN TÂM</th>
+                        <th class="small text-center" style="width:110px">GIAN HÀNG CHỜ</th>
+                        <th class="small text-center" style="width:120px">THAO TÁC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr><td colspan="7" class="text-center text-muted py-4">Chưa có sự kiện. Tìm tin bài ở trên để thiết lập.</td></tr>
+                    }
+                    @foreach (var e in Model)
+                    {
+                        <tr class="@(e.StartAt < DateTime.Now ? "text-muted" : "")">
+                            <td><span class="fw-semibold">@e.Title</span><div class="small text-muted">@e.Location</div></td>
+                            <td class="small">@e.StartAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="text-center">@e.Registered</td>
+                            <td class="text-center">@e.CheckedIn</td>
+                            <td class="text-center">@e.Interest</td>
+                            <td class="text-center">@if (e.PendingBooths > 0) { <span class="badge bg-warning text-dark">@e.PendingBooths</span> } else { <span>0</span> }</td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="@Url.Action("Edit", "EventsAdmin", new { area = "Cms", contentId = e.ContentId })" class="btn btn-outline-primary" title="Thiết lập"><i class="fas fa-gear"></i></a>
+                                    <a href="@Url.Action("Manage", "EventsAdmin", new { area = "Cms", contentId = e.ContentId })" class="btn btn-outline-success" title="Đăng ký"><i class="fas fa-users"></i></a>
+                                    <a href="@Url.Action("Manage", "EventsAdmin", new { area = "Cms", contentId = e.ContentId, tab = "stats" })" class="btn btn-outline-info" title="Thống kê"><i class="fas fa-chart-column"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+$('#btnRemindNow').on('click', function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    $.post('@Url.Action("SendRemindersNow", "EventsAdmin", new { area = "Cms" })', { __RequestVerificationToken: token }, function (r) { toastr.info(r.message); });
+});
+</script>
+}

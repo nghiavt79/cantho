@@ -1,0 +1,156 @@
+@model TechExchangeApp.Areas.Cms.Controllers.EventInfoFormVm
+@{
+    ViewData["Title"] = "Thiết lập sự kiện";
+    var booths = (List<TechExchangeApp.Entities.EventBoothType>)ViewBag.Booths;
+    var isNew = (bool)ViewBag.IsNew;
+    string Dt(DateTime? d) => d?.ToString("yyyy-MM-ddTHH:mm") ?? "";
+}
+
+@if (TempData["Success"] != null) { <div class="alert alert-success">@TempData["Success"]</div> }
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-calendar-days me-1"></i> Thiết lập sự kiện: <strong>@ViewBag.Title2</strong></h3>
+        <div class="card-tools">
+            <a href="@Url.Action("Index", "EventsAdmin", new { area = "Cms" })" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Danh sách</a>
+            @if (!isNew)
+            {
+                <a href="@Url.Action("Manage", "EventsAdmin", new { area = "Cms", contentId = Model.ContentId })" class="btn btn-sm btn-outline-success"><i class="fas fa-users"></i> Đăng ký &amp; thống kê</a>
+            }
+        </div>
+    </div>
+    <form method="post" action="@Url.Action("Edit", "EventsAdmin", new { area = "Cms" })">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="ContentId" value="@Model.ContentId" />
+        <div class="card-body">
+            <div asp-validation-summary="All" class="text-danger small mb-2"></div>
+            <div class="row g-3">
+                <div class="col-md-3"><label class="form-label small fw-semibold">Bắt đầu *</label><input type="datetime-local" name="StartAt" value="@Dt(Model.StartAt)" class="form-control form-control-sm" required /></div>
+                <div class="col-md-3"><label class="form-label small fw-semibold">Kết thúc</label><input type="datetime-local" name="EndAt" value="@Dt(Model.EndAt)" class="form-control form-control-sm" /></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Địa điểm</label><input name="Location" value="@Model.Location" class="form-control form-control-sm" maxlength="500" /></div>
+                <div class="col-md-12"><label class="form-label small fw-semibold">Link phát trực tiếp (livestream / phòng họp trực tuyến)</label><input name="LivestreamUrl" value="@Model.LivestreamUrl" class="form-control form-control-sm" maxlength="1000" placeholder="https://..." /></div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="RegistrationEnabled" value="true" id="regEn" @(Model.RegistrationEnabled ? "checked" : "") />
+                        <input type="hidden" name="RegistrationEnabled" value="false" />
+                        <label class="form-check-label small" for="regEn">Mở đăng ký tham gia</label>
+                    </div>
+                </div>
+                <div class="col-md-3"><label class="form-label small fw-semibold">Hạn đăng ký</label><input type="datetime-local" name="RegistrationDeadline" value="@Dt(Model.RegistrationDeadline)" class="form-control form-control-sm" /></div>
+                <div class="col-md-2"><label class="form-label small fw-semibold">Số chỗ tối đa</label><input type="number" min="0" name="MaxAttendees" value="@Model.MaxAttendees" class="form-control form-control-sm" /></div>
+                <div class="col-md-4">
+                    <label class="form-label small fw-semibold">Mốc nhắc lịch (phút trước giờ bắt đầu)</label>
+                    <input name="ReminderOffsetsMinutes" value="@Model.ReminderOffsetsMinutes" class="form-control form-control-sm" placeholder="1440,60" />
+                    <div class="form-text">1440 = 24 giờ, 60 = 1 giờ; cách nhau dấu phẩy.</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small fw-semibold d-block">Kênh nhắc lịch</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="RemindByEmail" value="true" id="chEmail" @(Model.RemindByEmail ? "checked" : "") />
+                        <input type="hidden" name="RemindByEmail" value="false" />
+                        <label class="form-check-label small" for="chEmail">Email (kèm chuông thông báo trên web với người đã đăng nhập)</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="RemindBySms" value="true" id="chSms" @(Model.RemindBySms ? "checked" : "") />
+                        <input type="hidden" name="RemindBySms" value="false" />
+                        <label class="form-check-label small" for="chSms">SMS</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end"><button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Lưu thông tin sự kiện</button></div>
+    </form>
+</div>
+
+<div class="card card-outline card-info shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-shop me-1"></i> Loại gian hàng của sự kiện</h3>
+        <div class="card-tools"><button type="button" class="btn btn-sm btn-info" id="btnAddBooth" @(isNew ? "disabled" : "")><i class="fas fa-plus"></i> Thêm loại gian hàng</button></div>
+    </div>
+    <div class="card-body">
+        @if (isNew) { <p class="text-muted small mb-0">Lưu thông tin sự kiện trước khi thêm gian hàng.</p> }
+        else
+        {
+            <table class="table table-sm table-bordered align-middle small mb-0">
+                <thead class="table-light"><tr><th>Tên</th><th>Diện tích</th><th>Vị trí</th><th class="text-end">Giá (đ)</th><th class="text-center">Số lượng</th><th>Dịch vụ đi kèm</th><th class="text-center">Hiện</th><th class="text-center" style="width:90px"></th></tr></thead>
+                <tbody>
+                    @if (booths.Count == 0) { <tr><td colspan="8" class="text-center text-muted">Chưa có loại gian hàng.</td></tr> }
+                    @foreach (var b in booths)
+                    {
+                        <tr data-booth='@Json.Serialize(new { b.Id, b.Name, b.AreaM2, b.Position, b.Price, b.Quantity, b.Services, b.SortOrder, b.IsActive })'>
+                            <td class="fw-semibold">@b.Name</td>
+                            <td>@(b.AreaM2.HasValue ? b.AreaM2.Value.ToString("0.##") + " m²" : "")</td>
+                            <td>@b.Position</td>
+                            <td class="text-end">@b.Price.ToString("N0")</td>
+                            <td class="text-center">@b.Quantity</td>
+                            <td style="white-space:pre-line">@b.Services</td>
+                            <td class="text-center">@(b.IsActive ? "✓" : "")</td>
+                            <td class="text-center">
+                                <a href="#" class="btn btn-outline-primary btn-sm py-0 btn-edit-booth"><i class="fas fa-pen"></i></a>
+                                <a href="#" class="btn btn-outline-danger btn-sm py-0 btn-del-booth"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="boothModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="boothForm">
+            <div class="modal-header bg-info text-white"><h5 class="modal-title">Loại gian hàng</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" name="Id" value="0" />
+                <input type="hidden" name="ContentId" value="@Model.ContentId" />
+                <div class="row g-2">
+                    <div class="col-8"><label class="form-label small">Tên (vd Gian tiêu chuẩn 9 m²) *</label><input name="Name" class="form-control form-control-sm" required maxlength="200" /></div>
+                    <div class="col-4"><label class="form-label small">Diện tích (m²)</label><input name="AreaM2" type="number" step="0.5" min="0" class="form-control form-control-sm" /></div>
+                    <div class="col-8"><label class="form-label small">Vị trí</label><input name="Position" class="form-control form-control-sm" maxlength="200" /></div>
+                    <div class="col-4"><label class="form-label small">Thứ tự</label><input name="SortOrder" type="number" value="0" class="form-control form-control-sm" /></div>
+                    <div class="col-6"><label class="form-label small">Giá (đồng) *</label><input name="Price" type="number" min="0" step="1000" class="form-control form-control-sm" required /></div>
+                    <div class="col-6"><label class="form-label small">Số lượng *</label><input name="Quantity" type="number" min="1" value="1" class="form-control form-control-sm" required /></div>
+                    <div class="col-12"><label class="form-label small">Dịch vụ đi kèm</label><textarea name="Services" rows="3" class="form-control form-control-sm" maxlength="1000"></textarea></div>
+                    <div class="col-12 form-check form-switch ms-2"><input class="form-check-input" type="checkbox" name="IsActive" value="true" id="bActive" checked /><label class="form-check-label small" for="bActive">Hiển thị cho đăng ký</label></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button><button type="submit" class="btn btn-info btn-sm">Lưu</button></div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    var form = document.getElementById('boothForm');
+    var modal = function () { return bootstrap.Modal.getOrCreateInstance(document.getElementById('boothModal')); };
+    function fill(b) {
+        form.Id.value = b ? b.id : 0; form.Name.value = b ? b.name : ''; form.AreaM2.value = b && b.areaM2 != null ? b.areaM2 : '';
+        form.Position.value = b ? (b.position || '') : ''; form.Price.value = b ? b.price : ''; form.Quantity.value = b ? b.quantity : 1;
+        form.Services.value = b ? (b.services || '') : ''; form.SortOrder.value = b ? b.sortOrder : 0; form.IsActive.checked = b ? b.isActive : true;
+    }
+    $('#btnAddBooth').on('click', function () { fill(null); modal().show(); });
+    $(document).on('click', '.btn-edit-booth', function (e) { e.preventDefault(); fill($(this).closest('tr').data('booth')); modal().show(); });
+    $(form).on('submit', function (e) {
+        e.preventDefault();
+        var data = $(form).serializeArray();
+        if (!form.IsActive.checked) data.push({ name: 'IsActive', value: 'false' });
+        data.push({ name: '__RequestVerificationToken', value: token });
+        $.post('@Url.Action("SaveBooth", "EventsAdmin", new { area = "Cms" })', $.param(data), function (r) {
+            if (r.success) location.reload(); else toastr.error(r.message);
+        });
+    });
+    $(document).on('click', '.btn-del-booth', function (e) {
+        e.preventDefault();
+        var id = $(this).closest('tr').data('booth').id;
+        if (!confirm('Xóa loại gian hàng này?')) return;
+        $.post('@Url.Action("DeleteBooth", "EventsAdmin", new { area = "Cms" })', { id: id, __RequestVerificationToken: token }, function (r) {
+            if (r.message) toastr.info(r.message);
+            if (r.success) setTimeout(function () { location.reload(); }, 600); else toastr.error(r.message);
+        });
+    });
+})();
+</script>
+}

@@ -213,6 +213,14 @@ namespace TechExchangeApp.Data
         public DbSet<ProductWarning> ProductWarnings { get; set; } = null!;
         public DbSet<UserComment> UserComments { get; set; } = null!;
 
+        // Bổ sung chức năng HSMT — Đợt 3 (Sự kiện)
+        public DbSet<EventInfo> EventInfos { get; set; } = null!;
+        public DbSet<EventRegistration> EventRegistrations { get; set; } = null!;
+        public DbSet<EventInteraction> EventInteractions { get; set; } = null!;
+        public DbSet<EventReminderLog> EventReminderLogs { get; set; } = null!;
+        public DbSet<EventBoothType> EventBoothTypes { get; set; } = null!;
+        public DbSet<EventBoothBooking> EventBoothBookings { get; set; } = null!;
+
         // Generic Entity Action Engine
         public DbSet<EntityRating> EntityRatings { get; set; } = null!;
         public DbSet<EntityActionLog> EntityActionLogs { get; set; } = null!;

@@ -106,6 +106,7 @@
                         bool isUiTranslationAdmin = postsCtrl == "UiTranslationAdmin";
                         bool isFaqAdmin = postsCtrl == "FaqAdmin";
                         bool isCommentsAdmin = postsCtrl == "CommentsAdmin";
+                        bool isEventsAdmin = postsCtrl == "EventsAdmin";
                         bool isChatAdmin = postsCtrl == "ChatAdmin";
                         bool isProductWarningsAdmin = postsCtrl == "ProductWarningsAdmin";
                         bool isProductHistory = postsCtrl == "SanPhamCNTBHistory";
@@ -123,7 +124,7 @@
                         bool isNhaTuVanAdmin = postsCtrl == "NhaTuVanAdmin";
                         bool isUsers = postsCtrl == "Users";
                         bool isHuongDanCms = postsCtrl == "HuongDanCms";
-                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin || isCommentsAdmin;
+                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin || isCommentsAdmin || isEventsAdmin;
                         bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin || isChatAdmin;
                         bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin || isProductWarningsAdmin || isProductHistory;
                         bool isSystemGroup = isUsers || isLogAdmin || isSystemParameterAdmin || isSysFunctionAdmin || isRoleAdmin || isSysFuncPermissionAdmin;
@@ -273,6 +274,13 @@
                                    class="nav-link @(isPosts ? "active" : "")">
                                     <i class="nav-icon fas fa-list"></i>
                                     <p>Tin bài</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="EventsAdmin" asp-action="Index"
+                                   class="nav-link @(isEventsAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-calendar-days"></i>
+                                    <p>Sự kiện</p>
                                 </a>
                             </li>
                             <li class="nav-item">

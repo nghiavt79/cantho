@@ -1,0 +1,212 @@
+@model TechExchangeApp.Services.EventPanelVm
+@{
+    var info = Model.Info;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    var postId = (long)ViewBag.PostId;
+    var isAuth = User.Identity?.IsAuthenticated == true;
+    var culture = new System.Globalization.CultureInfo(isEn ? "en-US" : "vi-VN");
+    string When(DateTime d) => d.ToString(isEn ? "dddd, MMM d, yyyy, HH:mm" : "dddd, dd/MM/yyyy, HH:mm", culture);
+    var started = info.StartAt <= DateTime.Now;
+    var ticketBase = isEn ? "/en/event/ticket/" : "/su-kien/ve/";
+}
+
+<section class="event-panel card shadow-sm my-4" id="eventPanel" data-content-id="@postId">
+    <div class="card-body">
+        <h2 class="h5 mb-3"><i class="bi bi-calendar-event me-1"></i>@Html.Text("event.panel.title")</h2>
+        <dl class="row mb-3 small">
+            <dt class="col-sm-3">@Html.Text("event.panel.time")</dt>
+            <dd class="col-sm-9">@When(info.StartAt)@(info.EndAt.HasValue ? " – " + When(info.EndAt.Value) : "")</dd>
+            @if (!string.IsNullOrWhiteSpace(info.Location))
+            {
+                <dt class="col-sm-3">@Html.Text("event.panel.location")</dt>
+                <dd class="col-sm-9">@info.Location</dd>
+            }
+            @if (!string.IsNullOrWhiteSpace(info.LivestreamUrl) && Uri.TryCreate(info.LivestreamUrl, UriKind.Absolute, out var live) && (live.Scheme == "https" || live.Scheme == "http"))
+            {
+                <dt class="col-sm-3">@Html.Text("event.panel.livestream")</dt>
+                <dd class="col-sm-9"><a href="@live" target="_blank" rel="noopener" class="btn btn-sm btn-danger"><i class="bi bi-broadcast me-1"></i>@Html.Text("event.panel.watchLive")</a></dd>
+            }
+            <dt class="col-sm-3">@Html.Text("event.panel.registered")</dt>
+            <dd class="col-sm-9">@Model.RegisteredCount@(info.MaxAttendees.HasValue ? " / " + info.MaxAttendees : "")</dd>
+        </dl>
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <button type="button" class="btn btn-sm @(Model.IsInterested ? "btn-warning" : "btn-outline-warning") ev-interest" aria-pressed="@(Model.IsInterested ? "true" : "false")">
+                <i class="bi bi-star@(Model.IsInterested ? "-fill" : "") me-1"></i>@Html.Text("event.panel.interest")
+                <span class="badge bg-light text-dark ms-1 ev-interest-count">@Model.InterestCount</span>
+            </button>
+            @if (!started)
+            {
+                @if (Model.IsReminderSubscribed)
+                {
+                    <span class="btn btn-sm btn-success disabled"><i class="bi bi-bell-fill me-1"></i>@Html.Text("event.remind.subscribed")</span>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="collapse" data-bs-target="#evRemindBox">
+                        <i class="bi bi-bell me-1"></i>@Html.Text("event.panel.remind")
+                    </button>
+                }
+            }
+        </div>
+
+        @if (!started && !Model.IsReminderSubscribed)
+        {
+            <form class="collapse ev-remind-form border rounded p-3 mb-3" id="evRemindBox">
+                <p class="small text-muted mb-2">@Html.Text("event.remind.intro")</p>
+                <div class="row g-2">
+                    <div class="col-sm-6"><input type="email" name="email" class="form-control form-control-sm" placeholder="Email" value="@Model.PrefillEmail" required maxlength="256" /></div>
+                    <div class="col-sm-4"><input type="tel" name="phone" class="form-control form-control-sm" placeholder="@Html.Text("event.form.phone")" value="@Model.PrefillPhone" maxlength="30" /></div>
+                    <div class="col-sm-2 d-grid"><button type="submit" class="btn btn-sm btn-success">@Html.Text("event.remind.submit")</button></div>
+                </div>
+                <div class="small mt-2 ev-msg"></div>
+            </form>
+        }
+
+        <h3 class="h6 mt-2">@Html.Text("event.reg.title")</h3>
+        @if (Model.MyRegistration != null)
+        {
+            <div class="alert alert-success small mb-0">
+                @Html.Text("event.reg.already")
+                <a href="@(ticketBase + Model.MyRegistration.CheckInCode)" class="alert-link">@Html.Text("event.reg.viewTicket")</a>
+            </div>
+        }
+        else if (!Model.RegistrationOpen)
+        {
+            <div class="alert alert-secondary small mb-0">@Html.Text(Model.RegistrationClosedReasonKey ?? "event.reg.closed")</div>
+        }
+        else
+        {
+            <form class="ev-register-form">
+                <input type="text" name="website" class="d-none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                <div class="row g-2">
+                    <div class="col-sm-6"><input name="FullName" class="form-control form-control-sm" placeholder="@Html.Text("event.form.fullName") *" value="@Model.PrefillName" required maxlength="200" /></div>
+                    <div class="col-sm-6"><input name="Email" type="email" class="form-control form-control-sm" placeholder="Email *" value="@Model.PrefillEmail" required maxlength="256" /></div>
+                    <div class="col-sm-6"><input name="Phone" type="tel" class="form-control form-control-sm" placeholder="@Html.Text("event.form.phone")" value="@Model.PrefillPhone" maxlength="30" /></div>
+                    <div class="col-sm-6"><input name="Organization" class="form-control form-control-sm" placeholder="@Html.Text("event.form.organization")" maxlength="300" /></div>
+                    <div class="col-12"><textarea name="Note" class="form-control form-control-sm" rows="2" placeholder="@Html.Text("event.form.note")" maxlength="1000"></textarea></div>
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <span class="small ev-msg"></span>
+                        <button type="submit" class="btn btn-primary btn-sm">@Html.Text("event.reg.submit")</button>
+                    </div>
+                </div>
+            </form>
+        }
+
+        @if (Model.Booths.Count > 0)
+        {
+            <h3 class="h6 mt-4">@Html.Text("event.booth.title")</h3>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered align-middle small mb-2">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Html.Text("event.booth.type")</th>
+                            <th>@Html.Text("event.booth.position")</th>
+                            <th class="text-end">@Html.Text("event.booth.price")</th>
+                            <th>@Html.Text("event.booth.services")</th>
+                            <th class="text-center">@Html.Text("event.booth.remaining")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var b in Model.Booths)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@b.Booth.Name@(b.Booth.AreaM2.HasValue ? $" ({b.Booth.AreaM2.Value:0.##} m²)" : "")</td>
+                                <td>@b.Booth.Position</td>
+                                <td class="text-end">@b.Booth.Price.ToString("N0", culture) đ</td>
+                                <td style="white-space:pre-line">@b.Booth.Services</td>
+                                <td class="text-center">@b.Remaining</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (!started && Model.Booths.Any(b => b.Remaining > 0))
+            {
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#evBoothBox">
+                    <i class="bi bi-shop me-1"></i>@Html.Text("event.booth.book")
+                </button>
+                <form class="collapse ev-booth-form border rounded p-3 mt-2" id="evBoothBox">
+                    <input type="text" name="website" class="d-none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                    <div class="row g-2">
+                        <div class="col-sm-8">
+                            <select name="BoothTypeId" class="form-select form-select-sm" required>
+                                @foreach (var b in Model.Booths.Where(x => x.Remaining > 0))
+                                {
+                                    <option value="@b.Booth.Id">@b.Booth.Name – @b.Booth.Price.ToString("N0", culture) đ</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-sm-4"><input name="Quantity" type="number" min="1" value="1" class="form-control form-control-sm" /></div>
+                        <div class="col-sm-6"><input name="Organization" class="form-control form-control-sm" placeholder="@Html.Text("event.form.organization") *" required maxlength="300" /></div>
+                        <div class="col-sm-6"><input name="ContactName" class="form-control form-control-sm" placeholder="@Html.Text("event.form.fullName") *" value="@Model.PrefillName" required maxlength="200" /></div>
+                        <div class="col-sm-6"><input name="Email" type="email" class="form-control form-control-sm" placeholder="Email *" value="@Model.PrefillEmail" required maxlength="256" /></div>
+                        <div class="col-sm-6"><input name="Phone" type="tel" class="form-control form-control-sm" placeholder="@Html.Text("event.form.phone") *" value="@Model.PrefillPhone" required maxlength="30" /></div>
+                        <div class="col-12"><textarea name="Note" class="form-control form-control-sm" rows="2" placeholder="@Html.Text("event.form.note")" maxlength="1000"></textarea></div>
+                        <div class="col-12 d-flex justify-content-between align-items-center">
+                            <span class="small ev-msg"></span>
+                            <button type="submit" class="btn btn-primary btn-sm">@Html.Text("event.booth.submit")</button>
+                        </div>
+                    </div>
+                </form>
+            }
+        }
+    </div>
+</section>
+
+<script>
+(function () {
+    var box = document.getElementById('eventPanel');
+    if (!box) return;
+    var base = (location.pathname === '/en' || location.pathname.indexOf('/en/') === 0) ? '/en/event/' : '/Event/';
+    var cid = box.dataset.contentId;
+    function post(action, data) {
+        var token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
+        data.append('contentId', cid);
+        return fetch(base + action, {
+            method: 'POST',
+            headers: { 'RequestVerificationToken': token, 'X-Requested-With': 'XMLHttpRequest' },
+            body: data
+        }).then(function (r) { return r.json(); });
+    }
+    function show(form, ok, msg) {
+        var el = form.querySelector('.ev-msg');
+        el.className = 'small ev-msg ' + (ok ? 'text-success' : 'text-danger');
+        el.textContent = msg || '';
+    }
+    function bindForm(selector, action, onOk) {
+        var form = box.querySelector(selector);
+        if (!form) return;
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var btn = form.querySelector('button[type=submit]'); btn.disabled = true;
+            post(action, new FormData(form)).then(function (d) {
+                show(form, d.success, d.message);
+                if (d.success && onOk) onOk(d, form);
+            }).catch(function () { show(form, false, 'Error'); }).finally(function () { btn.disabled = false; });
+        });
+    }
+    bindForm('.ev-register-form', 'Register', function (d, form) {
+        if (d.ticketUrl) {
+            var a = document.createElement('a'); a.href = d.ticketUrl; a.className = 'ms-2';
+            a.textContent = @Json.Serialize(Html.Text("event.reg.viewTicket"));
+            form.querySelector('.ev-msg').appendChild(a);
+        }
+        form.querySelectorAll('input,textarea').forEach(function (i) { if (i.name !== 'website') i.disabled = true; });
+    });
+    bindForm('.ev-remind-form', 'Remind');
+    bindForm('.ev-booth-form', 'Booth', function (d, form) { form.reset(); });
+
+    var interest = box.querySelector('.ev-interest');
+    interest?.addEventListener('click', function () {
+        interest.disabled = true;
+        post('Interest', new FormData()).then(function (d) {
+            interest.classList.toggle('btn-warning', d.active);
+            interest.classList.toggle('btn-outline-warning', !d.active);
+            interest.setAttribute('aria-pressed', d.active ? 'true' : 'false');
+            var i = interest.querySelector('i'); i.className = 'bi bi-star' + (d.active ? '-fill' : '') + ' me-1';
+            interest.querySelector('.ev-interest-count').textContent = d.count;
+        }).finally(function () { interest.disabled = false; });
+    });
+})();
+</script>

@@ -1,0 +1,32 @@
+@model TechExchangeApp.Services.EventTicketVm
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Html.Text("event.ticket.title");
+    var r = Model.Registration;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    var statusKey = r.Status switch { 2 => "event.ticket.checkedIn", 0 => "event.ticket.cancelled", _ => "event.ticket.valid" };
+    var statusCss = r.Status switch { 2 => "bg-success", 0 => "bg-secondary", _ => "bg-primary" };
+}
+
+<div class="container my-5" style="max-width:560px">
+    <div class="card shadow-sm text-center">
+        <div class="card-header bg-primary text-white"><h1 class="h5 mb-0">@Html.Text("event.ticket.title")</h1></div>
+        <div class="card-body">
+            <h2 class="h6"><a href="@Model.EventUrl">@Model.EventTitle</a></h2>
+            @if (Model.Info != null)
+            {
+                <p class="small text-muted mb-2">
+                    @Model.Info.StartAt.ToString("dd/MM/yyyy HH:mm")@(string.IsNullOrEmpty(Model.Info.Location) ? "" : " · " + Model.Info.Location)
+                </p>
+            }
+            <img src="@Model.QrDataUri" alt="QR" style="width:240px;height:240px" />
+            <div class="mt-2"><code class="fs-6">@r.CheckInCode</code></div>
+            <div class="mt-2"><span class="badge @statusCss">@Html.Text(statusKey)</span></div>
+            <hr />
+            <p class="mb-1 fw-semibold">@r.FullName</p>
+            <p class="small text-muted mb-0">@r.Organization</p>
+            <p class="small text-muted mt-3 mb-0">@Html.Text("event.ticket.hint")</p>
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-3" onclick="window.print()"><i class="bi bi-printer me-1"></i>@Html.Text("event.ticket.print")</button>
+        </div>
+    </div>
+</div>
