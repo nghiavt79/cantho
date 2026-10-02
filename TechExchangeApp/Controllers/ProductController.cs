@@ -64,7 +64,7 @@ namespace TechExchangeApp.Controllers
         // ================== SPLIT INDEX ACTIONS BY PRODUCT TYPE ==================
 
         // Route: /san-pham — unified listing across all 3 product types, with a type label per card
-        public async Task<IActionResult> TatCaSanPham(int type = 0, int page = 1, int pageSize = 12)
+        public async Task<IActionResult> TatCaSanPham(int type = 0, int page = 1, int pageSize = 12, int display = 0)
         {
             if (page < 1) page = 1;
             if (pageSize < 1) pageSize = 12;
@@ -73,6 +73,14 @@ namespace TechExchangeApp.Controllers
             var baseQuery = _context.SanPhamCNTBs
                 .AsNoTracking()
                 .Where(x => x.LanguageId == langId && x.StatusId == 3 && (x.ProductType == 1 || x.ProductType == 2 || x.ProductType == 3));
+
+            // Lọc hình thức trưng bày (HSMT B.1.4): 1 = trực tuyến, 2 = trưng bày tại Sàn; "Cả hai" thuộc cả 2 nhóm
+            if (display == DisplayModes.Online)
+                baseQuery = baseQuery.Where(x => x.DisplayMode == DisplayModes.Online || x.DisplayMode == DisplayModes.Both);
+            else if (display == DisplayModes.Showroom)
+                baseQuery = baseQuery.Where(x => x.DisplayMode == DisplayModes.Showroom || x.DisplayMode == DisplayModes.Both);
+            else
+                display = 0;
 
             // Tổng theo từng loại cho nhãn tab (độc lập với bộ lọc đang chọn)
             var totalCongNghe = await baseQuery.CountAsync(x => x.ProductType == ProductTypeConstants.CongNghe);
@@ -108,6 +116,7 @@ namespace TechExchangeApp.Controllers
                 TotalThietBi = totalThietBi,
                 TotalTaiSanTriTue = totalTaiSanTriTue,
                 CurrentType = type,
+                CurrentDisplay = display,
                 CurPage = page,
                 PageSize = pageSize,
                 Total = total
@@ -265,6 +274,19 @@ namespace TechExchangeApp.Controllers
 
             MapSupplier(model, product);
             MapVideo(model, product);
+
+            // QR trỏ về URL chi tiết chuẩn (HSMT C.5)
+            var detailSlug = MakeURLFriendly(product.Name);
+            model.CanonicalUrl = LangHelper.IsEnglish(HttpContext)
+                ? $"{_mainDomain}en/products/{detailSlug}-{id}"
+                : $"{_mainDomain}san-pham/chi-tiet/{detailSlug}-{id}";
+            model.QrDataUri = QrCodeHelper.ToPngDataUri(model.CanonicalUrl);
+
+            // Quan tâm sản phẩm (HSMT B.3.3) — lưu theo ID bản gốc tiếng Việt
+            var favId = product.LanguageId == LangHelper.En && product.OriginalId.HasValue ? product.OriginalId.Value : id;
+            model.FavoriteCount = await _context.ProductFavorites.CountAsync(f => f.SanPhamId == favId);
+            if (int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var currentUserId))
+                model.IsFavorite = await _context.ProductFavorites.AnyAsync(f => f.SanPhamId == favId && f.UserId == currentUserId);
 
             return View(model);
         }

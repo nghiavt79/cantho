@@ -33,6 +33,14 @@ namespace TechExchangeApp.ViewModel
 
         // UI flags
         public int TypeId { get; set; }
+
+        // QR in nhãn sản phẩm (HSMT C.5) — trỏ về URL chi tiết chuẩn
+        public string? CanonicalUrl { get; set; }
+        public string? QrDataUri { get; set; }
+
+        // Quan tâm sản phẩm (HSMT B.3.3)
+        public bool IsFavorite { get; set; }
+        public int FavoriteCount { get; set; }
     }
 
     public class KeywordVm

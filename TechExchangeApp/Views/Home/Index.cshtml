@@ -26,7 +26,7 @@
                 </div>
                 <form class="home-v2-search-form" action="@(isEn ? "/en/search" : "/Search")" method="get">
                     <input type="hidden" name="type" value="Technology" id="homeSearchType">
-                    <input type="text" name="q" placeholder="@Html.Text("home.search.placeholder")" aria-label="@Html.Text("home.search.keyword")">
+                    <input type="text" name="q" placeholder="@Html.Text("home.search.placeholder")" aria-label="@Html.Text("home.search.keyword")" data-voice-search>
                     <select name="field" aria-label="@Html.Text("home.search.field")">
                         <option value="">@Html.Text("common.allFields")</option>
                         @foreach (var fieldOption in Model.SearchFields)

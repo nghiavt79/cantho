@@ -103,6 +103,7 @@
                         bool isCategoryAdmin = postsCtrl == "CategoryAdmin";
                         bool isImageAdverAdmin = postsCtrl == "ImageAdverAdmin";
                         bool isUiTranslationAdmin = postsCtrl == "UiTranslationAdmin";
+                        bool isFaqAdmin = postsCtrl == "FaqAdmin";
                         bool isContentsYeuCauAdmin = postsCtrl == "ContentsYeuCauAdmin";
                         bool isPhieuYeuCauCNTBAdmin = postsCtrl == "PhieuYeuCauCNTBAdmin";
                         bool isSystemParameterAdmin = postsCtrl == "SystemParameterAdmin";
@@ -117,7 +118,7 @@
                         bool isNhaTuVanAdmin = postsCtrl == "NhaTuVanAdmin";
                         bool isUsers = postsCtrl == "Users";
                         bool isHuongDanCms = postsCtrl == "HuongDanCms";
-                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin;
+                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin;
                         bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin;
                         bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin;
                         bool isSystemGroup = isUsers || isLogAdmin || isSystemParameterAdmin || isSysFunctionAdmin || isRoleAdmin || isSysFuncPermissionAdmin;
@@ -277,6 +278,13 @@
                                    class="nav-link @(isUiTranslationAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-language"></i>
                                     <p>Chuỗi giao diện (i18n)</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="FaqAdmin" asp-action="Index"
+                                   class="nav-link @(isFaqAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-circle-question"></i>
+                                    <p>Câu hỏi thường gặp</p>
                                 </a>
                             </li>
                         </ul>

@@ -17,6 +17,7 @@ namespace TechExchangeApp.Controllers
         private readonly IAccountService _accountService;
         private readonly IVerificationService _verify;
         private readonly string _domainName;
+        private readonly string _mainDomain;
 
         public AccountController(
             UserManager<ApplicationUser> userManager, 
@@ -33,6 +34,7 @@ namespace TechExchangeApp.Controllers
             // Lấy domain từ AppSettings, fallback về techport.vn
             var raw = appSettings?.Value?.MainDomain ?? string.Empty;
             _domainName = string.IsNullOrWhiteSpace(raw) ? "techport.vn" : new Uri(raw).Host;
+            _mainDomain = raw.TrimEnd('/');
         }
 
         // GET: /Account/Register
@@ -119,6 +121,12 @@ namespace TechExchangeApp.Controllers
                     var passwordVerification = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
                     if (passwordVerification == PasswordVerificationResult.Success)
                     {
+                        if (user.IsLocked)
+                        {
+                            ModelState.AddModelError(string.Empty, I18n.T(HttpContext, "auth.err.locked"));
+                            return View(model);
+                        }
+
                         await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
 
                         user.LastLogin = DateTime.Now;
@@ -164,6 +172,9 @@ namespace TechExchangeApp.Controllers
                 var passwordVerification = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
                 if (passwordVerification == PasswordVerificationResult.Success)
                 {
+                    if (user.IsLocked)
+                        return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.locked") } });
+
                     await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
 
                     user.LastLogin = DateTime.Now;
@@ -355,6 +366,66 @@ namespace TechExchangeApp.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        // ─── Quên mật khẩu (HSMT A.1.1) ────────────────────────────────────────
+        // GET /quen-mat-khau, /en/forgot-password
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View(new ForgotPasswordVm());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVm model,
+            [FromServices] TechExchangeApp.Services.IPasswordResetService passwordReset)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var isEn = LangHelper.IsEnglish(HttpContext);
+            // Dựng link từ MainDomain cấu hình, không dùng Host header (tránh giả mạo link trong email)
+            var origin = string.IsNullOrEmpty(_mainDomain) ? $"{Request.Scheme}://{Request.Host}" : _mainDomain;
+            var resetUrlBase = origin + (isEn ? "/en/reset-password" : "/dat-lai-mat-khau");
+            await passwordReset.RequestAsync(model.EmailOrUserName, resetUrlBase, isEn,
+                HttpContext.Connection.RemoteIpAddress?.ToString());
+
+            // Luôn cùng một thông báo, không tiết lộ tài khoản có tồn tại hay không
+            ViewBag.Sent = true;
+            return View(new ForgotPasswordVm());
+        }
+
+        // GET /dat-lai-mat-khau?token=..., /en/reset-password?token=...
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword(string? token,
+            [FromServices] TechExchangeApp.Services.IPasswordResetService passwordReset)
+        {
+            Response.Headers["Referrer-Policy"] = "no-referrer"; // không để token lọt qua Referer
+            ViewBag.TokenValid = await passwordReset.ValidateAsync(token) != null;
+            return View(new ResetPasswordVm { Token = token ?? "" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVm model,
+            [FromServices] TechExchangeApp.Services.IPasswordResetService passwordReset)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.TokenValid = await passwordReset.ValidateAsync(model.Token) != null;
+                return View(model);
+            }
+
+            var ok = await passwordReset.ResetAsync(model.Token, model.NewPassword);
+            if (!ok)
+            {
+                ViewBag.TokenValid = false;
+                return View(model);
+            }
+
+            ViewBag.Done = true;
+            return View(new ResetPasswordVm());
         }
 
         // ─── POST /Account/UpdatePhone (AJAX) ──────────────────────────────────

@@ -42,6 +42,9 @@
                     <span class="badge bg-primary float-end">@Model.OcopOrderCount</span>
                 }
             </a>
+            <a class="nav-link @(Context.Request.Path.StartsWithSegments("/san-pham-quan-tam") ? "active" : "")" href="/san-pham-quan-tam">
+                <i class="fas fa-heart me-2"></i> @Html.Text("fav.pageTitle")
+            </a>
             <a class="nav-link @(Context.Request.Path.StartsWithSegments("/chat") ? "active" : "")" href="/chat">
                 <i class="fas fa-comments me-2"></i> @Html.Text("sidebar.messages")
                 <span id="chatUnreadBadge" class="badge bg-danger float-end" style="display:none;"></span>

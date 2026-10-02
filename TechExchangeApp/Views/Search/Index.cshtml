@@ -56,7 +56,7 @@
     <form class="se-searchbar" action="@($"{MainDomain}{(isEn ? "en/search" : "Search")}")" method="get" role="search">
         <label class="visually-hidden" for="seKeyword">@Html.Text("home.search.keyword")</label>
         <input id="seKeyword" type="search" name="q" value="@Model.Query"
-               placeholder="@Html.Text("search.mainPlaceholder")" autocomplete="off" />
+               placeholder="@Html.Text("search.mainPlaceholder")" autocomplete="off" data-voice-search />
         <button type="submit"><i class="bi bi-search"></i> @Html.Text("common.search")</button>
     </form>
 

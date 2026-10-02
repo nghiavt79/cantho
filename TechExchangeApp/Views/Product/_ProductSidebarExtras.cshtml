@@ -1,0 +1,92 @@
+@model TechExchangeApp.ViewModel.ProductDetailViewModel
+@{
+    // Khối cột phải dùng chung cho trang chi tiết sản phẩm:
+    // nút Quan tâm (HSMT B.3.3), hình thức trưng bày (A.3.1, B.1.4), mã QR in nhãn (C.5).
+    var p = Model.Product;
+    var displayKey = p.DisplayMode switch
+    {
+        TechExchangeApp.Entities.DisplayModes.Showroom => "product.display.showroom",
+        TechExchangeApp.Entities.DisplayModes.Both => "product.display.both",
+        _ => "product.display.online"
+    };
+    var isAuth = User.Identity?.IsAuthenticated == true;
+}
+
+<section class="tech-sidebar-card product-extras">
+    <button type="button" id="btnFavorite"
+            class="btn w-100 mb-3 @(Model.IsFavorite ? "btn-danger" : "btn-outline-danger")"
+            data-id="@p.ID" data-auth="@(isAuth ? "1" : "0")" aria-pressed="@(Model.IsFavorite ? "true" : "false")">
+        <i class="@(Model.IsFavorite ? "fas" : "far") fa-heart me-1"></i>
+        <span class="fav-label">@Html.Text(Model.IsFavorite ? "product.fav.saved" : "product.fav.save")</span>
+        <span class="badge bg-light text-dark ms-1 fav-count">@Model.FavoriteCount</span>
+    </button>
+
+    <dl class="tech-quick-list mb-3">
+        <div><dt>@Html.Text("product.display.label")</dt><dd>@Html.Text(displayKey)</dd></div>
+    </dl>
+
+    @if (!string.IsNullOrEmpty(Model.QrDataUri))
+    {
+        <div class="text-center" id="productQrBlock">
+            <img src="@Model.QrDataUri" alt="@Html.Text("product.qr.alt")" style="width:150px;height:150px" />
+            <div class="small text-muted mt-1">@Html.Text("product.qr.hint")</div>
+            <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="btnPrintQr">
+                <i class="fas fa-print me-1"></i>@Html.Text("product.qr.print")
+            </button>
+        </div>
+    }
+</section>
+
+<template id="qrPrintTemplate">
+    <div style="font-family:Arial,sans-serif;text-align:center;padding:24px">
+        <div style="font-size:18px;font-weight:bold;margin-bottom:12px">@p.Name</div>
+        <img src="@Model.QrDataUri" style="width:260px;height:260px" alt="QR" />
+        <div style="font-size:12px;margin-top:8px;word-break:break-all">@Model.CanonicalUrl</div>
+    </div>
+</template>
+
+<script>
+(function () {
+    var printBtn = document.getElementById('btnPrintQr');
+    if (printBtn) {
+        printBtn.addEventListener('click', function () {
+            var w = window.open('', '_blank', 'width=480,height=600');
+            if (!w) return;
+            w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>QR</title></head><body>'
+                + document.getElementById('qrPrintTemplate').innerHTML + '</body></html>');
+            w.document.close();
+            w.onload = function () { w.focus(); w.print(); };
+        });
+    }
+
+    var favBtn = document.getElementById('btnFavorite');
+    if (!favBtn) return;
+    var labels = { save: @Json.Serialize(Html.Text("product.fav.save")), saved: @Json.Serialize(Html.Text("product.fav.saved")) };
+    favBtn.addEventListener('click', function () {
+        if (favBtn.dataset.auth !== '1') {
+            if (typeof openLoginModal === 'function') openLoginModal(); else location.href = '/dang-nhap';
+            return;
+        }
+        var token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
+        favBtn.disabled = true;
+        fetch('/ProductFavorite/Toggle', {
+            method: 'POST',
+            headers: { 'RequestVerificationToken': token, 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'id=' + encodeURIComponent(favBtn.dataset.id)
+        }).then(function (r) {
+            if (r.status === 401) { if (typeof openLoginModal === 'function') openLoginModal(); return null; }
+            return r.json();
+        }).then(function (d) {
+            if (!d || !d.success) return;
+            favBtn.classList.toggle('btn-danger', d.isFavorite);
+            favBtn.classList.toggle('btn-outline-danger', !d.isFavorite);
+            favBtn.setAttribute('aria-pressed', d.isFavorite ? 'true' : 'false');
+            var icon = favBtn.querySelector('i');
+            icon.classList.toggle('fas', d.isFavorite);
+            icon.classList.toggle('far', !d.isFavorite);
+            favBtn.querySelector('.fav-label').textContent = d.isFavorite ? labels.saved : labels.save;
+            favBtn.querySelector('.fav-count').textContent = d.count;
+        }).finally(function () { favBtn.disabled = false; });
+    });
+})();
+</script>

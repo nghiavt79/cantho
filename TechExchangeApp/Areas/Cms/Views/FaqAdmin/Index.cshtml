@@ -1,0 +1,206 @@
+@model List<TechExchangeApp.Entities.Faq>
+@{
+    ViewData["Title"] = "Câu hỏi thường gặp";
+    var languageId = (int)ViewBag.LanguageId;
+    var groups = (List<string>)ViewBag.Groups;
+    var currentGroup = (string?)ViewBag.Group ?? "";
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-circle-question me-1"></i> Câu hỏi thường gặp (FAQ)</h3>
+        <div class="card-tools">
+            <a href="@(languageId == 2 ? "/en/faq" : "/hoi-dap")" target="_blank" class="btn btn-sm btn-outline-secondary me-1">
+                <i class="fas fa-up-right-from-square"></i> Xem trang công khai
+            </a>
+            <button type="button" class="btn btn-sm btn-primary" id="btnCreate"><i class="fas fa-plus"></i> Thêm câu hỏi</button>
+        </div>
+    </div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-md-2">
+                <select name="languageId" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="1" selected="@(languageId == 1)">Tiếng Việt</option>
+                    <option value="2" selected="@(languageId == 2)">English</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="group" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">-- Tất cả nhóm --</option>
+                    @foreach (var g in groups)
+                    {
+                        <option value="@g" selected="@(g == currentGroup)">@g</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control form-control-sm" placeholder="Tìm trong câu hỏi, câu trả lời..." />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Tìm</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="text-center small fw-bold" style="width:110px">THAO TÁC</th>
+                        <th class="small fw-bold" style="width:180px">NHÓM</th>
+                        <th class="small fw-bold">CÂU HỎI</th>
+                        <th class="text-center small fw-bold" style="width:70px">THỨ TỰ</th>
+                        <th class="text-center small fw-bold" style="width:110px">HIỂN THỊ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr><td colspan="5" class="text-center text-muted py-4">Chưa có câu hỏi nào.</td></tr>
+                    }
+                    @foreach (var f in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="#" class="btn btn-outline-primary btn-edit" data-id="@f.Id" title="Sửa"><i class="fas fa-pen-to-square"></i></a>
+                                    <a href="#" class="btn btn-outline-danger btn-del" data-id="@f.Id" title="Xóa"><i class="fas fa-trash-can"></i></a>
+                                </div>
+                            </td>
+                            <td class="small">@f.GroupName</td>
+                            <td>
+                                <div class="fw-semibold">@f.Question</div>
+                                <div class="small text-muted text-truncate" style="max-width:600px">@f.Answer</div>
+                            </td>
+                            <td class="text-center">@f.SortOrder</td>
+                            <td class="text-center">
+                                <div class="form-check form-switch d-inline-block">
+                                    <input class="form-check-input chk-active" type="checkbox" data-id="@f.Id" checked="@f.IsActive" />
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="faqModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="faqForm">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="faqModalTitle">Thêm câu hỏi</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="Id" value="0" />
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label class="form-label fw-semibold small">Nhóm câu hỏi <span class="text-danger">*</span></label>
+                            <input type="text" name="GroupName" class="form-control" list="faqGroups" maxlength="200" required />
+                            <datalist id="faqGroups">
+                                @foreach (var g in groups) { <option value="@g"></option> }
+                            </datalist>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold small">Ngôn ngữ</label>
+                            <select name="LanguageId" class="form-select">
+                                <option value="1">Tiếng Việt</option>
+                                <option value="2">English</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold small">Thứ tự</label>
+                            <input type="number" name="SortOrder" class="form-control" value="0" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small">Câu hỏi <span class="text-danger">*</span></label>
+                            <input type="text" name="Question" class="form-control" maxlength="1000" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small">Câu trả lời <span class="text-danger">*</span></label>
+                            <textarea name="Answer" class="form-control" rows="7" required></textarea>
+                            <div class="form-text">Văn bản thuần; xuống dòng được giữ nguyên khi hiển thị.</div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="IsActive" value="true" id="faqIsActive" checked />
+                                <label class="form-check-label" for="faqIsActive">Hiển thị trên website</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    var modal = function () { return bootstrap.Modal.getOrCreateInstance(document.getElementById('faqModal')); };
+    var form = document.getElementById('faqForm');
+
+    function fill(item) {
+        form.Id.value = item ? item.id : 0;
+        form.GroupName.value = item ? item.groupName : '@Html.Raw(System.Text.Encodings.Web.JavaScriptEncoder.Default.Encode(currentGroup))';
+        form.Question.value = item ? item.question : '';
+        form.Answer.value = item ? item.answer : '';
+        form.SortOrder.value = item ? item.sortOrder : 0;
+        form.LanguageId.value = item ? item.languageId : '@languageId';
+        form.IsActive.checked = item ? item.isActive : true;
+        document.getElementById('faqModalTitle').textContent = item ? 'Sửa câu hỏi' : 'Thêm câu hỏi';
+    }
+
+    $('#btnCreate').on('click', function () { fill(null); modal().show(); });
+
+    $(document).on('click', '.btn-edit', function (e) {
+        e.preventDefault();
+        $.get('@Url.Action("Get", "FaqAdmin", new { area = "Cms" })', { id: $(this).data('id') }, function (r) {
+            if (!r.success) { toastr.error(r.message); return; }
+            fill(r.item); modal().show();
+        });
+    });
+
+    $(form).on('submit', function (e) {
+        e.preventDefault();
+        var data = $(form).serializeArray();
+        if (!form.IsActive.checked) data.push({ name: 'IsActive', value: 'false' });
+        data.push({ name: '__RequestVerificationToken', value: token });
+        $.post('@Url.Action("Save", "FaqAdmin", new { area = "Cms" })', $.param(data), function (r) {
+            if (r.success) { toastr.success(r.message); modal().hide(); location.reload(); }
+            else { toastr.error(r.message); }
+        });
+    });
+
+    $(document).on('change', '.chk-active', function () {
+        var el = this;
+        $.post('@Url.Action("ToggleActive", "FaqAdmin", new { area = "Cms" })', { id: $(el).data('id'), __RequestVerificationToken: token }, function (r) {
+            if (r.success) { toastr.success(r.isActive ? 'Đã bật hiển thị' : 'Đã ẩn'); }
+            else { toastr.error(r.message); el.checked = !el.checked; }
+        });
+    });
+
+    $(document).on('click', '.btn-del', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        Swal.fire({
+            title: 'Xóa câu hỏi này?', icon: 'warning', showCancelButton: true,
+            confirmButtonColor: '#d33', confirmButtonText: '<i class="fas fa-trash"></i> Xóa', cancelButtonText: 'Hủy'
+        }).then(function (res) {
+            if (!res.isConfirmed) return;
+            $.post('@Url.Action("Delete", "FaqAdmin", new { area = "Cms" })', { id: id, __RequestVerificationToken: token }, function (r) {
+                if (r.success) { toastr.success('Đã xóa.'); location.reload(); } else { toastr.error(r.message); }
+            });
+        });
+    });
+})();
+</script>
+}

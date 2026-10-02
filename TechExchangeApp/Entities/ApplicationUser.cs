@@ -89,5 +89,11 @@ namespace TechExchangeApp.Entities
         public int AccountTypeId { get; set; } = 1;
         /// <summary>0=None, 1=Phone, 2=Email, 3=Full (docs uploaded)</summary>
         public int VerificationLevel { get; set; } = 0;
+
+        // ── Khóa tài khoản (A.5.1) — không dùng LockoutEnd của Identity vì cột đó bị Ignore ──
+        public bool IsLocked { get; set; } = false;
+        public string? LockedReason { get; set; }
+        public DateTime? LockedAt { get; set; }
+        public int? LockedBy { get; set; }
     }
 }

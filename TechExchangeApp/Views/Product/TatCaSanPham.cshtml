@@ -62,10 +62,16 @@
                 </div>
 
                 <div class="san-pham-type-filter" role="group" aria-label="@Html.Text("product.list.filterAria")">
-                    <button type="button" class="@(Model.CurrentType == 0 ? "is-active" : "")" onclick="location.href='?type=0&amp;pageSize=@Model.PageSize'">@Html.Text("common.all") (@Model.TotalProducts)</button>
-                    <button type="button" class="@(Model.CurrentType == 1 ? "is-active" : "")" onclick="location.href='?type=1&amp;pageSize=@Model.PageSize'">@Html.Text("common.technology") (@Model.TotalCongNghe)</button>
-                    <button type="button" class="@(Model.CurrentType == 2 ? "is-active" : "")" onclick="location.href='?type=2&amp;pageSize=@Model.PageSize'">@Html.Text("common.equipment") (@Model.TotalThietBi)</button>
-                    <button type="button" class="@(Model.CurrentType == 3 ? "is-active" : "")" onclick="location.href='?type=3&amp;pageSize=@Model.PageSize'">@Html.Text("common.ipAssets") (@Model.TotalTaiSanTriTue)</button>
+                    <button type="button" class="@(Model.CurrentType == 0 ? "is-active" : "")" onclick="location.href='?type=0&amp;display=@Model.CurrentDisplay&amp;pageSize=@Model.PageSize'">@Html.Text("common.all") (@Model.TotalProducts)</button>
+                    <button type="button" class="@(Model.CurrentType == 1 ? "is-active" : "")" onclick="location.href='?type=1&amp;display=@Model.CurrentDisplay&amp;pageSize=@Model.PageSize'">@Html.Text("common.technology") (@Model.TotalCongNghe)</button>
+                    <button type="button" class="@(Model.CurrentType == 2 ? "is-active" : "")" onclick="location.href='?type=2&amp;display=@Model.CurrentDisplay&amp;pageSize=@Model.PageSize'">@Html.Text("common.equipment") (@Model.TotalThietBi)</button>
+                    <button type="button" class="@(Model.CurrentType == 3 ? "is-active" : "")" onclick="location.href='?type=3&amp;display=@Model.CurrentDisplay&amp;pageSize=@Model.PageSize'">@Html.Text("common.ipAssets") (@Model.TotalTaiSanTriTue)</button>
+                </div>
+
+                <div class="san-pham-type-filter mt-2" role="group" aria-label="@Html.Text("product.display.label")">
+                    <button type="button" class="@(Model.CurrentDisplay == 0 ? "is-active" : "")" onclick="location.href='?type=@Model.CurrentType&amp;display=0&amp;pageSize=@Model.PageSize'">@Html.Text("product.display.all")</button>
+                    <button type="button" class="@(Model.CurrentDisplay == 1 ? "is-active" : "")" onclick="location.href='?type=@Model.CurrentType&amp;display=1&amp;pageSize=@Model.PageSize'"><i class="bi bi-globe2 me-1"></i>@Html.Text("product.display.online")</button>
+                    <button type="button" class="@(Model.CurrentDisplay == 2 ? "is-active" : "")" onclick="location.href='?type=@Model.CurrentType&amp;display=2&amp;pageSize=@Model.PageSize'"><i class="bi bi-shop me-1"></i>@Html.Text("product.display.showroom")</button>
                 </div>
 
                 @if (Model.Products.Any())
@@ -106,16 +112,16 @@
                     <nav class="catalog-pagination" aria-label="@Html.Text("common.pagination")">
                         <ul>
                             <li class="@(curPage == 1 ? "disabled" : "")">
-                                <a href="?type=@Model.CurrentType&page=@(curPage - 1)&pageSize=@Model.PageSize" aria-label="@Html.Text("common.prevPage")"><i class="bi bi-chevron-left"></i></a>
+                                <a href="?type=@Model.CurrentType&display=@Model.CurrentDisplay&page=@(curPage - 1)&pageSize=@Model.PageSize" aria-label="@Html.Text("common.prevPage")"><i class="bi bi-chevron-left"></i></a>
                             </li>
                             @foreach (var pg in Model.Pages)
                             {
                                 <li class="@(pg.IsActive ? "active" : "")">
-                                    <a href="?type=@Model.CurrentType&page=@pg.Page&pageSize=@Model.PageSize">@pg.Page</a>
+                                    <a href="?type=@Model.CurrentType&display=@Model.CurrentDisplay&page=@pg.Page&pageSize=@Model.PageSize">@pg.Page</a>
                                 </li>
                             }
                             <li class="@(curPage == totalPages ? "disabled" : "")">
-                                <a href="?type=@Model.CurrentType&page=@(curPage + 1)&pageSize=@Model.PageSize" aria-label="@Html.Text("common.nextPage")"><i class="bi bi-chevron-right"></i></a>
+                                <a href="?type=@Model.CurrentType&display=@Model.CurrentDisplay&page=@(curPage + 1)&pageSize=@Model.PageSize" aria-label="@Html.Text("common.nextPage")"><i class="bi bi-chevron-right"></i></a>
                             </li>
                         </ul>
                     </nav>

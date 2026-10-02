@@ -27,7 +27,7 @@
                 <th class="text-center" style="width:36px">
                     <input type="checkbox" class="form-check-input" id="chkAll" />
                 </th>
-                <th class="text-center text-uppercase small fw-bold" style="width:100px">Thao tác</th>
+                <th class="text-center text-uppercase small fw-bold" style="width:130px">Thao tác</th>
                 <th class="text-center text-uppercase small fw-bold" style="width:50px">STT</th>
                 <th class="sortable text-uppercase small fw-bold" data-sort="username" role="button">
                     Tên đăng nhập @Html.Raw(SortIcon("username", sortBy, sortDir))
@@ -81,6 +81,18 @@
                             <a href="#" class="btn btn-outline-warning btn-sm btn-resetpwd" data-id="@u.UserId" title="Đổi mật khẩu">
                                 <i class="fas fa-key"></i>
                             </a>
+                            @if (u.IsLocked)
+                            {
+                                <a href="#" class="btn btn-outline-success btn-sm btn-unlock" data-id="@u.UserId" data-name="@u.UserName" title="Mở khóa">
+                                    <i class="fas fa-lock-open"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="btn btn-outline-secondary btn-sm btn-lock" data-id="@u.UserId" data-name="@u.UserName" title="Khóa tài khoản">
+                                    <i class="fas fa-lock"></i>
+                                </a>
+                            }
                             <a href="#" class="btn btn-outline-danger btn-sm btn-del" data-id="@u.UserId" title="Xóa">
                                 <i class="fas fa-trash-can"></i>
                             </a>
@@ -106,7 +118,11 @@
                     </td>
                     <td class="d-none d-md-table-cell small text-muted">@(u.Created?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
                     <td class="text-center">
-                        @if (u.IsActivated)
+                        @if (u.IsLocked)
+                        {
+                            <span class="badge bg-danger" title="@u.LockedReason"><i class="fas fa-lock me-1"></i>Đã khóa</span>
+                        }
+                        else if (u.IsActivated)
                         {
                             <span class="badge bg-success"><i class="fas fa-check me-1"></i>Active</span>
                         }

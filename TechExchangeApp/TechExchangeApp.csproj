@@ -7,6 +7,9 @@
     <CompressionEnabled>true</CompressionEnabled>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
+    <!-- Chú thích XML cho trang Swagger (/swagger); bỏ cảnh báo thiếu chú thích -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591;1572;1573;1574;1587</NoWarn>
   </PropertyGroup>
 
   <!-- Fix: normalize drive-letter casing (d:\ vs D:\) so StaticWebAssets doesn't flag duplicates -->
@@ -36,6 +39,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="System.Text.Json" Version="10.0.3" />
     <!-- Twilio removed: use StubSmsSender. Re-add when SMS is needed: <PackageReference Include="Twilio" Version="7.4.0" /> -->
   </ItemGroup>

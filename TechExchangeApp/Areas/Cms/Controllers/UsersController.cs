@@ -116,7 +116,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     Created = u.Created,
                     IsActivated = u.IsActivated ?? false,
                     UserTypeId = u.UserTypeId,
-                    IsAdmin = u.IsAdmin ?? false
+                    IsAdmin = u.IsAdmin ?? false,
+                    IsLocked = u.IsLocked,
+                    LockedReason = u.LockedReason
                 })
                 .ToListAsync();
 
@@ -342,6 +344,55 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             return PartialView("_ResetPasswordPartial", model);
         }
 
+        // ─── LOCK / UNLOCK (HSMT A.5.1) ───
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Lock(int id, string? reason,
+            [FromServices] Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
+        {
+            if (id == GetCurrentUserId())
+                return Json(new { success = false, message = "Không thể khóa tài khoản đang đăng nhập." });
+
+            reason = reason?.Trim();
+            if (string.IsNullOrEmpty(reason))
+                return Json(new { success = false, message = "Vui lòng nhập lý do khóa." });
+            if (reason.Length > 500) reason = reason[..500];
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return Json(new { success = false, message = "Không tìm thấy người dùng." });
+
+            user.IsLocked = true;
+            user.LockedReason = reason;
+            user.LockedAt = DateTime.Now;
+            user.LockedBy = GetCurrentUserId();
+            await _context.SaveChangesAsync();
+            TechExchangeApp.Services.AccountLockGuard.Invalidate(cache, id);
+
+            await WriteLog(2, $"Lock User: {user.UserName} (ID={id}). Lý do: {reason}");
+            return Json(new { success = true, message = $"Đã khóa tài khoản '{user.UserName}'." });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Unlock(int id,
+            [FromServices] Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return Json(new { success = false, message = "Không tìm thấy người dùng." });
+
+            user.IsLocked = false;
+            user.LockedReason = null;
+            user.LockedAt = null;
+            user.LockedBy = null;
+            await _context.SaveChangesAsync();
+            TechExchangeApp.Services.AccountLockGuard.Invalidate(cache, id);
+
+            await WriteLog(2, $"Unlock User: {user.UserName} (ID={id})");
+            return Json(new { success = true, message = $"Đã mở khóa tài khoản '{user.UserName}'." });
+        }
+
         // ─── DELETE ───
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -405,6 +456,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public int? UserTypeId { get; set; }
         public string AccountTypeName { get; set; } = "";
         public bool IsAdmin { get; set; }
+        public bool IsLocked { get; set; }
+        public string? LockedReason { get; set; }
     }
 
     public class CmsUserCreateVm

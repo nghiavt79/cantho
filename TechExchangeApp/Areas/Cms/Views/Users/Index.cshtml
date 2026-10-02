@@ -317,6 +317,53 @@ $(function(){
     });
 
     // ──────────────────────────────────────────────
+    // LOCK / UNLOCK (HSMT A.5.1)
+    // ──────────────────────────────────────────────
+    $(document).on('click', '.btn-lock', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id'), name = $(this).data('name');
+        Swal.fire({
+            title: 'Khóa tài khoản ' + name + '?',
+            text: 'Người dùng sẽ bị đăng xuất và không đăng nhập được cho đến khi mở khóa.',
+            input: 'textarea',
+            inputPlaceholder: 'Lý do khóa (bắt buộc)',
+            inputAttributes: { maxlength: 500 },
+            inputValidator: function(v) { if (!v || !v.trim()) return 'Vui lòng nhập lý do khóa'; },
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="fas fa-lock"></i> Khóa',
+            cancelButtonText: 'Hủy'
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                $.post('@Url.Action("Lock","Users",new{area="Cms"})', { id: id, reason: result.value, __RequestVerificationToken: token }, function(r) {
+                    if (r.success) { toastr.success(r.message); loadUserList(currentPage); }
+                    else { toastr.error(r.message); }
+                });
+            }
+        });
+    });
+    $(document).on('click', '.btn-unlock', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id'), name = $(this).data('name');
+        Swal.fire({
+            title: 'Mở khóa tài khoản ' + name + '?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-lock-open"></i> Mở khóa',
+            cancelButtonText: 'Hủy'
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                $.post('@Url.Action("Unlock","Users",new{area="Cms"})', { id: id, __RequestVerificationToken: token }, function(r) {
+                    if (r.success) { toastr.success(r.message); loadUserList(currentPage); }
+                    else { toastr.error(r.message); }
+                });
+            }
+        });
+    });
+
+    // ──────────────────────────────────────────────
     // DELETE (single + bulk)
     // ──────────────────────────────────────────────
     $(document).on('click', '.btn-del', function(e) {

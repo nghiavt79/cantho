@@ -43,6 +43,7 @@ namespace TechExchangeApp.ViewModel
 
         // Phân trang + lọc theo loại (server-side)
         public int CurrentType { get; set; }          // 0 = tất cả, 1/2/3 = loại sản phẩm
+        public int CurrentDisplay { get; set; }       // 0 = tất cả, 1 = trực tuyến, 2 = trưng bày tại Sàn
         public int CurPage { get; set; } = 1;
         public int PageSize { get; set; } = 12;
         public int Total { get; set; }                // tổng SP khớp bộ lọc hiện tại (để dựng pager)

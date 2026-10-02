@@ -680,6 +680,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             ViewBag.StatusId = p.StatusId;
             ViewBag.ProductType = p.ProductType;
             ViewBag.IsHot = p.IsHot ?? false;
+            ViewBag.DisplayMode = p.DisplayMode;
             ViewBag.BEffectiveDate = p.bEffectiveDate ?? DateTime.Now;
             ViewBag.EEffectiveDate = p.eEffectiveDate ?? DateTime.Now.AddYears(3);
             ViewBag.Keywords = p.Keywords;
@@ -694,7 +695,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuickConfig(int id, int? statusId, int? productType,
-            DateTime? bEffectiveDate, DateTime? eEffectiveDate, string? keywords, bool isHot)
+            DateTime? bEffectiveDate, DateTime? eEffectiveDate, string? keywords, bool isHot, byte? displayMode)
         {
             var entity = await _context.SanPhamCNTBs.FindAsync(id);
             if (entity == null)
@@ -712,6 +713,14 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.IsHot = isHot;
             entity.Modified = DateTime.Now;
             entity.Modifier = User.Identity?.Name;
+
+            // Hình thức trưng bày (HSMT A.3.1) — đồng bộ sang bản dịch EN để bộ lọc trang /en/ khớp
+            if (displayMode is DisplayModes.Online or DisplayModes.Showroom or DisplayModes.Both)
+            {
+                entity.DisplayMode = displayMode.Value;
+                var translations = await _context.SanPhamCNTBs.Where(x => x.OriginalId == id && x.ID != id).ToListAsync();
+                foreach (var t in translations) t.DisplayMode = displayMode.Value;
+            }
 
             await _context.SaveChangesAsync();
             await WriteLog(2, $"QuickConfig SanPhamCNTB: {entity.Name} (ID={id})");

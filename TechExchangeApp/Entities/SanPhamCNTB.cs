@@ -146,10 +146,21 @@ namespace TechExchangeApp.Entities
         public bool? EnStale { get; set; }
         public string? SourceHash { get; set; }
 
+        /// <summary>Hình thức trưng bày: 1 = Trực tuyến, 2 = Trưng bày tại Sàn, 3 = Cả hai (xem DisplayModes)</summary>
+        public byte DisplayMode { get; set; } = DisplayModes.Online;
+
         // ── Góc trưng bày OCOP & Truy xuất nguồn gốc ──
         /// <summary>Hạng sao OCOP (1-5), chỉ áp dụng khi ProductType == 4</summary>
         public int? SoSaoOCOP { get; set; }
         public string? MaTruyXuat { get; set; }
         public string? QRCodeUrl { get; set; }
+    }
+
+    /// <summary>Giá trị SanPhamCNTB.DisplayMode (HSMT A.3.1, B.1.4).</summary>
+    public static class DisplayModes
+    {
+        public const byte Online   = 1;
+        public const byte Showroom = 2;
+        public const byte Both     = 3;
     }
 }

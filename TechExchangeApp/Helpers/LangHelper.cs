@@ -38,6 +38,7 @@ namespace TechExchangeApp.Helpers
             "/ImplementationLog", "/Acceptance", "/Liquidation",
             // Dịch vụ của tôi (kèm URL slug tiếng Việt được đăng ký trong Program.cs)
             "/OcopOrder",
+            "/ProductFavorite",     "/san-pham-quan-tam",
             "/QuanLySanPham",       "/quan-ly-san-pham",
             "/DangKyTuVan",         "/dang-ky-tu-van",
             "/DangKyNhaCungUng",    "/dang-ky-nha-cung-ung"

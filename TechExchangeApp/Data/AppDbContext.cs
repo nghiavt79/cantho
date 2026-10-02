@@ -203,6 +203,11 @@ namespace TechExchangeApp.Data
         public DbSet<ChatMessage> ChatMessages { get; set; } = null!;
         public DbSet<SupportRequest> SupportRequests { get; set; } = null!;
 
+        // Bổ sung chức năng HSMT — Đợt 1
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; } = null!;
+        public DbSet<Faq> Faqs { get; set; } = null!;
+        public DbSet<ProductFavorite> ProductFavorites { get; set; } = null!;
+
         // Generic Entity Action Engine
         public DbSet<EntityRating> EntityRatings { get; set; } = null!;
         public DbSet<EntityActionLog> EntityActionLogs { get; set; } = null!;

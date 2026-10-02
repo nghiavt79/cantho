@@ -121,6 +121,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
     options.SlidingExpiration = true;
 
+    // Tài khoản bị khóa trong CMS (Users.IsLocked) bị đăng xuất ở request kế tiếp
+    options.Events.OnValidatePrincipal = TechExchangeApp.Services.AccountLockGuard.ValidatePrincipalAsync;
+
     // For AJAX/fetch requests: return 401 instead of redirecting to login page
     options.Events.OnRedirectToLogin = ctx =>
     {
@@ -154,6 +157,7 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.IDashboardService, TechExc
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IAdminDashboardService, TechExchangeApp.Services.AdminDashboardService>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IHomeAnalyticsService, TechExchangeApp.Services.HomeAnalyticsService>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IAccountService, TechExchangeApp.Services.AccountService>();
+builder.Services.AddScoped<TechExchangeApp.Services.IPasswordResetService, TechExchangeApp.Services.PasswordResetService>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IProjectService, TechExchangeApp.Services.ProjectService>();
 
 // Chat System
@@ -227,6 +231,29 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.INotificationProcessor, Te
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.NotificationWorker>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBackgroundService>();
 
+// --- Tài liệu API (HSMT 2.3, 2.4) — chỉ các endpoint /api/*, xem tại /swagger (cần quyền CMS) ---
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "API Sàn giao dịch công nghệ thành phố Cần Thơ",
+        Version = "v1",
+        Description = "Các giao diện tích hợp dạng JSON của hệ thống."
+    });
+    c.DocInclusionPredicate((_, api) =>
+        api.RelativePath != null && api.RelativePath.StartsWith("api/", StringComparison.OrdinalIgnoreCase));
+    c.CustomSchemaIds(t => t.FullName);
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, "TechExchangeApp.xml");
+    if (File.Exists(xmlPath)) c.IncludeXmlComments(xmlPath);
+});
+
+// --- Health check (HSMT 2.2) — /health cho công cụ giám sát uptime ---
+builder.Services.AddHealthChecks()
+    .AddCheck<TechExchangeApp.Infrastructure.Health.SqlServerHealthCheck>("database")
+    .AddCheck<TechExchangeApp.Infrastructure.Health.DiskSpaceHealthCheck>("disk")
+    .AddCheck<TechExchangeApp.Infrastructure.Health.NotificationQueueHealthCheck>("notification-queue");
+
 
 var app = builder.Build();
 
@@ -283,6 +310,33 @@ app.UseSession();
 // Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Swagger chỉ mở cho tài khoản có quyền CMS
+app.UseWhen(ctx => ctx.Request.Path.StartsWithSegments("/swagger"), swaggerApp =>
+{
+    swaggerApp.Use(async (ctx, next) =>
+    {
+        var authz = ctx.RequestServices.GetRequiredService<Microsoft.AspNetCore.Authorization.IAuthorizationService>();
+        if (ctx.User.Identity?.IsAuthenticated != true
+            || !(await Microsoft.AspNetCore.Authorization.AuthorizationServiceExtensions.AuthorizeAsync(authz, ctx.User, "CmsAccess")).Succeeded)
+        {
+            ctx.Response.StatusCode = StatusCodes.Status404NotFound;
+            return;
+        }
+        await next();
+    });
+});
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    c.DocumentTitle = "API – Sàn giao dịch công nghệ Cần Thơ";
+});
+
+app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = TechExchangeApp.Infrastructure.Health.HealthResponseWriter.WriteAsync
+});
 
 // SignalR Hub
 app.MapHub<TechExchangeApp.Hubs.NotificationHub>("/notificationHub");
@@ -637,6 +691,47 @@ app.MapControllerRoute(
     name: "en_register_page",
     pattern: "en/register",
     defaults: new { controller = "Account", action = "Register" }
+);
+
+// Sản phẩm quan tâm (HSMT B.3.3)
+app.MapControllerRoute(
+    name: "product_favorites",
+    pattern: "san-pham-quan-tam",
+    defaults: new { controller = "ProductFavorite", action = "Index" }
+);
+
+// Câu hỏi thường gặp (HSMT A.7.3)
+app.MapControllerRoute(
+    name: "faq",
+    pattern: "hoi-dap",
+    defaults: new { controller = "Faq", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "en_faq",
+    pattern: "en/faq",
+    defaults: new { controller = "Faq", action = "Index" }
+);
+
+// Quên mật khẩu (HSMT A.1.1)
+app.MapControllerRoute(
+    name: "forgot_password",
+    pattern: "quen-mat-khau",
+    defaults: new { controller = "Account", action = "ForgotPassword" }
+);
+app.MapControllerRoute(
+    name: "reset_password",
+    pattern: "dat-lai-mat-khau",
+    defaults: new { controller = "Account", action = "ResetPassword" }
+);
+app.MapControllerRoute(
+    name: "en_forgot_password",
+    pattern: "en/forgot-password",
+    defaults: new { controller = "Account", action = "ForgotPassword" }
+);
+app.MapControllerRoute(
+    name: "en_reset_password",
+    pattern: "en/reset-password",
+    defaults: new { controller = "Account", action = "ResetPassword" }
 );
 
 
