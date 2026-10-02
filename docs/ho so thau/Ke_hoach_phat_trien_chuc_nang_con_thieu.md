@@ -123,7 +123,7 @@ Với 2 lập trình viên: khoảng **6 tuần**. Nếu demo sớm hơn, làm x
 | Đợt | Phụ trách | Bắt đầu | Hạn | Trạng thái |
 |---|---|---|---|---|
 | 1 | | 02/10/2026 | | Code xong 10/12 mục, đã chạy thử trên local (nhánh `feature/bo-sung-chuc-nang-hsmt`). Còn 1.1 SMS, 1.2 ký số: chờ tài khoản nhà cung cấp |
-| 2 | | | | |
+| 2 | | 02/10/2026 | | Code xong 6/6 mục, đã chạy thử trên local. Bình luận mới gắn ở trang sản phẩm (bảng dùng chung cho gian hàng, bài viết) |
 | 3 | | | | |
 | 4 | | | | |
 | 5 | | | | |

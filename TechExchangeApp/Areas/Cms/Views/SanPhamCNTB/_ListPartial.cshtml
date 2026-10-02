@@ -55,6 +55,7 @@
                 <th class="sortable text-uppercase small fw-bold d-none d-lg-table-cell text-center" data-sort="viewed" role="button">
                     Lượt xem @Html.Raw(SortIcon("viewed", sortBy, sortDir))
                 </th>
+                <th class="text-uppercase small fw-bold d-none d-lg-table-cell text-center" title="Số hội thoại chat và yêu cầu đặt mua/quan tâm">Liên hệ</th>
                 <th class="sortable text-uppercase small fw-bold d-none d-md-table-cell" data-sort="created" role="button">
                     Ngày xuất bản @Html.Raw(SortIcon("created", sortBy, sortDir))
                 </th>
@@ -64,7 +65,7 @@
             @if (Model.Count == 0)
             {
                 <tr>
-                    <td colspan="11" class="text-center text-muted py-4">
+                    <td colspan="12" class="text-center text-muted py-4">
                         <i class="fas fa-inbox fa-2x d-block mb-2"></i>
                         Không tìm thấy dữ liệu.
                     </td>
@@ -110,6 +111,9 @@
                                 <i class="fas fa-gear"></i>
                             </button>
                         }
+                        <a href="@Url.Action("Index", "SanPhamCNTBHistory", new { area = "Cms", id = p.ID })" class="btn btn-outline-dark btn-sm" title="Lịch sử chỉnh sửa">
+                            <i class="fas fa-clock-rotate-left"></i>
+                        </a>
                         @if (!isDiffSite && languageId == 1)
                         {
                             <button type="button" class="btn btn-outline-info btn-sm btn-translate" data-id="@p.ID" title="D&#7883;ch sang ti&#7871;ng Anh">
@@ -169,6 +173,7 @@
                     <td class="d-none d-md-table-cell small text-muted">@(p.Creator ?? "—")</td>
                     <td class="d-none d-md-table-cell small text-muted">@(p.LastUpdate?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
                     <td class="d-none d-lg-table-cell text-center small text-muted">@p.Viewed</td>
+                    <td class="d-none d-lg-table-cell text-center small text-muted">@p.ContactCount</td>
                     <td class="d-none d-md-table-cell small text-muted">@(p.Created?.ToString("dd/MM/yyyy") ?? "—")</td>
                 </tr>
             }

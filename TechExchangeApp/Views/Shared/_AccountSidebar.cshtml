@@ -65,6 +65,12 @@
             <a class="nav-link" href="/quan-ly-san-pham">
                 <i class="fas fa-boxes-stacked me-2"></i> @Html.Text("sidebar.productsEquip")
             </a>
+            @if (Model.IsSeller)
+            {
+                <a class="nav-link @(Context.Request.Path.StartsWithSegments("/bai-viet-cua-toi") ? "active" : "")" href="/bai-viet-cua-toi">
+                    <i class="fas fa-newspaper me-2"></i> @Html.Text("sidebar.myPosts")
+                </a>
+            }
             <a class="nav-link" href="/dang-ky-tu-van">
                 <i class="fas fa-user-graduate me-2"></i> @Html.Text("sidebar.consultantProfile")
             </a>

@@ -1,0 +1,113 @@
+@model TechExchangeApp.Areas.Cms.Controllers.ProductHistoryVm
+@{
+    ViewData["Title"] = "Lịch sử chỉnh sửa sản phẩm";
+    string ActionText(byte a) => a switch { 0 => "Trước khi theo dõi", 1 => "Tạo mới", _ => "Chỉnh sửa" };
+    string ActionBadge(byte a) => a switch { 0 => "bg-secondary", 1 => "bg-success", _ => "bg-primary" };
+    var changedCount = Model.Diff.Count(d => d.Changed);
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-clock-rotate-left me-1"></i> Lịch sử chỉnh sửa: <strong>@Model.ProductName</strong> <span class="text-muted small">(ID @Model.ProductId)</span></h3>
+        <div class="card-tools">
+            <a href="@Url.Action("Edit", "SanPhamCNTB", new { area = "Cms", id = Model.ProductId })" class="btn btn-sm btn-outline-primary"><i class="fas fa-pen-to-square"></i> Sửa sản phẩm</a>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (Model.Versions.Count == 0)
+        {
+            <p class="text-muted mb-0">Chưa có lịch sử. Hệ thống bắt đầu ghi từ lần lưu sản phẩm tiếp theo.</p>
+        }
+        else
+        {
+            <form method="get" class="row g-2 align-items-end mb-3">
+                <input type="hidden" name="id" value="@Model.ProductId" />
+                <div class="col-auto">
+                    <label class="form-label small fw-semibold mb-1">So sánh phiên bản</label>
+                    <select name="from" class="form-select form-select-sm">
+                        @foreach (var v in Model.Versions)
+                        {
+                            <option value="@v.VersionNo" selected="@(v.VersionNo == Model.FromNo)">#@v.VersionNo – @v.Created.ToString("dd/MM/yyyy HH:mm")</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label class="form-label small fw-semibold mb-1">với</label>
+                    <select name="to" class="form-select form-select-sm">
+                        @foreach (var v in Model.Versions)
+                        {
+                            <option value="@v.VersionNo" selected="@(v.VersionNo == Model.ToNo)">#@v.VersionNo – @v.Created.ToString("dd/MM/yyyy HH:mm")</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-auto"><button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-code-compare"></i> So sánh</button></div>
+            </form>
+
+            <div class="table-responsive mb-4">
+                <table class="table table-sm table-bordered align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center small" style="width:70px">PHIÊN BẢN</th>
+                            <th class="small" style="width:150px">THỜI ĐIỂM</th>
+                            <th class="small" style="width:160px">NGƯỜI SỬA</th>
+                            <th class="small" style="width:140px">THAO TÁC</th>
+                            <th class="small">TRƯỜNG THAY ĐỔI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var v in Model.Versions)
+                        {
+                            <tr class="@(v.VersionNo == Model.ToNo || v.VersionNo == Model.FromNo ? "table-warning" : "")">
+                                <td class="text-center fw-semibold">#@v.VersionNo</td>
+                                <td class="small">@v.Created.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td class="small">@(v.ChangedBy ?? "—")</td>
+                                <td><span class="badge @ActionBadge(v.Action)">@ActionText(v.Action)</span></td>
+                                <td class="small">@(v.ChangedFields.Count > 0 ? string.Join(", ", v.ChangedFields) : "—")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.FromNo.HasValue && Model.ToNo.HasValue)
+            {
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">Phiên bản #@Model.FromNo → #@Model.ToNo <span class="badge bg-warning text-dark">@changedCount trường khác nhau</span></h5>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="showAll" />
+                        <label class="form-check-label small" for="showAll">Hiện cả trường không đổi</label>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered align-top mb-0" id="diffTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="small" style="width:180px">TRƯỜNG</th>
+                                <th class="small">PHIÊN BẢN #@Model.FromNo</th>
+                                <th class="small">PHIÊN BẢN #@Model.ToNo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model.Diff)
+                            {
+                                <tr class="@(d.Changed ? "" : "diff-same d-none")">
+                                    <td class="small fw-semibold">@d.Label</td>
+                                    <td class="small @(d.Changed ? "bg-danger-subtle" : "")" style="white-space:pre-wrap;max-width:520px">@d.Before</td>
+                                    <td class="small @(d.Changed ? "bg-success-subtle" : "")" style="white-space:pre-wrap;max-width:520px">@d.After</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    document.getElementById('showAll')?.addEventListener('change', function () {
+        document.querySelectorAll('#diffTable .diff-same').forEach(r => r.classList.toggle('d-none', !this.checked));
+    });
+</script>
+}

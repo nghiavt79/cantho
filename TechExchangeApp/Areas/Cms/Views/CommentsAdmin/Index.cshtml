@@ -1,0 +1,130 @@
+@model List<TechExchangeApp.Areas.Cms.Controllers.CommentAdminRow>
+@{
+    ViewData["Title"] = "Bình luận";
+    var page = (int)ViewBag.Page;
+    var totalPages = (int)ViewBag.TotalPages;
+    var status = (byte?)ViewBag.Status;
+    var userId = (int?)ViewBag.UserId;
+    string PageUrl(int p) => Context.Request.Path + $"?keyword={Uri.EscapeDataString((string?)ViewBag.Keyword ?? "")}&user={Uri.EscapeDataString((string?)ViewBag.User ?? "")}&userId={userId}&status={status}&page={p}";
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-comments me-1"></i> Bình luận của người dùng <span class="badge bg-secondary">@ViewBag.Total</span></h3>
+    </div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-md-4"><input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control form-control-sm" placeholder="Từ khóa trong nội dung..." /></div>
+            <div class="col-md-3"><input type="text" name="user" value="@ViewBag.User" class="form-control form-control-sm" placeholder="Tên đăng nhập / họ tên..." /></div>
+            <div class="col-md-2">
+                <select name="status" class="form-select form-select-sm">
+                    <option value="">-- Trạng thái --</option>
+                    <option value="1" selected="@(status == 1)">Đang hiện</option>
+                    <option value="0" selected="@(status == 0)">Đã ẩn</option>
+                </select>
+            </div>
+            <div class="col-auto"><button class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Tìm</button></div>
+            @if (userId.HasValue)
+            {
+                <div class="col-auto"><a href="@Context.Request.Path" class="btn btn-sm btn-outline-secondary">Bỏ lọc người dùng #@userId</a></div>
+            }
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="small text-center" style="width:110px">THAO TÁC</th>
+                        <th class="small" style="width:180px">NGƯỜI BÌNH LUẬN</th>
+                        <th class="small">NỘI DUNG</th>
+                        <th class="small" style="width:240px">SẢN PHẨM</th>
+                        <th class="small" style="width:130px">THỜI ĐIỂM</th>
+                        <th class="small text-center" style="width:90px">TRẠNG THÁI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-4">Không có bình luận.</td></tr>
+                    }
+                    @foreach (var c in Model)
+                    {
+                        <tr data-id="@c.Id">
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="#" class="btn btn-outline-primary btn-edit" title="Sửa"><i class="fas fa-pen-to-square"></i></a>
+                                    <a href="#" class="btn btn-outline-secondary btn-toggle" data-status="@(c.StatusId == 1 ? 0 : 1)" title="@(c.StatusId == 1 ? "Ẩn" : "Hiện")"><i class="fas @(c.StatusId == 1 ? "fa-eye-slash" : "fa-eye")"></i></a>
+                                    <a href="#" class="btn btn-outline-danger btn-del" title="Xóa"><i class="fas fa-trash-can"></i></a>
+                                </div>
+                            </td>
+                            <td class="small">
+                                <a href="?userId=@c.UserId" title="Xem mọi bình luận của người này">@c.UserName</a>
+                                <div class="text-muted">@c.FullName</div>
+                            </td>
+                            <td class="small comment-content" style="white-space:pre-line">@c.Content</td>
+                            <td class="small">
+                                @if (c.TargetType == TechExchangeApp.Entities.CommentTargetTypes.Product)
+                                {
+                                    <a href="/san-pham/chi-tiet/x-@c.TargetId" target="_blank">#@c.TargetId @c.TargetName</a>
+                                }
+                                else { <span>#@c.TargetId</span> }
+                            </td>
+                            <td class="small">@c.Created.ToString("dd/MM/yyyy HH:mm")@if (c.Modified.HasValue) { <div class="text-muted">Sửa: @c.ModifiedBy</div> }</td>
+                            <td class="text-center">
+                                @if (c.StatusId == 1) { <span class="badge bg-success">Hiện</span> } else { <span class="badge bg-secondary">Đã ẩn</span> }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (totalPages > 1)
+        {
+            <ul class="pagination pagination-sm mt-3 mb-0">
+                @for (int p = Math.Max(1, page - 4); p <= Math.Min(totalPages, page + 4); p++)
+                {
+                    <li class="page-item @(p == page ? "active" : "")"><a class="page-link" href="@PageUrl(p)">@p</a></li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    function idOf(el) { return $(el).closest('tr').data('id'); }
+    $(document).on('click', '.btn-toggle', function (e) {
+        e.preventDefault();
+        $.post('@Url.Action("SetStatus", "CommentsAdmin", new { area = "Cms" })', { id: idOf(this), status: $(this).data('status'), __RequestVerificationToken: token }, function (r) {
+            if (r.success) location.reload(); else toastr.error(r.message);
+        });
+    });
+    $(document).on('click', '.btn-edit', function (e) {
+        e.preventDefault();
+        var id = idOf(this), current = $(this).closest('tr').find('.comment-content').text();
+        Swal.fire({ title: 'Sửa bình luận', input: 'textarea', inputValue: current, inputAttributes: { maxlength: 2000 },
+            showCancelButton: true, confirmButtonText: 'Lưu', cancelButtonText: 'Hủy' }).then(function (res) {
+            if (!res.isConfirmed) return;
+            $.post('@Url.Action("Edit", "CommentsAdmin", new { area = "Cms" })', { id: id, content: res.value, __RequestVerificationToken: token }, function (r) {
+                if (r.success) location.reload(); else toastr.error(r.message);
+            });
+        });
+    });
+    $(document).on('click', '.btn-del', function (e) {
+        e.preventDefault();
+        var id = idOf(this);
+        Swal.fire({ title: 'Xóa bình luận này?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33',
+            confirmButtonText: 'Xóa', cancelButtonText: 'Hủy' }).then(function (res) {
+            if (!res.isConfirmed) return;
+            $.post('@Url.Action("Delete", "CommentsAdmin", new { area = "Cms" })', { id: id, __RequestVerificationToken: token }, function (r) {
+                if (r.success) location.reload(); else toastr.error(r.message);
+            });
+        });
+    });
+})();
+</script>
+}

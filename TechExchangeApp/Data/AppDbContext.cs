@@ -6,7 +6,7 @@ using TechExchangeApp.Entities;
 
 namespace TechExchangeApp.Data
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
+    public partial class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
@@ -207,6 +207,11 @@ namespace TechExchangeApp.Data
         public DbSet<PasswordResetToken> PasswordResetTokens { get; set; } = null!;
         public DbSet<Faq> Faqs { get; set; } = null!;
         public DbSet<ProductFavorite> ProductFavorites { get; set; } = null!;
+
+        // Bổ sung chức năng HSMT — Đợt 2
+        public DbSet<SanPhamCNTBVersion> SanPhamCNTBVersions { get; set; } = null!;
+        public DbSet<ProductWarning> ProductWarnings { get; set; } = null!;
+        public DbSet<UserComment> UserComments { get; set; } = null!;
 
         // Generic Entity Action Engine
         public DbSet<EntityRating> EntityRatings { get; set; } = null!;

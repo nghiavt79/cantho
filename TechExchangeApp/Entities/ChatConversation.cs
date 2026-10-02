@@ -48,5 +48,13 @@ namespace TechExchangeApp.Entities
 
         /// <summary>Nhân viên/tư vấn đang phụ trách hỗ trợ (field nghiệp vụ chính; null = chưa gán).</summary>
         public int? AssignedStaffUserId { get; set; }
+
+        // ── Gắn cờ vi phạm (HSMT A.5.3) ──
+        public bool IsFlagged { get; set; }
+        [MaxLength(500)]
+        public string? FlagReason { get; set; }
+        public DateTime? FlaggedAt { get; set; }
+        [MaxLength(256)]
+        public string? FlaggedBy { get; set; }
     }
 }

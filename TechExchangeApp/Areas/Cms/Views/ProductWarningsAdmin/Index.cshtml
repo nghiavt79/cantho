@@ -1,0 +1,143 @@
+@model List<TechExchangeApp.Areas.Cms.Controllers.ProductWarningRow>
+@using TechExchangeApp.Entities
+@{
+    ViewData["Title"] = "Cảnh báo sản phẩm";
+    var counts = (Dictionary<byte, int>)ViewBag.Counts;
+    var type = (byte?)ViewBag.Type;
+    var status = (byte)ViewBag.Status;
+    var page = (int)ViewBag.Page;
+    var totalPages = (int)ViewBag.TotalPages;
+    var lastScan = (DateTime?)ViewBag.LastScan;
+    int Count(byte t) => counts.TryGetValue(t, out var n) ? n : 0;
+    string TypeText(byte t) => t switch
+    {
+        ProductWarningTypes.DuplicateName => "Trùng tên",
+        ProductWarningTypes.DuplicateDescription => "Trùng mô tả",
+        _ => "Quá hạn cập nhật"
+    };
+    string TypeBadge(byte t) => t == ProductWarningTypes.Stale ? "bg-warning text-dark" : "bg-danger";
+    string PageUrl(byte? t, byte s, int p = 1) => Context.Request.Path + $"?type={t}&status={s}&page={p}&keyword={Uri.EscapeDataString((string?)ViewBag.Keyword ?? "")}";
+}
+
+<div class="card card-outline card-warning shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-triangle-exclamation me-1"></i> Cảnh báo sản phẩm trùng lặp, quá hạn</h3>
+        <div class="card-tools">
+            <span class="small text-muted me-2">Lần quét gần nhất: @(lastScan?.ToString("dd/MM/yyyy HH:mm") ?? "chưa quét")</span>
+            <button type="button" class="btn btn-sm btn-warning" id="btnScan"><i class="fas fa-rotate"></i> Quét ngay</button>
+        </div>
+    </div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <ul class="nav nav-pills mb-3">
+            <li class="nav-item"><a class="nav-link @(type == null && status == 0 ? "active" : "")" href="@PageUrl(null, 0)">Tất cả đang mở <span class="badge bg-light text-dark">@counts.Values.Sum()</span></a></li>
+            <li class="nav-item"><a class="nav-link @(type == 1 && status == 0 ? "active" : "")" href="@PageUrl(1, 0)">Trùng tên <span class="badge bg-light text-dark">@Count(1)</span></a></li>
+            <li class="nav-item"><a class="nav-link @(type == 2 && status == 0 ? "active" : "")" href="@PageUrl(2, 0)">Trùng mô tả <span class="badge bg-light text-dark">@Count(2)</span></a></li>
+            <li class="nav-item"><a class="nav-link @(type == 3 && status == 0 ? "active" : "")" href="@PageUrl(3, 0)">Quá hạn cập nhật <span class="badge bg-light text-dark">@Count(3)</span></a></li>
+            <li class="nav-item"><a class="nav-link @(status == 1 ? "active" : "")" href="@PageUrl(type, 1)">Đã xử lý</a></li>
+            <li class="nav-item"><a class="nav-link @(status == 2 ? "active" : "")" href="@PageUrl(type, 2)">Tự đóng</a></li>
+        </ul>
+
+        <form method="get" class="row g-2 mb-3">
+            <input type="hidden" name="type" value="@type" />
+            <input type="hidden" name="status" value="@status" />
+            <div class="col-md-5"><input type="text" name="keyword" value="@ViewBag.Keyword" class="form-control form-control-sm" placeholder="Tên sản phẩm..." /></div>
+            <div class="col-auto"><button class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Tìm</button></div>
+            @if (status == 0)
+            {
+                <div class="col-auto ms-auto"><button type="button" class="btn btn-sm btn-success" id="btnResolve" disabled><i class="fas fa-check"></i> Đánh dấu đã xử lý</button></div>
+            }
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        @if (status == 0) { <th class="text-center" style="width:36px"><input type="checkbox" class="form-check-input" id="chkAll" /></th> }
+                        <th class="small" style="width:130px">LOẠI</th>
+                        <th class="small">SẢN PHẨM</th>
+                        <th class="small">CHI TIẾT</th>
+                        <th class="small" style="width:130px">PHÁT HIỆN</th>
+                        @if (status != 0) { <th class="small" style="width:200px">XỬ LÝ</th> }
+                        <th class="small text-center" style="width:90px">THAO TÁC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr><td colspan="7" class="text-center text-muted py-4">Không có cảnh báo.</td></tr>
+                    }
+                    @foreach (var w in Model)
+                    {
+                        <tr>
+                            @if (status == 0) { <td class="text-center"><input type="checkbox" class="form-check-input chkRow" value="@w.Id" /></td> }
+                            <td><span class="badge @TypeBadge(w.WarningType)">@TypeText(w.WarningType)</span></td>
+                            <td>
+                                <a href="@Url.Action("Edit", "SanPhamCNTB", new { area = "Cms", id = w.SanPhamId })" class="fw-semibold text-decoration-none">#@w.SanPhamId @w.ProductName</a>
+                                <div class="small text-muted">Người tạo: @(w.Creator ?? "—")</div>
+                            </td>
+                            <td class="small">@w.Detail</td>
+                            <td class="small">@w.DetectedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            @if (status != 0)
+                            {
+                                <td class="small">@w.ResolvedBy – @(w.ResolvedAt?.ToString("dd/MM/yyyy HH:mm"))@if (!string.IsNullOrEmpty(w.Note)) { <div class="text-muted">@w.Note</div> }</td>
+                            }
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="@Url.Action("Index", "SanPhamCNTBHistory", new { area = "Cms", id = w.SanPhamId })" class="btn btn-outline-dark" title="Lịch sử chỉnh sửa"><i class="fas fa-clock-rotate-left"></i></a>
+                                    @if (status == 1)
+                                    {
+                                        <a href="#" class="btn btn-outline-secondary btn-reopen" data-id="@w.Id" title="Mở lại"><i class="fas fa-rotate-left"></i></a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (totalPages > 1)
+        {
+            <ul class="pagination pagination-sm mt-3 mb-0">
+                @for (int p = Math.Max(1, page - 4); p <= Math.Min(totalPages, page + 4); p++)
+                {
+                    <li class="page-item @(p == page ? "active" : "")"><a class="page-link" href="@PageUrl(type, status, p)">@p</a></li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    $('#btnScan').on('click', function () {
+        var btn = $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Đang quét...');
+        $.post('@Url.Action("ScanNow", "ProductWarningsAdmin", new { area = "Cms" })', { __RequestVerificationToken: token }, function (r) {
+            toastr.success(r.message); setTimeout(function () { location.reload(); }, 800);
+        }).fail(function () { toastr.error('Quét lỗi.'); btn.prop('disabled', false).html('<i class="fas fa-rotate"></i> Quét ngay'); });
+    });
+    function toggle() { $('#btnResolve').prop('disabled', !$('.chkRow:checked').length); }
+    $(document).on('change', '#chkAll', function () { $('.chkRow').prop('checked', this.checked); toggle(); });
+    $(document).on('change', '.chkRow', toggle);
+    $('#btnResolve').on('click', function () {
+        var ids = $('.chkRow:checked').map(function () { return $(this).val(); }).get();
+        Swal.fire({
+            title: 'Đánh dấu ' + ids.length + ' cảnh báo đã xử lý?', input: 'text', inputPlaceholder: 'Ghi chú (không bắt buộc)',
+            showCancelButton: true, confirmButtonText: 'Xác nhận', cancelButtonText: 'Hủy'
+        }).then(function (res) {
+            if (!res.isConfirmed) return;
+            $.post('@Url.Action("Resolve", "ProductWarningsAdmin", new { area = "Cms" })', $.param({ ids: ids, note: res.value || '', __RequestVerificationToken: token }, true), function (r) {
+                if (r.success) { toastr.success(r.message); location.reload(); } else toastr.error(r.message);
+            });
+        });
+    });
+    $(document).on('click', '.btn-reopen', function (e) {
+        e.preventDefault();
+        $.post('@Url.Action("Reopen", "ProductWarningsAdmin", new { area = "Cms" })', { id: $(this).data('id'), __RequestVerificationToken: token }, function () { location.reload(); });
+    });
+})();
+</script>
+}

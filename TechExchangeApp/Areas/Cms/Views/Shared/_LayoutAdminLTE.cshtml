@@ -1,3 +1,4 @@
+@inject TechExchangeApp.Data.AppDbContext CmsDb
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -104,6 +105,10 @@
                         bool isImageAdverAdmin = postsCtrl == "ImageAdverAdmin";
                         bool isUiTranslationAdmin = postsCtrl == "UiTranslationAdmin";
                         bool isFaqAdmin = postsCtrl == "FaqAdmin";
+                        bool isCommentsAdmin = postsCtrl == "CommentsAdmin";
+                        bool isChatAdmin = postsCtrl == "ChatAdmin";
+                        bool isProductWarningsAdmin = postsCtrl == "ProductWarningsAdmin";
+                        bool isProductHistory = postsCtrl == "SanPhamCNTBHistory";
                         bool isContentsYeuCauAdmin = postsCtrl == "ContentsYeuCauAdmin";
                         bool isPhieuYeuCauCNTBAdmin = postsCtrl == "PhieuYeuCauCNTBAdmin";
                         bool isSystemParameterAdmin = postsCtrl == "SystemParameterAdmin";
@@ -118,9 +123,9 @@
                         bool isNhaTuVanAdmin = postsCtrl == "NhaTuVanAdmin";
                         bool isUsers = postsCtrl == "Users";
                         bool isHuongDanCms = postsCtrl == "HuongDanCms";
-                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin;
-                        bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin;
-                        bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin;
+                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin || isCommentsAdmin;
+                        bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin || isChatAdmin;
+                        bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin || isProductWarningsAdmin || isProductHistory;
                         bool isSystemGroup = isUsers || isLogAdmin || isSystemParameterAdmin || isSysFunctionAdmin || isRoleAdmin || isSysFuncPermissionAdmin;
                     }
                     <li class="nav-item">
@@ -172,6 +177,13 @@
                                    class="nav-link @(isSupportRequestsAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-headset"></i>
                                     <p>Yêu cầu Trung tâm tư vấn</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="ChatAdmin" asp-action="Index"
+                                   class="nav-link @(isChatAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-comment-dots"></i>
+                                    <p>Lịch sử chat</p>
                                 </a>
                             </li>
                         </ul>
@@ -233,6 +245,17 @@
                                     <p>Nhà tư vấn</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="ProductWarningsAdmin" asp-action="Index"
+                                   class="nav-link @(isProductWarningsAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-triangle-exclamation"></i>
+                                    <p>
+                                        Cảnh báo sản phẩm
+                                        @{ var openWarnings = await TechExchangeApp.Areas.Cms.Controllers.ProductWarningsAdminController.CountOpenAsync(CmsDb); }
+                                        @if (openWarnings > 0) { <span class="badge bg-warning text-dark ms-1">@openWarnings</span> }
+                                    </p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
@@ -285,6 +308,13 @@
                                    class="nav-link @(isFaqAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-circle-question"></i>
                                     <p>Câu hỏi thường gặp</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="CommentsAdmin" asp-action="Index"
+                                   class="nav-link @(isCommentsAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-comments"></i>
+                                    <p>Bình luận</p>
                                 </a>
                             </li>
                         </ul>

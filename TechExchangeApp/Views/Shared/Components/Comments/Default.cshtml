@@ -1,0 +1,112 @@
+@model List<TechExchangeApp.Services.CommentItemVm>
+@{
+    var targetType = (byte)ViewBag.TargetType;
+    var targetId = (int)ViewBag.TargetId;
+    var isAuth = User.Identity?.IsAuthenticated == true;
+    int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var currentUserId);
+}
+
+<section class="tech-card mt-4 user-comments" id="userComments" data-target-type="@targetType" data-target-id="@targetId">
+    <h2 class="h5 mb-3"><i class="bi bi-chat-left-text me-1"></i>@Html.Text("comment.title") <span class="badge bg-light text-dark comment-count">@Model.Count</span></h2>
+
+    @if (isAuth)
+    {
+        <form class="comment-form mb-3">
+            <textarea class="form-control mb-2" name="content" rows="3" maxlength="2000" required placeholder="@Html.Text("comment.placeholder")"></textarea>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="small text-danger comment-error"></span>
+                <button type="submit" class="btn btn-primary btn-sm">@Html.Text("comment.submit")</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p class="text-muted small mb-3">
+            <a href="#" onclick="if (typeof openLoginModal === 'function') { openLoginModal(); } else { location.href = '/dang-nhap'; } return false;">@Html.Text("common.login")</a>
+            @Html.Text("comment.loginToComment")
+        </p>
+    }
+
+    <ul class="list-unstyled mb-0 comment-list">
+        @if (Model.Count == 0)
+        {
+            <li class="text-muted small comment-empty">@Html.Text("comment.empty")</li>
+        }
+        @foreach (var c in Model)
+        {
+            <li class="border-top py-2" data-id="@c.Id">
+                <div class="d-flex justify-content-between">
+                    <strong class="small">@c.UserName</strong>
+                    <span class="small text-muted">
+                        @c.Created.ToString("dd/MM/yyyy HH:mm")
+                        @if (c.UserId == currentUserId)
+                        {
+                            <a href="#" class="text-danger ms-2 comment-del" title="@Html.Text("comment.delete")"><i class="bi bi-trash"></i></a>
+                        }
+                    </span>
+                </div>
+                <div class="small mt-1" style="white-space:pre-line">@c.Content</div>
+            </li>
+        }
+    </ul>
+</section>
+
+<script>
+(function () {
+    var box = document.getElementById('userComments');
+    if (!box) return;
+    var token = function () { return document.querySelector('meta[name="__RequestVerificationToken"]')?.content || ''; };
+    var post = function (url, data) {
+        return fetch(url, {
+            method: 'POST',
+            headers: { 'RequestVerificationToken': token(), 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(data).toString()
+        }).then(function (r) { return r.json(); });
+    };
+    var base = (location.pathname === '/en' || location.pathname.indexOf('/en/') === 0) ? '/en/comment/' : '/Comment/';
+    var delTitle = @Json.Serialize(Html.Text("comment.delete"));
+    var confirmDel = @Json.Serialize(Html.Text("comment.confirmDelete"));
+
+    var form = box.querySelector('.comment-form');
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var ta = form.querySelector('textarea'), err = form.querySelector('.comment-error'), btn = form.querySelector('button');
+            err.textContent = ''; btn.disabled = true;
+            post(base + 'Post', { targetType: box.dataset.targetType, targetId: box.dataset.targetId, content: ta.value })
+                .then(function (d) {
+                    if (!d.success) { err.textContent = d.message || ''; return; }
+                    var li = document.createElement('li');
+                    li.className = 'border-top py-2'; li.dataset.id = d.item.id;
+                    var head = document.createElement('div'); head.className = 'd-flex justify-content-between';
+                    var name = document.createElement('strong'); name.className = 'small'; name.textContent = d.item.userName;
+                    var meta = document.createElement('span'); meta.className = 'small text-muted'; meta.textContent = d.item.created;
+                    var del = document.createElement('a'); del.href = '#'; del.className = 'text-danger ms-2 comment-del'; del.title = delTitle; del.innerHTML = '<i class="bi bi-trash"></i>';
+                    meta.appendChild(del); head.appendChild(name); head.appendChild(meta);
+                    var body = document.createElement('div'); body.className = 'small mt-1'; body.style.whiteSpace = 'pre-line'; body.textContent = d.item.content;
+                    li.appendChild(head); li.appendChild(body);
+                    var list = box.querySelector('.comment-list');
+                    box.querySelector('.comment-empty')?.remove();
+                    list.insertBefore(li, list.firstChild);
+                    var cnt = box.querySelector('.comment-count'); cnt.textContent = (parseInt(cnt.textContent, 10) || 0) + 1;
+                    ta.value = '';
+                })
+                .catch(function () { err.textContent = 'Error'; })
+                .finally(function () { btn.disabled = false; });
+        });
+    }
+
+    box.addEventListener('click', function (e) {
+        var a = e.target.closest('.comment-del');
+        if (!a) return;
+        e.preventDefault();
+        if (!confirm(confirmDel)) return;
+        var li = a.closest('li');
+        post(base + 'Delete', { id: li.dataset.id }).then(function (d) {
+            if (!d.success) return;
+            li.remove();
+            var cnt = box.querySelector('.comment-count'); cnt.textContent = Math.max(0, (parseInt(cnt.textContent, 10) || 1) - 1);
+        });
+    });
+})();
+</script>

@@ -1,0 +1,55 @@
+@using TechExchangeApp.Interfaces
+@using Microsoft.AspNetCore.Identity
+@using TechExchangeApp.Entities
+@inject IAccountService AccountService
+@inject UserManager<ApplicationUser> UserManager
+
+@model TechExchangeApp.Controllers.SupplierPostVm
+
+@{
+    ViewData["Title"] = Model.Id > 0 ? "Sửa bài viết" : "Viết bài mới";
+    ViewData["AuthWorkspace"] = true;
+    var userId = int.Parse(UserManager.GetUserId(User)!);
+    var sidebarData = await AccountService.GetSidebarDataAsync(userId);
+}
+
+<div class="container-fluid py-4 user-portal">
+  <div class="row">
+    <div class="col-md-3 col-lg-2">
+      @await Html.PartialAsync("_AccountSidebar", sidebarData)
+    </div>
+
+    <div class="col-md-9 col-lg-10 user-portal-main">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="fas fa-pen me-1"></i> @ViewData["Title"]</h5>
+            </div>
+            <form action="/bai-viet-cua-toi/soan" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="card-body">
+                    <div asp-validation-summary="All" class="text-danger small mb-2"></div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" for="Title">Tiêu đề <span class="text-danger">*</span></label>
+                        <input id="Title" name="Title" value="@Model.Title" class="form-control" maxlength="500" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" for="Description">Tóm tắt</label>
+                        <textarea id="Description" name="Description" class="form-control" rows="2" maxlength="1000">@Model.Description</textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label fw-semibold" for="Body">Nội dung <span class="text-danger">*</span></label>
+                        <textarea id="Body" name="Body" class="form-control" rows="14" required>@Model.Body</textarea>
+                        <div class="form-text">Văn bản thuần; để một dòng trống giữa các đoạn. Ảnh và định dạng sẽ do Sàn bổ sung khi duyệt.</div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-flex gap-2 justify-content-end">
+                    <a href="/bai-viet-cua-toi" class="btn btn-outline-secondary">Hủy</a>
+                    <button type="submit" name="submit" value="false" class="btn btn-outline-primary"><i class="fas fa-save me-1"></i> Lưu nháp</button>
+                    <button type="submit" name="submit" value="true" class="btn btn-primary"><i class="fas fa-paper-plane me-1"></i> Gửi duyệt</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+</div>

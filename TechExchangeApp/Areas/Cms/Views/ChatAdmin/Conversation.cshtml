@@ -1,0 +1,94 @@
+@model TechExchangeApp.Areas.Cms.Controllers.ChatAdminRow
+@{
+    ViewData["Title"] = "Hội thoại #" + Model.Id;
+    var messages = (List<TechExchangeApp.Areas.Cms.Controllers.ChatAdminMessage>)ViewBag.Messages;
+    var keyword = (string?)ViewBag.Keyword;
+    string Local(DateTime? d) => d.HasValue ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc).ToLocalTime().ToString("dd/MM/yyyy HH:mm") : "—";
+
+    // Tô sáng từ khóa: encode trước, rồi bọc <mark> — không chèn HTML của người dùng
+    Microsoft.AspNetCore.Html.IHtmlContent Highlight(string text)
+    {
+        var enc = System.Net.WebUtility.HtmlEncode(text);
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            var k = System.Net.WebUtility.HtmlEncode(keyword);
+            enc = System.Text.RegularExpressions.Regex.Replace(enc, System.Text.RegularExpressions.Regex.Escape(k),
+                m => "<mark>" + m.Value + "</mark>", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        }
+        return new Microsoft.AspNetCore.Html.HtmlString(enc);
+    }
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card card-outline card-primary shadow-sm mb-3">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-comments me-1"></i> Hội thoại #@Model.Id – @(Model.ProductName ?? "Hỗ trợ của Trung tâm")</h3>
+                <div class="card-tools"><a href="@Url.Action("Index", "ChatAdmin", new { area = "Cms" })" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Danh sách</a></div>
+            </div>
+            <div class="card-body" style="max-height:70vh;overflow:auto">
+                @if (messages.Count == 0)
+                {
+                    <p class="text-muted mb-0">Chưa có tin nhắn.</p>
+                }
+                @foreach (var m in messages)
+                {
+                    var isBuyer = m.SenderUserId == Model.BuyerUserId;
+                    <div class="mb-2 d-flex @(isBuyer ? "" : "justify-content-end")">
+                        <div class="p-2 rounded @(m.IsSystem ? "bg-light text-muted fst-italic" : isBuyer ? "bg-light" : "bg-primary-subtle")" style="max-width:80%">
+                            <div class="small fw-semibold">@m.SenderName <span class="text-muted fw-normal ms-1">@Local(m.Created)</span></div>
+                            <div style="white-space:pre-wrap">@Highlight(m.Message)</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body small">
+                <div><strong>Người mua:</strong> @(Model.BuyerName ?? Model.BuyerUserId)</div>
+                <div><strong>Người bán / tư vấn:</strong> @(Model.SupplierName ?? Model.SupplierUserId)</div>
+                <div><strong>Bắt đầu:</strong> @Local(Model.Created)</div>
+                @if (Model.ProductId.HasValue)
+                {
+                    <div><strong>Sản phẩm:</strong> <a href="/san-pham/chi-tiet/x-@Model.ProductId" target="_blank">#@Model.ProductId</a></div>
+                }
+            </div>
+        </div>
+        <div class="card shadow-sm @(Model.IsFlagged ? "border-danger" : "")">
+            <div class="card-header"><strong><i class="fas fa-flag me-1"></i> Gắn cờ vi phạm</strong></div>
+            <div class="card-body">
+                @Html.AntiForgeryToken()
+                @if (Model.IsFlagged)
+                {
+                    <div class="alert alert-danger small mb-2">
+                        <div><strong>Lý do:</strong> @Model.FlagReason</div>
+                        <div class="text-muted">@Model.FlaggedBy – @Model.FlaggedAt?.ToString("dd/MM/yyyy HH:mm")</div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnUnflag"><i class="fas fa-flag"></i> Bỏ cờ</button>
+                }
+                else
+                {
+                    <textarea id="flagReason" class="form-control form-control-sm mb-2" rows="3" maxlength="500" placeholder="Lý do (bắt buộc)"></textarea>
+                    <button type="button" class="btn btn-sm btn-danger" id="btnFlag"><i class="fas fa-flag"></i> Gắn cờ</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    function send(flagged, reason) {
+        $.post('@Url.Action("Flag", "ChatAdmin", new { area = "Cms" })', { id: @Model.Id, flagged: flagged, reason: reason || '', __RequestVerificationToken: token }, function (r) {
+            if (r.success) location.reload(); else toastr.error(r.message);
+        });
+    }
+    $('#btnFlag').on('click', function () { send(true, $('#flagReason').val()); });
+    $('#btnUnflag').on('click', function () { send(false); });
+})();
+</script>
+}

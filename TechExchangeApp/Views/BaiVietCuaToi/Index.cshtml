@@ -1,0 +1,109 @@
+@using TechExchangeApp.Interfaces
+@using Microsoft.AspNetCore.Identity
+@using TechExchangeApp.Entities
+@inject IAccountService AccountService
+@inject UserManager<ApplicationUser> UserManager
+
+@model List<TechExchangeApp.Controllers.SupplierPostRow>
+
+@{
+    ViewData["Title"] = "Bài viết của tôi";
+    ViewData["AuthWorkspace"] = true;
+    var userId = int.Parse(UserManager.GetUserId(User)!);
+    var sidebarData = await AccountService.GetSidebarDataAsync(userId);
+    var isSupplier = (bool)ViewBag.IsSupplier;
+
+    (string Text, string Css) Status(int? s) => s switch
+    {
+        2 => ("Chờ duyệt", "bg-warning text-dark"),
+        3 => ("Đã xuất bản", "bg-success"),
+        4 => ("Bị trả về", "bg-danger"),
+        _ => ("Nháp", "bg-secondary")
+    };
+}
+
+<div class="container-fluid py-4 user-portal">
+  <div class="row">
+    <div class="col-md-3 col-lg-2">
+      @await Html.PartialAsync("_AccountSidebar", sidebarData)
+    </div>
+
+    <div class="col-md-9 col-lg-10 user-portal-main">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-newspaper me-1"></i> Bài viết của tôi</h5>
+                @if (isSupplier)
+                {
+                    <a href="/bai-viet-cua-toi/soan" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i> Viết bài mới</a>
+                }
+            </div>
+            <div class="card-body">
+                @if (!isSupplier)
+                {
+                    <p class="text-muted mb-0">Chức năng gửi bài dành cho nhà cung cấp. <a href="/dang-ky-nha-cung-ung">Đăng ký hồ sơ nhà cung cấp</a> để gửi bài giới thiệu sản phẩm, giải pháp lên Sàn.</p>
+                }
+                else if (Model.Count == 0)
+                {
+                    <p class="text-muted mb-0">Chưa có bài viết. Bài gửi lên sẽ được Sàn duyệt trước khi xuất bản.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm align-middle mb-0">
+                            <thead class="table-light">
+                                <tr><th>Tiêu đề</th><th style="width:130px">Trạng thái</th><th style="width:140px">Cập nhật</th><th style="width:110px" class="text-center">Thao tác</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in Model)
+                                {
+                                    var st = Status(p.StatusId);
+                                    var editable = p.StatusId is null or 1 or 4;
+                                    <tr data-id="@p.Id">
+                                        <td>
+                                            @if (p.StatusId == 3)
+                                            {
+                                                <a href="/tin-tuc-su-kien/@p.QueryString-@p.Id" target="_blank" class="fw-semibold">@p.Title</a>
+                                            }
+                                            else { <span class="fw-semibold">@p.Title</span> }
+                                        </td>
+                                        <td><span class="badge @st.Css">@st.Text</span></td>
+                                        <td class="small text-muted">@((p.Modified ?? p.Created)?.ToString("dd/MM/yyyy HH:mm"))</td>
+                                        <td class="text-center">
+                                            @if (editable)
+                                            {
+                                                <a href="/bai-viet-cua-toi/soan?id=@p.Id" class="btn btn-outline-primary btn-sm" title="Sửa"><i class="fas fa-edit"></i></a>
+                                                <button type="button" class="btn btn-outline-danger btn-sm ms-1 btn-del" title="Xóa"><i class="fas fa-trash"></i></button>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+<script>
+document.querySelectorAll('.btn-del').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        if (!confirm('Xóa bài viết này?')) return;
+        var tr = btn.closest('tr');
+        var token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
+        fetch('/BaiVietCuaToi/Delete', {
+            method: 'POST',
+            headers: { 'RequestVerificationToken': token, 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'id=' + encodeURIComponent(tr.dataset.id)
+        }).then(function (r) { return r.json(); }).then(function (d) { if (d.success) tr.remove(); });
+    });
+});
+</script>
+}

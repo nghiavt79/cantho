@@ -231,6 +231,11 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.INotificationProcessor, Te
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.NotificationWorker>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBackgroundService>();
 
+// --- Cảnh báo sản phẩm trùng lặp / quá hạn (HSMT A.8.2) ---
+builder.Services.AddScoped<TechExchangeApp.Services.IProductWarningScanner, TechExchangeApp.Services.ProductWarningScanner>();
+builder.Services.AddScoped<TechExchangeApp.Services.ICommentService, TechExchangeApp.Services.CommentService>();
+builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.ProductWarningBackgroundService>();
+
 // --- Tài liệu API (HSMT 2.3, 2.4) — chỉ các endpoint /api/*, xem tại /swagger (cần quyền CMS) ---
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -691,6 +696,25 @@ app.MapControllerRoute(
     name: "en_register_page",
     pattern: "en/register",
     defaults: new { controller = "Account", action = "Register" }
+);
+
+// Bình luận (HSMT B.3.5) — bản /en/ để thông báo lỗi trả về tiếng Anh
+app.MapControllerRoute(
+    name: "en_comment",
+    pattern: "en/comment/{action}",
+    defaults: new { controller = "Comment" }
+);
+
+// Bài viết nhà cung cấp gửi duyệt (HSMT A.2.8)
+app.MapControllerRoute(
+    name: "bai_viet_cua_toi",
+    pattern: "bai-viet-cua-toi",
+    defaults: new { controller = "BaiVietCuaToi", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "bai_viet_cua_toi_soan",
+    pattern: "bai-viet-cua-toi/soan",
+    defaults: new { controller = "BaiVietCuaToi", action = "Form" }
 );
 
 // Sản phẩm quan tâm (HSMT B.3.3)

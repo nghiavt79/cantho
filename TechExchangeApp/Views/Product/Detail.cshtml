@@ -156,6 +156,8 @@
                                 { "EntityId", Model.Product.ID }
                             })
                         </div>
+
+                        @await Component.InvokeAsync("Comments", new { targetType = TechExchangeApp.Entities.CommentTargetTypes.Product, targetId = Model.Product.ID })
                     </main>
 
                     <aside class="tech-sidebar">

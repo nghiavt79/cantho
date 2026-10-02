@@ -134,6 +134,10 @@
             <span class="badge bg-info ms-1" id="badgeTotal">@ViewBag.TotalCount</span>
         </h3>
         <div class="ms-auto d-flex gap-2">
+            @* Bài nhà cung cấp gửi chờ duyệt (HSMT A.2.8): TypeId = 9, StatusId = 2 *@
+            <a href="@Url.Action("Index", "Posts", new { area = "Cms", typeId = TechExchangeApp.Controllers.BaiVietCuaToiController.SupplierPostTypeId, statusId = 2 })" class="btn btn-outline-warning btn-sm">
+                <i class="fas fa-hourglass-half me-1"></i> Bài nhà cung cấp chờ duyệt
+            </a>
             <a asp-action="Create" class="btn btn-success btn-sm">
                 <i class="fas fa-plus me-1"></i> Thêm tin bài
             </a>

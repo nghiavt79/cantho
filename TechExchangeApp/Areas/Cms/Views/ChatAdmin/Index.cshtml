@@ -1,0 +1,97 @@
+@model List<TechExchangeApp.Areas.Cms.Controllers.ChatAdminRow>
+@{
+    ViewData["Title"] = "Quản lý chat";
+    var page = (int)ViewBag.Page;
+    var totalPages = (int)ViewBag.TotalPages;
+    var role = (string)ViewBag.Role;
+    var flagged = (bool)ViewBag.Flagged;
+    var type = (int?)ViewBag.Type;
+    var keyword = (string?)ViewBag.Keyword;
+    string Q(string? s) => Uri.EscapeDataString(s ?? "");
+    string PageUrl(int p) => Context.Request.Path + $"?user={Q((string?)ViewBag.User)}&role={role}&keyword={Q(keyword)}&flagged={flagged.ToString().ToLower()}&type={type}&page={p}";
+    // Thời điểm chat lưu UTC
+    string Local(DateTime? d) => d.HasValue ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc).ToLocalTime().ToString("dd/MM/yyyy HH:mm") : "—";
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-comments me-1"></i> Lịch sử chat <span class="badge bg-secondary">@ViewBag.Total</span></h3>
+        <div class="card-tools">
+            <a href="?flagged=true" class="btn btn-sm btn-outline-danger"><i class="fas fa-flag"></i> Đã gắn cờ <span class="badge bg-danger">@ViewBag.FlaggedCount</span></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-md-3"><input type="text" name="user" value="@ViewBag.User" class="form-control form-control-sm" placeholder="Tên đăng nhập / họ tên / email..." /></div>
+            <div class="col-md-2">
+                <select name="role" class="form-select form-select-sm">
+                    <option value="any" selected="@(role == "any")">Mua hoặc bán</option>
+                    <option value="buyer" selected="@(role == "buyer")">Là người mua</option>
+                    <option value="seller" selected="@(role == "seller")">Là người bán</option>
+                </select>
+            </div>
+            <div class="col-md-3"><input type="text" name="keyword" value="@keyword" class="form-control form-control-sm" placeholder="Từ khóa trong tin nhắn..." /></div>
+            <div class="col-md-2">
+                <select name="type" class="form-select form-select-sm">
+                    <option value="">-- Loại hội thoại --</option>
+                    <option value="1" selected="@(type == 1)">Chat sản phẩm</option>
+                    <option value="2" selected="@(type == 2)">Hỗ trợ của Trung tâm</option>
+                </select>
+            </div>
+            <div class="col-auto form-check align-self-center ms-2">
+                <input class="form-check-input" type="checkbox" name="flagged" value="true" id="fFlag" @(flagged ? "checked" : "") />
+                <label class="form-check-label small" for="fFlag">Chỉ đã gắn cờ</label>
+            </div>
+            <div class="col-auto"><button class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Tìm</button></div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="small" style="width:70px">#</th>
+                        <th class="small">SẢN PHẨM / CHỦ ĐỀ</th>
+                        <th class="small" style="width:190px">NGƯỜI MUA</th>
+                        <th class="small" style="width:190px">NGƯỜI BÁN / TƯ VẤN</th>
+                        <th class="small text-center" style="width:80px">SỐ TIN</th>
+                        <th class="small" style="width:130px">TIN CUỐI</th>
+                        <th class="small text-center" style="width:80px">XEM</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count == 0)
+                    {
+                        <tr><td colspan="7" class="text-center text-muted py-4">Không có hội thoại.</td></tr>
+                    }
+                    @foreach (var c in Model)
+                    {
+                        <tr class="@(c.IsFlagged ? "table-danger" : "")">
+                            <td class="small">@c.Id @if (c.IsFlagged) { <i class="fas fa-flag text-danger" title="@c.FlagReason"></i> }</td>
+                            <td class="small">
+                                @(c.ProductName ?? (c.ConversationType == 2 ? "Hỗ trợ của Trung tâm" : "—"))
+                                @if (c.IsFlagged) { <div class="text-danger">Cờ: @c.FlagReason</div> }
+                            </td>
+                            <td class="small"><a href="?user=@Q(c.BuyerUserName)&role=buyer">@(c.BuyerName ?? c.BuyerUserId)</a></td>
+                            <td class="small"><a href="?user=@Q(c.SupplierUserName)&role=seller">@(c.SupplierName ?? c.SupplierUserId)</a></td>
+                            <td class="text-center">@c.MessageCount</td>
+                            <td class="small">@Local(c.LastMessageAt ?? c.Created)</td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Conversation", "ChatAdmin", new { area = "Cms", id = c.Id, keyword })" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (totalPages > 1)
+        {
+            <ul class="pagination pagination-sm mt-3 mb-0">
+                @for (int p = Math.Max(1, page - 4); p <= Math.Min(totalPages, page + 4); p++)
+                {
+                    <li class="page-item @(p == page ? "active" : "")"><a class="page-link" href="@PageUrl(p)">@p</a></li>
+                }
+            </ul>
+        }
+    </div>
+</div>

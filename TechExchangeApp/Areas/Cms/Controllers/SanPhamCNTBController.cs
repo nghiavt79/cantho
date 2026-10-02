@@ -155,6 +155,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     Created = p.bEffectiveDate,
                     LastUpdate = p.Modified ?? p.Created,
                     Viewed = p.Viewed ?? 0,
+                    // Lượt liên hệ (HSMT A.2.5): hội thoại chat + yêu cầu đặt mua/quan tâm theo sản phẩm
+                    ContactCount = _context.ChatConversations.Count(c => c.ProductId == p.ID) + _context.OcopOrderRequests.Count(o => o.ProductId == p.ID),
                     ProductType = p.ProductType,
                     SoBang = p.SoBang,
                     NhaCungUngName = p.NCUId.HasValue
@@ -267,6 +269,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     Created = p.bEffectiveDate,
                     LastUpdate = p.Modified ?? p.Created,
                     Viewed = p.Viewed ?? 0,
+                    // Lượt liên hệ (HSMT A.2.5): hội thoại chat + yêu cầu đặt mua/quan tâm theo sản phẩm
+                    ContactCount = _context.ChatConversations.Count(c => c.ProductId == p.ID) + _context.OcopOrderRequests.Count(o => o.ProductId == p.ID),
                     ProductType = p.ProductType,
                     SoBang = p.SoBang,
                     NhaCungUngName = p.NCUId.HasValue
@@ -1081,6 +1085,7 @@ MaTruyXuat = p.MaTruyXuat
         public DateTime? Created { get; set; }
         public DateTime? LastUpdate { get; set; }
         public int Viewed { get; set; }
+        public int ContactCount { get; set; }
         public int ProductType { get; set; }
         public string? SoBang { get; set; }
         public string? NhaCungUngName { get; set; }

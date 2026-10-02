@@ -131,6 +131,7 @@ namespace TechExchangeApp.Controllers
                     Created     = p.Created,
                     LastUpdate  = p.Modified,
                     Viewed      = p.Viewed ?? 0,
+                    ContactCount = _context.ChatConversations.Count(c => c.ProductId == p.ID) + _context.OcopOrderRequests.Count(o => o.ProductId == p.ID),
                     ProductType = p.ProductType,
                     SiteId      = p.SiteId,
                     PublicUrl   = p.URL,
@@ -154,6 +155,12 @@ namespace TechExchangeApp.Controllers
             ViewBag.PageSize    = pageSize;
             ViewBag.TotalCount  = totalCount;
             ViewBag.TotalPages  = totalPages;
+
+            // Tổng lượt xem / liên hệ trên toàn bộ sản phẩm của người bán (HSMT B.2.3)
+            var myIds = _context.SanPhamCNTBs.Where(p => p.Creator == creator).Select(p => p.ID);
+            ViewBag.TotalViews    = await _context.SanPhamCNTBs.Where(p => p.Creator == creator).SumAsync(p => (int?)p.Viewed) ?? 0;
+            ViewBag.TotalContacts = await _context.ChatConversations.CountAsync(c => c.ProductId != null && myIds.Contains(c.ProductId.Value))
+                                  + await _context.OcopOrderRequests.CountAsync(o => myIds.Contains(o.ProductId));
 
             return View(items);
         }

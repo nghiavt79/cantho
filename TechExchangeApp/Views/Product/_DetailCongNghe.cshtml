@@ -249,6 +249,8 @@
                 TargetTitle = p.Name,
                 ShareTitle = p.Name
             })
+
+            @await Component.InvokeAsync("Comments", new { targetType = TechExchangeApp.Entities.CommentTargetTypes.Product, targetId = p.ID })
         </main>
 
         <aside class="tech-sidebar">

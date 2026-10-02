@@ -39,6 +39,7 @@ namespace TechExchangeApp.Helpers
             // Dịch vụ của tôi (kèm URL slug tiếng Việt được đăng ký trong Program.cs)
             "/OcopOrder",
             "/ProductFavorite",     "/san-pham-quan-tam",
+            "/BaiVietCuaToi",       "/bai-viet-cua-toi",
             "/QuanLySanPham",       "/quan-ly-san-pham",
             "/DangKyTuVan",         "/dang-ky-tu-van",
             "/DangKyNhaCungUng",    "/dang-ky-nha-cung-ung"
