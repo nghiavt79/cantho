@@ -25,5 +25,9 @@ namespace TechExchangeApp.ViewModel
         public string ConfirmPassword { get; set; } = null!;
 
         public string? PhoneNumber { get; set; }
+
+        /// <summary>Đồng ý điều khoản xử lý dữ liệu cá nhân (HSMT 2.11) — bắt buộc.</summary>
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Vui lòng đồng ý điều khoản xử lý dữ liệu cá nhân / Please accept the personal data terms")]
+        public bool AgreeTerms { get; set; }
     }
 }

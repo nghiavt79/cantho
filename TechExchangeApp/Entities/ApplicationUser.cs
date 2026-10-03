@@ -95,5 +95,9 @@ namespace TechExchangeApp.Entities
         public string? LockedReason { get; set; }
         public DateTime? LockedAt { get; set; }
         public int? LockedBy { get; set; }
+
+        // ── Đồng ý xử lý dữ liệu cá nhân khi đăng ký (HSMT 2.11) ──
+        public DateTime? ConsentAt { get; set; }
+        public string? ConsentVersion { get; set; }
     }
 }

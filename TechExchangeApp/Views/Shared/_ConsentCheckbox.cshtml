@@ -1,0 +1,22 @@
+@model string
+@inject TechExchangeApp.Interfaces.ISystemParameterService SysParams
+@{
+    // Ô đồng ý xử lý dữ liệu cá nhân khi đăng ký (HSMT 2.11). Model = id của checkbox.
+    var policyUrl = (await SysParams.GetAsync("PRIVACY_POLICY_URL"))?.Trim();
+    var hasLink = !string.IsNullOrEmpty(policyUrl) && policyUrl.StartsWith("/") && !policyUrl.StartsWith("//");
+}
+<div class="form-check mt-2">
+    <input class="form-check-input" type="checkbox" id="@Model" name="AgreeTerms" value="true" required />
+    <label class="form-check-label small" for="@Model">
+        @Html.Text("auth.consent.prefix")
+        @if (hasLink)
+        {
+            <a href="@policyUrl" target="_blank">@Html.Text("auth.consent.policy")</a>
+        }
+        else
+        {
+            <span>@Html.Text("auth.consent.policy")</span>
+        }
+        @Html.Text("auth.consent.suffix") <span class="text-danger">*</span>
+    </label>
+</div>

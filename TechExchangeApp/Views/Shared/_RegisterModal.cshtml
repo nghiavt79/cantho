@@ -93,6 +93,8 @@
                         </div>
                     </div>
 
+                    <partial name="_ConsentCheckbox" model="@("registerAgreeTerms")" />
+
                     <!-- Submit button with loading state -->
                     <button type="submit" class="btn btn-success w-100 auth-submit-btn mt-3">
                         <span class="btn-text">@Html.Text("common.signup")</span>

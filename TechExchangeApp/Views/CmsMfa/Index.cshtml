@@ -1,0 +1,31 @@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Xác thực đăng nhập CMS";
+    var returnUrl = (string)ViewBag.ReturnUrl;
+}
+
+<div class="container my-5" style="max-width:480px">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white"><h1 class="h5 mb-0"><i class="bi bi-shield-lock me-1"></i>Xác thực lớp 2</h1></div>
+        <div class="card-body">
+            <p class="small text-muted">Trang quản trị yêu cầu mã xác thực gửi tới email @ViewBag.MaskedEmail.</p>
+            @if (TempData["MfaError"] != null) { <div class="alert alert-danger small">@TempData["MfaError"]</div> }
+            @if (TempData["MfaInfo"] != null) { <div class="alert alert-success small">@TempData["MfaInfo"]</div> }
+
+            <form action="/cms-xac-thuc/xac-nhan" method="post" class="mb-3">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <label class="form-label fw-semibold" for="code">Mã 6 số</label>
+                <div class="input-group">
+                    <input id="code" name="code" class="form-control" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required />
+                    <button class="btn btn-primary">Xác nhận</button>
+                </div>
+            </form>
+            <form action="/cms-xac-thuc/gui-ma" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-envelope me-1"></i>Gửi mã</button>
+            </form>
+        </div>
+    </div>
+</div>

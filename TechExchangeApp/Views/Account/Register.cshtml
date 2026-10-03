@@ -57,6 +57,9 @@
                             </div>
                         </div>
 
+                        <partial name="_ConsentCheckbox" model="@("AgreeTerms")" />
+                        <span asp-validation-for="AgreeTerms" class="text-danger small"></span>
+
                         <div class="d-grid gap-2 mt-3">
                             <button type="submit" class="btn btn-success btn-block">@Html.Text("common.signup")</button>
                         </div>

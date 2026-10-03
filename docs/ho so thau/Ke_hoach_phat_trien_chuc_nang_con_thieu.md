@@ -126,5 +126,5 @@ Với 2 lập trình viên: khoảng **6 tuần**. Nếu demo sớm hơn, làm x
 | 2 | | 02/10/2026 | | Code xong 6/6 mục, đã chạy thử trên local. Bình luận mới gắn ở trang sản phẩm (bảng dùng chung cho gian hàng, bài viết) |
 | 3 | | 02/10/2026 | | Code xong 5/5 mục, đã chạy thử trên local. Nhắc lịch qua email + chuông web; SMS chờ Brandname thật (mục 1.1) |
 | 4 | | 02/10/2026 | | Code xong 5/5 mục, đã chạy thử trên local. Hạn mức gói gian hàng mặc định chưa chặn (STORE_QUOTA_ENFORCED=0); tỷ lệ hoa hồng đang 0% chờ Sở chốt |
-| 5 | | | | |
+| 5 | | 03/10/2026 | | Code xong 5/6 mục, đã chạy thử trên local. IPv6 chờ hạ tầng máy chủ. Xác thực 2 lớp CMS mặc định tắt (CMS_MFA_ENABLED=0) đến khi cấu hình email |
 | 6 | | | | |

@@ -37,6 +37,12 @@ namespace TechExchangeApp.Controllers
             _mainDomain = raw.TrimEnd('/');
         }
 
+        private async Task<string> ConsentVersionAsync()
+        {
+            var v = await HttpContext.RequestServices.GetRequiredService<ISystemParameterService>().GetAsync("PRIVACY_CONSENT_VERSION");
+            return string.IsNullOrWhiteSpace(v) ? "1" : (v.Length > 20 ? v[..20] : v);
+        }
+
         // GET: /Account/Register
         [HttpGet]
         public IActionResult Register()
@@ -74,7 +80,9 @@ namespace TechExchangeApp.Controllers
                     IsActivated = true,
                     Domain = _domainName,
                     // PhoneNumber maps to Mobile column automatically
-                    PhoneNumber = model.PhoneNumber 
+                    PhoneNumber = model.PhoneNumber,
+                    ConsentAt = DateTime.Now,
+                    ConsentVersion = await ConsentVersionAsync()
                 };
 
                 // Manual Password Hashing
@@ -233,7 +241,9 @@ namespace TechExchangeApp.Controllers
                     Created = DateTime.Now,
                     IsActivated = true,
                     Domain = _domainName,
-                    PhoneNumber = model.PhoneNumber
+                    PhoneNumber = model.PhoneNumber,
+                    ConsentAt = DateTime.Now,
+                    ConsentVersion = await ConsentVersionAsync()
                 };
 
                 // Manual Password Hashing

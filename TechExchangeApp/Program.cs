@@ -46,6 +46,7 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(optio
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 50 * 1024 * 1024; // 50 MB
+    options.AddServerHeader = false; // không lộ tên máy chủ web (HSMT 2.11)
 });
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<TechExchangeApp.Services.Navigation.IHeaderMenuService, TechExchangeApp.Services.Navigation.HeaderMenuService>();
@@ -235,6 +236,9 @@ builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBa
 builder.Services.AddScoped<TechExchangeApp.Services.IProductWarningScanner, TechExchangeApp.Services.ProductWarningScanner>();
 builder.Services.AddScoped<TechExchangeApp.Services.ICommentService, TechExchangeApp.Services.CommentService>();
 
+// --- Xác thực lớp 2 khi vào CMS (HSMT 2.11), bật bằng tham số CMS_MFA_ENABLED ---
+builder.Services.AddSingleton<TechExchangeApp.Services.CmsMfaService>();
+
 // --- Nhà cung cấp: hạng, gói gian hàng, thu chi (HSMT Đợt 4) ---
 builder.Services.AddScoped<TechExchangeApp.Services.ISupplierStoreService, TechExchangeApp.Services.SupplierStoreService>();
 
@@ -283,6 +287,20 @@ else
 }
 
 app.UseHttpsRedirection();
+
+// --- Header bảo mật (HSMT 2.11) cho mọi phản hồi, kể cả tệp tĩnh ---
+// CSP chỉ giới hạn nhúng trang / plugin / base vì site dùng nhiều script nội tuyến và CDN.
+// Permissions-Policy cho phép micro (tìm kiếm giọng nói) trên chính site.
+app.Use(async (ctx, next) =>
+{
+    var h = ctx.Response.Headers;
+    h["X-Content-Type-Options"] = "nosniff";
+    h["X-Frame-Options"] = "SAMEORIGIN";
+    h["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    h["Permissions-Policy"] = "camera=(), geolocation=(), payment=(), microphone=(self)";
+    h["Content-Security-Policy"] = "frame-ancestors 'self'; object-src 'none'; base-uri 'self'";
+    await next();
+});
 app.UseResponseCompression();
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -322,6 +340,38 @@ app.UseSession();
 // Authentication & Authorization
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Xác thực lớp 2 (OTP email) cho tài khoản quản trị trước khi vào /cms — chỉ khi CMS_MFA_ENABLED = 1
+app.UseWhen(ctx => ctx.Request.Path.StartsWithSegments("/cms"), cmsApp =>
+{
+    cmsApp.Use(async (ctx, next) =>
+    {
+        if (ctx.User.Identity?.IsAuthenticated == true)
+        {
+            var sp = ctx.RequestServices;
+            var enabled = await sp.GetRequiredService<TechExchangeApp.Interfaces.ISystemParameterService>()
+                .GetBoolAsync(TechExchangeApp.Services.CmsMfaService.EnabledParam, false);
+            var uid = ctx.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (enabled && ctx.Session.GetString(TechExchangeApp.Services.CmsMfaService.SessionKey) != uid)
+            {
+                var authz = sp.GetRequiredService<Microsoft.AspNetCore.Authorization.IAuthorizationService>();
+                // Chỉ hỏi mã với người có quyền CMS; người không có quyền để policy CmsAccess từ chối như cũ
+                if ((await Microsoft.AspNetCore.Authorization.AuthorizationServiceExtensions.AuthorizeAsync(authz, ctx.User, "CmsAccess")).Succeeded)
+                {
+                    var isAjax = ctx.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+                    if (isAjax || !HttpMethods.IsGet(ctx.Request.Method))
+                    {
+                        ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return;
+                    }
+                    ctx.Response.Redirect("/cms-xac-thuc?returnUrl=" + Uri.EscapeDataString(ctx.Request.Path + ctx.Request.QueryString));
+                    return;
+                }
+            }
+        }
+        await next();
+    });
+});
 
 // Swagger chỉ mở cho tài khoản có quyền CMS
 app.UseWhen(ctx => ctx.Request.Path.StartsWithSegments("/swagger"), swaggerApp =>
@@ -752,6 +802,11 @@ app.MapControllerRoute(
     pattern: "bai-viet-cua-toi/soan",
     defaults: new { controller = "BaiVietCuaToi", action = "Form" }
 );
+
+// Xác thực lớp 2 vào CMS (HSMT 2.11)
+app.MapControllerRoute(name: "cms_mfa", pattern: "cms-xac-thuc", defaults: new { controller = "CmsMfa", action = "Index" });
+app.MapControllerRoute(name: "cms_mfa_send", pattern: "cms-xac-thuc/gui-ma", defaults: new { controller = "CmsMfa", action = "Send" });
+app.MapControllerRoute(name: "cms_mfa_verify", pattern: "cms-xac-thuc/xac-nhan", defaults: new { controller = "CmsMfa", action = "Verify" });
 
 // Sản phẩm quan tâm (HSMT B.3.3)
 app.MapControllerRoute(
