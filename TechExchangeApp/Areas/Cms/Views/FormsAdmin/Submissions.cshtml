@@ -1,0 +1,53 @@
+@model List<TechExchangeApp.Entities.DynamicFormSubmission>
+@using TechExchangeApp.Services
+@{
+    var form = (TechExchangeApp.Entities.DynamicForm)ViewBag.Form;
+    var fields = (List<TechExchangeApp.Entities.DynamicFormField>)ViewBag.Fields;
+    ViewData["Title"] = "Dữ liệu biểu mẫu";
+}
+
+<div class="card card-outline card-success shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-table me-1"></i> @form.Title <span class="badge bg-secondary">@Model.Count</span></h3>
+        <div class="card-tools">
+            <a href="@Url.Action("Index", "FormsAdmin", new { area = "Cms" })" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Danh sách</a>
+            <a href="@Url.Action("Export", "FormsAdmin", new { area = "Cms", id = form.Id })" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+        </div>
+    </div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered align-middle small mb-0">
+                <thead class="table-light"><tr><th style="width:120px">Thời điểm</th>@foreach (var f in fields) { <th>@f.Label</th> }<th style="width:40px"></th></tr></thead>
+                <tbody>
+                    @if (Model.Count == 0) { <tr><td colspan="@(fields.Count + 2)" class="text-center text-muted">Chưa có lượt gửi.</td></tr> }
+                    @foreach (var s in Model)
+                    {
+                        var d = DynamicFormService.ParseData(s.DataJson);
+                        <tr data-id="@s.Id">
+                            <td>@s.Created.ToString("dd/MM/yyyy HH:mm")</td>
+                            @foreach (var f in fields)
+                            {
+                                d.TryGetValue(f.Key, out var v);
+                                <td style="white-space:pre-line">@(f.Type == "checkbox" ? (v == "true" ? "✓" : "") : v)</td>
+                            }
+                            <td class="text-center"><a href="#" class="text-danger btn-del" title="Xóa"><i class="fas fa-trash"></i></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+$(document).on('click', '.btn-del', function (e) {
+    e.preventDefault();
+    if (!confirm('Xóa lượt gửi này?')) return;
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    $.post('@Url.Action("DeleteSubmission", "FormsAdmin", new { area = "Cms" })', { id: $(this).closest('tr').data('id'), __RequestVerificationToken: token },
+        function (r) { if (r.success) location.reload(); else toastr.error(r.message); });
+});
+</script>
+}

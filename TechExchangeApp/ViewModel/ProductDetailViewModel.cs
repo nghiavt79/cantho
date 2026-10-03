@@ -41,6 +41,9 @@ namespace TechExchangeApp.ViewModel
         // Quan tâm sản phẩm (HSMT B.3.3)
         public bool IsFavorite { get; set; }
         public int FavoriteCount { get; set; }
+
+        // Vị trí trưng bày tại Sàn (HSMT A.3.4), vd "Phòng trưng bày 1 – A-03"
+        public string? ShowroomLocation { get; set; }
     }
 
     public class KeywordVm

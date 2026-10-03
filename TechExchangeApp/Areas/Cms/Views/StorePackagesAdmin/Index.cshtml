@@ -1,0 +1,142 @@
+@using TechExchangeApp.Entities
+@{
+    ViewData["Title"] = "Gói gian hàng";
+    var packages = (List<StorePackage>)ViewBag.Packages;
+    var subs = (List<TechExchangeApp.Areas.Cms.Controllers.SubscriptionRow>)ViewBag.Subscriptions;
+    var suppliers = (System.Collections.IEnumerable)ViewBag.Suppliers;
+    var enforced = (bool)ViewBag.Enforced;
+}
+
+<div class="alert @(enforced ? "alert-warning" : "alert-info") small">
+    @if (enforced)
+    {
+        <span><strong>Đang áp dụng hạn mức:</strong> nhà cung cấp không đăng được quá số sản phẩm của gói còn hiệu lực (chưa có gói: @ViewBag.FreeQuota sản phẩm).</span>
+    }
+    else
+    {
+        <span><strong>Chưa áp dụng hạn mức:</strong> hệ thống chỉ hiển thị mức sử dụng, không chặn đăng sản phẩm. Bật bằng tham số <code>STORE_QUOTA_ENFORCED = 1</code> trong Tham số hệ thống sau khi chốt biểu phí.</span>
+    }
+    Bật/tắt gian hàng của từng nhà cung cấp: CMS → Nhà cung ứng → Cấu hình nhanh → "Kích hoạt".
+</div>
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-box-open me-1"></i> Danh mục gói gian hàng</h3>
+        <div class="card-tools"><button type="button" class="btn btn-sm btn-primary" id="btnAddPkg"><i class="fas fa-plus"></i> Thêm gói</button></div>
+    </div>
+    <div class="card-body">
+        @Html.AntiForgeryToken()
+        <table class="table table-sm table-bordered align-middle small mb-0">
+            <thead class="table-light"><tr><th>Tên gói</th><th class="text-center">Số SP tối đa</th><th class="text-end">Giá (đ)</th><th class="text-center">Thời hạn (ngày)</th><th>Mô tả</th><th class="text-center">Dùng</th><th style="width:50px"></th></tr></thead>
+            <tbody>
+                @if (packages.Count == 0) { <tr><td colspan="7" class="text-center text-muted">Chưa có gói. Ví dụ: Gói 5 sản phẩm, Gói 10 sản phẩm.</td></tr> }
+                @foreach (var p in packages)
+                {
+                    <tr data-pkg='@Json.Serialize(new { p.Id, p.Name, p.MaxProducts, p.Price, p.DurationDays, p.Description, p.SortOrder, p.IsActive })'>
+                        <td class="fw-semibold">@p.Name</td><td class="text-center">@p.MaxProducts</td><td class="text-end">@p.Price.ToString("N0")</td>
+                        <td class="text-center">@p.DurationDays</td><td>@p.Description</td><td class="text-center">@(p.IsActive ? "✓" : "")</td>
+                        <td class="text-center"><a href="#" class="btn btn-outline-primary btn-sm py-0 btn-edit-pkg"><i class="fas fa-pen"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card card-outline card-success shadow-sm mb-3">
+    <div class="card-header"><h3 class="card-title"><i class="fas fa-file-signature me-1"></i> Gói đã cấp cho nhà cung cấp</h3></div>
+    <div class="card-body">
+        <form id="subForm" class="row g-2 mb-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label small">Nhà cung cấp</label>
+                <select name="cungUngId" class="form-select form-select-sm" required>
+                    <option value="">-- Chọn --</option>
+                    @foreach (dynamic s in suppliers) { <option value="@s.CungUngId">@s.FullName</option> }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small">Gói</label>
+                <select name="packageId" class="form-select form-select-sm" required>
+                    @foreach (var p in packages.Where(x => x.IsActive)) { <option value="@p.Id">@p.Name – @p.Price.ToString("N0") đ</option> }
+                </select>
+            </div>
+            <div class="col-md-2"><label class="form-label small">Từ ngày</label><input type="date" name="startDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
+            <div class="col-md-2"><label class="form-label small">Ghi chú</label><input name="note" class="form-control form-control-sm" maxlength="500" /></div>
+            <div class="col-md-1 d-grid"><button class="btn btn-success btn-sm" @(packages.Any(p => p.IsActive) ? "" : "disabled")>Cấp gói</button></div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered align-middle small mb-0">
+                <thead class="table-light"><tr><th>Nhà cung cấp</th><th>Gói</th><th>Hiệu lực</th><th class="text-center">Đã dùng / hạn mức</th><th class="text-end">Giá (đ)</th><th>Trạng thái</th><th style="width:50px"></th></tr></thead>
+                <tbody>
+                    @if (subs.Count == 0) { <tr><td colspan="7" class="text-center text-muted">Chưa cấp gói nào.</td></tr> }
+                    @foreach (var s in subs)
+                    {
+                        <tr data-id="@s.Id">
+                            <td>@s.SupplierName</td><td>@s.PackageName</td>
+                            <td>@s.StartDate.ToString("dd/MM/yyyy") – @s.EndDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center @(s.Used > s.MaxProducts ? "text-danger fw-bold" : "")">@s.Used / @s.MaxProducts</td>
+                            <td class="text-end">@s.Price.ToString("N0")</td>
+                            <td>@if (s.Status == 0) { <span class="badge bg-secondary">Đã hủy</span> } else if (s.Active) { <span class="badge bg-success">Đang hiệu lực</span> } else { <span class="badge bg-warning text-dark">Ngoài thời hạn</span> }</td>
+                            <td class="text-center">@if (s.Status == 1) { <a href="#" class="btn btn-outline-danger btn-sm py-0 btn-cancel" title="Hủy gói"><i class="fas fa-ban"></i></a> }</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="pkgModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="pkgForm">
+            <div class="modal-header bg-primary text-white"><h5 class="modal-title">Gói gian hàng</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" name="Id" value="0" />
+                <div class="row g-2">
+                    <div class="col-12"><label class="form-label small">Tên gói *</label><input name="Name" class="form-control form-control-sm" required maxlength="200" /></div>
+                    <div class="col-4"><label class="form-label small">Số SP tối đa *</label><input name="MaxProducts" type="number" min="1" value="5" class="form-control form-control-sm" required /></div>
+                    <div class="col-4"><label class="form-label small">Giá (đ) *</label><input name="Price" type="number" min="0" step="1000" value="0" class="form-control form-control-sm" required /></div>
+                    <div class="col-4"><label class="form-label small">Thời hạn (ngày)</label><input name="DurationDays" type="number" min="1" value="365" class="form-control form-control-sm" /></div>
+                    <div class="col-8"><label class="form-label small">Mô tả</label><input name="Description" class="form-control form-control-sm" maxlength="500" /></div>
+                    <div class="col-4"><label class="form-label small">Thứ tự</label><input name="SortOrder" type="number" value="0" class="form-control form-control-sm" /></div>
+                    <div class="col-12 form-check ms-2"><input class="form-check-input" type="checkbox" name="IsActive" value="true" id="pAct" checked /><label class="form-check-label small" for="pAct">Đang bán</label></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button><button type="submit" class="btn btn-primary btn-sm">Lưu</button></div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    var form = document.getElementById('pkgForm');
+    var modal = function () { return bootstrap.Modal.getOrCreateInstance(document.getElementById('pkgModal')); };
+    function fill(p) {
+        form.Id.value = p ? p.id : 0; form.Name.value = p ? p.name : ''; form.MaxProducts.value = p ? p.maxProducts : 5;
+        form.Price.value = p ? p.price : 0; form.DurationDays.value = p ? p.durationDays : 365; form.Description.value = p ? (p.description || '') : '';
+        form.SortOrder.value = p ? p.sortOrder : 0; form.IsActive.checked = p ? p.isActive : true;
+    }
+    $('#btnAddPkg').on('click', function () { fill(null); modal().show(); });
+    $(document).on('click', '.btn-edit-pkg', function (e) { e.preventDefault(); fill($(this).closest('tr').data('pkg')); modal().show(); });
+    $(form).on('submit', function (e) {
+        e.preventDefault();
+        var data = $(form).serializeArray();
+        if (!form.IsActive.checked) data.push({ name: 'IsActive', value: 'false' });
+        data.push({ name: '__RequestVerificationToken', value: token });
+        $.post('@Url.Action("SavePackage", "StorePackagesAdmin", new { area = "Cms" })', $.param(data), function (r) { if (r.success) location.reload(); else toastr.error(r.message); });
+    });
+    $('#subForm').on('submit', function (e) {
+        e.preventDefault();
+        var data = $(this).serializeArray(); data.push({ name: '__RequestVerificationToken', value: token });
+        $.post('@Url.Action("AddSubscription", "StorePackagesAdmin", new { area = "Cms" })', $.param(data), function (r) { if (r.success) location.reload(); else toastr.error(r.message); });
+    });
+    $(document).on('click', '.btn-cancel', function (e) {
+        e.preventDefault();
+        if (!confirm('Hủy gói này? Khoản thu phí gian hàng tương ứng sẽ được gỡ khỏi sổ thu chi.')) return;
+        $.post('@Url.Action("CancelSubscription", "StorePackagesAdmin", new { area = "Cms" })', { id: $(this).closest('tr').data('id'), __RequestVerificationToken: token }, function (r) { if (r.success) location.reload(); else toastr.error(r.message); });
+    });
+})();
+</script>
+}

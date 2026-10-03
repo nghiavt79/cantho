@@ -34,6 +34,24 @@ namespace TechExchangeApp.Controllers
         private int GetSiteId() =>
             int.TryParse(_configuration["AppSettings:SiteId"], out var id) ? id : 1;
 
+        /// <summary>Hạn mức số sản phẩm theo gói gian hàng (HSMT A.2.3); null nếu tài khoản chưa có hồ sơ nhà cung cấp.</summary>
+        private async Task<TechExchangeApp.Services.SupplierQuota?> GetQuotaAsync()
+        {
+            var supplier = await GetCurrentUserSupplierAsync();
+            if (supplier == null) return null;
+            var store = HttpContext.RequestServices.GetRequiredService<TechExchangeApp.Services.ISupplierStoreService>();
+            return await store.GetQuotaAsync(supplier.CungUngId);
+        }
+
+        /// <summary>Đã hết hạn mức (khi đang áp dụng) → đặt thông báo lỗi và trả true.</summary>
+        private async Task<bool> QuotaReachedAsync()
+        {
+            var q = await GetQuotaAsync();
+            if (q == null || q.CanAdd) return false;
+            TempData["Error"] = $"Gian hàng đã dùng hết hạn mức {q.Limit} sản phẩm. Vui lòng liên hệ Sàn để nâng gói gian hàng.";
+            return true;
+        }
+
         private async Task<NhaCungUng?> GetCurrentUserSupplierAsync()
         {
             var userIdText = _userManager.GetUserId(User);
@@ -158,6 +176,7 @@ namespace TechExchangeApp.Controllers
 
             // Tổng lượt xem / liên hệ trên toàn bộ sản phẩm của người bán (HSMT B.2.3)
             var myIds = _context.SanPhamCNTBs.Where(p => p.Creator == creator).Select(p => p.ID);
+            ViewBag.Quota         = await GetQuotaAsync();
             ViewBag.TotalViews    = await _context.SanPhamCNTBs.Where(p => p.Creator == creator).SumAsync(p => (int?)p.Viewed) ?? 0;
             ViewBag.TotalContacts = await _context.ChatConversations.CountAsync(c => c.ProductId != null && myIds.Contains(c.ProductId.Value))
                                   + await _context.OcopOrderRequests.CountAsync(o => myIds.Contains(o.ProductId));
@@ -171,6 +190,7 @@ namespace TechExchangeApp.Controllers
         [HttpGet]
         public async Task<IActionResult> TaoMoiCongNghe()
         {
+            if (await QuotaReachedAsync()) return RedirectToAction(nameof(Index));
             var maxId = await _context.SanPhamCNTBs.Where(x => x.ProductType == 1).MaxAsync(x => (int?)x.ID) ?? 0;
             var vm = new SanPhamCNTBFormVm { ProductType = 1, Code = $"CN-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId() };
             ViewData["Title"] = "Đăng ký Công nghệ mới";
@@ -184,6 +204,7 @@ namespace TechExchangeApp.Controllers
         [HttpGet]
         public async Task<IActionResult> TaoMoiThietBi()
         {
+            if (await QuotaReachedAsync()) return RedirectToAction(nameof(Index));
             var maxId = await _context.SanPhamCNTBs.Where(x => x.ProductType == 2).MaxAsync(x => (int?)x.ID) ?? 0;
             var vm = new SanPhamCNTBFormVm { ProductType = 2, Code = $"TB-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId(), CanDirectInquiry = true };
             ViewData["Title"] = "Đăng ký Thiết bị mới";
@@ -197,6 +218,7 @@ namespace TechExchangeApp.Controllers
         [HttpGet]
         public async Task<IActionResult> TaoMoiSoHuuTriTue()
         {
+            if (await QuotaReachedAsync()) return RedirectToAction(nameof(Index));
             var maxId = await _context.SanPhamCNTBs.Where(x => x.ProductType == 3).MaxAsync(x => (int?)x.ID) ?? 0;
             var vm = new SanPhamCNTBFormVm { ProductType = 3, Code = $"TT-{(maxId + 1):D5}", StatusId = 1, SiteId = GetSiteId() };
             ViewData["Title"] = "Đăng ký Sở hữu trí tuệ mới";
@@ -229,6 +251,12 @@ namespace TechExchangeApp.Controllers
                     return View(GetCreateViewName(model.ProductType), model);
                 }
                 model.NCUId = supplier.CungUngId;
+
+                if (await QuotaReachedAsync())
+                {
+                    await transaction.RollbackAsync();
+                    return RedirectToAction(nameof(Index));
+                }
 
                 var entity = SanPhamCNTBController.BuildEntity(model);
                 entity.Created     = DateTime.Now;

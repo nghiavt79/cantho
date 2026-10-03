@@ -308,6 +308,19 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             b.ReviewedAt = DateTime.Now;
             b.ReviewNote = string.IsNullOrWhiteSpace(note) ? null : note.Trim()[..Math.Min(note.Trim().Length, 500)];
             await _context.SaveChangesAsync();
+
+            // Sổ thu chi (HSMT A.6.1): duyệt → ghi khoản thu phí gian hàng sự kiện; từ chối/hủy → gỡ
+            var store = HttpContext.RequestServices.GetRequiredService<ISupplierStoreService>();
+            if (status == EventBoothBookingStatuses.Approved)
+            {
+                var boothType = await _context.EventBoothTypes.AsNoTracking().FirstOrDefaultAsync(t => t.Id == b.BoothTypeId);
+                var amount = (boothType?.Price ?? 0) * b.Quantity;
+                if (amount > 0)
+                    await store.UpsertAutoIncomeAsync(FinanceRefTypes.BoothBooking, b.Id, FinanceCategories.EventBoothFee, amount, null,
+                        $"Gian hàng sự kiện #{b.ContentId}: {boothType?.Name} x{b.Quantity} – {b.Organization}", User.Identity?.Name);
+            }
+            else
+                await store.RemoveAutoIncomeAsync(FinanceRefTypes.BoothBooking, b.Id);
             await WriteLog(2, $"Duyệt đăng ký gian hàng #{id} ({b.Organization}): trạng thái {status}");
             return Json(new { success = true });
         }

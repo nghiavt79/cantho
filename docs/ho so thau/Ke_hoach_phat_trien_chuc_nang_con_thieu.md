@@ -125,6 +125,6 @@ Với 2 lập trình viên: khoảng **6 tuần**. Nếu demo sớm hơn, làm x
 | 1 | | 02/10/2026 | | Code xong 10/12 mục, đã chạy thử trên local (nhánh `feature/bo-sung-chuc-nang-hsmt`). Còn 1.1 SMS, 1.2 ký số: chờ tài khoản nhà cung cấp |
 | 2 | | 02/10/2026 | | Code xong 6/6 mục, đã chạy thử trên local. Bình luận mới gắn ở trang sản phẩm (bảng dùng chung cho gian hàng, bài viết) |
 | 3 | | 02/10/2026 | | Code xong 5/5 mục, đã chạy thử trên local. Nhắc lịch qua email + chuông web; SMS chờ Brandname thật (mục 1.1) |
-| 4 | | | | |
+| 4 | | 02/10/2026 | | Code xong 5/5 mục, đã chạy thử trên local. Hạn mức gói gian hàng mặc định chưa chặn (STORE_QUOTA_ENFORCED=0); tỷ lệ hoa hồng đang 0% chờ Sở chốt |
 | 5 | | | | |
 | 6 | | | | |

@@ -235,6 +235,9 @@ builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBa
 builder.Services.AddScoped<TechExchangeApp.Services.IProductWarningScanner, TechExchangeApp.Services.ProductWarningScanner>();
 builder.Services.AddScoped<TechExchangeApp.Services.ICommentService, TechExchangeApp.Services.CommentService>();
 
+// --- Nhà cung cấp: hạng, gói gian hàng, thu chi (HSMT Đợt 4) ---
+builder.Services.AddScoped<TechExchangeApp.Services.ISupplierStoreService, TechExchangeApp.Services.SupplierStoreService>();
+
 // --- Sự kiện: đăng ký, nhắc lịch, gian hàng (HSMT Đợt 3) ---
 builder.Services.AddScoped<TechExchangeApp.Services.IEventService, TechExchangeApp.Services.EventService>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.EventReminderBackgroundService>();
@@ -707,6 +710,18 @@ app.MapControllerRoute(
     name: "en_comment",
     pattern: "en/comment/{action}",
     defaults: new { controller = "Comment" }
+);
+
+// Biểu mẫu động (HSMT A.7.2, B.1.6)
+app.MapControllerRoute(
+    name: "dynamic_form",
+    pattern: "bieu-mau/{slug}",
+    defaults: new { controller = "Form", action = "Index" }
+);
+app.MapControllerRoute(
+    name: "en_dynamic_form",
+    pattern: "en/form/{slug}",
+    defaults: new { controller = "Form", action = "Index" }
 );
 
 // Sự kiện (HSMT Đợt 3): thao tác AJAX bản /en/ và trang vé

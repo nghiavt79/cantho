@@ -221,6 +221,17 @@ namespace TechExchangeApp.Data
         public DbSet<EventBoothType> EventBoothTypes { get; set; } = null!;
         public DbSet<EventBoothBooking> EventBoothBookings { get; set; } = null!;
 
+        // Bổ sung chức năng HSMT — Đợt 4
+        public DbSet<SupplierTier> SupplierTiers { get; set; } = null!;
+        public DbSet<StorePackage> StorePackages { get; set; } = null!;
+        public DbSet<SupplierSubscription> SupplierSubscriptions { get; set; } = null!;
+        public DbSet<CommissionRate> CommissionRates { get; set; } = null!;
+        public DbSet<FinanceEntry> FinanceEntries { get; set; } = null!;
+        public DbSet<Showroom> Showrooms { get; set; } = null!;
+        public DbSet<ShowroomSlot> ShowroomSlots { get; set; } = null!;
+        public DbSet<DynamicForm> DynamicForms { get; set; } = null!;
+        public DbSet<DynamicFormSubmission> DynamicFormSubmissions { get; set; } = null!;
+
         // Generic Entity Action Engine
         public DbSet<EntityRating> EntityRatings { get; set; } = null!;
         public DbSet<EntityActionLog> EntityActionLogs { get; set; } = null!;

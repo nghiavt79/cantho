@@ -77,6 +77,7 @@
                     </div>
                     <div class="expert-detail-header__info">
                         <h1 class="expert-detail-header__name">@Model.FullName</h1>
+                        <div class="mb-2">@await Component.InvokeAsync("SupplierTierBadge", new { cungUngId = Model.Id })</div>
                         @if (!string.IsNullOrEmpty(Model.TenVietTat))
                         {
                             <p class="expert-detail-header__title"><i class="fas fa-signature"></i>@Model.TenVietTat</p>

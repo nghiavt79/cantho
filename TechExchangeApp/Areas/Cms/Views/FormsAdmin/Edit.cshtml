@@ -1,0 +1,107 @@
+@model TechExchangeApp.Entities.DynamicForm
+@{
+    ViewData["Title"] = Model.Id > 0 ? "Sửa biểu mẫu" : "Tạo biểu mẫu";
+}
+
+@if (TempData["Success"] != null) { <div class="alert alert-success">@TempData["Success"]</div> }
+@if (ViewBag.Error != null) { <div class="alert alert-danger">@ViewBag.Error</div> }
+
+<form method="post" action="@Url.Action("Edit", "FormsAdmin", new { area = "Cms" })" id="formEdit">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <input type="hidden" name="FieldsJson" id="FieldsJson" value="@Model.FieldsJson" />
+    <div class="card card-outline card-primary shadow-sm mb-3">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-list-check me-1"></i> @ViewData["Title"]</h3>
+            <div class="card-tools">
+                <a href="@Url.Action("Index", "FormsAdmin", new { area = "Cms" })" class="btn btn-sm btn-outline-secondary"><i class="fas fa-arrow-left"></i> Danh sách</a>
+                @if (Model.Id > 0) { <a href="@((Model.LanguageId == 2 ? "/en/form/" : "/bieu-mau/") + Model.Slug)" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i> Xem trang</a> }
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6"><label class="form-label small fw-semibold">Tiêu đề *</label><input name="Title" value="@Model.Title" class="form-control form-control-sm" required maxlength="300" /></div>
+                <div class="col-md-4"><label class="form-label small fw-semibold">Đường dẫn (slug)</label><input name="Slug" value="@Model.Slug" class="form-control form-control-sm" maxlength="200" placeholder="tự sinh từ tiêu đề" /></div>
+                <div class="col-md-2"><label class="form-label small fw-semibold">Ngôn ngữ</label>
+                    <select name="LanguageId" class="form-select form-select-sm"><option value="1" selected="@(Model.LanguageId != 2)">Tiếng Việt</option><option value="2" selected="@(Model.LanguageId == 2)">English</option></select></div>
+                <div class="col-12"><label class="form-label small fw-semibold">Mô tả</label><textarea name="Description" class="form-control form-control-sm" rows="2" maxlength="1000">@Model.Description</textarea></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-outline card-info shadow-sm mb-3">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-table-columns me-1"></i> Các trường</h3>
+            <div class="card-tools"><button type="button" class="btn btn-sm btn-info" id="btnAddField"><i class="fas fa-plus"></i> Thêm trường</button></div>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm table-bordered align-middle small mb-1">
+                <thead class="table-light"><tr><th style="width:150px">Mã trường</th><th>Nhãn</th><th style="width:130px">Kiểu</th><th>Lựa chọn (danh sách, cách nhau dấu phẩy)</th><th class="text-center" style="width:80px">Bắt buộc</th><th style="width:90px"></th></tr></thead>
+                <tbody id="fieldRows"></tbody>
+            </table>
+            <div class="form-text">Mã trường: chữ thường không dấu, số, gạch dưới (vd <code>ho_ten</code>). Trường kiểu Email sẽ được dùng để gửi email xác nhận.</div>
+        </div>
+    </div>
+
+    <div class="card card-outline card-secondary shadow-sm mb-3">
+        <div class="card-header"><h3 class="card-title"><i class="fas fa-bolt me-1"></i> Sau khi gửi</h3></div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3"><label class="form-label small fw-semibold">Chữ trên nút gửi</label><input name="SubmitText" value="@Model.SubmitText" class="form-control form-control-sm" maxlength="100" /></div>
+                <div class="col-md-9"><label class="form-label small fw-semibold">Thông báo khi gửi thành công</label><input name="SuccessMessage" value="@Model.SuccessMessage" class="form-control form-control-sm" maxlength="500" /></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Chuyển tới trang (để trống = hiện thông báo)</label><input name="RedirectUrl" value="@Model.RedirectUrl" class="form-control form-control-sm" maxlength="500" placeholder="/trang-cam-on" /></div>
+                <div class="col-md-6"><label class="form-label small fw-semibold">Gửi thông báo tới email</label><input name="NotifyEmails" value="@Model.NotifyEmails" class="form-control form-control-sm" maxlength="500" placeholder="a@cantho.gov.vn, b@cantho.gov.vn" /></div>
+                <div class="col-md-6">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="SendConfirmation" value="true" id="sc" @(Model.SendConfirmation ? "checked" : "") /><input type="hidden" name="SendConfirmation" value="false" /><label class="form-check-label small" for="sc">Gửi email xác nhận cho người gửi</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="IsActive" value="true" id="ia" @(Model.IsActive ? "checked" : "") /><input type="hidden" name="IsActive" value="false" /><label class="form-check-label small" for="ia">Đang mở (hiện trên website)</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-end"><button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Lưu biểu mẫu</button></div>
+    </div>
+</form>
+
+@section Scripts {
+<script>
+(function () {
+    var types = [['text','Chữ'],['textarea','Đoạn văn'],['email','Email'],['tel','Điện thoại'],['number','Số'],['date','Ngày'],['select','Danh sách chọn'],['checkbox','Ô đánh dấu']];
+    var tbody = document.getElementById('fieldRows');
+    var fields = [];
+    try { fields = JSON.parse(document.getElementById('FieldsJson').value || '[]'); } catch (e) { fields = []; }
+    function row(f) {
+        var tr = document.createElement('tr');
+        var typeOpts = types.map(function (t) { return '<option value="' + t[0] + '">' + t[1] + '</option>'; }).join('');
+        tr.innerHTML = '<td><input class="form-control form-control-sm f-key" maxlength="50"></td>' +
+            '<td><input class="form-control form-control-sm f-label" maxlength="200"></td>' +
+            '<td><select class="form-select form-select-sm f-type">' + typeOpts + '</select></td>' +
+            '<td><input class="form-control form-control-sm f-options"></td>' +
+            '<td class="text-center"><input type="checkbox" class="form-check-input f-req"></td>' +
+            '<td class="text-center"><a href="#" class="f-up me-1" title="Lên"><i class="fas fa-arrow-up"></i></a><a href="#" class="f-down me-1" title="Xuống"><i class="fas fa-arrow-down"></i></a><a href="#" class="text-danger f-del" title="Xóa"><i class="fas fa-trash"></i></a></td>';
+        tr.querySelector('.f-key').value = f.key || '';
+        tr.querySelector('.f-label').value = f.label || '';
+        tr.querySelector('.f-type').value = f.type || 'text';
+        tr.querySelector('.f-options').value = (f.options || []).join(', ');
+        tr.querySelector('.f-req').checked = !!f.required;
+        return tr;
+    }
+    fields.forEach(function (f) { tbody.appendChild(row(f)); });
+    document.getElementById('btnAddField').addEventListener('click', function () { tbody.appendChild(row({ type: 'text' })); });
+    tbody.addEventListener('click', function (e) {
+        var a = e.target.closest('a'); if (!a) return; e.preventDefault();
+        var tr = a.closest('tr');
+        if (a.classList.contains('f-del')) tr.remove();
+        if (a.classList.contains('f-up') && tr.previousElementSibling) tbody.insertBefore(tr, tr.previousElementSibling);
+        if (a.classList.contains('f-down') && tr.nextElementSibling) tbody.insertBefore(tr.nextElementSibling, tr);
+    });
+    document.getElementById('formEdit').addEventListener('submit', function () {
+        var out = Array.from(tbody.querySelectorAll('tr')).map(function (tr) {
+            var type = tr.querySelector('.f-type').value;
+            var f = { key: tr.querySelector('.f-key').value.trim(), label: tr.querySelector('.f-label').value.trim(), type: type, required: tr.querySelector('.f-req').checked };
+            if (type === 'select') f.options = tr.querySelector('.f-options').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+            return f;
+        });
+        document.getElementById('FieldsJson').value = JSON.stringify(out);
+    });
+})();
+</script>
+}

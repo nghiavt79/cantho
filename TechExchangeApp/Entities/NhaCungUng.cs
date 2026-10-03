@@ -117,5 +117,11 @@ namespace TechExchangeApp.Entities
         public int? OriginalId { get; set; }   // CungUngId bản gốc VI (bản EN mới có)
         public bool? EnStale { get; set; }      // true = VI đã đổi → cần dịch lại
         public string? SourceHash { get; set; } // hash nội dung VI lúc dịch
+
+        // ── Hạng nhà cung cấp (HSMT A.2.2, A.2.4) — gán trên bản VI ──
+        public int? TierId { get; set; }
+        public DateTime? TierAssignedAt { get; set; }
+        [MaxLength(256)]
+        public string? TierAssignedBy { get; set; }
     }
 }

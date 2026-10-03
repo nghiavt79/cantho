@@ -1,0 +1,161 @@
+@model List<TechExchangeApp.Areas.Cms.Controllers.ShowroomSlotRow>
+@using TechExchangeApp.Entities
+@{
+    ViewData["Title"] = "Phòng trưng bày";
+    var rooms = (List<Showroom>)ViewBag.Rooms;
+    var counts = (Dictionary<int, (int Total, int Used)>)ViewBag.Counts;
+    var room = (Showroom?)ViewBag.Room;
+    var unplaced = (System.Collections.IEnumerable)ViewBag.Unplaced;
+}
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card card-outline card-primary shadow-sm mb-3">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-store me-1"></i> Phòng trưng bày</h3>
+                <div class="card-tools"><button class="btn btn-sm btn-primary" id="btnAddRoom"><i class="fas fa-plus"></i></button></div>
+            </div>
+            <div class="list-group list-group-flush">
+                @Html.AntiForgeryToken()
+                @if (rooms.Count == 0) { <div class="list-group-item small text-muted">Chưa có phòng trưng bày.</div> }
+                @foreach (var r in rooms)
+                {
+                    var c = counts.TryGetValue(r.Id, out var v) ? v : (0, 0);
+                    <a href="?roomId=@r.Id" class="list-group-item list-group-item-action @(room?.Id == r.Id ? "active" : "")">
+                        <div class="fw-semibold">@r.Name @if (!r.IsActive) { <span class="badge bg-secondary">ẩn</span> }</div>
+                        <div class="small">@r.Location</div>
+                        <div class="small">Đang dùng @c.Item2 / @c.Item1 vị trí</div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        @if (room != null)
+        {
+            <div class="card card-outline card-info shadow-sm mb-3">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-th me-1"></i> @room.Name <span class="small text-muted">@room.Location</span></h3>
+                    <div class="card-tools">
+                        <button class="btn btn-sm btn-outline-primary" id="btnEditRoom" data-room='@Json.Serialize(new { room.Id, room.Name, room.Location, room.Description, room.SortOrder, room.IsActive })'><i class="fas fa-pen"></i> Sửa phòng</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="slotsForm" class="row g-2 mb-3 align-items-end">
+                        <input type="hidden" name="roomId" value="@room.Id" />
+                        <div class="col-auto"><label class="form-label small mb-0">Tiền tố mã</label><input name="prefix" value="A-" class="form-control form-control-sm" style="width:90px" maxlength="40" /></div>
+                        <div class="col-auto"><label class="form-label small mb-0">Bắt đầu từ</label><input name="startAt" type="number" min="1" value="@(Model.Count + 1)" class="form-control form-control-sm" style="width:90px" /></div>
+                        <div class="col-auto"><label class="form-label small mb-0">Số vị trí</label><input name="count" type="number" min="1" max="200" value="10" class="form-control form-control-sm" style="width:90px" /></div>
+                        <div class="col-auto"><button class="btn btn-sm btn-info">Thêm vị trí</button></div>
+                        <div class="col-auto ms-auto small">
+                            <span class="badge bg-success">&nbsp;</span> Trống
+                            <span class="badge bg-primary ms-2">&nbsp;</span> Đang trưng bày
+                            <span class="badge bg-secondary ms-2">&nbsp;</span> Ngưng dùng
+                        </div>
+                    </form>
+
+                    @if (Model.Count == 0) { <p class="text-muted small mb-0">Phòng chưa có vị trí.</p> }
+                    <div class="row g-2">
+                        @foreach (var s in Model)
+                        {
+                            var css = !s.IsActive ? "border-secondary bg-light" : s.SanPhamId.HasValue ? "border-primary" : "border-success";
+                            <div class="col-sm-6 col-xl-4">
+                                <div class="border border-2 rounded p-2 h-100 @css small" data-slot='@Json.Serialize(new { s.Id, s.Code, s.Description, s.IsActive })'>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>@s.Code</strong>
+                                        <span>
+                                            <a href="#" class="text-secondary btn-edit-slot" title="Sửa"><i class="fas fa-pen"></i></a>
+                                            @if (!s.SanPhamId.HasValue) { <a href="#" class="text-danger ms-1 btn-del-slot" title="Xóa"><i class="fas fa-trash"></i></a> }
+                                        </span>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(s.Description)) { <div class="text-muted">@s.Description</div> }
+                                    @if (s.SanPhamId.HasValue)
+                                    {
+                                        <div class="mt-1"><a href="/san-pham/chi-tiet/x-@s.SanPhamId" target="_blank">#@s.SanPhamId @s.ProductName</a></div>
+                                        <div class="text-muted">@s.AssignedAt?.ToString("dd/MM/yyyy") · @s.AssignedBy</div>
+                                        <button class="btn btn-outline-secondary btn-sm py-0 mt-1 btn-release">Giải phóng</button>
+                                    }
+                                    else if (s.IsActive)
+                                    {
+                                        <div class="input-group input-group-sm mt-1">
+                                            <input class="form-control assign-input" list="unplacedList" placeholder="ID sản phẩm" />
+                                            <button class="btn btn-outline-primary btn-assign">Gán</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <datalist id="unplacedList">
+                        @foreach (dynamic p in unplaced) { <option value="@p.ID">@p.Name</option> }
+                    </datalist>
+                    <div class="form-text">Gợi ý trong ô "ID sản phẩm" là các sản phẩm đặt hình thức "Trưng bày tại Sàn" chưa có vị trí. Gán sản phẩm "Trực tuyến" sẽ tự chuyển sang "Trực tuyến và tại Sàn".</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="roomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="roomForm">
+            <div class="modal-header bg-primary text-white"><h5 class="modal-title">Phòng trưng bày</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" name="Id" value="0" />
+                <div class="row g-2">
+                    <div class="col-8"><label class="form-label small">Tên phòng *</label><input name="Name" class="form-control form-control-sm" required maxlength="200" /></div>
+                    <div class="col-4"><label class="form-label small">Thứ tự</label><input name="SortOrder" type="number" value="0" class="form-control form-control-sm" /></div>
+                    <div class="col-12"><label class="form-label small">Vị trí (tầng, tòa nhà)</label><input name="Location" class="form-control form-control-sm" maxlength="300" /></div>
+                    <div class="col-12"><label class="form-label small">Mô tả</label><input name="Description" class="form-control form-control-sm" maxlength="500" /></div>
+                    <div class="col-12 form-check ms-2"><input class="form-check-input" type="checkbox" name="IsActive" value="true" id="rAct" checked /><label class="form-check-label small" for="rAct">Đang dùng</label></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button><button type="submit" class="btn btn-primary btn-sm">Lưu</button></div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var token = $('input[name="__RequestVerificationToken"]').first().val() || '';
+    var U = {
+        room: '@Url.Action("SaveRoom", "ShowroomsAdmin", new { area = "Cms" })', slots: '@Url.Action("AddSlots", "ShowroomsAdmin", new { area = "Cms" })',
+        assign: '@Url.Action("Assign", "ShowroomsAdmin", new { area = "Cms" })', release: '@Url.Action("Release", "ShowroomsAdmin", new { area = "Cms" })',
+        save: '@Url.Action("SaveSlot", "ShowroomsAdmin", new { area = "Cms" })', del: '@Url.Action("DeleteSlot", "ShowroomsAdmin", new { area = "Cms" })'
+    };
+    function post(url, data, cb) { data.__RequestVerificationToken = token; $.post(url, data, function (r) { if (r.success) { if (cb) cb(r); else location.reload(); } else toastr.error(r.message); }); }
+    var rf = document.getElementById('roomForm');
+    var modal = function () { return bootstrap.Modal.getOrCreateInstance(document.getElementById('roomModal')); };
+    function fill(r) { rf.Id.value = r ? r.id : 0; rf.Name.value = r ? r.name : ''; rf.Location.value = r ? (r.location || '') : ''; rf.Description.value = r ? (r.description || '') : ''; rf.SortOrder.value = r ? r.sortOrder : 0; rf.IsActive.checked = r ? r.isActive : true; }
+    $('#btnAddRoom').on('click', function () { fill(null); modal().show(); });
+    $('#btnEditRoom').on('click', function () { fill($(this).data('room')); modal().show(); });
+    $(rf).on('submit', function (e) {
+        e.preventDefault();
+        var d = {}; $(rf).serializeArray().forEach(function (x) { d[x.name] = x.value; }); d.IsActive = rf.IsActive.checked;
+        post(U.room, d, function (r) { location.href = '?roomId=' + r.id; });
+    });
+    $('#slotsForm').on('submit', function (e) {
+        e.preventDefault();
+        var d = {}; $(this).serializeArray().forEach(function (x) { d[x.name] = x.value; });
+        post(U.slots, d, function (r) { toastr.success(r.message); setTimeout(function () { location.reload(); }, 500); });
+    });
+    function slotOf(el) { return $(el).closest('[data-slot]').data('slot'); }
+    $(document).on('click', '.btn-assign', function () {
+        var id = $(this).closest('.input-group').find('.assign-input').val();
+        if (!id) return;
+        post(U.assign, { slotId: slotOf(this).id, sanPhamId: id });
+    });
+    $(document).on('click', '.btn-release', function () { if (confirm('Giải phóng vị trí này?')) post(U.release, { slotId: slotOf(this).id }); });
+    $(document).on('click', '.btn-del-slot', function (e) { e.preventDefault(); if (confirm('Xóa vị trí này?')) post(U.del, { id: slotOf(this).id }); });
+    $(document).on('click', '.btn-edit-slot', function (e) {
+        e.preventDefault();
+        var s = slotOf(this);
+        var code = prompt('Mã vị trí', s.code); if (code === null) return;
+        var desc = prompt('Mô tả (để trống nếu không có)', s.description || ''); if (desc === null) return;
+        var active = confirm('Vị trí đang dùng? (OK = đang dùng, Cancel = ngưng dùng)');
+        post(U.save, { id: s.id, code: code, description: desc, isActive: active });
+    });
+})();
+</script>
+}

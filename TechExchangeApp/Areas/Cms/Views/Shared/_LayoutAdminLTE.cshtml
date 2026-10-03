@@ -107,6 +107,11 @@
                         bool isFaqAdmin = postsCtrl == "FaqAdmin";
                         bool isCommentsAdmin = postsCtrl == "CommentsAdmin";
                         bool isEventsAdmin = postsCtrl == "EventsAdmin";
+                        bool isFormsAdmin = postsCtrl == "FormsAdmin";
+                        bool isFinanceAdmin = postsCtrl == "FinanceAdmin";
+                        bool isSupplierTiersAdmin = postsCtrl == "SupplierTiersAdmin";
+                        bool isStorePackagesAdmin = postsCtrl == "StorePackagesAdmin";
+                        bool isShowroomsAdmin = postsCtrl == "ShowroomsAdmin";
                         bool isChatAdmin = postsCtrl == "ChatAdmin";
                         bool isProductWarningsAdmin = postsCtrl == "ProductWarningsAdmin";
                         bool isProductHistory = postsCtrl == "SanPhamCNTBHistory";
@@ -124,9 +129,9 @@
                         bool isNhaTuVanAdmin = postsCtrl == "NhaTuVanAdmin";
                         bool isUsers = postsCtrl == "Users";
                         bool isHuongDanCms = postsCtrl == "HuongDanCms";
-                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin || isCommentsAdmin || isEventsAdmin;
-                        bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin || isChatAdmin;
-                        bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin || isProductWarningsAdmin || isProductHistory;
+                        bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin || isCommentsAdmin || isEventsAdmin || isFormsAdmin;
+                        bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin || isChatAdmin || isFinanceAdmin;
+                        bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin || isProductWarningsAdmin || isProductHistory || isSupplierTiersAdmin || isStorePackagesAdmin || isShowroomsAdmin;
                         bool isSystemGroup = isUsers || isLogAdmin || isSystemParameterAdmin || isSysFunctionAdmin || isRoleAdmin || isSysFuncPermissionAdmin;
                     }
                     <li class="nav-item">
@@ -187,6 +192,13 @@
                                     <p>Lịch sử chat</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="FinanceAdmin" asp-action="Index"
+                                   class="nav-link @(isFinanceAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-coins"></i>
+                                    <p>Thu chi</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
@@ -244,6 +256,27 @@
                                    class="nav-link @(isNhaTuVanAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-user-tie"></i>
                                     <p>Nhà tư vấn</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="SupplierTiersAdmin" asp-action="Index"
+                                   class="nav-link @(isSupplierTiersAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-medal"></i>
+                                    <p>Phân hạng nhà cung cấp</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="StorePackagesAdmin" asp-action="Index"
+                                   class="nav-link @(isStorePackagesAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-box-open"></i>
+                                    <p>Gói gian hàng</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="ShowroomsAdmin" asp-action="Index"
+                                   class="nav-link @(isShowroomsAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-store"></i>
+                                    <p>Phòng trưng bày</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -323,6 +356,13 @@
                                    class="nav-link @(isCommentsAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-comments"></i>
                                     <p>Bình luận</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="FormsAdmin" asp-action="Index"
+                                   class="nav-link @(isFormsAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-list-check"></i>
+                                    <p>Biểu mẫu</p>
                                 </a>
                             </li>
                         </ul>

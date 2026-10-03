@@ -120,11 +120,26 @@
         </div>
       </div>
 
+      @if (TempData["Error"] != null)
+      {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+      }
+      @if (TempData["Success"] != null)
+      {
+        <div class="alert alert-success">@TempData["Success"]</div>
+      }
+
       @* Table *@
       <div class="card shadow-sm">
         <div class="card-header bg-white d-flex align-items-center justify-content-between">
           <span class="fw-semibold small">Tổng: <strong>@totalCount</strong> sản phẩm</span>
           <span class="small text-muted">
+            @if (ViewBag.Quota is TechExchangeApp.Services.SupplierQuota quota)
+            {
+              <span class="me-3 @(quota.Used >= quota.Limit ? "text-danger fw-semibold" : "")" title="Số sản phẩm đã đăng / hạn mức của gói gian hàng">
+                <i class="fas fa-box me-1"></i>@quota.Used / @quota.Limit sản phẩm @(quota.Subscription != null ? $"(gói đến {quota.Subscription.EndDate:dd/MM/yyyy})" : "(chưa có gói)")
+              </span>
+            }
             <i class="fas fa-eye me-1"></i>@(((int)(ViewBag.TotalViews ?? 0)).ToString("N0")) lượt xem
             <i class="fas fa-comments ms-3 me-1"></i>@(((int)(ViewBag.TotalContacts ?? 0)).ToString("N0")) lượt liên hệ
           </span>

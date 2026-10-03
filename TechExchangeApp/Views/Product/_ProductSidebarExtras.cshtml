@@ -23,6 +23,10 @@
 
     <dl class="tech-quick-list mb-3">
         <div><dt>@Html.Text("product.display.label")</dt><dd>@Html.Text(displayKey)</dd></div>
+        @if (!string.IsNullOrEmpty(Model.ShowroomLocation))
+        {
+            <div><dt>@Html.Text("product.display.position")</dt><dd>@Model.ShowroomLocation</dd></div>
+        }
     </dl>
 
     @if (!string.IsNullOrEmpty(Model.QrDataUri))

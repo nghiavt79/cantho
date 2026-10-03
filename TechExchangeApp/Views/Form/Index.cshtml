@@ -1,0 +1,70 @@
+@model TechExchangeApp.Entities.DynamicForm
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.Title;
+    var isEn = TechExchangeApp.Helpers.LangHelper.IsEnglish(Context);
+    var fields = (List<TechExchangeApp.Entities.DynamicFormField>)ViewBag.Fields;
+    var errors = ViewBag.Errors as Dictionary<string, string> ?? new();
+    var values = ViewBag.Values as Dictionary<string, string> ?? new();
+    var done = ViewBag.Done as bool? == true;
+    var actionUrl = (isEn ? "/en/form/" : "/bieu-mau/") + Model.Slug;
+    string V(string k) => values.TryGetValue(k, out var v) ? v : "";
+}
+
+<div class="container my-5" style="max-width:720px">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h1 class="h4 mb-2">@Model.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(Model.Description)) { <p class="text-muted">@Model.Description</p> }
+
+            @if (done)
+            {
+                <div class="alert alert-success mb-0">@(Model.SuccessMessage ?? (isEn ? "Thank you, your submission has been received." : "Cảm ơn anh/chị, thông tin đã được gửi."))</div>
+            }
+            else
+            {
+                @if (ViewBag.Error != null) { <div class="alert alert-danger">@ViewBag.Error</div> }
+                <form action="@actionUrl" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+                    <input type="text" name="website" class="d-none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                    @foreach (var f in fields)
+                    {
+                        var id = "f_" + f.Key;
+                        var err = errors.TryGetValue(f.Key, out var e) ? e : null;
+                        var cls = "form-control" + (err != null ? " is-invalid" : "");
+                        <div class="mb-3">
+                            @if (f.Type == "checkbox")
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input @(err != null ? "is-invalid" : "")" type="checkbox" id="@id" name="@f.Key" value="true" @(V(f.Key) == "true" ? "checked" : "") />
+                                    <label class="form-check-label" for="@id">@f.Label @if (f.Required) { <span class="text-danger">*</span> }</label>
+                                </div>
+                            }
+                            else
+                            {
+                                <label class="form-label fw-semibold" for="@id">@f.Label @if (f.Required) { <span class="text-danger">*</span> }</label>
+                                @switch (f.Type)
+                                {
+                                    case "textarea":
+                                        <textarea id="@id" name="@f.Key" class="@cls" rows="4" maxlength="4000" placeholder="@f.Placeholder" required="@f.Required">@V(f.Key)</textarea>
+                                        break;
+                                    case "select":
+                                        <select id="@id" name="@f.Key" class="@cls.Replace("form-control", "form-select")" required="@f.Required">
+                                            <option value="">@(isEn ? "-- Select --" : "-- Chọn --")</option>
+                                            @foreach (var o in f.Options ?? new()) { <option value="@o" selected="@(V(f.Key) == o)">@o</option> }
+                                        </select>
+                                        break;
+                                    default:
+                                        <input id="@id" name="@f.Key" type="@f.Type" value="@V(f.Key)" class="@cls" maxlength="4000" placeholder="@f.Placeholder" required="@f.Required" />
+                                        break;
+                                }
+                            }
+                            @if (err != null) { <div class="invalid-feedback d-block">@err</div> }
+                        </div>
+                    }
+                    <button type="submit" class="btn btn-primary">@(Model.SubmitText ?? (isEn ? "Submit" : "Gửi"))</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>

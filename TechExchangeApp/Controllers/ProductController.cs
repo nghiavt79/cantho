@@ -288,6 +288,12 @@ namespace TechExchangeApp.Controllers
             if (int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var currentUserId))
                 model.IsFavorite = await _context.ProductFavorites.AnyAsync(f => f.SanPhamId == favId && f.UserId == currentUserId);
 
+            // Vị trí trưng bày tại Sàn (HSMT A.3.4)
+            model.ShowroomLocation = await (from s in _context.ShowroomSlots
+                                            join r in _context.Showrooms on s.ShowroomId equals r.Id
+                                            where s.SanPhamId == favId && s.IsActive && r.IsActive
+                                            select r.Name + " – " + s.Code).FirstOrDefaultAsync();
+
             return View(model);
         }
 
