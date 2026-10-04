@@ -33,13 +33,38 @@ namespace TechExchangeApp.Services
         private readonly AppDbContext _db;
         public CommentService(AppDbContext db) => _db = db;
 
+        /// <summary>Trả null nếu đối tượng không tồn tại hoặc không cho bình luận.</summary>
         public async Task<int?> ResolveTargetIdAsync(byte targetType, int targetId)
         {
-            if (targetType != CommentTargetTypes.Product) return targetId;
-            var p = await _db.SanPhamCNTBs.AsNoTracking().Where(x => x.ID == targetId)
-                .Select(x => new { x.ID, x.LanguageId, x.OriginalId }).FirstOrDefaultAsync();
-            if (p == null) return null;
-            return p.LanguageId == LangHelper.En && p.OriginalId.HasValue ? p.OriginalId.Value : p.ID;
+            switch (targetType)
+            {
+                case CommentTargetTypes.Product:
+                {
+                    var p = await _db.SanPhamCNTBs.AsNoTracking().Where(x => x.ID == targetId)
+                        .Select(x => new { x.ID, x.LanguageId, x.OriginalId }).FirstOrDefaultAsync();
+                    if (p == null) return null;
+                    return p.LanguageId == LangHelper.En && p.OriginalId.HasValue ? p.OriginalId.Value : p.ID;
+                }
+                case CommentTargetTypes.Post:
+                {
+                    // Chỉ tin bài đang xuất bản; bản EN quy về Id bản VI (OriginalId)
+                    var c = await _db.Contents.AsNoTracking().Where(x => x.Id == targetId && x.StatusId == 3)
+                        .Select(x => new { x.Id, x.LanguageId, x.OriginalId }).FirstOrDefaultAsync();
+                    if (c == null) return null;
+                    var id = c.LanguageId == LangHelper.En && c.OriginalId.HasValue ? c.OriginalId.Value : c.Id;
+                    return id <= int.MaxValue ? (int)id : null;
+                }
+                case CommentTargetTypes.Store:
+                {
+                    // Gian hàng = trang nhà cung cấp đang kích hoạt
+                    var n = await _db.NhaCungUngs.AsNoTracking().Where(x => x.CungUngId == targetId && x.IsActivated == true)
+                        .Select(x => new { x.CungUngId, x.LanguageId, x.OriginalId }).FirstOrDefaultAsync();
+                    if (n == null) return null;
+                    return n.LanguageId == LangHelper.En && n.OriginalId.HasValue ? n.OriginalId.Value : n.CungUngId;
+                }
+                default:
+                    return null;
+            }
         }
 
         public async Task<List<CommentItemVm>> GetVisibleAsync(byte targetType, int targetId, int take = 100)

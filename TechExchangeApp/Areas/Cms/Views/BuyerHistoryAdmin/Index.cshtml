@@ -1,0 +1,127 @@
+@model TechExchangeApp.Areas.Cms.Controllers.BuyerHistoryVm?
+@using TechExchangeApp.Areas.Cms.Controllers
+@{
+    ViewData["Title"] = "Lịch sử mua hàng";
+    var results = ViewBag.FindResults as List<BuyerLookupRow>;
+    string OrderStatus(int s) => s switch { 1 => "Mới gửi", 2 => "Đã xác nhận", 3 => "Hoàn tất", 4 => "Đã hủy", _ => "—" };
+    string ProjectStatus(int s) => s switch { 1 => "Nháp", 2 => "Đang thực hiện", 3 => "Hoàn tất", _ => s.ToString() };
+    string RegStatus(int? s) => s switch { 2 => "Đã điểm danh", 0 => "Đã hủy", _ => "Đã đăng ký" };
+    string BoothStatus(int? s) => s switch { 2 => "Đã duyệt", 3 => "Từ chối", 0 => "Đã hủy", _ => "Chờ duyệt" };
+    string PubStatus(int? s) => s switch { 1 => "Chờ duyệt", 2 => "Đã duyệt", 3 => "Xuất bản", 4 => "Trả về", _ => "—" };
+    string D(DateTime? d) => d?.ToString("dd/MM/yyyy HH:mm") ?? "—";
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header"><h3 class="card-title"><i class="fas fa-cart-shopping me-1"></i> Lịch sử mua hàng theo người mua</h3></div>
+    <div class="card-body">
+        <form method="get" class="row g-2">
+            <div class="col-md-6"><input name="find" value="@ViewBag.Find" class="form-control form-control-sm" placeholder="Tên đăng nhập, họ tên, email hoặc số điện thoại..." /></div>
+            <div class="col-auto"><button class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Tìm người mua</button></div>
+        </form>
+        @if (results != null)
+        {
+            <div class="table-responsive mt-3">
+                <table class="table table-sm table-hover table-bordered small mb-0">
+                    <thead class="table-light"><tr><th>Tên đăng nhập</th><th>Họ tên</th><th>Email</th><th>Điện thoại</th><th></th></tr></thead>
+                    <tbody>
+                        @if (results.Count == 0) { <tr><td colspan="5" class="text-center text-muted">Không tìm thấy.</td></tr> }
+                        @foreach (var u in results)
+                        {
+                            <tr><td>@u.UserName</td><td>@u.FullName</td><td>@u.Email</td><td>@u.Phone</td>
+                                <td class="text-center"><a href="?userId=@u.Id" class="btn btn-sm btn-outline-primary py-0">Xem</a></td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@if (Model != null)
+{
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <div class="d-flex flex-wrap justify-content-between">
+                <div>
+                    <h4 class="h5 mb-1">@(Model.FullName ?? Model.UserName) @if (Model.IsLocked) { <span class="badge bg-danger">Đã khóa</span> }</h4>
+                    <div class="small text-muted">@Model.UserName · @Model.Email · @Model.Phone</div>
+                    <div class="small text-muted">Tạo tài khoản: @D(Model.Created) · Đăng nhập cuối: @D(Model.LastLogin)</div>
+                </div>
+                <div class="d-flex gap-3 text-center small">
+                    <div><div class="h5 mb-0">@Model.Orders.Count</div>Đặt mua / quan tâm</div>
+                    <div><div class="h5 mb-0">@Model.Projects.Count</div>Hồ sơ giao dịch</div>
+                    <div><div class="h5 mb-0">@(Model.Requests.Count + Model.Demands.Count)</div>Yêu cầu / tìm mua</div>
+                    <div><div class="h5 mb-0">@Model.Favorites</div>Quan tâm</div>
+                    <div><div class="h5 mb-0">@Model.Comments</div>Bình luận</div>
+                </div>
+            </div>
+            <div class="mt-2 small">
+                <a href="@Url.Action("Index", "ChatAdmin", new { area = "Cms", user = Model.UserName, role = "buyer" })">Lịch sử chat</a> ·
+                <a href="@Url.Action("Index", "CommentsAdmin", new { area = "Cms", userId = Model.UserId })">Bình luận</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-header"><strong>Yêu cầu đặt mua / quan tâm sản phẩm</strong></div>
+        <div class="card-body p-0 table-responsive">
+            <table class="table table-sm table-hover small mb-0">
+                <thead class="table-light"><tr><th>Thời điểm</th><th>Sản phẩm</th><th>Nhà cung cấp</th><th class="text-center">SL</th><th>Giá tham khảo</th><th>Trạng thái</th></tr></thead>
+                <tbody>
+                    @if (Model.Orders.Count == 0) { <tr><td colspan="6" class="text-center text-muted">Chưa có.</td></tr> }
+                    @foreach (var o in Model.Orders)
+                    {
+                        <tr><td>@D(o.Created)</td><td><a href="/san-pham/chi-tiet/x-@o.ProductId" target="_blank">@(o.ProductName ?? "#" + o.ProductId)</a></td>
+                            <td>@o.SupplierName</td><td class="text-center">@o.Quantity</td><td>@o.Price</td><td>@OrderStatus(o.StatusId)</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-header"><strong>Hồ sơ giao dịch công nghệ</strong></div>
+        <div class="card-body p-0 table-responsive">
+            <table class="table table-sm table-hover small mb-0">
+                <thead class="table-light"><tr><th>Thời điểm</th><th>Mã</th><th>Tên hồ sơ</th><th class="text-center">Hợp đồng</th><th>Trạng thái</th></tr></thead>
+                <tbody>
+                    @if (Model.Projects.Count == 0) { <tr><td colspan="5" class="text-center text-muted">Chưa có.</td></tr> }
+                    @foreach (var p in Model.Projects)
+                    {
+                        <tr><td>@D(p.Created)</td><td><a href="@Url.Action("Index", "ProjectsAdmin", new { area = "Cms", search = p.Code })">@p.Code</a></td>
+                            <td>@p.Name</td><td class="text-center">@p.Contracts</td><td>@ProjectStatus(p.StatusId)</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var (title, rows, statusText) in new (string, List<BuyerSimpleRow>, Func<int?, string>)[]
+        {
+            ("Phiếu yêu cầu công nghệ", Model.Requests, PubStatus),
+            ("Tin tìm mua đã đăng", Model.Demands, PubStatus),
+            ("Giỏ hàng", Model.Cart, s => "SL " + (s ?? 1)),
+            ("Đăng ký tham gia sự kiện", Model.Events, RegStatus),
+            ("Thuê gian hàng sự kiện", Model.Booths, BoothStatus)
+        })
+        {
+            <div class="col-lg-6">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header"><strong>@title</strong> <span class="badge bg-secondary">@rows.Count</span></div>
+                    <div class="card-body p-0 table-responsive">
+                        <table class="table table-sm small mb-0">
+                            <tbody>
+                                @if (rows.Count == 0) { <tr><td class="text-center text-muted">Chưa có.</td></tr> }
+                                @foreach (var r in rows.Take(20))
+                                {
+                                    <tr><td style="width:130px">@D(r.Created)</td><td>@r.Title</td><td style="width:110px">@statusText(r.Status)</td></tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

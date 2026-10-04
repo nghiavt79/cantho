@@ -37,7 +37,8 @@ Cột **Tài khoản**: QT = quản trị, NCC = nhà cung cấp, NM = người 
 | A.4.3 | QT | Cùng màn hình → Loại gian hàng | Gian 9 m², 18 m², giá, dịch vụ đi kèm |
 | A.4.4 | QT | Sự kiện → Thống kê (sau phần B.1.6 bên dưới) | Lượt xem, quan tâm, nhắc lịch, đăng ký, điểm danh theo ngày |
 | A.4.5, A.8.4 | QT | Sự kiện → "Gửi nhắc lịch đến hạn" (hoặc đặt giờ sự kiện gần hiện tại để thấy nhắc tự động) | Thư nhắc lịch đến hộp thư người đăng ký; chuông thông báo trên web |
-| A.5.4, A.7.1 | QT | Nội dung website → Bình luận → lọc theo người dùng → ẩn / sửa một bình luận | Bình luận ẩn không còn trên trang sản phẩm |
+| A.5.2 | QT | Giao dịch → Lịch sử mua hàng (hoặc nút giỏ hàng ở danh sách Người dùng) → chọn NM | Trên một màn hình: yêu cầu đặt mua, hồ sơ giao dịch, phiếu yêu cầu, tin tìm mua, giỏ hàng, sự kiện, gian hàng |
+| A.5.4, A.7.1 | NM → QT | NM bình luận ở trang sản phẩm, tin bài và trang nhà cung cấp. QT: Nội dung website → Bình luận → lọc theo người dùng → ẩn / sửa | Cột đối tượng ghi rõ sản phẩm / bài viết / gian hàng; bình luận ẩn không còn trên website |
 | A.6.1 | QT | Giao dịch → Thu chi → đặt tỷ lệ hoa hồng → ghi nhận hoa hồng cho một hợp đồng → Xuất Excel | Số tiền = giá trị × tỷ lệ; báo cáo theo nhóm, theo tháng |
 | A.7.2 | QT | Nội dung website → Biểu mẫu → tạo biểu mẫu mới 3 trường → mở trang công khai → gửi thử → xem dữ liệu, Xuất Excel | Trường bắt buộc báo lỗi khi bỏ trống; dữ liệu hiện trong CMS |
 | A.7.3 | QT → K | Câu hỏi thường gặp → bật/tắt một câu → mở `/hoi-dap` | Câu tắt không hiện ngoài website |
@@ -74,7 +75,7 @@ Cột **Tài khoản**: QT = quản trị, NCC = nhà cung cấp, NM = người 
 | 2.2 sao lưu | Trình bày thư mục sao lưu và biên bản chạy thử phục hồi (`restore-test.ps1`) | Số bản ghi sau phục hồi khớp CSDL đang chạy |
 | 2.3, 2.4 | QT mở `/swagger`; khách mở `/swagger` | Quản trị thấy tài liệu API; khách bị chặn |
 | 2.4 | Trình bày [DacTa_CSDL_BoSung_HSMT.md](DacTa_CSDL_BoSung_HSMT.md) | |
-| 2.11 | QT vào CMS khi bật xác thực 2 lớp; đăng ký tài khoản không tích ô đồng ý | Phải nhập mã gửi qua email; không đăng ký được nếu chưa đồng ý điều khoản |
+| 2.11 (cấp độ 2) | QT vào CMS khi bật xác thực 2 lớp; đăng ký tài khoản không tích ô đồng ý | Phải nhập mã gửi qua email; không đăng ký được nếu chưa đồng ý điều khoản |
 
 ## 3. Những mục đáp ứng một phần — cách trình bày
 
@@ -84,8 +85,6 @@ Cột **Tài khoản**: QT = quản trị, NCC = nhà cung cấp, NM = người 
 | SMS Brandname (I.4) | Hệ thống gửi SMS qua hàng đợi đã sẵn sàng; kích hoạt khi có tài khoản Brandname |
 | Chữ ký số (I.6) | Demo ký OTP và ký USB Token; ký từ xa VNPT/FPT/Viettel kích hoạt khi có tài khoản CA |
 | IPv6 | Cấu hình khi có hạ tầng máy chủ |
-| ATTT (2.11) | Đã có các biện pháp kỹ thuật; cấp độ ATTT theo quyết định của Chủ trì thuê |
-| A.5.2, A.7.1 | Lịch sử mua hàng theo dõi qua đơn hàng và hồ sơ giao dịch; bình luận đã có ở sản phẩm, mở rộng cho bài viết, gian hàng trong giai đoạn triển khai |
 
 ## 4. Sau buổi demo
 

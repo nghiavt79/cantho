@@ -38,7 +38,7 @@
                         <th class="small text-center" style="width:110px">THAO TÁC</th>
                         <th class="small" style="width:180px">NGƯỜI BÌNH LUẬN</th>
                         <th class="small">NỘI DUNG</th>
-                        <th class="small" style="width:240px">SẢN PHẨM</th>
+                        <th class="small" style="width:260px">ĐỐI TƯỢNG</th>
                         <th class="small" style="width:130px">THỜI ĐIỂM</th>
                         <th class="small text-center" style="width:90px">TRẠNG THÁI</th>
                     </tr>
@@ -64,11 +64,8 @@
                             </td>
                             <td class="small comment-content" style="white-space:pre-line">@c.Content</td>
                             <td class="small">
-                                @if (c.TargetType == TechExchangeApp.Entities.CommentTargetTypes.Product)
-                                {
-                                    <a href="/san-pham/chi-tiet/x-@c.TargetId" target="_blank">#@c.TargetId @c.TargetName</a>
-                                }
-                                else { <span>#@c.TargetId</span> }
+                                <span class="badge bg-light text-dark">@(c.TargetType switch { 1 => "Sản phẩm", 2 => "Gian hàng", 3 => "Bài viết", _ => "" })</span>
+                                <a href="@c.TargetUrl" target="_blank">#@c.TargetId @c.TargetName</a>
                             </td>
                             <td class="small">@c.Created.ToString("dd/MM/yyyy HH:mm")@if (c.Modified.HasValue) { <div class="text-muted">Sửa: @c.ModifiedBy</div> }</td>
                             <td class="text-center">

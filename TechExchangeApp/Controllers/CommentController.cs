@@ -24,9 +24,6 @@ namespace TechExchangeApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Post(byte targetType, int targetId, string content)
         {
-            if (targetType != CommentTargetTypes.Product)
-                return Json(new { success = false, message = I18n.T(HttpContext, "comment.err.notAllowed") });
-
             var resolved = await _comments.ResolveTargetIdAsync(targetType, targetId);
             if (resolved == null)
                 return Json(new { success = false, message = I18n.T(HttpContext, "comment.err.notAllowed") });

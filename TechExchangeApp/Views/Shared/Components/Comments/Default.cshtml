@@ -6,7 +6,7 @@
     int.TryParse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value, out var currentUserId);
 }
 
-<section class="tech-card mt-4 user-comments" id="userComments" data-target-type="@targetType" data-target-id="@targetId">
+<section class="tech-card border rounded p-3 mt-4 user-comments" id="userComments" data-target-type="@targetType" data-target-id="@targetId">
     <h2 class="h5 mb-3"><i class="bi bi-chat-left-text me-1"></i>@Html.Text("comment.title") <span class="badge bg-light text-dark comment-count">@Model.Count</span></h2>
 
     @if (isAuth)

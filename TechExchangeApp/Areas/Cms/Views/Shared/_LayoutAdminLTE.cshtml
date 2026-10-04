@@ -109,6 +109,7 @@
                         bool isEventsAdmin = postsCtrl == "EventsAdmin";
                         bool isFormsAdmin = postsCtrl == "FormsAdmin";
                         bool isFinanceAdmin = postsCtrl == "FinanceAdmin";
+                        bool isBuyerHistoryAdmin = postsCtrl == "BuyerHistoryAdmin";
                         bool isSupplierTiersAdmin = postsCtrl == "SupplierTiersAdmin";
                         bool isStorePackagesAdmin = postsCtrl == "StorePackagesAdmin";
                         bool isShowroomsAdmin = postsCtrl == "ShowroomsAdmin";
@@ -130,7 +131,7 @@
                         bool isUsers = postsCtrl == "Users";
                         bool isHuongDanCms = postsCtrl == "HuongDanCms";
                         bool isContentGroup = isPosts || isMenuAdmin || isCategoryAdmin || isImageAdverAdmin || isUiTranslationAdmin || isFaqAdmin || isCommentsAdmin || isEventsAdmin || isFormsAdmin;
-                        bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin || isChatAdmin || isFinanceAdmin;
+                        bool isTransactionGroup = isProjectsAdmin || isPhieuYeuCauCNTBAdmin || isContentsYeuCauAdmin || isFeedbackAdmin || isSupportRequestsAdmin || isChatAdmin || isFinanceAdmin || isBuyerHistoryAdmin;
                         bool isPartnerProductGroup = postsCtrl == "SanPhamCNTB" || isNhaCungUngAdmin || isNhaTuVanAdmin || isProductWarningsAdmin || isProductHistory || isSupplierTiersAdmin || isStorePackagesAdmin || isShowroomsAdmin;
                         bool isSystemGroup = isUsers || isLogAdmin || isSystemParameterAdmin || isSysFunctionAdmin || isRoleAdmin || isSysFuncPermissionAdmin;
                     }
@@ -190,6 +191,13 @@
                                    class="nav-link @(isChatAdmin ? "active" : "")">
                                     <i class="nav-icon fas fa-comment-dots"></i>
                                     <p>Lịch sử chat</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="BuyerHistoryAdmin" asp-action="Index"
+                                   class="nav-link @(isBuyerHistoryAdmin ? "active" : "")">
+                                    <i class="nav-icon fas fa-cart-shopping"></i>
+                                    <p>Lịch sử mua hàng</p>
                                 </a>
                             </li>
                             <li class="nav-item">

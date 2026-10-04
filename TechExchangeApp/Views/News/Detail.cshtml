@@ -55,6 +55,9 @@
                         ShareTitle = Model.Title
                     })
 
+                    @* Bình luận bài viết (HSMT A.7.1) *@
+                    @await Component.InvokeAsync("Comments", new { targetType = TechExchangeApp.Entities.CommentTargetTypes.Post, targetId = (int)Model.Id })
+
                     @* ===== IMAGE CAROUSEL (TypeId = 4) ===== *@
                     @if (Model.Images != null && Model.Images.Any())
                     {

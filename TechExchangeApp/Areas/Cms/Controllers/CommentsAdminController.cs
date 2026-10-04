@@ -36,7 +36,12 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                         join u in _context.Users.AsNoTracking() on c.UserId equals u.Id
                         join p in _context.SanPhamCNTBs.AsNoTracking() on new { c.TargetId, T = (int)c.TargetType } equals new { TargetId = p.ID, T = (int)CommentTargetTypes.Product } into pj
                         from p in pj.DefaultIfEmpty()
-                        select new { c, u.UserName, u.FullName, ProductName = p != null ? p.Name : null };
+                        join n in _context.Contents.AsNoTracking() on new { Id = (long)c.TargetId, T = (int)c.TargetType } equals new { n.Id, T = (int)CommentTargetTypes.Post } into nj
+                        from n in nj.DefaultIfEmpty()
+                        join s in _context.NhaCungUngs.AsNoTracking() on new { c.TargetId, T = (int)c.TargetType } equals new { TargetId = s.CungUngId, T = (int)CommentTargetTypes.Store } into sj
+                        from s in sj.DefaultIfEmpty()
+                        select new { c, u.UserName, u.FullName, ProductName = p != null ? p.Name : n != null ? n.Title : s != null ? s.FullName : null,
+                                     PostMenuId = n != null ? n.MenuId : null, PostSlug = n != null ? n.QueryString : null };
 
             if (!string.IsNullOrWhiteSpace(keyword)) query = query.Where(x => x.c.Content.Contains(keyword));
             if (!string.IsNullOrWhiteSpace(user)) query = query.Where(x => x.UserName.Contains(user) || (x.FullName != null && x.FullName.Contains(user)));
@@ -49,6 +54,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 .Select(x => new CommentAdminRow
                 {
                     Id = x.c.Id, TargetType = x.c.TargetType, TargetId = x.c.TargetId, TargetName = x.ProductName,
+                    TargetUrl = x.c.TargetType == CommentTargetTypes.Product ? "/san-pham/chi-tiet/x-" + x.c.TargetId
+                              : x.c.TargetType == CommentTargetTypes.Store ? "/nha-cung-ung/x-" + x.c.TargetId
+                              : x.PostMenuId == 44 ? "/tin-tuc-su-kien/" + x.PostSlug + "-" + x.c.TargetId
+                              : "/" + x.PostMenuId + "/" + x.PostSlug + "-" + x.c.TargetId,
                     UserId = x.c.UserId, UserName = x.UserName, FullName = x.FullName, Content = x.c.Content,
                     StatusId = x.c.StatusId, Created = x.c.Created, Modified = x.c.Modified, ModifiedBy = x.c.ModifiedBy,
                     IpAddress = x.c.IpAddress
@@ -114,6 +123,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public byte TargetType { get; set; }
         public int TargetId { get; set; }
         public string? TargetName { get; set; }
+        public string? TargetUrl { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; } = "";
         public string? FullName { get; set; }

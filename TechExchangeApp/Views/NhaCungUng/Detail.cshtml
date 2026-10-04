@@ -362,6 +362,9 @@
                     ShareTitle = Model.FullName
                 })
 
+                @* Bình luận gian hàng (HSMT A.7.1) *@
+                @await Component.InvokeAsync("Comments", new { targetType = TechExchangeApp.Entities.CommentTargetTypes.Store, targetId = Model.Id })
+
             </section>
         </div>
     </div>

@@ -9,20 +9,22 @@ Ngày lập: 02/10/2026 · **Cập nhật: 04/10/2026** (sau khi bổ sung chứ
 - 🟡 Đáp ứng một phần: đã có phần lõi, còn thiếu một phần hoặc chờ cấu hình / tài khoản bên ngoài.
 - ❌ Chưa có.
 
-**Kiểm thử 04/10/2026 (máy local):** 57 trang công khai, khu tài khoản và CMS trả kết quả đúng, không có lỗi máy chủ; trang tiếng Anh không còn chuỗi chưa dịch. Chi tiết từng chức năng mới đã chạy thử theo đợt — xem [Ke_hoach_phat_trien_chuc_nang_con_thieu.md](Ke_hoach_phat_trien_chuc_nang_con_thieu.md). Kịch bản demo: [KichBan_Demo_ChuongV.md](KichBan_Demo_ChuongV.md).
+**Kiểm thử 04/10/2026 (máy local):** 57 trang (chạy lại sau khi bổ sung A.5.2, A.7.1) công khai, khu tài khoản và CMS trả kết quả đúng, không có lỗi máy chủ; trang tiếng Anh không còn chuỗi chưa dịch. Chi tiết từng chức năng mới đã chạy thử theo đợt — xem [Ke_hoach_phat_trien_chuc_nang_con_thieu.md](Ke_hoach_phat_trien_chuc_nang_con_thieu.md). Kịch bản demo: [KichBan_Demo_ChuongV.md](KichBan_Demo_ChuongV.md).
 
 ## Tổng hợp
 
 | Phần | Số yêu cầu | ✅ | 🟡 | ❌ |
 |---|---|---|---|---|
 | I. Hạng mục dịch vụ (mục 2.1) | 11 | 8 | 3 | 0 |
-| II. Chức năng chi tiết A – B – C | 63 | 59 | 4 | 0 |
-| III. Yêu cầu chất lượng, kết nối, ATTT (mục 2.2–2.4, 2.10, 2.11) | 10 | 8 | 2 | 0 |
-| **Cộng** | **84** | **75** | **9** | **0** |
+| II. Chức năng chi tiết A – B – C | 63 | 61 | 2 | 0 |
+| III. Yêu cầu chất lượng, kết nối, ATTT (mục 2.2–2.4, 2.10, 2.11) | 10 | 9 | 1 | 0 |
+| **Cộng** | **84** | **78** | **6** | **0** |
 
 *Ngày 02/10/2026: 35 ✅ / 33 🟡 / 16 ❌.*
 
-**9 dòng 🟡 còn lại đều phụ thuộc bên ngoài hoặc cần quyết định của Chủ trì thuê:** VR360 (3 dòng – phải chụp, dựng 10 điểm cảnh), SMS Brandname và chứng thư số CA thật (chờ tài khoản nhà cung cấp), IPv6 (chờ hạ tầng), cấp độ ATTT (chờ Sở chốt cấp 2 hay 3), lịch sử mua hàng gộp (A.5.2) và khung bình luận cho bài viết / gian hàng (A.7.1).
+**6 dòng 🟡 còn lại đều phụ thuộc bên ngoài:** VR360 (3 dòng – phải chụp, dựng 10 điểm cảnh), SMS Brandname và chứng thư số CA thật (chờ tài khoản nhà cung cấp), IPv6 (chờ hạ tầng máy chủ).
+
+**Cấp độ ATTT:** Sở đã chốt **cấp độ 2** (04/10/2026).
 
 ---
 
@@ -73,11 +75,11 @@ Ngày lập: 02/10/2026 · **Cập nhật: 04/10/2026** (sau khi bổ sung chứ
 | A.4.4 | Thống kê lượt click, quan tâm sự kiện | ✅ | Thống kê lượt xem, quan tâm, nhắc lịch, đăng ký, điểm danh theo ngày |
 | A.4.5 | Nhắc lịch qua SMS, email, web | ✅ | Mốc nhắc theo từng sự kiện; email + chuông web; SMS khi có Brandname |
 | A.5.1 | Danh sách người mua, tìm kiếm, xem, khóa tài khoản | ✅ | Khóa / mở khóa có lý do, đẩy phiên đang đăng nhập ra |
-| A.5.2 | Lịch sử mua hàng | 🟡 | Có đơn hàng OCOP (`OcopOrderRequest`) và giỏ hàng; giao dịch công nghệ theo dõi qua dự án; chưa có màn hình gộp theo người mua |
+| A.5.2 | Lịch sử mua hàng | ✅ | CMS "Lịch sử mua hàng" (`BuyerHistoryAdmin`): gộp theo người mua các yêu cầu đặt mua / quan tâm, hồ sơ giao dịch, phiếu yêu cầu, tin tìm mua, giỏ hàng, đăng ký sự kiện, thuê gian hàng |
 | A.5.3 | Lịch sử chat người mua, tìm từ khóa, gắn cờ | ✅ | `ChatAdmin`: lọc người mua, tìm từ khóa, gắn cờ vi phạm |
-| A.5.4 | Lịch sử bình luận, sửa/xóa bình luận | ✅ | `CommentsAdmin` theo người dùng (bình luận sản phẩm); bình luận nhu cầu công nghệ quản lý ở mục Tìm mua |
+| A.5.4 | Lịch sử bình luận, sửa/xóa bình luận | ✅ | `CommentsAdmin` theo người dùng (sản phẩm, bài viết, gian hàng); bình luận nhu cầu công nghệ quản lý ở mục Tìm mua |
 | A.6.1 | Quản lý thu chi, hoa hồng | ✅ | `FinanceAdmin`: tỷ lệ hoa hồng, ghi nhận hoa hồng, sổ thu chi tự động + nhập tay, báo cáo, xuất Excel |
-| A.7.1 | Bình luận bài viết, gian hàng, sản phẩm | 🟡 | Bình luận sản phẩm có; bảng dùng chung đã hỗ trợ bài viết, gian hàng nhưng chưa gắn khung bình luận |
+| A.7.1 | Bình luận bài viết, gian hàng, sản phẩm | ✅ | Khung bình luận ở trang sản phẩm, trang tin bài, trang nhà cung cấp (VI/EN dùng chung); CMS Bình luận hiện loại đối tượng |
 | A.7.2 | Quản lý mẫu đăng ký (form động) | ✅ | `FormsAdmin`: định nghĩa trường, bắt buộc, hành động sau gửi; dữ liệu đã gửi, xuất Excel |
 | A.7.3 | FAQ | ✅ | `FaqAdmin` + trang `/hoi-dap`, `/en/faq` |
 | A.8.1 | Báo cáo giao dịch, cảnh báo giao dịch mới | ✅ | `AdminAnalyticsController`, dashboard, thông báo |
@@ -135,4 +137,4 @@ Ngày lập: 02/10/2026 · **Cập nhật: 04/10/2026** (sau khi bổ sung chứ
 | 2.3 | Kết nối Sàn KH&CN Việt Nam | ✅ | Xem C.2 |
 | 2.4 | Tài liệu hóa giao diện, cấu trúc dữ liệu | ✅ | Swagger `/swagger`; [DacTa_CSDL_BoSung_HSMT.md](DacTa_CSDL_BoSung_HSMT.md) |
 | 2.10 | Bàn giao, trích xuất dữ liệu | ✅ | CSDL SQL Server, xuất Excel |
-| 2.11 | ATTT theo cấp độ, bảo vệ dữ liệu cá nhân | 🟡 | Đã có: header bảo mật, xác thực 2 lớp cho quản trị (`CMS_MFA_ENABLED`), đồng ý xử lý dữ liệu cá nhân khi đăng ký, khóa tài khoản. Chờ Sở chốt cấp độ ATTT (2 hay 3) và nội dung chính sách bảo vệ dữ liệu cá nhân |
+| 2.11 | ATTT theo cấp độ, bảo vệ dữ liệu cá nhân | ✅ | Cấp độ 2 (Sở chốt 04/10/2026). Đã có: HTTPS, phân quyền, nhật ký, header bảo mật, xác thực 2 lớp cho quản trị (`CMS_MFA_ENABLED`), khóa tài khoản, đồng ý xử lý dữ liệu cá nhân khi đăng ký. Nội dung trang chính sách bảo vệ dữ liệu cá nhân do Sở cung cấp (tham số `PRIVACY_POLICY_URL`) |

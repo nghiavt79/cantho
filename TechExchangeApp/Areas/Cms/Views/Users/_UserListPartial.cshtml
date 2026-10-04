@@ -27,7 +27,7 @@
                 <th class="text-center" style="width:36px">
                     <input type="checkbox" class="form-check-input" id="chkAll" />
                 </th>
-                <th class="text-center text-uppercase small fw-bold" style="width:130px">Thao tác</th>
+                <th class="text-center text-uppercase small fw-bold" style="width:160px">Thao tác</th>
                 <th class="text-center text-uppercase small fw-bold" style="width:50px">STT</th>
                 <th class="sortable text-uppercase small fw-bold" data-sort="username" role="button">
                     Tên đăng nhập @Html.Raw(SortIcon("username", sortBy, sortDir))
@@ -77,6 +77,9 @@
                         <div class="btn-group btn-group-sm" role="group">
                             <a href="#" class="btn btn-outline-primary btn-sm btn-edit" data-id="@u.UserId" title="Sửa">
                                 <i class="fas fa-pen-to-square"></i>
+                            </a>
+                            <a href="@Url.Action("Index", "BuyerHistoryAdmin", new { area = "Cms", userId = u.UserId })" class="btn btn-outline-info btn-sm" title="Lịch sử mua hàng">
+                                <i class="fas fa-cart-shopping"></i>
                             </a>
                             <a href="#" class="btn btn-outline-warning btn-sm btn-resetpwd" data-id="@u.UserId" title="Đổi mật khẩu">
                                 <i class="fas fa-key"></i>
