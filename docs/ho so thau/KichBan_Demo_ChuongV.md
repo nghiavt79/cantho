@@ -8,6 +8,7 @@ Ngày lập: 04/10/2026 · Thời lượng dự kiến: 60–75 phút · Căn c�
 |---|---|---|
 | 1 | Triển khai mã nguồn nhánh `feature/bo-sung-chuc-nang-hsmt` | |
 | 2 | Chạy lần lượt các script trong `TechExchangeApp/Scripts/`: `dot1-…`, `seed-i18n-dot1-…`, `dot2-…`, `seed-i18n-dot2-…`, `dot3-su-kien-…`, `seed-i18n-dot3-…`, `dot4-…`, `seed-i18n-dot4-…`, `dot5-…`, `seed-i18n-dot5-…` | `sqlcmd -f 65001 -I`. Thiếu cờ `-f 65001` thì tiếng Việt bị lỗi font |
+| 2b | Chạy `seed-huong-dan-su-dung-hsmt.sql` | Thêm 7 bài hướng dẫn người dùng cho chức năng mới vào trang `/huong-dan` |
 | 3 | Chạy `seed-demo-hsmt.sql` | Tạo 8 câu FAQ, 1 sự kiện mẫu (diễn ra sau 7 ngày, 2 loại gian hàng), 3 gói gian hàng, 1 phòng trưng bày 10 vị trí. **Không chạy trên máy chủ thật** |
 | 4 | Chuẩn bị 3 tài khoản: **Quản trị**, **Nhà cung cấp** (gắn với một hồ sơ nhà cung ứng có vài sản phẩm), **Người mua** | Mỗi tài khoản có email nhận được thư thật |
 | 5 | Tham số hệ thống: `NOTIFICATION_ENABLE_EMAIL = true` (để thư thật đến hộp thư); muốn demo xác thực 2 lớp thì `CMS_MFA_ENABLED = 1` | Đổi tham số có hiệu lực sau khoảng 1 phút |

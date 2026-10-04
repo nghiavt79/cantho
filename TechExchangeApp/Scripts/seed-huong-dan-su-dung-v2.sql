@@ -285,6 +285,7 @@ SET
 FROM Contents c
 JOIN Menu m ON m.MenuId = c.MenuId
 WHERE m.ParentId = @rootId
+  AND ISNULL(c.Creator, '') <> 'huong-dan-hsmt' -- bài bổ sung theo HSMT (seed-huong-dan-su-dung-hsmt.sql)
   AND NOT EXISTS (SELECT 1 FROM @Articles a WHERE a.QueryString = c.QueryString);
 
 -- Nếu đã từng chạy bản nháp dùng slug cũ, ẩn bài đó để tránh trùng nội dung.
