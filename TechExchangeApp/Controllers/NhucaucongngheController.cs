@@ -274,25 +274,27 @@ namespace TechExchangeApp.Controllers.FrontEnd
             bool isAjax = string.Equals(Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
             try
             {
-                // ── Anti-spam: honeypot field ──
-                var honeypot = Request.Form["website_url"].ToString();
-                if (!string.IsNullOrEmpty(honeypot))
-                {
-                    _logger.LogWarning("[AntiSpam] Honeypot triggered. IP={IP}", HttpContext.Connection.RemoteIpAddress);
-                    return Redirect(_mainDomain + "page/thanks");
-                }
+                // ── [TẠM TẮT CHỐNG SPAM] honeypot field ──
+                //bool trapped = false;
+                //var honeypot = Request.Form["website_url"].ToString();
+                //if (!string.IsNullOrEmpty(honeypot))
+                //{
+                //    _logger.LogWarning("[AntiSpam] Honeypot triggered. IP={IP}", HttpContext.Connection.RemoteIpAddress);
+                //    trapped = true;
+                //}
 
-                // ── Anti-spam: time-based (form must take >= 3 seconds) ──
-                var formTimestamp = Request.Form["_ts"].ToString();
-                if (long.TryParse(formTimestamp, out var ts))
-                {
-                    var elapsed = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - ts;
-                    if (elapsed < 3)
-                    {
-                        _logger.LogWarning("[AntiSpam] Too fast submission ({Sec}s). IP={IP}", elapsed, HttpContext.Connection.RemoteIpAddress);
-                        return Redirect(_mainDomain + "page/thanks");
-                    }
-                }
+                // ── [TẠM TẮT CHỐNG SPAM] time-based (form must take >= 3 seconds) ──
+                //var formTimestamp = Request.Form["_ts"].ToString();
+                //if (long.TryParse(formTimestamp, out var ts))
+                //{
+                //    var elapsed = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - ts;
+                //    // elapsed < 0 = lệch giờ máy client, không tính là spam
+                //    if (elapsed >= 0 && elapsed < 3)
+                //    {
+                //        _logger.LogWarning("[AntiSpam] Too fast submission ({Sec}s). IP={IP}", elapsed, HttpContext.Connection.RemoteIpAddress);
+                //        trapped = true;
+                //    }
+                //}
 
                 // ── Math captcha (server-side, one-time; regenerate cho lần sau) ──
                 var correctCaptcha = HttpContext.Session.GetString(CaptchaSessionKey);
@@ -307,17 +309,20 @@ namespace TechExchangeApp.Controllers.FrontEnd
                     return RedirectToAction(nameof(CateTechNeeds));
                 }
 
-                // ── Anti-spam: basic content checks ──
                 var noiDung = model.NoiDung?.Trim() ?? "";
                 var email = model.Email?.Trim() ?? "";
                 var phone = model.Phone?.Trim() ?? "";
-                bool isSpam = string.IsNullOrEmpty(noiDung)
-                    || phone == "555-666-0606"
-                    || email.EndsWith("@example.com", StringComparison.OrdinalIgnoreCase)
-                    || email.EndsWith("@email.tst", StringComparison.OrdinalIgnoreCase)
-                    || email.EndsWith("@test.com", StringComparison.OrdinalIgnoreCase)
-                    || noiDung.Contains("http://") || noiDung.Contains("https://")
-                    || System.Text.RegularExpressions.Regex.IsMatch(noiDung, @"\[url[=\]]");
+
+                // ── [TẠM TẮT CHỐNG SPAM] basic content checks ──
+                bool isSpam = false;
+                //bool isSpam = trapped
+                //    || string.IsNullOrEmpty(noiDung)
+                //    || phone == "555-666-0606"
+                //    || email.EndsWith("@example.com", StringComparison.OrdinalIgnoreCase)
+                //    || email.EndsWith("@email.tst", StringComparison.OrdinalIgnoreCase)
+                //    || email.EndsWith("@test.com", StringComparison.OrdinalIgnoreCase)
+                //    || noiDung.Contains("http://") || noiDung.Contains("https://")
+                //    || System.Text.RegularExpressions.Regex.IsMatch(noiDung, @"\[url[=\]]");
 
                 // ── Assign UserId if logged in ──
                 int? userId = null;
@@ -387,7 +392,8 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 if (isAjax)
                     return Json(new { success = true, message = "Đã tiếp nhận nhu cầu của bạn.", captcha = newCaptcha });
 
-                return Redirect(_mainDomain + "page/thanks");
+                TempData["Success"] = "Đã tiếp nhận nhu cầu của bạn.";
+                return RedirectToAction(nameof(CateTechNeeds));
             }
             catch
             {
