@@ -15,7 +15,7 @@ namespace TechExchangeApp.ViewModel
         public string Token { get; set; } = "";
 
         [Required(ErrorMessage = "auth.reset.err.passwordRequired")]
-        [MinLength(6, ErrorMessage = "auth.reset.err.passwordMin")]
+        [StrongPassword(ErrorMessage = "auth.err.passwordPolicy")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; } = "";
 

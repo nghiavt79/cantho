@@ -18,6 +18,29 @@ if (builder.Environment.IsDevelopment())
 }
 
 // Add services to the container.
+// Pentest 10/2026: tạm khóa đăng nhập sai nhiều lần + giới hạn tần suất các thao tác xác thực
+builder.Services.AddSingleton<TechExchangeApp.Services.LoginThrottle>();
+builder.Services.AddRateLimiter(options =>
+{
+    // Mỗi IP tối đa 10 lần/phút cho đăng nhập, đăng ký, quên/đặt lại mật khẩu, gửi/xác minh OTP
+    options.AddPolicy("auth", ctx => System.Threading.RateLimiting.RateLimitPartition.GetFixedWindowLimiter(
+        ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new System.Threading.RateLimiting.FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 10,
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0
+        }));
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.OnRejected = async (ctx, token) =>
+    {
+        const string msg = "Bạn thao tác quá nhanh. Vui lòng thử lại sau 1 phút.";
+        ctx.HttpContext.Response.ContentType = "application/json; charset=utf-8";
+        await ctx.HttpContext.Response.WriteAsync(
+            System.Text.Json.JsonSerializer.Serialize(new { success = false, message = msg, errors = new[] { msg } }), token);
+    };
+});
+
 builder.Services.AddControllersWithViews(options =>
 {
     // Pentest 10/2026: kiểm tra nội dung mọi tệp tải lên (đuôi, chữ ký, JS trong PDF, macro Office)
@@ -348,6 +371,7 @@ app.Use(async (ctx, next) =>
 });
 
 app.UseRouting();
+app.UseRateLimiter(); // pentest 10/2026 — chính sách "auth" gắn trên các action xác thực
 
 // --- Báº¯t buá»™c: UseSession pháº£i náº±m á»Ÿ Ä‘Ã¢y ---
 app.UseSession();

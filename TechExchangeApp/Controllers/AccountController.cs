@@ -53,6 +53,7 @@ namespace TechExchangeApp.Controllers
         // POST: /dang-ky.html
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> Register(RegisterViewModel model, [FromServices] TechExchangeApp.Data.AppDbContext context)
         {
             if (ModelState.IsValid)
@@ -115,11 +116,21 @@ namespace TechExchangeApp.Controllers
         // POST: /dang-nhap.html
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, [FromServices] TechExchangeApp.Data.AppDbContext context, string? returnUrl = null)
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
+        public async Task<IActionResult> Login(LoginViewModel model, [FromServices] TechExchangeApp.Data.AppDbContext context,
+            [FromServices] TechExchangeApp.Services.LoginThrottle throttle, string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                // Tạm khóa sau nhiều lần nhập sai (pentest 10/2026)
+                var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+                if (throttle.GetLockRemaining(model.UserName, ip) is TimeSpan wait)
+                {
+                    ModelState.AddModelError(string.Empty, TooManyAttemptsMessage(wait));
+                    return View(model);
+                }
+
                 // Manual lookup because Normalized columns are ignored
                 var user = context.Users.FirstOrDefault(u => u.UserName == model.UserName);
                 
@@ -136,6 +147,7 @@ namespace TechExchangeApp.Controllers
                         }
 
                         await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
+                        throttle.RegisterSuccess(model.UserName);
 
                         user.LastLogin = DateTime.Now;
                         await _userManager.UpdateAsync(user);
@@ -152,6 +164,7 @@ namespace TechExchangeApp.Controllers
                     }
                 }
                 
+                throttle.RegisterFailure(model.UserName, ip);
                 ModelState.AddModelError(string.Empty, I18n.T(HttpContext, "auth.err.loginFailed"));
             }
             return View(model);
@@ -160,7 +173,9 @@ namespace TechExchangeApp.Controllers
         // POST: /Account/LoginAjax - AJAX Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginAjax(LoginViewModel model, [FromServices] TechExchangeApp.Data.AppDbContext context, string? returnUrl = null)
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
+        public async Task<IActionResult> LoginAjax(LoginViewModel model, [FromServices] TechExchangeApp.Data.AppDbContext context,
+            [FromServices] TechExchangeApp.Services.LoginThrottle throttle, string? returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -170,6 +185,11 @@ namespace TechExchangeApp.Controllers
                     .ToList();
                 return Json(new { success = false, errors });
             }
+
+            // Tạm khóa sau nhiều lần nhập sai (pentest 10/2026)
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+            if (throttle.GetLockRemaining(model.UserName, ip) is TimeSpan wait)
+                return Json(new { success = false, errors = new[] { TooManyAttemptsMessage(wait) } });
 
             // Manual lookup because Normalized columns are ignored
             var user = context.Users.FirstOrDefault(u => u.UserName == model.UserName);
@@ -184,6 +204,7 @@ namespace TechExchangeApp.Controllers
                         return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.locked") } });
 
                     await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
+                    throttle.RegisterSuccess(model.UserName);
 
                     user.LastLogin = DateTime.Now;
                     await _userManager.UpdateAsync(user);
@@ -200,12 +221,17 @@ namespace TechExchangeApp.Controllers
                 }
             }
             
+            throttle.RegisterFailure(model.UserName, ip);
             return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.loginFailed") } });
         }
+
+        private string TooManyAttemptsMessage(TimeSpan wait)
+            => string.Format(I18n.T(HttpContext, "auth.err.tooManyAttempts"), TechExchangeApp.Services.LoginThrottle.Minutes(wait));
 
         // POST: /Account/RegisterAjax - AJAX Register
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> RegisterAjax(RegisterViewModel model, [FromServices] TechExchangeApp.Data.AppDbContext context)
         {
             if (!ModelState.IsValid)
@@ -397,6 +423,7 @@ namespace TechExchangeApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> ForgotPassword(ForgotPasswordVm model,
             [FromServices] TechExchangeApp.Services.IPasswordResetService passwordReset)
         {
@@ -427,6 +454,7 @@ namespace TechExchangeApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> ResetPassword(ResetPasswordVm model,
             [FromServices] TechExchangeApp.Services.IPasswordResetService passwordReset)
         {
@@ -460,6 +488,7 @@ namespace TechExchangeApp.Controllers
 
         // ─── POST /Account/SendEmailOtp (AJAX) ─────────────────────────────────
         [Authorize, HttpPost, IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> SendEmailOtp()
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
@@ -469,6 +498,7 @@ namespace TechExchangeApp.Controllers
 
         // ─── POST /Account/SendPhoneOtp (AJAX) ─────────────────────────────────
         [Authorize, HttpPost, IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> SendPhoneOtp()
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
@@ -478,6 +508,7 @@ namespace TechExchangeApp.Controllers
 
         // ─── POST /Account/VerifyEmailOtp (AJAX) ───────────────────────────────
         [Authorize, HttpPost, IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> VerifyEmailOtp([FromBody] OtpDto dto)
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);
@@ -487,6 +518,7 @@ namespace TechExchangeApp.Controllers
 
         // ─── POST /Account/VerifyPhoneOtp (AJAX) ───────────────────────────────
         [Authorize, HttpPost, IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> VerifyPhoneOtp([FromBody] OtpDto dto)
         {
             var userId = int.Parse(_userManager.GetUserId(User)!);

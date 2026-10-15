@@ -466,7 +466,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public string? UserName { get; set; }
 
         [Required(ErrorMessage = "Bắt buộc")]
-        [MinLength(6, ErrorMessage = "Tối thiểu 6 ký tự")]
+        [TechExchangeApp.ViewModel.StrongPassword]
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "Bắt buộc")]
@@ -510,7 +510,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public string UserName { get; set; } = "";
 
         [Required(ErrorMessage = "Bắt buộc")]
-        [MinLength(6, ErrorMessage = "Tối thiểu 6 ký tự")]
+        [TechExchangeApp.ViewModel.StrongPassword]
         public string? NewPassword { get; set; }
 
         [Required(ErrorMessage = "Bắt buộc")]

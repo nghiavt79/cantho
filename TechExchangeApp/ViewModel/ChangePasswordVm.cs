@@ -10,7 +10,7 @@ namespace TechExchangeApp.ViewModel
         public string CurrentPassword { get; set; } = null!;
 
         [Required(ErrorMessage = "Mật khẩu mới là bắt buộc")]
-        [MinLength(6, ErrorMessage = "Mật khẩu mới phải có ít nhất 6 ký tự")]
+        [StrongPassword]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu mới")]
         public string NewPassword { get; set; } = null!;
