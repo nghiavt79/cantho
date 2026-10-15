@@ -228,6 +228,7 @@ namespace TechExchangeApp.Controllers
 
         // POST: /Acceptance/SendOtp (AJAX)
         [HttpPost, IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> SendOtp(int projectId, string side)
         {
             try
@@ -275,6 +276,7 @@ namespace TechExchangeApp.Controllers
 
         // POST: /Acceptance/VerifyOtp (AJAX)
         [HttpPost, IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> VerifyOtp(int projectId, string side, string otpCode)
         {
             try

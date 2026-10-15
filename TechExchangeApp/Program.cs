@@ -22,12 +22,14 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddSingleton<TechExchangeApp.Services.LoginThrottle>();
 builder.Services.AddRateLimiter(options =>
 {
-    // Mỗi IP tối đa 10 lần/phút cho đăng nhập, đăng ký, quên/đặt lại mật khẩu, gửi/xác minh OTP
+    // Mỗi IP tối đa N lần/phút (mặc định 30, chỉnh bằng Security:AuthRateLimitPerMinute) cho đăng nhập,
+    // đăng ký, quên/đặt lại mật khẩu và gửi/xác minh OTP qua email (tài khoản, thương lượng, ký số, nghiệm thu, MFA CMS)
+    var authPermitPerMinute = builder.Configuration.GetValue("Security:AuthRateLimitPerMinute", 30);
     options.AddPolicy("auth", ctx => System.Threading.RateLimiting.RateLimitPartition.GetFixedWindowLimiter(
         ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         _ => new System.Threading.RateLimiting.FixedWindowRateLimiterOptions
         {
-            PermitLimit = 10,
+            PermitLimit = authPermitPerMinute,
             Window = TimeSpan.FromMinutes(1),
             QueueLimit = 0
         }));

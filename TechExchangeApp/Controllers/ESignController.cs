@@ -87,6 +87,7 @@ namespace TechExchangeApp.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> SendOtp([FromBody] ESignOtpRequestDto dto)
         {
             try

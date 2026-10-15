@@ -38,6 +38,7 @@ namespace TechExchangeApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> Send(string? returnUrl)
         {
             var email = await _db.Users.Where(u => u.Id == UserId).Select(u => u.Email).FirstOrDefaultAsync();
@@ -70,6 +71,7 @@ namespace TechExchangeApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public IActionResult Verify(string? code, string? returnUrl)
         {
             if (!_mfa.Verify(UserId, code))

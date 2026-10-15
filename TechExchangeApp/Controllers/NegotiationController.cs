@@ -269,6 +269,7 @@ namespace TechExchangeApp.Controllers
         // ─────────────────────────────────────────────────────────────────────
         [HttpPost]
         [IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> RequestOtp([FromBody] RequestOtpDto dto)
         {
             try
@@ -362,6 +363,7 @@ namespace TechExchangeApp.Controllers
         // ─────────────────────────────────────────────────────────────────────
         [HttpPost]
         [IgnoreAntiforgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
         public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpDto dto)
         {
             try
