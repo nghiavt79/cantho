@@ -21,7 +21,7 @@
                 <span class="menu-detail-content__accent"></span>
 
                 <div class="content-text clearfix">
-                    @Html.Raw(Model.Description)
+                    @Html.SafeHtml(Model.Description)
                 </div>
             </article>
 

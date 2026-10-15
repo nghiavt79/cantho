@@ -188,7 +188,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">7. Bối cảnh & Vấn đề giải quyết</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.MoTaNgan)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.MoTaNgan)</div>
                     </div>
                 }
 
@@ -196,7 +196,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">8. Nguyên lý vận hành & Sơ đồ quy trình</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.MoTa)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.MoTa)</div>
                     </div>
                 }
 
@@ -204,7 +204,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">9. Thông số kỹ thuật chủ yếu</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.ThongSo)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.ThongSo)</div>
                     </div>
                 }
 
@@ -212,7 +212,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">10. Ưu điểm nổi bật</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.UuDiem)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.UuDiem)</div>
                     </div>
                 }
             </div>
@@ -248,7 +248,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">12. Đối tượng khách hàng mục tiêu</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.TargetCustomer)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.TargetCustomer)</div>
                     </div>
                 }
 
@@ -256,7 +256,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">13. Hiệu quả kinh tế - xã hội</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.CooperationGoal)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.CooperationGoal)</div>
                     </div>
                 }
             </div>
@@ -282,7 +282,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">14. Giá bán dự kiến</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.GiaBanDuKien)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.GiaBanDuKien)</div>
                     </div>
                 }
 
@@ -290,7 +290,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">15. Các chi phí phát sinh khác (Chi phí đào tạo, hướng dẫn kỹ thuật, bảo trì, bảo hành, vận chuyển, lắp đặt,…)</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.ChiPhiPhatSinh)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.ChiPhiPhatSinh)</div>
                     </div>
                 }
 
@@ -298,7 +298,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">16. Chế độ bảo hành & Hỗ trợ kỹ thuật</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.BaoHanhHoTro)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.BaoHanhHoTro)</div>
                     </div>
                 }
             </div>

@@ -41,12 +41,12 @@
             @* Content *@
             <div class="se-card-body">
                 <div class="se-card-title">
-                    <a href="@fullUrl" target="_blank">@Html.Raw(item.Title)</a>
+                    <a href="@fullUrl" target="_blank">@Html.SafeHtml(item.Title)</a>
                 </div>
 
                 @if (!string.IsNullOrEmpty(item.SnippetHtml))
                 {
-                    <div class="se-card-snippet">@Html.Raw(item.SnippetHtml)</div>
+                    <div class="se-card-snippet">@Html.SafeHtml(item.SnippetHtml)</div>
                 }
 
                 @* Type tag *@

@@ -48,7 +48,7 @@
                                             <div class="tech-card-title">@item.Name</div>
                                             @if (!string.IsNullOrEmpty(item.MoTaNgan))
                                             {
-                                                <div class="tech-card-desc">@Html.Raw(item.MoTaNgan)</div>
+                                                <div class="tech-card-desc">@Html.SafeHtml(item.MoTaNgan)</div>
                                             }
                                         </div>
                                     </div>

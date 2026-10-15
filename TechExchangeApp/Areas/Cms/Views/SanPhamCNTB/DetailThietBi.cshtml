@@ -155,7 +155,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">6. Thông số kỹ thuật chính</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.ThongSo)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.ThongSo)</div>
                     </div>
                 }
 
@@ -164,7 +164,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">7. Mô tả nguyên lý hoạt động</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.MoTa)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.MoTa)</div>
                     </div>
                 }
 
@@ -211,7 +211,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">9. Ưu điểm nổi bật</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.UuDiem)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.UuDiem)</div>
                     </div>
                 }
 
@@ -220,7 +220,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">10. Giá tham khảo</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.GiaBanDuKien)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.GiaBanDuKien)</div>
                     </div>
                 }
 
@@ -229,7 +229,7 @@
                 {
                     <div class="mb-4">
                         <label class="form-label fw-semibold">11. Chế độ bảo hành & Hỗ trợ kỹ thuật</label>
-                        <div class="border rounded p-3 bg-light">@Html.Raw(Model.BaoHanhHoTro)</div>
+                        <div class="border rounded p-3 bg-light">@Html.SafeHtml(Model.BaoHanhHoTro)</div>
                     </div>
                 }
             </div>

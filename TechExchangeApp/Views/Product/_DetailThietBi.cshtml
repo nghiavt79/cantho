@@ -160,7 +160,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.equip.mainSpec")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.ThongSo)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.ThongSo)</div>
                 </div>
             }
 
@@ -169,7 +169,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.equip.principle")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.MoTa)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.MoTa)</div>
                 </div>
             }
 
@@ -246,7 +246,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.tech.advantages")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.UuDiem)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.UuDiem)</div>
                 </div>
             }
 
@@ -255,7 +255,7 @@
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.equip.refPriceVnd")</div>
                     <div class="ps-3 content-body">
-                        @if (!string.IsNullOrEmpty(p.GiaBanDuKien)) { @Html.Raw(p.GiaBanDuKien) }
+                        @if (!string.IsNullOrEmpty(p.GiaBanDuKien)) { @Html.SafeHtml(p.GiaBanDuKien) }
                         else if (p.SellPrice.HasValue)
                         {
                             <span class="fw-bold text-danger fs-5">@string.Format("{0:N0}", p.SellPrice) @p.Currency</span>
@@ -272,7 +272,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.equip.warrantySupport")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.BaoHanhHoTro)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.BaoHanhHoTro)</div>
                 </div>
             }
 
@@ -280,7 +280,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.equip.awards")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.GiaiThuong)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.GiaiThuong)</div>
                 </div>
             }
         </div>

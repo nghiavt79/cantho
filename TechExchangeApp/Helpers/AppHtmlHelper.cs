@@ -95,5 +95,17 @@ namespace TechExchangeApp.Web.Helpers
             => value.HasValue
                ? $"<span class=\"badge bg-success fs-6\"><i class=\"fas fa-coins me-1\"></i>{value.Value.ToString("N0", _viVN)} VNĐ</span>"
                : "<span class=\"text-muted\">Chưa cập nhật</span>";
+
+        /// <summary>
+        /// Hiển thị văn bản người dùng nhập: mã hóa HTML trước rồi mới đổi xuống dòng thành &lt;br /&gt;
+        /// (thay cho Html.Raw(x.Replace("\n", "&lt;br /&gt;")) — chống Stored XSS, pentest 10/2026).
+        /// </summary>
+        public static Microsoft.AspNetCore.Html.IHtmlContent Nl2Br(this IHtmlHelper html, string? text)
+        {
+            if (string.IsNullOrEmpty(text)) return Microsoft.AspNetCore.Html.HtmlString.Empty;
+            var encoded = HtmlSanitizerHelper.Encode(text)
+                .Replace("\r\n", "\n").Replace("\n", "<br />");
+            return new Microsoft.AspNetCore.Html.HtmlString(encoded);
+        }
     }
 }

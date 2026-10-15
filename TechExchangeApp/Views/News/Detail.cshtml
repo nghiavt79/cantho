@@ -32,11 +32,11 @@
 
                     @if (!string.IsNullOrWhiteSpace(Model.Description))
                     {
-                        <div class="news-detail-card__summary">@Html.Raw(Model.Description)</div>
+                        <div class="news-detail-card__summary">@Html.SafeHtml(Model.Description)</div>
                     }
 
                     <div class="content-text clearfix">
-                        @Html.Raw(Model.Content)
+                        @Html.SafeHtml(Model.Content)
                     </div>
 
                     @* Sự kiện (HSMT Đợt 3): chỉ hiện khi tin bài đã được thiết lập sự kiện trong CMS *@

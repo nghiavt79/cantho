@@ -286,7 +286,7 @@
                 <div class="hscn-item-title">@Html.Text("product.ip.assetDesc")
                     <small class="text-muted fw-normal">@Html.Text("product.ip.assetDescNote")</small>
                 </div>
-                <div class="ps-3 content-body">@Html.Raw(p.MoTa)</div>
+                <div class="ps-3 content-body">@Html.SafeHtml(p.MoTa)</div>
             </div>
             }
 
@@ -371,7 +371,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.ip.advantageNovelty")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.UuDiem)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.UuDiem)</div>
                 </div>
             }
         </div>
@@ -387,7 +387,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.ip.cooperationGoal")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.CooperationGoal)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.CooperationGoal)</div>
                 </div>
             }
 
@@ -467,7 +467,7 @@
             {
                 <div class="hscn-item">
                     <div class="hscn-item-title">@Html.Text("product.ip.targetCustomer")</div>
-                    <div class="ps-3 content-body">@Html.Raw(p.TargetCustomer)</div>
+                    <div class="ps-3 content-body">@Html.SafeHtml(p.TargetCustomer)</div>
                 </div>
             }
         </div>

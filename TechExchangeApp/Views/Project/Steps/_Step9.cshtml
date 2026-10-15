@@ -37,14 +37,14 @@
                     <dt class="col-sm-4">Mô tả thử nghiệm:</dt>
                     <dd class="col-sm-8">
                         <div class="border rounded p-2 bg-light">
-                            @Html.Raw(pilot!.MoTaThuNghiem?.Replace("\n", "<br />") ?? "")
+                            @Html.Nl2Br(pilot!.MoTaThuNghiem)
                         </div>
                     </dd>
 
                     <dt class="col-sm-4">Kết quả thử nghiệm:</dt>
                     <dd class="col-sm-8">
                         <div class="border rounded p-2 bg-light">
-                            @Html.Raw(pilot.KetQuaThuNghiem?.Replace("\n", "<br />") ?? "")
+                            @Html.Nl2Br(pilot.KetQuaThuNghiem)
                         </div>
                     </dd>
 
@@ -53,7 +53,7 @@
                         <dt class="col-sm-4">Vấn đề phát sinh:</dt>
                         <dd class="col-sm-8">
                             <div class="alert alert-warning mb-0">
-                                @Html.Raw(pilot.VanDePhatSinh.Replace("\n", "<br />"))
+                                @Html.Nl2Br(pilot.VanDePhatSinh)
                             </div>
                         </dd>
                     }
@@ -61,7 +61,7 @@
                     @if (!string.IsNullOrEmpty(pilot.GiaiPhap))
                     {
                         <dt class="col-sm-4">Giải pháp:</dt>
-                        <dd class="col-sm-8">@Html.Raw(pilot.GiaiPhap.Replace("\n", "<br />"))</dd>
+                        <dd class="col-sm-8">@Html.Nl2Br(pilot.GiaiPhap)</dd>
                     }
 
                     <dt class="col-sm-4">Đạt yêu cầu:</dt>

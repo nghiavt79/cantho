@@ -95,7 +95,7 @@
                     </div>
                     <div class="tech-info-row"><span class="tech-info-label">@Html.Text("common.category")</span><span class="tech-info-value">@categoryText</span></div>
                     <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.origin")</span><span class="tech-info-value">@originText</span></div>
-                    <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.price")</span><span class="@(hasGiaBan && giaBanIsHtml ? "tech-info-value" : "tech-price")">@if (hasGiaBan) { @Html.Raw(p.GiaBanDuKien) } else { @priceFallback }</span></div>
+                    <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.price")</span><span class="@(hasGiaBan && giaBanIsHtml ? "tech-info-value" : "tech-price")">@if (hasGiaBan) { @Html.SafeHtml(p.GiaBanDuKien) } else { @priceFallback }</span></div>
                 </div>
 
                 <div class="tech-actions">
@@ -134,11 +134,11 @@
                         </div>
                         @if (!string.IsNullOrWhiteSpace(p.MoTaNgan))
                         {
-                            <div class="tech-content">@Html.Raw(p.MoTaNgan)</div>
+                            <div class="tech-content">@Html.SafeHtml(p.MoTaNgan)</div>
                         }
                         else if (!string.IsNullOrWhiteSpace(p.MoTa))
                         {
-                            <div class="tech-content">@Html.Raw(p.MoTa)</div>
+                            <div class="tech-content">@Html.SafeHtml(p.MoTa)</div>
                         }
                         else
                         {
@@ -148,8 +148,8 @@
 
                     <div class="tab-pane fade" id="spec" role="tabpanel">
                         <h3 class="tech-section-title">@Html.Text("product.tech.tab.spec")</h3>
-                        @if (!string.IsNullOrWhiteSpace(p.ThongSo)) { <div class="tech-content">@Html.Raw(p.ThongSo)</div> } else { <div class="tech-empty">@Html.Text("product.tech.specEmpty")</div> }
-                        @if (!string.IsNullOrWhiteSpace(p.UuDiem)) { <h3 class="tech-section-title mt-4">@Html.Text("product.tech.advantages")</h3><div class="tech-content">@Html.Raw(p.UuDiem)</div> }
+                        @if (!string.IsNullOrWhiteSpace(p.ThongSo)) { <div class="tech-content">@Html.SafeHtml(p.ThongSo)</div> } else { <div class="tech-empty">@Html.Text("product.tech.specEmpty")</div> }
+                        @if (!string.IsNullOrWhiteSpace(p.UuDiem)) { <h3 class="tech-section-title mt-4">@Html.Text("product.tech.advantages")</h3><div class="tech-content">@Html.SafeHtml(p.UuDiem)</div> }
                     </div>
 
                     <div class="tab-pane fade" id="application" role="tabpanel">
@@ -162,7 +162,7 @@
                         }
                         @if (!string.IsNullOrWhiteSpace(p.TargetCustomer) || !string.IsNullOrWhiteSpace(p.Khachhang) || !string.IsNullOrWhiteSpace(p.CooperationGoal))
                         {
-                            <div class="tech-content">@Html.Raw(p.TargetCustomer) @Html.Raw(p.Khachhang) @Html.Raw(p.CooperationGoal)</div>
+                            <div class="tech-content">@Html.SafeHtml(p.TargetCustomer) @Html.SafeHtml(p.Khachhang) @Html.SafeHtml(p.CooperationGoal)</div>
                         }
                         else if (!activeIndustries.Any())
                         {
@@ -193,9 +193,9 @@
                             <div class="tech-content">
                                 @if (!string.IsNullOrWhiteSpace(p.TransferMethod)) { <p><strong>@Html.Text("product.tech.method")</strong> @p.TransferMethod</p> }
                                 @if (!string.IsNullOrWhiteSpace(p.TransferMethodKhac)) { <p><strong>@Html.Text("product.tech.other")</strong> @p.TransferMethodKhac</p> }
-                                @if (!string.IsNullOrWhiteSpace(p.GiaBanDuKien)) { <p><strong>@Html.Text("product.tech.expectedPrice")</strong></p>@Html.Raw(p.GiaBanDuKien) }
-                                @if (!string.IsNullOrWhiteSpace(p.ChiPhiPhatSinh)) { <p><strong>@Html.Text("product.tech.extraCost")</strong></p>@Html.Raw(p.ChiPhiPhatSinh) }
-                                @if (!string.IsNullOrWhiteSpace(p.BaoHanhHoTro)) { <p><strong>@Html.Text("product.tech.warranty")</strong></p>@Html.Raw(p.BaoHanhHoTro) }
+                                @if (!string.IsNullOrWhiteSpace(p.GiaBanDuKien)) { <p><strong>@Html.Text("product.tech.expectedPrice")</strong></p>@Html.SafeHtml(p.GiaBanDuKien) }
+                                @if (!string.IsNullOrWhiteSpace(p.ChiPhiPhatSinh)) { <p><strong>@Html.Text("product.tech.extraCost")</strong></p>@Html.SafeHtml(p.ChiPhiPhatSinh) }
+                                @if (!string.IsNullOrWhiteSpace(p.BaoHanhHoTro)) { <p><strong>@Html.Text("product.tech.warranty")</strong></p>@Html.SafeHtml(p.BaoHanhHoTro) }
                             </div>
                         }
                         else

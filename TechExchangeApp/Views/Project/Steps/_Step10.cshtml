@@ -71,7 +71,7 @@
                     <dd class="col-sm-8">
                         @if (!string.IsNullOrEmpty(handover.NhanXet))
                         {
-                            <div class="border rounded p-2 bg-light">@Html.Raw(handover.NhanXet.Replace("\n", "<br />"))</div>
+                            <div class="border rounded p-2 bg-light">@Html.Nl2Br(handover.NhanXet)</div>
                         }
                         else
                         {

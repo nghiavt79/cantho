@@ -135,7 +135,7 @@
                                             </h3>
 
                                             <div class="started">
-                                                @Html.Raw(item.AuthorInfo)
+                                                @Html.SafeHtml(item.AuthorInfo)
                                             </div>
 
                                             <div class="post-controls controls width-narrow">

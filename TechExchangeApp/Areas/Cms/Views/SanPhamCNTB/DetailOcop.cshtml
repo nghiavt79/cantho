@@ -69,7 +69,7 @@
         {
             <hr />
             <h6 class="fw-bold text-primary">Mô tả chi tiết</h6>
-            <div>@Html.Raw(Model.MoTa)</div>
+            <div>@Html.SafeHtml(Model.MoTa)</div>
         }
     </div>
 </div>

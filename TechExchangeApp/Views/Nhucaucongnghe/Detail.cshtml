@@ -115,28 +115,28 @@ else
                     {
                         <section class="tech-demand-section">
                             <h2 class="tech-demand-section__title"><i class="bi bi-bullseye"></i>Tổng quan nhu cầu</h2>
-                            <div class="tech-demand-richtext">@Html.Raw(d.MucTieu)</div>
+                            <div class="tech-demand-richtext">@Html.SafeHtml(d.MucTieu)</div>
                         </section>
                     }
                     @if (!string.IsNullOrWhiteSpace(d.HienTrang))
                     {
                         <section class="tech-demand-section">
                             <h2 class="tech-demand-section__title"><i class="bi bi-exclamation-triangle"></i>Hiện trạng và vấn đề cần giải quyết</h2>
-                            <div class="tech-demand-richtext">@Html.Raw(d.HienTrang)</div>
+                            <div class="tech-demand-richtext">@Html.SafeHtml(d.HienTrang)</div>
                         </section>
                     }
                     @if (!string.IsNullOrWhiteSpace(d.YeuCauKyThuat))
                     {
                         <section class="tech-demand-section">
                             <h2 class="tech-demand-section__title"><i class="bi bi-list-check"></i>Yêu cầu kỹ thuật</h2>
-                            <div class="tech-demand-richtext">@Html.Raw(d.YeuCauKyThuat)</div>
+                            <div class="tech-demand-richtext">@Html.SafeHtml(d.YeuCauKyThuat)</div>
                         </section>
                     }
                     @if (!string.IsNullOrWhiteSpace(d.QuyMoTrienKhai))
                     {
                         <section class="tech-demand-section">
                             <h2 class="tech-demand-section__title"><i class="bi bi-diagram-3"></i>Quy mô và điều kiện triển khai</h2>
-                            <div class="tech-demand-richtext">@Html.Raw(d.QuyMoTrienKhai)</div>
+                            <div class="tech-demand-richtext">@Html.SafeHtml(d.QuyMoTrienKhai)</div>
                         </section>
                     }
                     @if (hopTacList.Length > 0)
@@ -155,7 +155,7 @@ else
                     {
                         <section class="tech-demand-section">
                             <h2 class="tech-demand-section__title"><i class="bi bi-award"></i>Tiêu chí lựa chọn đối tác</h2>
-                            <div class="tech-demand-richtext">@Html.Raw(d.TieuChiChonDoiTac)</div>
+                            <div class="tech-demand-richtext">@Html.SafeHtml(d.TieuChiChonDoiTac)</div>
                         </section>
                     }
 
@@ -164,7 +164,7 @@ else
                     {
                         <section class="tech-demand-section">
                             <h2 class="tech-demand-section__title"><i class="bi bi-file-text"></i>Chi tiết nhu cầu</h2>
-                            <div class="tech-demand-richtext">@Html.Raw(d.Contents)</div>
+                            <div class="tech-demand-richtext">@Html.SafeHtml(d.Contents)</div>
                         </section>
                     }
                 </div>

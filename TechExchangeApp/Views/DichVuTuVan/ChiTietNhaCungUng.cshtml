@@ -127,25 +127,25 @@
                         @if (!string.IsNullOrEmpty(Model.LinhVucText))
                         {
                             <div class="tab-pane fade show active" id="tabLinhVuc">
-                                @Html.Raw(Model.LinhVucText)
+                                @Html.SafeHtml(Model.LinhVucText)
                             </div>
                         }
                         @if (!string.IsNullOrEmpty(Model.ChucNang))
                         {
                             <div class="tab-pane fade @(string.IsNullOrEmpty(Model.LinhVucText) ? "show active" : "")" id="tabChucNang">
-                                @Html.Raw(Model.ChucNang)
+                                @Html.SafeHtml(Model.ChucNang)
                             </div>
                         }
                         @if (!string.IsNullOrEmpty(Model.DichVuText))
                         {
                             <div class="tab-pane fade" id="tabDichVu">
-                                @Html.Raw(Model.DichVuText)
+                                @Html.SafeHtml(Model.DichVuText)
                             </div>
                         }
                         @if (!string.IsNullOrEmpty(Model.SanPham))
                         {
                             <div class="tab-pane fade" id="tabSanPham">
-                                @Html.Raw(Model.SanPham)
+                                @Html.SafeHtml(Model.SanPham)
                             </div>
                         }
                         @if (!string.IsNullOrEmpty(Model.VideoUrl) || !string.IsNullOrEmpty(Model.ChungNhan))
@@ -179,7 +179,7 @@
                                 @if (!string.IsNullOrEmpty(Model.ChungNhan))
                                 {
                                     <h6 class="fw-semibold mb-2"><i class="fa fa-certificate text-warning me-1"></i>Chứng nhận năng lực</h6>
-                                    @Html.Raw(Model.ChungNhan)
+                                    @Html.SafeHtml(Model.ChungNhan)
                                 }
                             </div>
                         }

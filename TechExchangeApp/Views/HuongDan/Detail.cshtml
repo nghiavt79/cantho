@@ -33,7 +33,7 @@
                     <p class="docs-lead">@Model.Description</p>
                 }
                 <div class="docs-article-body" id="docsArticleBody">
-                    @Html.Raw(Model.Content)
+                    @Html.SafeHtml(Model.Content)
                 </div>
             </div>
 

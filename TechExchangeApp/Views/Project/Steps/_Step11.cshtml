@@ -37,7 +37,7 @@
                     <dt class="col-sm-4">Nội dung đào tạo:</dt>
                     <dd class="col-sm-8">
                         <div class="border rounded p-2 bg-light">
-                            @Html.Raw(training!.NoiDungDaoTao?.Replace("\n", "<br />") ?? "")
+                            @Html.Nl2Br(training!.NoiDungDaoTao)
                         </div>
                     </dd>
 

@@ -24,7 +24,7 @@
                 <dt class="col-sm-3">Kết quả thực hiện:</dt>
                 <dd class="col-sm-9">
                     <div class="border rounded p-2 bg-light">
-                        @Html.Raw((impl.KetQuaThucHien ?? "Chưa cập nhật").Replace("\n", "<br />"))
+                        @Html.Nl2Br((impl.KetQuaThucHien ?? "Chưa cập nhật"))
                     </div>
                 </dd>
 

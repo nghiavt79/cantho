@@ -40,7 +40,7 @@
                                         @Model.Highlight.Title
                                     </a>
                                     <div class="Description">
-                                        @Html.Raw(Model.Highlight.Description)
+                                        @Html.SafeHtml(Model.Highlight.Description)
                                     </div>
                                 </div>
                             </div>

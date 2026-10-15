@@ -152,7 +152,7 @@
                     <dt class="col-sm-3">Điều khoản thanh toán:</dt>
                     <dd class="col-sm-9">
                         <div class="border rounded p-2 bg-light">
-                            @Html.Raw((negotiation.DieuKhoanThanhToan ?? "").Replace("\n", "<br />"))
+                            @Html.Nl2Br((negotiation.DieuKhoanThanhToan ?? ""))
                         </div>
                     </dd>
 

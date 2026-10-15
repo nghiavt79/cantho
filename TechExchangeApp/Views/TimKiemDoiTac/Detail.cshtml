@@ -102,11 +102,11 @@
                     </ul>
 
                     <div id="information" class="ChiTietNhaTuVanTab">
-                        @Html.Raw(Model.MoTa)
+                        @Html.SafeHtml(Model.MoTa)
                     </div>
 
                     <div id="reviews" class="ChiTietNhaTuVanTab" style="display:none">
-                        @Html.Raw(Model.HinhThuc)
+                        @Html.SafeHtml(Model.HinhThuc)
                     </div>
 
                     <!-- RELATED -->

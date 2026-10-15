@@ -54,7 +54,7 @@
                 <dt class="col-sm-3">Mô tả nhu cầu:</dt>
                 <dd class="col-sm-9">
                     <div class="border p-3 bg-light">
-                        @Html.Raw(techTransfer.MoTaNhuCau?.Replace("\n", "<br/>"))
+                        @Html.Nl2Br(techTransfer.MoTaNhuCau)
                     </div>
                 </dd>
 

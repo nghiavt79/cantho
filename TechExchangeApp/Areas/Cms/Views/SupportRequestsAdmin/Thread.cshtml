@@ -142,7 +142,7 @@
                             <div class="p-2 rounded border bg-white">
                                 @if (m.IsSystem)
                                 {
-                                    <em>@Html.Raw(m.Message)</em>
+                                    <em>@Html.SafeHtml(m.Message)</em>
                                 }
                                 else
                                 {

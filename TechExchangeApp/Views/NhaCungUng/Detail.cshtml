@@ -186,12 +186,12 @@
                             @if (!string.IsNullOrEmpty(Model.LinhVucText))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-layer-group"></i>@Html.Text("supplier.mainActivityFields")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.LinhVucText)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.LinhVucText)</div>
                             }
                             @if (!string.IsNullOrEmpty(Model.ChucNang))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-bullseye"></i>@Html.Text("supplier.missionCoreValue")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.ChucNang)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.ChucNang)</div>
                             }
                             @if (string.IsNullOrEmpty(Model.LinhVucText) && string.IsNullOrEmpty(Model.ChucNang))
                             {
@@ -204,7 +204,7 @@
                             @if (!string.IsNullOrEmpty(Model.DichVuText))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-concierge-bell"></i>@Html.Text("supplier.scienceTechServices")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.DichVuText)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.DichVuText)</div>
                             }
 
                             @if (!string.IsNullOrEmpty(Model.SanPham) || Model.Products.Any())
@@ -213,7 +213,7 @@
 
                                 @if (!string.IsNullOrEmpty(Model.SanPham))
                                 {
-                                    <div class="expert-detail-richtext">@Html.Raw(Model.SanPham)</div>
+                                    <div class="expert-detail-richtext">@Html.SafeHtml(Model.SanPham)</div>
                                 }
 
                                 @if (Model.Products.Any())

@@ -72,7 +72,7 @@
                                 }
                                 @if (m.IsSystem)
                                 {
-                                    <em>@Html.Raw(m.Message)</em>
+                                    <em>@Html.SafeHtml(m.Message)</em>
                                 }
                                 else
                                 {

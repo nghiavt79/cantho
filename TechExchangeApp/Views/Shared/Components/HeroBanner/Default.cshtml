@@ -15,7 +15,7 @@
                                 <h1>@item.Title</h1>
                                 @if (!string.IsNullOrWhiteSpace(item.Description))
                                 {
-                                    @Html.Raw(item.Description)
+                                    @Html.SafeHtml(item.Description)
                                 }
                             </div>
                         </div>

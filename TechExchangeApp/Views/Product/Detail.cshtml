@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="tech-info-row"><span class="tech-info-label">@Html.Text("common.category")</span><span class="tech-info-value">@categoryText</span></div>
                                 <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.origin")</span><span class="tech-info-value">@originText</span></div>
-                                <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.price")</span><span class="@(hasGiaBan && giaBanIsHtml ? "tech-info-value" : "tech-price")">@if (hasGiaBan) { @Html.Raw(p.GiaBanDuKien) } else { @priceFallback }</span></div>
+                                <div class="tech-info-row"><span class="tech-info-label">@Html.Text("product.detail.price")</span><span class="@(hasGiaBan && giaBanIsHtml ? "tech-info-value" : "tech-price")">@if (hasGiaBan) { @Html.SafeHtml(p.GiaBanDuKien) } else { @priceFallback }</span></div>
                             </div>
 
                             <div class="tech-actions">

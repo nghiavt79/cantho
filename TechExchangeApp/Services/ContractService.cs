@@ -246,27 +246,29 @@ namespace TechExchangeApp.Services
             var today = DateTime.Now;
 
             // Bên A – Seller (bên chuyển giao)
-            var benATen       = sellerUser?.FullName ?? sellerUser?.UserName ?? "——";
-            var benADienThoai = sellerUser?.PhoneNumber ?? "——";
-            var benADaiDien   = sellerUser?.FullName ?? sellerUser?.UserName ?? "——";
+            // Mã hóa HTML dữ liệu người dùng trước khi chèn vào mẫu (chống Stored XSS — pentest 10/2026)
+            static string Enc(string v) => System.Net.WebUtility.HtmlEncode(v);
+            var benATen       = Enc(sellerUser?.FullName ?? sellerUser?.UserName ?? "——");
+            var benADienThoai = Enc(sellerUser?.PhoneNumber ?? "——");
+            var benADaiDien   = Enc(sellerUser?.FullName ?? sellerUser?.UserName ?? "——");
 
             // Bên B – Buyer (bên nhận chuyển giao, từ Step 1)
-            var benBTen       = step1?.DonVi ?? step1?.HoTen ?? "——";
-            var benBTruSo     = step1?.DiaChi ?? "——";
-            var benBDienThoai = step1?.DienThoai ?? "——";
-            var benBDaiDien   = step1?.HoTen ?? "——";
-            var benBChucVu    = step1?.ChucVu ?? "——";
+            var benBTen       = Enc(step1?.DonVi ?? step1?.HoTen ?? "——");
+            var benBTruSo     = Enc(step1?.DiaChi ?? "——");
+            var benBDienThoai = Enc(step1?.DienThoai ?? "——");
+            var benBDaiDien   = Enc(step1?.HoTen ?? "——");
+            var benBChucVu    = Enc(step1?.ChucVu ?? "——");
 
             // Thông tin hợp đồng
             var soHD        = $"TechPort-{proj?.Id ?? 0}-v{ver}-{today:yyyyMM}";
             var ngayHD      = $"ngày {today.Day} tháng {today.Month} năm {today.Year}";
-            var projectName = proj?.ProjectName ?? "——";
-            var tenCongNghe = step1?.TenCongNghe ?? proj?.ProjectName ?? "——";
-            var moTa        = step1?.MoTaNhuCau ?? "——";
+            var projectName = Enc(proj?.ProjectName ?? "——");
+            var tenCongNghe = Enc(step1?.TenCongNghe ?? proj?.ProjectName ?? "——");
+            var moTa        = Enc(step1?.MoTaNhuCau ?? "——");
             var tongGia     = neg?.GiaChotCuoiCung != null
                                 ? neg.GiaChotCuoiCung.Value.ToString("N0") + " VNĐ"
                                 : "——";
-            var ptThanhToan = neg?.DieuKhoanThanhToan ?? "——";
+            var ptThanhToan = Enc(neg?.DieuKhoanThanhToan ?? "——");
 
             // Đọc template từ wwwroot/templates/
             // Thử ContentRootPath trước, fallback sang WebRootPath

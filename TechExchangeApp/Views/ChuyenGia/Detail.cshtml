@@ -216,7 +216,7 @@
                             @if (!string.IsNullOrEmpty(Model.LinhVucText))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-layer-group"></i>@Html.Text("expert.researchFields")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.LinhVucText)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.LinhVucText)</div>
                             }
                             @if (string.IsNullOrEmpty(Model.LinhVucText) && !Model.TongTrichDan.HasValue && !Model.HIndex.HasValue)
                             {
@@ -229,12 +229,12 @@
                             @if (!string.IsNullOrEmpty(Model.QuaTrinhDaoTao))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-graduation-cap"></i>@Html.Text("expert.trainingProcess")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.QuaTrinhDaoTao)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.QuaTrinhDaoTao)</div>
                             }
                             @if (!string.IsNullOrEmpty(Model.QuaTrinhCongTac))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-briefcase"></i>@Html.Text("expert.workProcess")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.QuaTrinhCongTac)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.QuaTrinhCongTac)</div>
                             }
                             @if (string.IsNullOrEmpty(Model.QuaTrinhDaoTao) && string.IsNullOrEmpty(Model.QuaTrinhCongTac))
                             {
@@ -248,13 +248,13 @@
                             @if (!string.IsNullOrEmpty(Model.CongBoKhoaHoc))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-book"></i>@Html.Text("expert.publications")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.CongBoKhoaHoc)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.CongBoKhoaHoc)</div>
                             }
                             @* Section 13: patents / copyrights *@
                             @if (!string.IsNullOrEmpty(Model.SangChe))
                             {
                                 <h6 class="expert-detail-subheading expert-detail-subheading--accent"><i class="fas fa-lightbulb"></i>@Html.Text("expert.patents")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.SangChe)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.SangChe)</div>
                             }
                             @if (string.IsNullOrEmpty(Model.CongBoKhoaHoc) && string.IsNullOrEmpty(Model.SangChe))
                             {
@@ -267,17 +267,17 @@
                             @if (!string.IsNullOrEmpty(Model.DuAnNghienCuu))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-project-diagram"></i>@Html.Text("expert.researchProjects")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.DuAnNghienCuu)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.DuAnNghienCuu)</div>
                             }
                             @if (!string.IsNullOrEmpty(Model.DichVuText))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-concierge-bell"></i>@Html.Text("expert.deepConsulting")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.DichVuText)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.DichVuText)</div>
                             }
                             @if (!string.IsNullOrEmpty(Model.KinhNghiem))
                             {
                                 <h6 class="expert-detail-subheading"><i class="fas fa-handshake"></i>@Html.Text("expert.businessExperience")</h6>
-                                <div class="expert-detail-richtext">@Html.Raw(Model.KinhNghiem)</div>
+                                <div class="expert-detail-richtext">@Html.SafeHtml(Model.KinhNghiem)</div>
                             }
                             @if (string.IsNullOrEmpty(Model.DuAnNghienCuu) && string.IsNullOrEmpty(Model.DichVuText) && string.IsNullOrEmpty(Model.KinhNghiem))
                             {

@@ -43,7 +43,7 @@
                 <dt class="col-sm-3">Yêu cầu kỹ thuật:</dt>
                 <dd class="col-sm-9">
                     <div class="border rounded p-3 bg-light">
-                        @Html.Raw(rfq.YeuCauKyThuat.Replace("\n", "<br />"))
+                        @Html.Nl2Br(rfq.YeuCauKyThuat)
                     </div>
                 </dd>
 
@@ -52,7 +52,7 @@
                     @if (!string.IsNullOrEmpty(rfq.TieuChuanNghiemThu))
                     {
                         <div class="border rounded p-3 bg-light">
-                            @Html.Raw(rfq.TieuChuanNghiemThu.Replace("\n", "<br />"))
+                            @Html.Nl2Br(rfq.TieuChuanNghiemThu)
                         </div>
                     }
                     else
@@ -270,7 +270,7 @@
                     var isConsultant = @(isConsultant ? "true" : "false");
 
                     // Auto-search: for non-consultant with FromId, or consultant with default lĩnh vực
-                    var defaultLV = '@Html.Raw(defaultLinhVuc)';
+                    var defaultLV = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(defaultLinhVuc));
                     if ((!isConsultant && hasFromId) || (isConsultant && defaultLV)) {
                         searchSuppliers(1);
                     }

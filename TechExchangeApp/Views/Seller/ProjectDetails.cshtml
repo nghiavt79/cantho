@@ -160,7 +160,7 @@
         <div class="card-body">
             <p><strong>@Html.Text("seller.pd.rfqDesc")</strong></p>
             <div class="border rounded p-3 bg-light">
-                @Html.Raw(rfqDescription?.Replace("\n", "<br>"))
+                @Html.Nl2Br((string?)rfqDescription)
             </div>
         </div>
     </div>

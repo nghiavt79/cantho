@@ -57,7 +57,7 @@
                         <text>Bằng việc đánh dấu tick chọn, <strong>Bên Mua</strong> đồng ý các điều kiện sau:</text>
                     }
                 </p>
-                <div class="nda-content">@Html.Raw(ndaContentHtml)</div>
+                <div class="nda-content">@Html.SafeHtml(ndaContentHtml)</div>
             </div>
 
             @* ── Checkbox Đồng ý ── *@

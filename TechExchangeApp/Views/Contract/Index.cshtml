@@ -98,7 +98,7 @@
                     <div class="card-body p-0" style="min-height:400px;overflow:auto">
                         @if (!string.IsNullOrEmpty(Model.HtmlContent))
                         {
-                            <div class="p-3">@Html.Raw(Model.HtmlContent)</div>
+                            <div class="p-3">@Html.SafeHtml(Model.HtmlContent)</div>
                         }
                         else if (!string.IsNullOrEmpty(Model.OriginalFilePath))
                         {

@@ -110,7 +110,7 @@
                                     </span>  
                                 </div>
                                 <div class="product-desc">
-                                    <p>@Html.Raw(Model.Content)</p>
+                                    <p>@Html.SafeHtml(Model.Content)</p>
                                     <p>Người đăng tin: @Model.FullName
                                        -  @Model.CreatedDateText
                                        
@@ -189,7 +189,7 @@
                                                                 <h5 class="entry_title">
                                                                     <a href="@item.Url">@item.Title</a><br />
                                                                 </h5>
-                                                                <div>@Html.Raw(item.AuthorInfo)</div> <!-- Assuming AuthorInfo contains simple text or safe HTML -->
+                                                                <div>@Html.SafeHtml(item.AuthorInfo)</div> <!-- Assuming AuthorInfo contains simple text or safe HTML -->
                                                                 
                                                                 @if (!Model.IsLoggedIn)
                                                                 {

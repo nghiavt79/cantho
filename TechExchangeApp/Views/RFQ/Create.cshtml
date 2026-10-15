@@ -114,7 +114,7 @@
             });
 
             // Auto-search on page load if default lĩnh vực is set
-            var defaultLV = '@Html.Raw(defaultLinhVuc)';
+            var defaultLV = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(defaultLinhVuc));
             if (defaultLV) {
                 searchSuppliers();
             }

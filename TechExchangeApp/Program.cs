@@ -18,7 +18,11 @@ if (builder.Environment.IsDevelopment())
 }
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    // Pentest 10/2026: kiểm tra nội dung mọi tệp tải lên (đuôi, chữ ký, JS trong PDF, macro Office)
+    options.Filters.Add<TechExchangeApp.Filters.UploadValidationFilter>();
+});
 builder.Services.AddSignalR();
 builder.Services.AddResponseCompression(options =>
 {
@@ -310,6 +314,15 @@ app.UseStaticFiles(new StaticFileOptions
     {
         const int cacheSeconds = 60 * 60 * 24 * 30;
         ctx.Context.Response.Headers.CacheControl = $"public,max-age={cacheSeconds}";
+
+        // Pentest 10/2026: tệp người dùng tải lên không phải ảnh/PDF/video → buộc tải xuống,
+        // không cho trình duyệt mở trực tiếp (chặn HTML/SVG/tài liệu chứa mã chạy trên domain của Sàn)
+        if ((ctx.Context.Request.Path.StartsWithSegments("/uploads", StringComparison.OrdinalIgnoreCase)
+             || ctx.Context.Request.Path.StartsWithSegments("/upload", StringComparison.OrdinalIgnoreCase))
+            && !TechExchangeApp.Services.UploadFileGuard.IsInlineSafe(Path.GetExtension(ctx.File.Name)))
+        {
+            ctx.Context.Response.Headers.ContentDisposition = "attachment";
+        }
     }
 });
 app.UseStatusCodePagesWithReExecute("/Errors/{0}");
