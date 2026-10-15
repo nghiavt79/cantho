@@ -348,6 +348,10 @@ namespace TechExchangeApp.Controllers
                 
                 if (success)
                 {
+                    // Đổi mật khẩu đã tăng số phiên → cấp lại cookie mới cho phiên hiện tại
+                    var user = await _userManager.FindByIdAsync(userId.ToString());
+                    if (user != null) await _signInManager.RefreshSignInAsync(user);
+
                     TempData["SuccessMessage"] = I18n.T(HttpContext, "changepwd.success");
                     return RedirectToAction(nameof(Profile));
                 }
@@ -365,8 +369,13 @@ namespace TechExchangeApp.Controllers
         // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout([FromServices] TechExchangeApp.Data.AppDbContext context,
+            [FromServices] Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
         {
+            // Tăng số phiên để cookie cũ không dùng lại được sau khi đăng xuất (pentest 10/2026)
+            if (int.TryParse(_userManager.GetUserId(User), out var userId))
+                await TechExchangeApp.Services.AccountLockGuard.RevokeSessionsAsync(context, cache, userId);
+
             await _signInManager.SignOutAsync();
             HttpContext.Session.Clear(); // Clear legacy session
             return RedirectToAction("Index", "Home");

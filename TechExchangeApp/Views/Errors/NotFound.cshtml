@@ -1,5 +1,8 @@
 @{
     ViewData["Title"] = "404";
+    // Pentest 10/2026: trang lỗi chung cho cả lỗi 5xx (thay Developer Exception Page)
+    var statusCode = ViewData["StatusCode"] as int? ?? 404;
+    var isServerError = statusCode >= 500;
     ViewData["HideSideButtons"] = true;
 }
 
@@ -228,13 +231,23 @@
         <div>
             <div class="error404__eyebrow">
                 <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
-                HTTP 404
+                HTTP @(isServerError ? statusCode : 404)
             </div>
+            @if (isServerError)
+            {
+                <h1 id="error404-title" class="error404__title">H&#7879; th&#7889;ng &#273;ang g&#7863;p s&#7921; c&#7889;</h1>
+                <p class="error404__lead">
+                    Y&ecirc;u c&#7847;u c&#7911;a b&#7841;n ch&#432;a x&#7917; l&yacute; &#273;&#432;&#7907;c. Vui l&ograve;ng th&#7917; l&#7841;i sau &iacute;t ph&uacute;t ho&#7863;c li&ecirc;n h&#7879; b&#7897; ph&#7853;n h&#7895; tr&#7907;.
+                </p>
+            }
+            else
+            {
             <h1 id="error404-title" class="error404__title">Kh&ocirc;ng t&igrave;m th&#7845;y trang</h1>
             <p class="error404__lead">
                 &#272;&#432;&#7901;ng d&#7851;n b&#7841;n truy c&#7853;p kh&ocirc;ng t&#7891;n t&#7841;i, &#273;&atilde; thay &#273;&#7893;i ho&#7863;c t&#7841;m th&#7901;i kh&ocirc;ng kh&#7843; d&#7909;ng.
                 H&atilde;y t&igrave;m ki&#7871;m n&#7897;i dung ho&#7863;c ch&#7885;n m&#7897;t khu v&#7921;c ph&ugrave; h&#7907;p tr&ecirc;n S&agrave;n giao d&#7883;ch c&ocirc;ng ngh&#7879;.
             </p>
+            }
 
             <form class="error404__search" action="/Search" method="get" role="search">
                 <input type="search" name="q" placeholder="T&igrave;m c&ocirc;ng ngh&#7879;, thi&#7871;t b&#7883;, nh&agrave; cung &#7913;ng..." aria-label="T&igrave;m ki&#7871;m" />
@@ -258,7 +271,7 @@
 
         <aside class="error404__panel" aria-label="Lien ket goi y">
             <div class="error404__code">
-                <strong>404</strong>
+                <strong>@(isServerError ? statusCode : 404)</strong>
                 <span>Trang &#273;&#432;&#7907;c y&ecirc;u c&#7847;u kh&ocirc;ng c&oacute; tr&ecirc;n h&#7879; th&#7889;ng</span>
             </div>
             <div class="error404__links">

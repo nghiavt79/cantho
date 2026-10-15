@@ -65,16 +65,10 @@ namespace TechExchangeApp.Controllers
         }
 
         // GET: /Project
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var userId = GetCurrentUserId();
-            var projects = await _context.ProjectMembers
-                .Where(m => m.UserId == userId)
-                .Include(m => m.Project)
-                .Select(m => m.Project)
-                .ToListAsync();
-
-            return View(projects);
+            // Không có view Project/Index (gây lỗi 500 — pentest 10/2026); danh sách dự án nằm ở Dashboard
+            return RedirectToAction("Index", "Dashboard");
         }
 
         // GET: /Project/Details/5?step=N

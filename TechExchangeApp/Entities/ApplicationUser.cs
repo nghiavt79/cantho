@@ -96,6 +96,9 @@ namespace TechExchangeApp.Entities
         public DateTime? LockedAt { get; set; }
         public int? LockedBy { get; set; }
 
+        // ── Số phiên: tăng khi đăng xuất / đổi mật khẩu để vô hiệu cookie cũ (pentest 10/2026) ──
+        public int SessionVersion { get; set; } = 0;
+
         // ── Đồng ý xử lý dữ liệu cá nhân khi đăng ký (HSMT 2.11) ──
         public DateTime? ConsentAt { get; set; }
         public string? ConsentVersion { get; set; }

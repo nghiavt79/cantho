@@ -15,19 +15,22 @@ namespace TechExchangeApp.Services
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly IWebHostEnvironment _environment;
         private readonly IProjectService _projectService;
+        private readonly Microsoft.Extensions.Caching.Memory.IMemoryCache _cache;
 
         public AccountService(
             AppDbContext context,
             UserManager<ApplicationUser> userManager,
             IPasswordHasher<ApplicationUser> passwordHasher,
             IWebHostEnvironment environment,
-            IProjectService projectService)
+            IProjectService projectService,
+            Microsoft.Extensions.Caching.Memory.IMemoryCache cache)
         {
             _context = context;
             _userManager = userManager;
             _passwordHasher = passwordHasher;
             _environment = environment;
             _projectService = projectService;
+            _cache = cache;
         }
 
         public async Task<ProfileVm?> GetProfileAsync(int userId)
@@ -133,9 +136,11 @@ namespace TechExchangeApp.Services
 
             // Hash new password
             user.PasswordHash = _passwordHasher.HashPassword(user, model.NewPassword);
+            user.SessionVersion++; // vô hiệu mọi cookie đăng nhập cũ (pentest 10/2026)
             
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
+            AccountLockGuard.Invalidate(_cache, userId);
 
             return true;
         }
@@ -147,9 +152,11 @@ namespace TechExchangeApp.Services
 
             // Reuse the same hasher as ChangePasswordAsync
             user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
+            user.SessionVersion++; // vô hiệu mọi cookie đăng nhập cũ (pentest 10/2026)
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
+            AccountLockGuard.Invalidate(_cache, userId);
 
             return true;
         }

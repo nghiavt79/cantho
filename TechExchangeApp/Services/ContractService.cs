@@ -282,8 +282,7 @@ namespace TechExchangeApp.Services
 
             var html = System.IO.File.Exists(templatePath)
                 ? System.IO.File.ReadAllText(templatePath, System.Text.Encoding.UTF8)
-                : $"<p><strong>Lỗi:</strong> Không tìm thấy template tại: <code>{templatePath}</code><br/>" +
-                  $"ContentRoot=<code>{env.ContentRootPath}</code> | WebRoot=<code>{env.WebRootPath}</code></p>";
+                : "<p><strong>Lỗi:</strong> Không tìm thấy mẫu hợp đồng. Vui lòng liên hệ quản trị viên.</p>";
 
             // Thay thế placeholder
             return html

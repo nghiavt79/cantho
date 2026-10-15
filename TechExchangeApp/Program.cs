@@ -101,6 +101,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     options.SignIn.RequireConfirmedAccount = false;
 })
 .AddSignInManager<SignInManager<ApplicationUser>>() // Add SignInManager for cookie handling
+.AddClaimsPrincipalFactory<TechExchangeApp.Services.AppUserClaimsPrincipalFactory>() // ghi số phiên (sv) vào cookie
 .AddUserStore<TechExchangeApp.Services.ApplicationUserStore>() // Use Custom Store
 .AddDefaultTokenProviders();
 
@@ -119,10 +120,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
     options.Cookie.Name = "TechExchangeApp.Identity";
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromDays(30);
+    // Pentest 10/2026: rút từ 30 ngày xuống 8 giờ (gia hạn trượt khi còn thao tác)
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
     options.SlidingExpiration = true;
 
-    // Tài khoản bị khóa trong CMS (Users.IsLocked) bị đăng xuất ở request kế tiếp
+    // Tài khoản bị khóa trong CMS (Users.IsLocked) hoặc cookie đã đăng xuất / đổi mật khẩu
+    // (sai số phiên) bị đăng xuất ở request kế tiếp
     options.Events.OnValidatePrincipal = TechExchangeApp.Services.AccountLockGuard.ValidatePrincipalAsync;
 
     // For AJAX/fetch requests: return 401 instead of redirecting to login page
@@ -274,15 +277,14 @@ builder.Services.AddHealthChecks()
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// âš ï¸ Táº M THá»œI Báº¬T DEBUG â€” nhá»› revert láº¡i sau khi tÃ¬m xong lá»—i
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
 else
 {
-    app.UseDeveloperExceptionPage(); // ðŸ‘ˆ DEBUG táº¡m thá»i
-    // app.UseExceptionHandler("/Home/Error");
+    // Pentest 10/2026: không hiển thị trang lỗi chi tiết ASP.NET Core trên production
+    app.UseExceptionHandler("/Errors/500");
     app.UseHsts();
 }
 

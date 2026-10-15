@@ -124,9 +124,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 var fileUrl = $"{_imageDomain}/{datePart}/{fileName}";
                 return Json(new { url = fileUrl });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { error = new { message = $"Upload lỗi: {ex.Message}" } });
+                return Json(new { error = new { message = "Upload lỗi, vui lòng thử lại." } });
             }
         }
 
@@ -194,9 +194,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 var fileUrl = $"{_imageDomain}/{datePart}/{fileName}";
                 return Json(new { url = fileUrl });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Json(new { error = new { message = $"Upload lỗi: {ex.Message}" } });
+                return Json(new { error = new { message = "Upload lỗi, vui lòng thử lại." } });
             }
         }
 
