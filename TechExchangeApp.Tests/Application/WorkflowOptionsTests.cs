@@ -12,10 +12,10 @@ namespace TechExchangeApp.Tests.Application
     public class WorkflowOptionsTests
     {
         [Fact]
-        public void DefaultVisibleStepCount_Is7()
+        public void DefaultVisibleStepCount_Is14()
         {
             var options = new WorkflowOptions();
-            options.EffectiveVisibleStepCount.Should().Be(7);
+            options.EffectiveVisibleStepCount.Should().Be(14);
         }
 
         [Theory]

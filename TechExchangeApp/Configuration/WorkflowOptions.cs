@@ -12,8 +12,8 @@ namespace TechExchangeApp.Configuration
         /// <summary>Tổng số bước theo quy định (cố định).</summary>
         public const int TotalSteps = 14;
 
-        /// <summary>Số bước hiển thị cho người dùng. Mặc định 7 (đến khâu ký hợp đồng).</summary>
-        public int VisibleStepCount { get; set; } = 7;
+        /// <summary>Số bước hiển thị cho người dùng. Mặc định 14 (đủ quy trình theo Chương V HSMT, đến thanh lý hợp đồng).</summary>
+        public int VisibleStepCount { get; set; } = 14;
 
         /// <summary>Số bước hiển thị đã được giới hạn trong khoảng hợp lệ [1, 14].</summary>
         public int EffectiveVisibleStepCount => VisibleStepCount < 1 ? 1 : (VisibleStepCount > TotalSteps ? TotalSteps : VisibleStepCount);
