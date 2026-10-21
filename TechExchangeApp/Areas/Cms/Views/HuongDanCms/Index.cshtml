@@ -139,6 +139,7 @@
                                 <li>Kiểm tra tên hồ sơ, mã hồ sơ, người tạo và trạng thái xử lý.</li>
                                 <li>Mở chi tiết để đối chiếu tiến trình, thành viên và dữ liệu từng bước.</li>
                                 <li>Ưu tiên rà soát các hồ sơ có yêu cầu hỗ trợ hoặc đang dừng ở bước quan trọng.</li>
+                                <li>Nút đồng hồ ở cuối dòng mở <strong>Nhật ký hồ sơ</strong>: ai hoàn thành bước nào, lúc nào, từ địa chỉ IP nào; ai truy cập, ai tải tệp của hồ sơ. Lọc theo loại thao tác. Nhật ký chỉ ghi thêm, không sửa, xóa được.</li>
                             </ul>
                         </article>
                         <article>
@@ -175,6 +176,8 @@
                                 <li>Lọc theo người dùng và vai (người mua / người bán), hoặc tìm từ khóa trong tin nhắn.</li>
                                 <li>Gắn cờ phải ghi lý do; hội thoại gắn cờ hiện lên đầu danh sách.</li>
                                 <li>Chỉ xem, không gửi tin thay người dùng. Lời mời gọi video trong hội thoại hiện dạng đường dẫn.</li>
+                                <li>Người dùng gửi được ảnh, PDF, Word, Excel, PowerPoint (tối đa 10 MB) bằng nút kẹp giấy. Ảnh hiện ngay trong hội thoại, tệp khác bấm để tải; tìm từ khóa tìm cả theo tên tệp.</li>
+                                <li>Tệp chat không công khai: chỉ người trong hội thoại và cán bộ quản trị mở được; mỗi lần tải được ghi vào Nhật ký (sự kiện "Tải tệp").</li>
                             </ul>
                         </article>
                         <article>
@@ -183,6 +186,8 @@
                             <ul>
                                 <li>Tìm theo tên đăng nhập, họ tên, email hoặc số điện thoại; hoặc bấm nút giỏ hàng ở danh sách Người dùng.</li>
                                 <li>Gồm: yêu cầu đặt mua / quan tâm, hồ sơ giao dịch, phiếu yêu cầu, tin tìm mua, giỏ hàng, đăng ký sự kiện, thuê gian hàng.</li>
+                                <li>Mục đặt mua có mã đơn (dạng DH + ngày + số đơn), giá trị đơn, trạng thái thanh toán; ô "Tổng đã chi" cộng các đơn đã hoàn tất hoặc đã thanh toán, không tính đơn hủy.</li>
+                                <li>Giá trị đơn và "Đã thanh toán" do nhà cung cấp cập nhật ở màn hình quản lý yêu cầu đặt mua; khi bấm hoàn tất mà chưa nhập giá trị, hệ thống tạm tính = giá tham khảo × số lượng.</li>
                                 <li>Màn hình chỉ để tra cứu; xử lý từng mục ở màn hình riêng của mục đó.</li>
                             </ul>
                         </article>
@@ -193,7 +198,17 @@
                                 <li>Phí gian hàng và phí gian hàng sự kiện được ghi tự động khi cấp gói / duyệt đăng ký thuê; hủy ở nguồn thì khoản thu tự gỡ.</li>
                                 <li>Ghi nhận hoa hồng: chọn loại giao dịch, nhập giá trị hợp đồng — số tiền = giá trị × tỷ lệ.</li>
                                 <li>Khoản nhập tay xóa được; khoản tự động chỉ gỡ được bằng cách hủy ở nguồn.</li>
-                                <li>Chọn kỳ báo cáo rồi bấm Xuất Excel.</li>
+                                <li>Chọn kỳ báo cáo rồi bấm Xuất Excel hoặc Xuất PDF.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Báo cáo giao dịch</h4>
+                            <p>Báo cáo các giao dịch thành công và doanh thu trong một kỳ (menu Giao dịch &gt; Báo cáo giao dịch).</p>
+                            <ul>
+                                <li>Chọn từ ngày, đến ngày rồi bấm Xem.</li>
+                                <li>Gồm: hồ sơ chuyển giao công nghệ (tiến độ trên 14 bước, thành công khi hoàn thành đủ 14 bước) và đơn đặt mua sản phẩm (mã đơn, giá trị, thanh toán).</li>
+                                <li>Giá trị giao dịch thành công = tổng giá trị đơn đã hoàn tất hoặc đã thanh toán; thu của Sàn lấy từ sổ thu chi.</li>
+                                <li>Xuất PDF để in, trình ký; xuất Excel để xử lý tiếp danh sách đơn.</li>
                             </ul>
                         </article>
                     </div>
@@ -321,7 +336,8 @@
                             <h4>Phân hạng nhà cung cấp</h4>
                             <p>Hạng Vàng / Bạc / Thành viên theo tiêu chí; huy hiệu hiện ở trang nhà cung cấp.</p>
                             <ul>
-                                <li>Sửa tiêu chí từng hạng: số sản phẩm xuất bản, lượt liên hệ, lượt xem, xác minh pháp lý.</li>
+                                <li>Sửa tiêu chí từng hạng: số sản phẩm xuất bản, lượt liên hệ, lượt xem, lượt giao dịch, doanh thu, điểm đánh giá sản phẩm, xác minh pháp lý. Tiêu chí để 0 là không xét.</li>
+                                <li>Lượt giao dịch = số đơn đặt mua chưa hủy; doanh thu = tổng giá trị đơn đã hoàn tất hoặc đã thanh toán; đánh giá = điểm sao trung bình người dùng chấm cho sản phẩm.</li>
                                 <li>"Áp dụng hạng gợi ý" chỉ đổi nhà cung cấp chưa được gán tay.</li>
                                 <li>Gán tay ở cột Hạng hiện tại khi cần ưu tiên đặc biệt.</li>
                             </ul>
@@ -401,7 +417,8 @@
                                 <li>Tìm tin bài (tiếng Việt) → Thiết lập sự kiện: thời gian, địa điểm, link phát trực tiếp, hạn đăng ký, số chỗ, mốc nhắc lịch.</li>
                                 <li>Thêm loại gian hàng (diện tích, vị trí, giá, dịch vụ đi kèm); duyệt đăng ký thuê ở tab Gian hàng.</li>
                                 <li>Tab Đăng ký: danh sách, điểm danh, Xuất Excel. Quét QR trên vé bằng điện thoại đã đăng nhập CMS để điểm danh.</li>
-                                <li>Tab Thống kê: lượt xem, quan tâm, nhắc lịch, đăng ký theo ngày.</li>
+                                <li>Tab Thống kê: lượt xem, quan tâm, nhắc lịch, lượt nhấp, lượt chia sẻ, đăng ký theo ngày.</li>
+                                <li>Lượt nhấp: dùng <strong>đường dẫn theo dõi</strong> hiện ở tab Thống kê (dạng /su-kien/nhap/số) làm liên kết cho banner, bài đăng, tin nhắn; mỗi lần bấm được đếm rồi chuyển tới trang sự kiện. Lượt chia sẻ được đếm khi người xem bấm nút chia sẻ mạng xã hội trên trang sự kiện.</li>
                             </ul>
                         </article>
                         <article>
@@ -581,6 +598,23 @@
                             </ul>
                         </article>
                         <article>
+                            <h4>Ký số từ xa</h4>
+                            <p>Ký bằng USB Token dùng được ngay. Ký số từ xa cần tài khoản của tổ chức chứng thực (VNPT, Viettel hoặc FPT).</p>
+                            <ul>
+                                <li>SIGNING_PROVIDER_DEFAULT: chọn VNPT, VIETTEL hoặc FPT.</li>
+                                <li>Điền thông tin tài khoản đúng nhà cung cấp: SIGNING_VNPT_API_BASE, SIGNING_VNPT_API_KEY, SIGNING_VNPT_CREDENTIAL (Viettel, FPT có nhóm tham số SIGNING_VIETTEL_…, SIGNING_FPT_… tương tự).</li>
+                                <li>SIGNING_MODE: để TESTING khi chạy thử; đổi sang PRODUCTION khi đã có tài khoản thật, rồi ký thử một hợp đồng nhiều bên trước khi dùng chính thức.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Tin nhắn SMS</h4>
+                            <p>Kênh SMS dùng gửi mã xác thực, nhắc lịch, thông báo giao dịch.</p>
+                            <ul>
+                                <li>NOTIFICATION_ENABLE_SMS: 1 = bật, 0 = tắt kênh SMS. SMS_MAX_RETRY, SMS_RETRY_DELAY_SECONDS: số lần và thời gian gửi lại khi lỗi.</li>
+                                <li>Hiện hệ thống chưa nối nhà cung cấp SMS Brandname: tin nhắn chỉ ghi vào nhật ký máy chủ, chưa gửi tới điện thoại. Chỉ bật kênh sau khi đơn vị vận hành đã nối tài khoản thương hiệu (tham số SMS_PROVIDER).</li>
+                            </ul>
+                        </article>
+                        <article>
                             <h4>Xác thực 2 lớp vào CMS</h4>
                             <p>Khi bật, tài khoản quản trị phải nhập mã 6 số gửi qua email mỗi phiên làm việc.</p>
                             <ul>
@@ -594,6 +628,7 @@
                             <p>Dùng để kiểm tra hoạt động hệ thống và truy vết khi cần hỗ trợ.</p>
                             <ul>
                                 <li>Lọc theo thời gian, tài khoản hoặc chức năng để khoanh vùng vấn đề.</li>
+                                <li>Sự kiện "Tải tệp": ai tải tệp hồ sơ giao dịch, hợp đồng, giấy tờ xác minh, tệp chat, lúc nào, từ địa chỉ IP nào. Người chưa đăng nhập ghi là "(khách)".</li>
                                 <li>Không dùng nhật ký thay cho báo cáo nghiệp vụ chính thức nếu dữ liệu chưa đối chiếu.</li>
                             </ul>
                         </article>
