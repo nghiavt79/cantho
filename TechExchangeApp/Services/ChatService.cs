@@ -254,13 +254,16 @@ namespace TechExchangeApp.Services
                     IsMe = m.SenderUserId == uid,
                     IsSystem = m.IsSystem,
                     Message = m.Message,
-                    Created = m.Created
+                    Created = m.Created,
+                    AttachmentName = m.AttachmentName,
+                    AttachmentType = m.AttachmentType,
+                    AttachmentSize = m.AttachmentSize
                 }).ToList()
             };
         }
 
         // ── Send Message ────────────────────────────────────────────────────────
-        public async Task<bool> SendMessageAsync(long conversationId, int senderUserId, string message)
+        public async Task<bool> SendMessageAsync(long conversationId, int senderUserId, string message, ChatAttachmentInfo? attachment = null)
         {
             string uid = senderUserId.ToString();
 
@@ -278,7 +281,11 @@ namespace TechExchangeApp.Services
                 Message = message,
                 IsSystem = false,
                 IsRead = false,
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
+                AttachmentPath = attachment?.Path,
+                AttachmentName = attachment?.Name,
+                AttachmentType = attachment?.ContentType,
+                AttachmentSize = attachment?.Size
             };
             _context.ChatMessages.Add(msg);
 

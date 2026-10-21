@@ -116,6 +116,9 @@
                     </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm" role="group">
+                            <a href="@Url.Action("Logs", "ProjectsAdmin", new { area = "Cms", id = p.ProjectId })" class="btn btn-outline-secondary btn-sm" title="Nhật ký hồ sơ: chuyển bước, truy cập, tải tệp">
+                                <i class="fas fa-clock-rotate-left"></i>
+                            </a>
                             <a href="#" class="btn btn-outline-success btn-sm btn-add-consultant" data-id="@p.ProjectId" title="Thêm nhà tư vấn">
                                 <i class="fas fa-user-plus"></i>
                             </a>

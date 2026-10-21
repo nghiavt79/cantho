@@ -5,7 +5,8 @@ using TechExchangeApp.Interfaces;
 
 namespace TechExchangeApp.Services
 {
-    public record SupplierMetrics(int CungUngId, int PublishedProducts, int Contacts, int Views, bool Verified);
+    public record SupplierMetrics(int CungUngId, int PublishedProducts, int Contacts, int Views, bool Verified,
+        int Transactions = 0, decimal Revenue = 0, decimal Rating = 0, int RatingCount = 0);
 
     public record SupplierQuota(int Limit, int Used, bool Enforced, SupplierSubscription? Subscription)
     {
@@ -48,7 +49,11 @@ namespace TechExchangeApp.Services
                 .Select(c => c.ProductId!.Value).ToListAsync();
             var orders = await _db.OcopOrderRequests.AsNoTracking()
                 .Where(o => (o.SupplierId != null && ids.Contains(o.SupplierId.Value)) || productIds.Contains(o.ProductId))
-                .Select(o => new { o.SupplierId, o.ProductId }).ToListAsync();
+                .Select(o => new { o.SupplierId, o.ProductId, o.StatusId, o.GiaTriDon, o.TrangThaiThanhToan }).ToListAsync();
+            var productIdsInt = productIds.Select(i => (int)i).ToList();
+            var ratings = await _db.EntityRatings.AsNoTracking()
+                .Where(r => r.EntityType == TechExchangeApp.Enums.EntityTypes.SanPhamCNTB && r.StatusId == 1 && productIdsInt.Contains(r.EntityId))
+                .Select(r => new { r.EntityId, r.Stars }).ToListAsync();
             var productOwner = products.ToDictionary(p => p.ID, p => p.Ncu);
 
             var verifiedUsers = await (from n in _db.NhaCungUngs.AsNoTracking()
@@ -62,8 +67,13 @@ namespace TechExchangeApp.Services
                 var mine = products.Where(p => p.Ncu == id).ToList();
                 var contacts = chats.Count(pid => productOwner.TryGetValue(pid, out var o) && o == id)
                              + orders.Count(o => o.SupplierId == id || (o.SupplierId == null && productOwner.TryGetValue(o.ProductId, out var ow) && ow == id));
+                var myOrders = orders.Where(o => o.SupplierId == id || (o.SupplierId == null && productOwner.TryGetValue(o.ProductId, out var ow2) && ow2 == id)).ToList();
+                var transactions = myOrders.Count(o => o.StatusId != 4);
+                var revenue = myOrders.Where(o => o.StatusId != 4 && (o.StatusId == 3 || o.TrangThaiThanhToan == 1)).Sum(o => o.GiaTriDon ?? 0);
+                var myRatings = ratings.Where(r => productOwner.TryGetValue(r.EntityId, out var ow3) && ow3 == id).ToList();
+                var rating = myRatings.Count == 0 ? 0m : Math.Round((decimal)myRatings.Average(r => r.Stars), 1);
                 result[id] = new SupplierMetrics(id, mine.Count(p => p.StatusId == 3), contacts,
-                    mine.Sum(p => p.Viewed ?? 0), verifiedUsers.Contains(id));
+                    mine.Sum(p => p.Viewed ?? 0), verifiedUsers.Contains(id), transactions, revenue, rating, myRatings.Count);
             }
             return result;
         }
@@ -73,6 +83,9 @@ namespace TechExchangeApp.Services
                                 && m.PublishedProducts >= t.MinProducts
                                 && m.Contacts >= t.MinContacts
                                 && m.Views >= t.MinViews
+                                && m.Transactions >= t.MinTransactions
+                                && m.Revenue >= t.MinRevenue
+                                && m.Rating >= t.MinRating
                                 && (!t.RequireVerified || m.Verified))
                     .OrderByDescending(t => t.Rank).FirstOrDefault();
 

@@ -49,6 +49,25 @@ namespace TechExchangeApp.Controllers
             return Json(new { success = ok, message = T(ok ? "event.reg.success" : err!), ticketUrl });
         }
 
+        /// <summary>Đường dẫn theo dõi lượt nhấp (A.4.4): gắn vào banner, bài đăng, tin nhắn; ghi lượt nhấp rồi chuyển tới trang sự kiện.</summary>
+        [HttpGet("/su-kien/nhap/{contentId:long}")]
+        public async Task<IActionResult> Click(long contentId)
+        {
+            var id = await _events.ResolveContentIdAsync(contentId);
+            await _events.RecordInteractionAsync(id, TechExchangeApp.Entities.EventInteractionTypes.Click, CurrentUserId, EnsureVisitorKey(HttpContext));
+            return Redirect(await _events.EventUrlAsync(id));
+        }
+
+        /// <summary>Ghi lượt chia sẻ khi người xem bấm nút chia sẻ mạng xã hội trên trang sự kiện (A.4.4).</summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Share(long contentId)
+        {
+            var id = await _events.ResolveContentIdAsync(contentId);
+            await _events.RecordInteractionAsync(id, TechExchangeApp.Entities.EventInteractionTypes.Share, CurrentUserId, EnsureVisitorKey(HttpContext));
+            return Json(new { success = true });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Interest(long contentId)

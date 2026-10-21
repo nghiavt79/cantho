@@ -1,0 +1,48 @@
+@model List<TechExchangeApp.Areas.Cms.Controllers.ProjectLogRow>
+@{
+    var project = (TechExchangeApp.Entities.Project)ViewBag.Project;
+    var actions = (List<string>)ViewBag.Actions;
+    var actionFilter = ViewBag.ActionFilter as string;
+    ViewData["Title"] = "Nhật ký hồ sơ " + project.ProjectCode;
+}
+
+<div class="card card-outline card-secondary shadow-sm">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-clock-rotate-left me-1"></i> Nhật ký hồ sơ giao dịch: @project.ProjectCode – @project.ProjectName</h3>
+        <div class="card-tools"><a href="@Url.Action("Index", "ProjectsAdmin", new { area = "Cms" })" class="btn btn-sm btn-outline-secondary">Quay lại</a></div>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-2 mb-3">
+            <input type="hidden" name="id" value="@project.Id" />
+            <div class="col-md-4">
+                <select name="action" class="form-select form-select-sm">
+                    <option value="">-- Tất cả (chuyển bước, truy cập, tải tệp) --</option>
+                    @foreach (var a in actions)
+                    {
+                        <option value="@a" selected="@(actionFilter == a)">@(a == "DownloadFile" ? "Tải tệp" : a)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto"><button class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button></div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered small mb-0">
+                <thead class="table-light"><tr><th style="width:140px">Thời điểm</th><th style="width:110px">Loại</th><th>Người thực hiện</th><th>Nội dung</th><th style="width:120px">Địa chỉ IP</th></tr></thead>
+                <tbody>
+                    @if (Model.Count == 0) { <tr><td colspan="5" class="text-center text-muted">Chưa có nhật ký.</td></tr> }
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>@r.Time.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td>@r.Kind</td>
+                            <td>@r.UserName</td>
+                            <td>@(r.Detail ?? r.Action)</td>
+                            <td>@r.Ip</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="form-text mt-2">Nhật ký chỉ được ghi thêm, không sửa hoặc xóa trên giao diện. Nhật ký tải tệp toàn hệ thống tra cứu tại CMS &gt; Nhật ký, sự kiện "Tải tệp".</div>
+    </div>
+</div>

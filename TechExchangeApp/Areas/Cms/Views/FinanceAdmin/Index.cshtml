@@ -17,7 +17,8 @@
 <div class="card card-outline card-success shadow-sm mb-3">
     <div class="card-header">
         <h3 class="card-title"><i class="fas fa-coins me-1"></i> Báo cáo thu chi</h3>
-        <div class="card-tools"><a href="@exportUrl" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Xuất Excel</a></div>
+        <div class="card-tools"><a href="@exportUrl" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+            <a href="@Url.Action("ExportPdf", "FinanceAdmin", new { area = "Cms", from = from.ToString("yyyy-MM-dd"), to = to.ToString("yyyy-MM-dd"), category, direction })" class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i> Xuất PDF</a></div>
     </div>
     <div class="card-body">
         @Html.AntiForgeryToken()

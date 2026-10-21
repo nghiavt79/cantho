@@ -202,9 +202,16 @@
                             </li>
                             <li class="nav-item">
                                 <a asp-area="Cms" asp-controller="FinanceAdmin" asp-action="Index"
-                                   class="nav-link @(isFinanceAdmin ? "active" : "")">
+                                   class="nav-link @(isFinanceAdmin && ViewContext.RouteData.Values["action"]?.ToString() != "Transactions" ? "active" : "")">
                                     <i class="nav-icon fas fa-coins"></i>
                                     <p>Thu chi</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="Cms" asp-controller="FinanceAdmin" asp-action="Transactions"
+                                   class="nav-link @(isFinanceAdmin && ViewContext.RouteData.Values["action"]?.ToString() == "Transactions" ? "active" : "")">
+                                    <i class="nav-icon fas fa-chart-line"></i>
+                                    <p>Báo cáo giao dịch</p>
                                 </a>
                             </li>
                         </ul>

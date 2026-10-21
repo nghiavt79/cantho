@@ -142,6 +142,7 @@
             }
             <i class="fas fa-eye me-1"></i>@(((int)(ViewBag.TotalViews ?? 0)).ToString("N0")) lượt xem
             <i class="fas fa-comments ms-3 me-1"></i>@(((int)(ViewBag.TotalContacts ?? 0)).ToString("N0")) lượt liên hệ
+            <i class="fas fa-handshake ms-3 me-1"></i>@(((int)(ViewBag.TotalTransactions ?? 0)).ToString("N0")) lượt giao dịch
           </span>
         </div>
         <div class="card-body p-0">
@@ -166,6 +167,7 @@
                     <th style="width:100px">Ngày tạo</th>
                     <th style="width:80px" class="text-center">Lượt xem</th>
                     <th style="width:80px" class="text-center" title="Số hội thoại chat và yêu cầu đặt mua/quan tâm">Liên hệ</th>
+                    <th style="width:80px" class="text-center" title="Số đơn đặt mua chưa hủy">Giao dịch</th>
                     <th style="width:100px" class="text-center">Thao tác</th>
                   </tr>
                 </thead>
@@ -198,6 +200,7 @@
                       <td class="small text-muted" data-label="Ngày tạo">@item.Created?.ToString("dd/MM/yyyy")</td>
                       <td class="text-center small" data-label="Lượt xem">@item.Viewed.ToString("N0")</td>
                       <td class="text-center small" data-label="Liên hệ">@item.ContactCount.ToString("N0")</td>
+                      <td class="text-center small" data-label="Giao dịch">@item.TransactionCount.ToString("N0")</td>
                       <td class="text-center" data-label="Thao tác">
                         <a href="@editUrl" class="btn btn-outline-primary btn-sm" title="Chỉnh sửa">
                           <i class="fas fa-edit"></i>

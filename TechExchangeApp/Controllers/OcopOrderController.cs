@@ -194,6 +194,9 @@ namespace TechExchangeApp.Controllers
                     StatusId = o.StatusId,
                     HinhThucThanhToan = o.HinhThucThanhToan,
                     NgayTao = o.NgayTao,
+                    GiaTriDon = o.GiaTriDon,
+                    TrangThaiThanhToan = o.TrangThaiThanhToan,
+                    NgayThanhToan = o.NgayThanhToan,
                     SoTaiKhoan = n != null ? n.SoTaiKhoan : null,
                     TenNganHang = n != null ? n.TenNganHang : null,
                     ChuTaiKhoan = n != null ? n.ChuTaiKhoan : null
@@ -234,7 +237,10 @@ namespace TechExchangeApp.Controllers
                     GhiChu = o.GhiChu,
                     StatusId = o.StatusId,
                     HinhThucThanhToan = o.HinhThucThanhToan,
-                    NgayTao = o.NgayTao
+                    NgayTao = o.NgayTao,
+                    GiaTriDon = o.GiaTriDon,
+                    TrangThaiThanhToan = o.TrangThaiThanhToan,
+                    NgayThanhToan = o.NgayThanhToan
                 }).ToListAsync();
 
             return View(orders);
@@ -263,6 +269,8 @@ namespace TechExchangeApp.Controllers
             order.StatusId = statusId;
             order.NguoiSua = userId;
             order.NgaySua = DateTime.Now;
+            if (statusId == 3 && order.GiaTriDon == null)
+                order.GiaTriDon = OcopOrderRequest.UocTinhGiaTri(order.GiaThamKhao, order.SoLuong);
             await _context.SaveChangesAsync();
 
             if (statusId == 4)
@@ -277,6 +285,36 @@ namespace TechExchangeApp.Controllers
                 }
             }
 
+            return RedirectToAction("Manage");
+        }
+
+        // POST: /OcopOrder/UpdatePayment — nhà cung ứng cập nhật giá trị đơn và trạng thái thanh toán (A.5.2)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdatePayment(int id, decimal? giaTriDon, bool daThanhToan)
+        {
+            var userId = GetCurrentUserId();
+            var supplierId = await _context.NhaCungUngs.AsNoTracking()
+                .Where(n => n.UserId == userId)
+                .Select(n => (int?)n.CungUngId)
+                .FirstOrDefaultAsync();
+            if (!supplierId.HasValue) return Forbid();
+
+            var order = await _context.OcopOrderRequests
+                .FirstOrDefaultAsync(o => o.Id == id && o.SupplierId == supplierId.Value);
+            if (order == null) return NotFound();
+            if (giaTriDon.HasValue && giaTriDon.Value < 0) return BadRequest();
+
+            order.GiaTriDon = giaTriDon;
+            var paid = daThanhToan ? 1 : 0;
+            if (paid != order.TrangThaiThanhToan)
+            {
+                order.TrangThaiThanhToan = paid;
+                order.NgayThanhToan = daThanhToan ? DateTime.Now : null;
+            }
+            order.NguoiSua = userId;
+            order.NgaySua = DateTime.Now;
+            await _context.SaveChangesAsync();
             return RedirectToAction("Manage");
         }
 

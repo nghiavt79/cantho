@@ -1,0 +1,57 @@
+@model TechExchangeApp.Areas.Cms.Controllers.TransactionReportVm
+@{
+    ViewData["Title"] = "Báo cáo giao dịch";
+    var q = new { area = "Cms", from = Model.From.ToString("yyyy-MM-dd"), to = Model.To.ToString("yyyy-MM-dd") };
+}
+
+<div class="card card-outline card-primary shadow-sm mb-3">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-chart-line me-1"></i> Báo cáo giao dịch</h3>
+        <div class="card-tools">
+            <a href="@Url.Action("Transactions", "FinanceAdmin", new { q.area, q.from, q.to, format = "excel" })" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+            <a href="@Url.Action("Transactions", "FinanceAdmin", new { q.area, q.from, q.to, format = "pdf" })" class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i> Xuất PDF</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-auto"><label class="small">Từ ngày</label><input type="date" name="from" value="@q.from" class="form-control form-control-sm" /></div>
+            <div class="col-auto"><label class="small">Đến ngày</label><input type="date" name="to" value="@q.to" class="form-control form-control-sm" /></div>
+            <div class="col-auto align-self-end"><button class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Xem</button></div>
+        </form>
+        <div class="row g-3 text-center mb-3">
+            <div class="col-6 col-md-3"><div class="border rounded p-2"><div class="h4 mb-0">@Model.Projects.Count</div><div class="small text-muted">Hồ sơ chuyển giao (@Model.ProjectsSucceeded thành công)</div></div></div>
+            <div class="col-6 col-md-3"><div class="border rounded p-2"><div class="h4 mb-0">@Model.Orders.Count</div><div class="small text-muted">Đơn đặt mua (@Model.OrdersSucceeded hoàn tất)</div></div></div>
+            <div class="col-6 col-md-3"><div class="border rounded p-2"><div class="h4 mb-0">@Model.Revenue.ToString("N0")</div><div class="small text-muted">Giá trị giao dịch thành công (đồng)</div></div></div>
+            <div class="col-6 col-md-3"><div class="border rounded p-2"><div class="h4 mb-0">@Model.Commission.ToString("N0")</div><div class="small text-muted">Thu của Sàn: hoa hồng, gian hàng (đồng)</div></div></div>
+        </div>
+
+        <h6 class="fw-semibold">1. Hồ sơ chuyển giao công nghệ</h6>
+        <div class="table-responsive mb-3">
+            <table class="table table-sm table-bordered table-hover small mb-0">
+                <thead class="table-light"><tr><th>STT</th><th>Mã hồ sơ</th><th>Tên hồ sơ</th><th>Bên mua</th><th>Bên bán</th><th>Ngày tạo</th><th>Tiến độ</th><th>Trạng thái</th></tr></thead>
+                <tbody>
+                    @if (Model.Projects.Count == 0) { <tr><td colspan="8" class="text-center text-muted">Không có dữ liệu.</td></tr> }
+                    @foreach (var p in Model.Projects)
+                    {
+                        <tr><td>@p.Stt</td><td>@p.Ma</td><td>@p.Ten</td><td>@p.BenMua</td><td>@p.BenBan</td><td>@p.Ngay</td><td>@p.Buoc</td><td>@p.TrangThai</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <h6 class="fw-semibold">2. Đơn đặt mua sản phẩm</h6>
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered table-hover small mb-0">
+                <thead class="table-light"><tr><th>STT</th><th>Mã đơn</th><th>Ngày đặt</th><th>Sản phẩm</th><th>Nhà cung cấp</th><th>Người mua</th><th class="text-center">SL</th><th class="text-end">Giá trị (đ)</th><th>Thanh toán</th><th>Trạng thái</th></tr></thead>
+                <tbody>
+                    @if (Model.Orders.Count == 0) { <tr><td colspan="10" class="text-center text-muted">Không có dữ liệu.</td></tr> }
+                    @foreach (var o in Model.Orders)
+                    {
+                        <tr><td>@o.Stt</td><td>@o.MaDon</td><td>@o.Ngay</td><td>@o.SanPham</td><td>@o.NhaCungCap</td><td>@o.NguoiMua</td>
+                            <td class="text-center">@o.SoLuong</td><td class="text-end">@(o.GiaTri?.ToString("N0") ?? "—")</td><td>@o.ThanhToan</td><td>@o.TrangThai</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

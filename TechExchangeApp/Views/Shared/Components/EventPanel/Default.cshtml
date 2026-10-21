@@ -197,6 +197,11 @@
     bindForm('.ev-remind-form', 'Remind');
     bindForm('.ev-booth-form', 'Booth', function (d, form) { form.reset(); });
 
+    // Lượt chia sẻ (A.4.4): bấm nút chia sẻ mạng xã hội trên trang
+    document.querySelectorAll('.content-utility-social:not(.content-utility-report)').forEach(function (a) {
+        a.addEventListener('click', function () { post('Share', new FormData()).catch(function () { }); });
+    });
+
     var interest = box.querySelector('.ev-interest');
     interest?.addEventListener('click', function () {
         interest.disabled = true;

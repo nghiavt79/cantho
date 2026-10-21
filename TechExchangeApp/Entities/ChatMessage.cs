@@ -24,6 +24,15 @@ namespace TechExchangeApp.Entities
 
         public DateTime Created { get; set; } = DateTime.UtcNow;
 
+        // ── Tệp đính kèm (HSMT A.5.3, C.7): lưu ngoài thư mục công khai, tải qua kiểm tra quyền ──
+        [MaxLength(500)]
+        public string? AttachmentPath { get; set; }
+        [MaxLength(255)]
+        public string? AttachmentName { get; set; }
+        [MaxLength(100)]
+        public string? AttachmentType { get; set; }
+        public long? AttachmentSize { get; set; }
+
         [ForeignKey(nameof(ConversationId))]
         public ChatConversation? Conversation { get; set; }
     }

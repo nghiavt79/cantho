@@ -38,6 +38,19 @@
                         <div class="p-2 rounded @(m.IsSystem ? "bg-light text-muted fst-italic" : isBuyer ? "bg-light" : "bg-primary-subtle")" style="max-width:80%">
                             <div class="small fw-semibold">@m.SenderName <span class="text-muted fw-normal ms-1">@Local(m.Created)</span></div>
                             <div style="white-space:pre-wrap">@Highlight(m.Message)</div>
+                            @if (!string.IsNullOrEmpty(m.AttachmentName))
+                            {
+                                <div class="mt-1">
+                                    @if (m.AttachmentType?.StartsWith("image/") == true)
+                                    {
+                                        <a href="/chat/tep/@m.Id" target="_blank"><img src="/chat/tep/@m.Id" alt="@m.AttachmentName" style="max-width:240px;max-height:200px" class="rounded border" /></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/chat/tep/@m.Id"><i class="fas fa-paperclip"></i> @m.AttachmentName</a>
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
                 }

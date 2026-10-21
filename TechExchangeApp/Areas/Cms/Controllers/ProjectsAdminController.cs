@@ -197,12 +197,54 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 _context.ProjectWorkflowStates.Where(ws => ws.ProjectId == id));
             _context.ProjectStepStates.RemoveRange(
                 _context.ProjectStepStates.Where(ss => ss.ProjectId == id));
+            _context.ProjectAccessLogs.RemoveRange(
+                _context.ProjectAccessLogs.Where(l => l.ProjectId == id));
 
             _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
 
             await WriteLog(3, $"Delete Project: {project.ProjectCode} (ID={id})");
             return Json(new { success = true });
+        }
+
+        // ─── NHẬT KÝ HỒ SƠ (HSMT A.8.5): chuyển bước, truy cập, tải tệp ───
+        [HttpGet]
+        public async Task<IActionResult> Logs(int id, string? action = null)
+        {
+            var project = await _context.Projects.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            if (project == null) return NotFound();
+
+            var transitions = await (from l in _context.WorkflowTransitionLogs.AsNoTracking()
+                                     join u in _context.Users.AsNoTracking() on l.ActorUserId equals u.Id into uj
+                                     from u in uj.DefaultIfEmpty()
+                                     where l.ProjectId == id
+                                     select new ProjectLogRow
+                                     {
+                                         Time = l.CreatedAt.ToLocalTime(), Kind = "Chuyển bước", Action = l.Action,
+                                         UserName = u != null ? (u.FullName ?? u.UserName) : "#" + l.ActorUserId,
+                                         Detail = l.Message, Ip = l.IpAddress
+                                     }).ToListAsync();
+            var accessQ = from l in _context.ProjectAccessLogs.AsNoTracking()
+                          join u in _context.Users.AsNoTracking() on l.UserId equals u.Id into uj
+                          from u in uj.DefaultIfEmpty()
+                          where l.ProjectId == id
+                          select new { l, u };
+            if (!string.IsNullOrWhiteSpace(action)) accessQ = accessQ.Where(x => x.l.Action == action);
+            var access = await accessQ.OrderByDescending(x => x.l.Timestamp).Take(1000)
+                .Select(x => new ProjectLogRow
+                {
+                    Time = x.l.Timestamp, Kind = x.l.Action == "DownloadFile" ? "Tải tệp" : "Truy cập", Action = x.l.Action,
+                    UserName = x.u != null ? (x.u.FullName ?? x.u.UserName) : "#" + x.l.UserId,
+                    Detail = x.l.AdditionalData, Ip = x.l.IpAddress
+                }).ToListAsync();
+
+            var rows = (string.IsNullOrWhiteSpace(action) ? transitions : new List<ProjectLogRow>())
+                .Concat(access).OrderByDescending(r => r.Time).ToList();
+            ViewBag.Project = project;
+            ViewBag.ActionFilter = action;
+            ViewBag.Actions = await _context.ProjectAccessLogs.AsNoTracking().Where(l => l.ProjectId == id)
+                .Select(l => l.Action).Distinct().OrderBy(a => a).ToListAsync();
+            return View(rows);
         }
 
         // ─── ADD CONSULTANT (GET) ───
@@ -333,5 +375,15 @@ namespace TechExchangeApp.Areas.Cms.Controllers
     {
         public int Id { get; set; } // ProjectMember.Id
         public string Name { get; set; } = "";
+    }
+
+    public class ProjectLogRow
+    {
+        public DateTime Time { get; set; }
+        public string Kind { get; set; } = "";
+        public string Action { get; set; } = "";
+        public string? UserName { get; set; }
+        public string? Detail { get; set; }
+        public string? Ip { get; set; }
     }
 }

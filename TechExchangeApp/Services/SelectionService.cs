@@ -160,6 +160,13 @@ namespace TechExchangeApp.Services
                 });
             }
 
+            // Nhật ký chuyển bước (HSMT A.8.5)
+            _context.WorkflowTransitionLogs.Add(new WorkflowTransitionLog
+            {
+                ProjectId = projectId, FromStep = 4, ToStep = 5, Action = "Complete", ActorUserId = buyerUserId,
+                Message = $"Bên mua chọn hồ sơ đề xuất #{proposalId}; hoàn thành bước 4, mở bước 5", CreatedAt = DateTime.UtcNow
+            });
+
             await _context.SaveChangesAsync();
         }
 

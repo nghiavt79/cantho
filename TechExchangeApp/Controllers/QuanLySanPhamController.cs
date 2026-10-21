@@ -150,6 +150,7 @@ namespace TechExchangeApp.Controllers
                     LastUpdate  = p.Modified,
                     Viewed      = p.Viewed ?? 0,
                     ContactCount = _context.ChatConversations.Count(c => c.ProductId == p.ID) + _context.OcopOrderRequests.Count(o => o.ProductId == p.ID),
+                    TransactionCount = _context.OcopOrderRequests.Count(o => o.ProductId == p.ID && o.StatusId != 4),
                     ProductType = p.ProductType,
                     SiteId      = p.SiteId,
                     PublicUrl   = p.URL,
@@ -180,6 +181,7 @@ namespace TechExchangeApp.Controllers
             ViewBag.TotalViews    = await _context.SanPhamCNTBs.Where(p => p.Creator == creator).SumAsync(p => (int?)p.Viewed) ?? 0;
             ViewBag.TotalContacts = await _context.ChatConversations.CountAsync(c => c.ProductId != null && myIds.Contains(c.ProductId.Value))
                                   + await _context.OcopOrderRequests.CountAsync(o => myIds.Contains(o.ProductId));
+            ViewBag.TotalTransactions = await _context.OcopOrderRequests.CountAsync(o => myIds.Contains(o.ProductId) && o.StatusId != 4);
 
             return View(items);
         }

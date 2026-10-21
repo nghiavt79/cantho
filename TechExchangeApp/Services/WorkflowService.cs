@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Data;
 using TechExchangeApp.Entities;
@@ -15,10 +16,33 @@ namespace TechExchangeApp.Services
     public class WorkflowService : IWorkflowService
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _http;
 
-        public WorkflowService(AppDbContext context)
+        public WorkflowService(AppDbContext context, IHttpContextAccessor http)
         {
             _context = context;
+            _http = http;
+        }
+
+        /// <summary>Ghi nhật ký chuyển bước quy trình (HSMT A.8.5): bước trước/sau, người thực hiện, IP, trình duyệt.</summary>
+        private void AddTransitionLog(int projectId, int fromStep, int toStep, string action, string message)
+        {
+            var ctx = _http.HttpContext;
+            int.TryParse(ctx?.User?.FindFirstValue(ClaimTypes.NameIdentifier), out var actor);
+            if (actor <= 0) return; // ActorUserId có khóa ngoại tới Users: chỉ ghi khi xác định được người thực hiện
+            var ua = ctx?.Request.Headers.UserAgent.ToString();
+            _context.WorkflowTransitionLogs.Add(new WorkflowTransitionLog
+            {
+                ProjectId = projectId,
+                FromStep = fromStep,
+                ToStep = toStep,
+                Action = action,
+                ActorUserId = actor,
+                IpAddress = ctx?.Connection.RemoteIpAddress?.ToString(),
+                UserAgent = ua is { Length: > 300 } ? ua[..300] : ua,
+                Message = message,
+                CreatedAt = DateTime.UtcNow
+            });
         }
 
         public async Task InitializeProjectSteps(int projectId)
@@ -63,6 +87,11 @@ namespace TechExchangeApp.Services
                 {
                     nextStep.StatusId = 1; // InProgress
                 }
+
+                AddTransitionLog(projectId, stepNumber, nextStep?.StepNumber ?? stepNumber, "Complete",
+                    nextStep != null
+                        ? $"Hoàn thành bước {stepNumber} – {currentStep.StepName}; mở bước {nextStep.StepNumber} – {nextStep.StepName}"
+                        : $"Hoàn thành bước {stepNumber} – {currentStep.StepName}");
 
                 await _context.SaveChangesAsync();
             }

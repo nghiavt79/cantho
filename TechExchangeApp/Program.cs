@@ -229,7 +229,8 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.IContractService,         
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IContractSigningService,   TechExchangeApp.Services.ContractSigningService>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IVerificationService,      TechExchangeApp.Services.VerificationService>();
 builder.Services.AddScoped<TechExchangeApp.Services.PdfSigningService>();  // iText7 visible signature embedding
-builder.Services.AddScoped<TechExchangeApp.Services.HtmlToPdfService>();   // iText7 HTMLâ†’PDF for contracts without uploaded file
+builder.Services.AddScoped<TechExchangeApp.Services.HtmlToPdfService>();
+builder.Services.AddScoped<TechExchangeApp.Services.ReportPdfService>();   // Xuất PDF báo cáo dạng bảng (HSMT nhóm 12)   // iText7 HTMLâ†’PDF for contracts without uploaded file
 
 // CA signing provider adapters (resolved by name via factory)
 builder.Services.AddScoped<TechExchangeApp.Interfaces.ISigningProvider, TechExchangeApp.Services.Signing.VnptSigningProvider>();
@@ -333,6 +334,8 @@ app.Use(async (ctx, next) =>
     await next();
 });
 app.UseResponseCompression();
+// HSMT A.8.5: ghi nhật ký tải tệp hồ sơ giao dịch (đặt trước UseStaticFiles)
+app.UseMiddleware<TechExchangeApp.Infrastructure.DownloadAuditMiddleware>();
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>

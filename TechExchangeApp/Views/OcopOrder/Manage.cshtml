@@ -67,6 +67,7 @@
                         <table class="table table-hover">
                             <thead class="table-light">
                                 <tr>
+                                    <th>Mã đơn</th>
                                     <th>Sản phẩm</th>
                                     <th>Loại sản phẩm</th>
                                     <th>Giá tham khảo</th>
@@ -75,6 +76,7 @@
                                     <th>Số lượng</th>
                                     <th>Địa chỉ liên hệ/giao nhận</th>
                                     <th>Trạng thái</th>
+                                    <th>Giá trị đơn / thanh toán</th>
                                     <th>Ngày gửi</th>
                                     <th>Thao tác</th>
                                 </tr>
@@ -83,6 +85,7 @@
                                 @foreach (var order in Model)
                                 {
                                     <tr>
+                                        <td data-label="Mã đơn">@order.MaDon</td>
                                         <td data-label="Sản phẩm">@order.ProductName</td>
                                         <td data-label="Loại sản phẩm">@ProductTypeText(order.RequestProductType)</td>
                                         <td data-label="Giá tham khảo">@(string.IsNullOrWhiteSpace(order.GiaThamKhao) ? "Liên hệ báo giá" : order.GiaThamKhao)</td>
@@ -91,6 +94,22 @@
                                         <td data-label="Số lượng">@order.SoLuong</td>
                                         <td data-label="Địa chỉ liên hệ/giao nhận">@order.DiaChiGiao</td>
                                         <td data-label="Trạng thái"><span class="badge @StatusBadge(order.StatusId)">@StatusText(order.StatusId)</span></td>
+                                        <td data-label="Giá trị đơn / thanh toán">
+                                            @if (order.StatusId != 4)
+                                            {
+                                                <form asp-action="UpdatePayment" method="post" class="d-flex flex-wrap gap-1 align-items-center">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@order.Id" />
+                                                    <input type="number" name="giaTriDon" min="0" step="1000" value="@(order.GiaTriDon?.ToString("0"))" class="form-control form-control-sm" style="width:130px" placeholder="Giá trị (đồng)" />
+                                                    <label class="small mb-0"><input type="checkbox" name="daThanhToan" value="true" @(order.TrangThaiThanhToan == 1 ? "checked" : "") /> Đã thanh toán</label>
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Lưu</button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">—</span>
+                                            }
+                                        </td>
                                         <td data-label="Ngày gửi">@order.NgayTao.ToString("dd/MM/yyyy HH:mm")</td>
                                         <td data-label="Thao tác">
                                             @if (order.StatusId < 3)

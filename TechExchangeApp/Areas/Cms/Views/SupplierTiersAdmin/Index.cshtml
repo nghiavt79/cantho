@@ -16,16 +16,19 @@
     <div class="card-body">
         @Html.AntiForgeryToken()
         <table class="table table-sm table-bordered align-middle small mb-0">
-            <thead class="table-light"><tr><th>Hạng</th><th class="text-center">Thứ bậc</th><th class="text-center">SP xuất bản ≥</th><th class="text-center">Lượt liên hệ ≥</th><th class="text-center">Lượt xem ≥</th><th class="text-center">Xác minh pháp lý</th><th>Mô tả</th><th class="text-center">Dùng</th><th style="width:50px"></th></tr></thead>
+            <thead class="table-light"><tr><th>Hạng</th><th class="text-center">Thứ bậc</th><th class="text-center">SP xuất bản ≥</th><th class="text-center">Lượt liên hệ ≥</th><th class="text-center">Lượt xem ≥</th><th class="text-center">Giao dịch ≥</th><th class="text-center">Doanh thu ≥ (đồng)</th><th class="text-center">Đánh giá SP ≥</th><th class="text-center">Xác minh pháp lý</th><th>Mô tả</th><th class="text-center">Dùng</th><th style="width:50px"></th></tr></thead>
             <tbody>
                 @foreach (var t in tiers)
                 {
-                    <tr data-tier='@Json.Serialize(new { t.Id, t.Name, t.Rank, t.BadgeColor, t.MinProducts, t.MinContacts, t.MinViews, t.RequireVerified, t.Description, t.IsActive })'>
+                    <tr data-tier='@Json.Serialize(new { t.Id, t.Name, t.Rank, t.BadgeColor, t.MinProducts, t.MinContacts, t.MinViews, t.MinTransactions, t.MinRevenue, t.MinRating, t.RequireVerified, t.Description, t.IsActive })'>
                         <td><span class="badge" style="background:@t.BadgeColor">@t.Name</span></td>
                         <td class="text-center">@t.Rank</td>
                         <td class="text-center">@t.MinProducts</td>
                         <td class="text-center">@t.MinContacts</td>
                         <td class="text-center">@t.MinViews.ToString("N0")</td>
+                        <td class="text-center">@t.MinTransactions</td>
+                        <td class="text-center">@t.MinRevenue.ToString("N0")</td>
+                        <td class="text-center">@t.MinRating.ToString("0.0")</td>
                         <td class="text-center">@(t.RequireVerified ? "Bắt buộc" : "—")</td>
                         <td>@t.Description</td>
                         <td class="text-center">@(t.IsActive ? "✓" : "")</td>
@@ -34,7 +37,7 @@
                 }
             </tbody>
         </table>
-        <div class="form-text">"Xác minh pháp lý" = tài khoản quản lý hồ sơ nhà cung cấp đã tải đủ giấy tờ (mức xác minh 3). Lượt liên hệ = hội thoại chat + yêu cầu đặt mua/quan tâm trên sản phẩm của nhà cung cấp.</div>
+        <div class="form-text">"Xác minh pháp lý" = tài khoản quản lý hồ sơ nhà cung cấp đã tải đủ giấy tờ (mức xác minh 3). Lượt liên hệ = hội thoại chat + yêu cầu đặt mua/quan tâm trên sản phẩm của nhà cung cấp. Giao dịch = đơn đặt mua chưa hủy. Doanh thu = tổng giá trị đơn đã hoàn tất hoặc đã thanh toán. Đánh giá SP = điểm trung bình (1–5 sao) người dùng chấm cho sản phẩm của nhà cung cấp.</div>
     </div>
 </div>
 
@@ -58,7 +61,7 @@
         </form>
         <div class="table-responsive">
             <table class="table table-sm table-hover table-bordered align-middle small mb-0">
-                <thead class="table-light"><tr><th>Nhà cung cấp</th><th class="text-center">SP xuất bản</th><th class="text-center">Liên hệ</th><th class="text-center">Lượt xem</th><th class="text-center">Xác minh</th><th>Gợi ý</th><th style="width:200px">Hạng hiện tại</th></tr></thead>
+                <thead class="table-light"><tr><th>Nhà cung cấp</th><th class="text-center">SP xuất bản</th><th class="text-center">Liên hệ</th><th class="text-center">Lượt xem</th><th class="text-center">Giao dịch</th><th class="text-end">Doanh thu</th><th class="text-center">Đánh giá</th><th class="text-center">Xác minh</th><th>Gợi ý</th><th style="width:200px">Hạng hiện tại</th></tr></thead>
                 <tbody>
                     @foreach (var r in Model)
                     {
@@ -71,6 +74,9 @@
                             <td class="text-center">@r.Metrics.PublishedProducts</td>
                             <td class="text-center">@r.Metrics.Contacts</td>
                             <td class="text-center">@r.Metrics.Views.ToString("N0")</td>
+                            <td class="text-center">@r.Metrics.Transactions</td>
+                            <td class="text-end">@r.Metrics.Revenue.ToString("N0")</td>
+                            <td class="text-center">@(r.Metrics.RatingCount > 0 ? r.Metrics.Rating.ToString("0.0") + " (" + r.Metrics.RatingCount + ")" : "—")</td>
                             <td class="text-center">@(r.Metrics.Verified ? "✓" : "")</td>
                             <td>@if (sug != null) { <span class="badge" style="background:@sug.BadgeColor">@sug.Name</span> } else { <span class="text-muted">—</span> }</td>
                             <td>
@@ -101,6 +107,9 @@
                     <div class="col-4"><label class="form-label small">SP xuất bản ≥</label><input name="MinProducts" type="number" min="0" value="0" class="form-control form-control-sm" /></div>
                     <div class="col-4"><label class="form-label small">Lượt liên hệ ≥</label><input name="MinContacts" type="number" min="0" value="0" class="form-control form-control-sm" /></div>
                     <div class="col-4"><label class="form-label small">Lượt xem ≥</label><input name="MinViews" type="number" min="0" value="0" class="form-control form-control-sm" /></div>
+                    <div class="col-4"><label class="form-label small">Lượt giao dịch ≥</label><input name="MinTransactions" type="number" min="0" value="0" class="form-control form-control-sm" /></div>
+                    <div class="col-4"><label class="form-label small">Doanh thu ≥ (đồng)</label><input name="MinRevenue" type="number" min="0" step="1000" value="0" class="form-control form-control-sm" /></div>
+                    <div class="col-4"><label class="form-label small">Đánh giá SP ≥ (0–5)</label><input name="MinRating" type="number" min="0" max="5" step="0.1" value="0" class="form-control form-control-sm" /></div>
                     <div class="col-12"><label class="form-label small">Mô tả</label><input name="Description" class="form-control form-control-sm" maxlength="500" /></div>
                     <div class="col-6 form-check ms-2"><input class="form-check-input" type="checkbox" name="RequireVerified" value="true" id="tVer" /><label class="form-check-label small" for="tVer">Bắt buộc xác minh pháp lý</label></div>
                     <div class="col-5 form-check"><input class="form-check-input" type="checkbox" name="IsActive" value="true" id="tAct" checked /><label class="form-check-label small" for="tAct">Đang dùng</label></div>
@@ -121,6 +130,7 @@
         form.Id.value = t ? t.id : 0; form.Name.value = t ? t.name : ''; form.Rank.value = t ? t.rank : 1;
         form.BadgeColor.value = t ? t.badgeColor : '#6c757d'; form.MinProducts.value = t ? t.minProducts : 0;
         form.MinContacts.value = t ? t.minContacts : 0; form.MinViews.value = t ? t.minViews : 0;
+        form.MinTransactions.value = t ? t.minTransactions : 0; form.MinRevenue.value = t ? t.minRevenue : 0; form.MinRating.value = t ? t.minRating : 0;
         form.Description.value = t ? (t.description || '') : ''; form.RequireVerified.checked = t ? t.requireVerified : false;
         form.IsActive.checked = t ? t.isActive : true;
     }

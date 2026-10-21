@@ -15,7 +15,7 @@ namespace TechExchangeApp.Interfaces
         Task<ChatConversationDetailVm?> GetConversationAsync(long conversationId, int userId);
 
         /// <summary>Send a message in a conversation.</summary>
-        Task<bool> SendMessageAsync(long conversationId, int senderUserId, string message);
+        Task<bool> SendMessageAsync(long conversationId, int senderUserId, string message, ChatAttachmentInfo? attachment = null);
 
         /// <summary>Mark messages as read.</summary>
         Task MarkAsReadAsync(long conversationId, int userId);
@@ -108,6 +108,21 @@ namespace TechExchangeApp.Interfaces
         public bool IsSystem { get; set; }
         public string Message { get; set; } = "";
         public DateTime Created { get; set; }
+        public string? AttachmentName { get; set; }
+        public string? AttachmentType { get; set; }
+        public long? AttachmentSize { get; set; }
+        public bool HasAttachment => !string.IsNullOrEmpty(AttachmentName);
+        public bool IsImage => AttachmentType?.StartsWith("image/") == true;
+        public string AttachmentUrl => $"/chat/tep/{Id}";
+    }
+
+    /// <summary>Tệp đính kèm đã lưu, gắn vào tin nhắn chat.</summary>
+    public class ChatAttachmentInfo
+    {
+        public string Path { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string ContentType { get; set; } = "";
+        public long Size { get; set; }
     }
 
     public class SupportStartOptions

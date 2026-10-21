@@ -18,5 +18,9 @@ namespace TechExchangeApp.ViewModel
         public string? SoTaiKhoan { get; set; }
         public string? TenNganHang { get; set; }
         public string? ChuTaiKhoan { get; set; }
+        public decimal? GiaTriDon { get; set; }
+        public int TrangThaiThanhToan { get; set; }
+        public DateTime? NgayThanhToan { get; set; }
+        public string MaDon => TechExchangeApp.Entities.OcopOrderRequest.FormatMaDon(Id, NgayTao);
     }
 }

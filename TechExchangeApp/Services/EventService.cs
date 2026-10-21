@@ -16,6 +16,8 @@ namespace TechExchangeApp.Services
         Task<long> ResolveContentIdAsync(long contentId);
         Task<EventPanelVm?> GetPanelAsync(long contentId, int? userId, string? visitorKey);
         Task RecordViewAsync(long contentId, int? userId, string? visitorKey);
+        /// <summary>Ghi lượt nhấp banner/đường dẫn hoặc lượt chia sẻ (A.4.4).</summary>
+        Task RecordInteractionAsync(long contentId, byte type, int? userId, string? visitorKey);
         Task<(bool Ok, string? ErrorKey, string? TicketUrl)> RegisterAsync(long contentId, EventRegisterInput input, int? userId, string? ip, bool isEn);
         Task<(bool Active, int Count)> ToggleInterestAsync(long contentId, int? userId, string visitorKey);
         Task<(bool Ok, string? ErrorKey)> SubscribeReminderAsync(long contentId, int? userId, string visitorKey, string? email, string? phone);
@@ -156,6 +158,17 @@ namespace TechExchangeApp.Services
             _db.EventInteractions.Add(new EventInteraction
             {
                 ContentId = contentId, InteractionType = EventInteractionTypes.View, UserId = userId, VisitorKey = visitorKey, Created = DateTime.Now
+            });
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task RecordInteractionAsync(long contentId, byte type, int? userId, string? visitorKey)
+        {
+            if (type != EventInteractionTypes.Click && type != EventInteractionTypes.Share) return;
+            if (!await _db.EventInfos.AnyAsync(e => e.ContentId == contentId)) return;
+            _db.EventInteractions.Add(new EventInteraction
+            {
+                ContentId = contentId, InteractionType = type, UserId = userId, VisitorKey = visitorKey, Created = DateTime.Now
             });
             await _db.SaveChangesAsync();
         }

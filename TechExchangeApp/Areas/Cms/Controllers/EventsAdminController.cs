@@ -209,6 +209,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 ViewBag.Views = inter.GetValueOrDefault(EventInteractionTypes.View);
                 ViewBag.Interest = inter.GetValueOrDefault(EventInteractionTypes.Interest);
                 ViewBag.Remind = inter.GetValueOrDefault(EventInteractionTypes.Remind);
+                ViewBag.Clicks = inter.GetValueOrDefault(EventInteractionTypes.Click);
+                ViewBag.Shares = inter.GetValueOrDefault(EventInteractionTypes.Share);
                 var daily = await _context.EventInteractions.AsNoTracking().Where(i => i.ContentId == contentId && i.Created >= since)
                     .GroupBy(i => new { i.Created.Date, i.InteractionType }).Select(g => new { g.Key.Date, g.Key.InteractionType, N = g.Count() }).ToListAsync();
                 var dailyReg = await regs.Where(r => r.Created >= since).GroupBy(r => r.Created.Date).Select(g => new { Date = g.Key, N = g.Count() }).ToListAsync();
@@ -218,6 +220,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     Views = daily.Where(x => x.Date == d && x.InteractionType == EventInteractionTypes.View).Sum(x => x.N),
                     Interest = daily.Where(x => x.Date == d && x.InteractionType == EventInteractionTypes.Interest).Sum(x => x.N),
                     Remind = daily.Where(x => x.Date == d && x.InteractionType == EventInteractionTypes.Remind).Sum(x => x.N),
+                    Clicks = daily.Where(x => x.Date == d && x.InteractionType == EventInteractionTypes.Click).Sum(x => x.N),
+                    Shares = daily.Where(x => x.Date == d && x.InteractionType == EventInteractionTypes.Share).Sum(x => x.N),
                     Registrations = dailyReg.Where(x => x.Date == d).Sum(x => x.N)
                 }).ToList();
                 ViewBag.RemindersSent = await _context.EventReminderLogs.CountAsync(l => l.ContentId == contentId);
@@ -367,6 +371,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public int Views { get; set; }
         public int Interest { get; set; }
         public int Remind { get; set; }
+        public int Clicks { get; set; }
+        public int Shares { get; set; }
         public int Registrations { get; set; }
     }
 

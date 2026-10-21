@@ -68,7 +68,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public async Task<IActionResult> SaveTier(SupplierTier input)
         {
             if (string.IsNullOrWhiteSpace(input.Name)) return Json(new { success = false, message = "Nhập tên hạng." });
-            if (input.MinProducts < 0 || input.MinContacts < 0 || input.MinViews < 0) return Json(new { success = false, message = "Tiêu chí không được âm." });
+            // Điểm đánh giá có phần thập phân: đọc theo dấu chấm, không phụ thuộc ngôn ngữ máy chủ
+            if (decimal.TryParse(Request.Form["MinRating"].ToString().Replace(',', '.'), System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out var rating))
+                input.MinRating = Math.Round(rating, 1);
+            if (input.MinProducts < 0 || input.MinContacts < 0 || input.MinViews < 0 || input.MinTransactions < 0 || input.MinRevenue < 0 || input.MinRating < 0 || input.MinRating > 5) return Json(new { success = false, message = "Tiêu chí không được âm." });
             if (!System.Text.RegularExpressions.Regex.IsMatch(input.BadgeColor ?? "", "^#[0-9a-fA-F]{6}$")) input.BadgeColor = "#6c757d";
 
             var t = input.Id > 0 ? await _context.SupplierTiers.FindAsync(input.Id) : null;
@@ -79,6 +82,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             t.MinProducts = input.MinProducts;
             t.MinContacts = input.MinContacts;
             t.MinViews = input.MinViews;
+            t.MinTransactions = input.MinTransactions;
+            t.MinRevenue = input.MinRevenue;
+            t.MinRating = input.MinRating;
             t.RequireVerified = input.RequireVerified;
             t.Description = input.Description?.Trim();
             t.IsActive = input.IsActive;

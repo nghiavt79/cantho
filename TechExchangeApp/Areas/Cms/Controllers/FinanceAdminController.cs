@@ -164,6 +164,107 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             return excel.Export(data, $"SoThuChi_{f:yyyyMMdd}_{t:yyyyMMdd}.xlsx");
         }
 
+        // ─── Xuất PDF sổ thu chi (HSMT A.6.1, nhóm 12) ───
+        [HttpGet]
+        public async Task<IActionResult> ExportPdf(DateTime? from, DateTime? to, string? category, byte? direction, [FromServices] ReportPdfService pdf)
+        {
+            var (f, t) = Range(from, to);
+            var rows = await Filter(f, t, category, direction).OrderBy(e => e.EntryDate).ThenBy(e => e.Id).ToListAsync();
+            var ids = rows.Where(e => e.CungUngId.HasValue).Select(e => e.CungUngId!.Value).Distinct().ToList();
+            var names = await _context.NhaCungUngs.AsNoTracking().Where(n => ids.Contains(n.CungUngId)).ToDictionaryAsync(n => n.CungUngId, n => n.FullName ?? "");
+            var data = rows.Select((e, i) => new FinanceExportRow
+            {
+                Stt = i + 1, Ngay = e.EntryDate.ToString("dd/MM/yyyy"), Loai = e.Direction == FinanceDirections.Income ? "Thu" : "Chi",
+                Nhom = FinanceCategories.Label(e.Category), SoTien = e.Amount, GiaTriGiaoDich = e.BaseAmount, TyLe = e.RatePercent,
+                NhaCungCap = e.CungUngId.HasValue && names.TryGetValue(e.CungUngId.Value, out var n) ? n : null,
+                NoiDung = e.Description, NguoiNhap = e.CreatedBy
+            }).ToList();
+            var income = rows.Where(e => e.Direction == FinanceDirections.Income).Sum(e => e.Amount);
+            var expense = rows.Where(e => e.Direction != FinanceDirections.Income).Sum(e => e.Amount);
+            var summary = $"<p>Tổng thu: <b>{income:N0} đồng</b> · Tổng chi: <b>{expense:N0} đồng</b> · Chênh lệch: <b>{income - expense:N0} đồng</b> · Số khoản: {rows.Count}</p>";
+            await WriteLog(4, $"Xuất PDF sổ thu chi {f:dd/MM/yyyy}–{t:dd/MM/yyyy} ({rows.Count} dòng)");
+            return pdf.Build("SỔ THU CHI", $"Từ ngày {f:dd/MM/yyyy} đến ngày {t:dd/MM/yyyy}",
+                new[] { new ReportPdfService.Section("", summary), new ReportPdfService.Section("", ReportPdfService.Table(data)) },
+                $"SoThuChi_{f:yyyyMMdd}_{t:yyyyMMdd}.pdf");
+        }
+
+        // ─── Báo cáo giao dịch (HSMT A.8.1): hồ sơ chuyển giao công nghệ, đơn đặt mua, doanh thu ───
+        [HttpGet]
+        public async Task<IActionResult> Transactions(DateTime? from, DateTime? to, string? format, [FromServices] ReportPdfService pdf, [FromServices] IExcelExportService excel)
+        {
+            var (f, t) = Range(from, to);
+            var tEnd = t.AddDays(1);
+
+            var projects = await (from p in _context.Projects.AsNoTracking()
+                                  join b in _context.Users.AsNoTracking() on p.CreatedBy equals b.Id into bj
+                                  from b in bj.DefaultIfEmpty()
+                                  join s in _context.Users.AsNoTracking() on p.SelectedSellerId equals s.Id into sj
+                                  from s in sj.DefaultIfEmpty()
+                                  where p.CreatedDate >= f && p.CreatedDate < tEnd
+                                  orderby p.CreatedDate
+                                  select new
+                                  {
+                                      p.Id, p.ProjectCode, p.ProjectName, p.StatusId, p.CreatedDate,
+                                      Buyer = b != null ? (b.FullName ?? b.UserName) : null,
+                                      Seller = s != null ? (s.FullName ?? s.UserName) : null,
+                                      Done = _context.ProjectSteps.Count(x => x.ProjectId == p.Id && x.StatusId == 2),
+                                      Current = _context.ProjectSteps.Where(x => x.ProjectId == p.Id && x.StatusId == 1).Select(x => (int?)x.StepNumber).Min()
+                                  }).ToListAsync();
+            var projRows = projects.Select((p, i) => new TransactionProjectRow
+            {
+                Stt = i + 1, Ma = p.ProjectCode, Ten = p.ProjectName, BenMua = p.Buyer, BenBan = p.Seller,
+                Ngay = p.CreatedDate.ToString("dd/MM/yyyy"),
+                Buoc = p.StatusId == 3 || p.Done >= 14 ? "Hoàn thành 14/14" : $"Đang ở bước {p.Current ?? p.Done + 1}/14",
+                TrangThai = p.StatusId == 3 || p.Done >= 14 ? "Thành công" : p.Done == 0 ? "Mới tạo" : "Đang thực hiện"
+            }).ToList();
+
+            var orders = await (from o in _context.OcopOrderRequests.AsNoTracking()
+                                join sp in _context.SanPhamCNTBs.AsNoTracking() on o.ProductId equals sp.ID into spj
+                                from sp in spj.DefaultIfEmpty()
+                                join n in _context.NhaCungUngs.AsNoTracking() on o.SupplierId equals n.CungUngId into nj
+                                from n in nj.DefaultIfEmpty()
+                                where o.NgayTao >= f && o.NgayTao < tEnd
+                                orderby o.NgayTao
+                                select new { o.Id, o.NgayTao, o.HoTen, o.SoLuong, o.StatusId, o.GiaTriDon, o.TrangThaiThanhToan, Sp = sp != null ? sp.Name : null, Ncc = n != null ? n.FullName : null })
+                               .ToListAsync();
+            var orderRows = orders.Select((o, i) => new TransactionOrderRow
+            {
+                Stt = i + 1, MaDon = OcopOrderRequest.FormatMaDon(o.Id, o.NgayTao), Ngay = o.NgayTao.ToString("dd/MM/yyyy"),
+                SanPham = o.Sp, NhaCungCap = o.Ncc, NguoiMua = o.HoTen, SoLuong = o.SoLuong, GiaTri = o.GiaTriDon,
+                ThanhToan = o.TrangThaiThanhToan == 1 ? "Đã thanh toán" : "Đang chờ",
+                TrangThai = o.StatusId switch { 1 => "Mới gửi", 2 => "Đã xác nhận", 3 => "Hoàn tất", 4 => "Đã hủy", _ => "" }
+            }).ToList();
+
+            var vm = new TransactionReportVm
+            {
+                From = f, To = t, Projects = projRows, Orders = orderRows,
+                ProjectsSucceeded = projRows.Count(p => p.TrangThai == "Thành công"),
+                OrdersSucceeded = orders.Count(o => o.StatusId == 3),
+                Revenue = orders.Where(o => o.StatusId != 4 && (o.StatusId == 3 || o.TrangThaiThanhToan == 1)).Sum(o => o.GiaTriDon ?? 0),
+                Commission = await _context.FinanceEntries.AsNoTracking()
+                    .Where(e => e.Direction == FinanceDirections.Income && e.EntryDate >= f && e.EntryDate <= t).SumAsync(e => (decimal?)e.Amount) ?? 0
+            };
+
+            if (format == "pdf")
+            {
+                var summary = $"<p>Hồ sơ chuyển giao công nghệ: {projRows.Count} (thành công {vm.ProjectsSucceeded}) · Đơn đặt mua: {orderRows.Count} (hoàn tất {vm.OrdersSucceeded}) · "
+                            + $"Giá trị giao dịch thành công: <b>{vm.Revenue:N0} đồng</b> · Thu của Sàn (hoa hồng, gian hàng): <b>{vm.Commission:N0} đồng</b></p>";
+                await WriteLog(4, $"Xuất PDF báo cáo giao dịch {f:dd/MM/yyyy}–{t:dd/MM/yyyy}");
+                return pdf.Build("BÁO CÁO GIAO DỊCH", $"Từ ngày {f:dd/MM/yyyy} đến ngày {t:dd/MM/yyyy}", new[]
+                {
+                    new ReportPdfService.Section("", summary),
+                    new ReportPdfService.Section("1. Hồ sơ chuyển giao công nghệ", ReportPdfService.Table(projRows)),
+                    new ReportPdfService.Section("2. Đơn đặt mua sản phẩm", ReportPdfService.Table(orderRows))
+                }, $"BaoCaoGiaoDich_{f:yyyyMMdd}_{t:yyyyMMdd}.pdf");
+            }
+            if (format == "excel")
+            {
+                await WriteLog(4, $"Xuất Excel báo cáo giao dịch {f:dd/MM/yyyy}–{t:dd/MM/yyyy}");
+                return excel.Export(orderRows, $"DonDatMua_{f:yyyyMMdd}_{t:yyyyMMdd}.xlsx");
+            }
+            return View(vm);
+        }
+
         private static string? Trim(string? s, int max) => s == null ? null : (s.Length > max ? s[..max] : s);
     }
 
@@ -180,6 +281,44 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public DateTime Month { get; set; }
         public decimal Income { get; set; }
         public decimal Expense { get; set; }
+    }
+
+    public class TransactionReportVm
+    {
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+        public List<TransactionProjectRow> Projects { get; set; } = new();
+        public List<TransactionOrderRow> Orders { get; set; } = new();
+        public int ProjectsSucceeded { get; set; }
+        public int OrdersSucceeded { get; set; }
+        public decimal Revenue { get; set; }
+        public decimal Commission { get; set; }
+    }
+
+    public class TransactionProjectRow
+    {
+        [Display(Name = "STT")] public int Stt { get; set; }
+        [Display(Name = "Mã hồ sơ")] public string Ma { get; set; } = "";
+        [Display(Name = "Tên hồ sơ")] public string Ten { get; set; } = "";
+        [Display(Name = "Bên mua")] public string? BenMua { get; set; }
+        [Display(Name = "Bên bán")] public string? BenBan { get; set; }
+        [Display(Name = "Ngày tạo")] public string Ngay { get; set; } = "";
+        [Display(Name = "Tiến độ")] public string Buoc { get; set; } = "";
+        [Display(Name = "Trạng thái")] public string TrangThai { get; set; } = "";
+    }
+
+    public class TransactionOrderRow
+    {
+        [Display(Name = "STT")] public int Stt { get; set; }
+        [Display(Name = "Mã đơn")] public string MaDon { get; set; } = "";
+        [Display(Name = "Ngày đặt")] public string Ngay { get; set; } = "";
+        [Display(Name = "Sản phẩm")] public string? SanPham { get; set; }
+        [Display(Name = "Nhà cung cấp")] public string? NhaCungCap { get; set; }
+        [Display(Name = "Người mua")] public string? NguoiMua { get; set; }
+        [Display(Name = "SL")] public int SoLuong { get; set; }
+        [Display(Name = "Giá trị (đ)")] public decimal? GiaTri { get; set; }
+        [Display(Name = "Thanh toán")] public string ThanhToan { get; set; } = "";
+        [Display(Name = "Trạng thái")] public string TrangThai { get; set; } = "";
     }
 
     public class FinanceExportRow

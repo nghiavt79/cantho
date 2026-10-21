@@ -71,7 +71,7 @@ namespace TechExchangeApp.Entities
     {
         [Key] public long Id { get; set; }
         public long ContentId { get; set; }
-        /// <summary>1 = xem trang, 2 = quan tâm, 3 = đăng ký nhắc lịch</summary>
+        /// <summary>1 = xem trang, 2 = quan tâm, 3 = đăng ký nhắc lịch, 4 = nhấp banner/đường dẫn, 5 = chia sẻ</summary>
         public byte InteractionType { get; set; }
         public int? UserId { get; set; }
         [StringLength(64)] public string? VisitorKey { get; set; }
@@ -85,6 +85,10 @@ namespace TechExchangeApp.Entities
         public const byte View = 1;
         public const byte Interest = 2;
         public const byte Remind = 3;
+        /// <summary>Nhấp vào banner, đường dẫn trỏ tới sự kiện (A.4.4).</summary>
+        public const byte Click = 4;
+        /// <summary>Bấm chia sẻ lên mạng xã hội (A.4.4).</summary>
+        public const byte Share = 5;
     }
 
     /// <summary>Đã gửi nhắc lịch cho người nhận ở một mốc — chống gửi trùng (A.4.5).</summary>

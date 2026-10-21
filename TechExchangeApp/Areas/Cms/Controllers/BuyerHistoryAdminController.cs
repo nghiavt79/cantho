@@ -52,7 +52,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                                 {
                                     Id = o.Id, ProductId = o.ProductId, ProductName = p != null ? p.Name : null, ProductType = o.RequestProductType,
                                     SupplierName = n != null ? n.FullName : null, Quantity = o.SoLuong, Price = o.GiaThamKhao,
-                                    StatusId = o.StatusId, Created = o.NgayTao
+                                    StatusId = o.StatusId, Created = o.NgayTao,
+                                    Value = o.GiaTriDon, Paid = o.TrangThaiThanhToan == 1, PaidDate = o.NgayThanhToan
                                 }).ToListAsync(),
 
                 Projects = await _context.Projects.AsNoTracking().Where(p => p.CreatedBy == uid)
@@ -101,6 +102,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 Favorites = await _context.ProductFavorites.CountAsync(f => f.UserId == uid),
                 Comments = await _context.UserComments.CountAsync(c => c.UserId == uid)
             };
+            // Tổng tiền đã chi: đơn đã thanh toán hoặc đã hoàn tất, không tính đơn đã hủy
+            vm.TotalSpent = vm.Orders.Where(o => o.StatusId != 4 && (o.Paid || o.StatusId == 3)).Sum(o => o.Value ?? 0);
             return View(vm);
         }
     }
@@ -133,6 +136,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public List<BuyerSimpleRow> Booths { get; set; } = new();
         public int Favorites { get; set; }
         public int Comments { get; set; }
+        public decimal TotalSpent { get; set; }
     }
 
     public class BuyerOrderRow
@@ -146,6 +150,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public string? Price { get; set; }
         public int StatusId { get; set; }
         public DateTime Created { get; set; }
+        public decimal? Value { get; set; }
+        public bool Paid { get; set; }
+        public DateTime? PaidDate { get; set; }
+        public string Code => OcopOrderRequest.FormatMaDon(Id, Created);
     }
 
     public class BuyerProjectRow

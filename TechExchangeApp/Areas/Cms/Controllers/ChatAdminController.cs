@@ -52,7 +52,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             }
             if (!string.IsNullOrWhiteSpace(keyword))
             {
-                var convIds = _context.ChatMessages.Where(m => m.Message.Contains(keyword)).Select(m => m.ConversationId);
+                var convIds = _context.ChatMessages.Where(m => m.Message.Contains(keyword) || (m.AttachmentName != null && m.AttachmentName.Contains(keyword))).Select(m => m.ConversationId);
                 query = query.Where(c => convIds.Contains(c.Id));
             }
             if (flagged) query = query.Where(c => c.IsFlagged);
@@ -100,7 +100,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
             var messages = await _context.ChatMessages.AsNoTracking()
                 .Where(m => m.ConversationId == id).OrderBy(m => m.Created)
-                .Select(m => new ChatAdminMessage { Id = m.Id, SenderUserId = m.SenderUserId, Message = m.Message, IsSystem = m.IsSystem, Created = m.Created })
+                .Select(m => new ChatAdminMessage { Id = m.Id, SenderUserId = m.SenderUserId, Message = m.Message, IsSystem = m.IsSystem, Created = m.Created, AttachmentName = m.AttachmentName, AttachmentType = m.AttachmentType })
                 .ToListAsync();
             var senderIds = messages.Select(m => m.SenderUserId).Distinct().Select(s => int.TryParse(s, out var n) ? n : 0).Where(n => n > 0).ToList();
             var names = await _context.Users.AsNoTracking().Where(u => senderIds.Contains(u.Id))
@@ -175,5 +175,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public string Message { get; set; } = "";
         public bool IsSystem { get; set; }
         public DateTime Created { get; set; }
+        public string? AttachmentName { get; set; }
+        public string? AttachmentType { get; set; }
     }
 }

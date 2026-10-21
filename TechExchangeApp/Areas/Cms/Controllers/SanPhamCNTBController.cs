@@ -157,6 +157,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     Viewed = p.Viewed ?? 0,
                     // Lượt liên hệ (HSMT A.2.5): hội thoại chat + yêu cầu đặt mua/quan tâm theo sản phẩm
                     ContactCount = _context.ChatConversations.Count(c => c.ProductId == p.ID) + _context.OcopOrderRequests.Count(o => o.ProductId == p.ID),
+                    TransactionCount = _context.OcopOrderRequests.Count(o => o.ProductId == p.ID && o.StatusId != 4),
                     ProductType = p.ProductType,
                     SoBang = p.SoBang,
                     NhaCungUngName = p.NCUId.HasValue
@@ -271,6 +272,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     Viewed = p.Viewed ?? 0,
                     // Lượt liên hệ (HSMT A.2.5): hội thoại chat + yêu cầu đặt mua/quan tâm theo sản phẩm
                     ContactCount = _context.ChatConversations.Count(c => c.ProductId == p.ID) + _context.OcopOrderRequests.Count(o => o.ProductId == p.ID),
+                    TransactionCount = _context.OcopOrderRequests.Count(o => o.ProductId == p.ID && o.StatusId != 4),
                     ProductType = p.ProductType,
                     SoBang = p.SoBang,
                     NhaCungUngName = p.NCUId.HasValue
@@ -1086,6 +1088,8 @@ MaTruyXuat = p.MaTruyXuat
         public DateTime? LastUpdate { get; set; }
         public int Viewed { get; set; }
         public int ContactCount { get; set; }
+        /// <summary>Lượt giao dịch (HSMT A.2.5, B.2.3): số đơn đặt mua chưa hủy.</summary>
+        public int TransactionCount { get; set; }
         public int ProductType { get; set; }
         public string? SoBang { get; set; }
         public string? NhaCungUngName { get; set; }

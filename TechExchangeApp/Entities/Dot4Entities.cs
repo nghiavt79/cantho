@@ -17,6 +17,12 @@ namespace TechExchangeApp.Entities
         public int MinProducts { get; set; }
         public int MinContacts { get; set; }
         public int MinViews { get; set; }
+        /// <summary>Số lượt giao dịch tối thiểu (đơn đặt mua chưa hủy) – HSMT A.2.4.</summary>
+        public int MinTransactions { get; set; }
+        /// <summary>Doanh thu tối thiểu (đồng): tổng giá trị đơn đã hoàn tất hoặc đã thanh toán – HSMT A.2.4.</summary>
+        [Column(TypeName = "decimal(18,0)")] public decimal MinRevenue { get; set; }
+        /// <summary>Điểm đánh giá trung bình sản phẩm tối thiểu (0–5) – chất lượng sản phẩm, HSMT A.2.4.</summary>
+        [Column(TypeName = "decimal(3,1)")] public decimal MinRating { get; set; }
         public bool RequireVerified { get; set; }
         [StringLength(500)] public string? Description { get; set; }
         public bool IsActive { get; set; } = true;

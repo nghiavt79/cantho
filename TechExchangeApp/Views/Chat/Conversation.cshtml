@@ -78,6 +78,19 @@
                                 {
                                     <span style="white-space:pre-wrap;">@m.Message</span>
                                 }
+                                @if (m.HasAttachment)
+                                {
+                                    <div class="mt-1">
+                                        @if (m.IsImage)
+                                        {
+                                            <a href="@m.AttachmentUrl" target="_blank"><img src="@m.AttachmentUrl" alt="@m.AttachmentName" style="max-width:220px;max-height:180px;border-radius:6px;" /></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@m.AttachmentUrl" class="@(m.IsMe ? "text-white" : "")"><i class="fa fa-paperclip"></i> @m.AttachmentName</a>
+                                        }
+                                    </div>
+                                }
                                 <div class="text-end mt-1" style="font-size:11px; opacity:0.7;">
                                     @m.Created.ToString(isEn ? "MM/dd HH:mm" : "dd/MM HH:mm")
                                 </div>
@@ -88,6 +101,10 @@
 
                 @* Send form *@
                 <form id="chatSendForm" class="d-flex gap-2 chat-conversation-composer">
+                    <input type="file" id="chatFile" class="d-none" accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" />
+                    <button type="button" id="btnAttach" class="btn btn-outline-secondary" title="Gửi hình ảnh, tệp (tối đa 10 MB)">
+                        <i class="fa fa-paperclip"></i>
+                    </button>
                     <input type="text" id="chatInput"
                            class="form-control"
                            placeholder="@Html.Text("chat.inputPh")"
@@ -157,6 +174,26 @@
                 input.focus();
             });
 
+            // ── Gửi tệp đính kèm ──────────────────────────────
+            const fileInput = document.getElementById('chatFile');
+            document.getElementById('btnAttach')?.addEventListener('click', () => fileInput.click());
+            fileInput?.addEventListener('change', async function () {
+                const f = fileInput.files[0];
+                if (!f) return;
+                if (f.size > 10 * 1024 * 1024) { alert('Tệp vượt quá 10 MB.'); fileInput.value = ''; return; }
+                const token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
+                const fd = new FormData();
+                fd.append('file', f);
+                if (input.value.trim()) fd.append('message', input.value.trim());
+                try {
+                    const res = await fetch(`/api/chat/${conversationId}/upload`, { method: 'POST', headers: { 'RequestVerificationToken': token }, body: fd });
+                    const data = await res.json().catch(() => ({}));
+                    if (data.success) { input.value = ''; await pollNewMessages(); }
+                    else alert(data.error || CHAT_MSG.sendFailed);
+                } catch { alert(CHAT_MSG.connectionError); }
+                fileInput.value = '';
+            });
+
             // ── Gọi video ─────────────────────────────────────
             document.getElementById('btnVideoCall')?.addEventListener('click', async function () {
                 if (!confirm(@Json.Serialize(Html.Text("chat.video.confirm")))) return;
@@ -195,7 +232,12 @@
 
                 const bgClass = m.isMe ? 'bg-primary text-white chat-bubble chat-bubble-out' : 'bg-white border chat-bubble chat-bubble-in';
                 const senderHtml = !m.isMe ? `<div class="fw-bold small text-secondary mb-1">${escapeHtml(m.senderName)}</div>` : '';
-                const msgHtml = m.isSystem ? `<em>${m.message}</em>` : `<span style="white-space:pre-wrap;">${escapeHtml(m.message)}</span>`;
+                let msgHtml = m.isSystem ? `<em>${m.message}</em>` : `<span style="white-space:pre-wrap;">${escapeHtml(m.message)}</span>`;
+                if (m.attachmentUrl) {
+                    msgHtml += m.isImage
+                        ? `<div class="mt-1"><a href="${m.attachmentUrl}" target="_blank"><img src="${m.attachmentUrl}" alt="" style="max-width:220px;max-height:180px;border-radius:6px;" /></a></div>`
+                        : `<div class="mt-1"><a href="${m.attachmentUrl}" class="${m.isMe ? 'text-white' : ''}"><i class="fa fa-paperclip"></i> ${escapeHtml(m.attachmentName || '')}</a></div>`;
+                }
 
                 bubble.innerHTML = `
                     <div class="${bgClass} rounded px-3 py-2" style="max-width:70%; word-wrap:break-word;">
