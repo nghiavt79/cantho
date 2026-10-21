@@ -23,6 +23,13 @@ Nhánh `feature/bo-sung-chuc-nang-hsmt`, commit 5d100ea. Build 0 lỗi.
 - CMS (đăng nhập quản trị): Báo cáo giao dịch, xuất PDF/Excel (PDF dùng font Times New Roman tiếng Việt), Thu chi PDF, Phân hạng NCC, Lịch sử mua hàng, Nhật ký hồ sơ, Nhật ký sự kiện “Tải tệp”, Thống kê sự kiện, danh sách sản phẩm, Hướng dẫn 14 bước: mở được, không lỗi.
 - Chưa thử bằng tài khoản người bán (màn hình quản lý đơn, quản lý sản phẩm) và chưa gửi tệp chat thật.
 
+## Gói triển khai
+
+- `deploy-mekongx-2026-10-22.zip` (thư mục gốc repo, ~24 MB): `app\` toàn bộ file ứng dụng (publish Release sạch tại `D:\2026\CanThoPublish_20261022`), `sql\deploy-server-2026-10-22.sql`, `HUONG_DAN.txt`.
+- Không gồm `appsettings*.json` và `wwwroot\` (wwwroot không đổi so với bản 16/10).
+- Danh sách file so với gói 16/10: giống nhau, chỉ thêm `TechExchangeApp.pdb`.
+- Đã chạy thử bản publish trên máy (cổng 5299): trang chủ 200; CMS, tệp chat chuyển trang đăng nhập đúng.
+
 ## Khi triển khai lên máy chủ
 
 1. Chạy `TechExchangeApp/Scripts/dot7-hoan-thien-nghiem-thu-dot1.sql` (có `-f 65001`).
