@@ -1,6 +1,6 @@
 # Bổ sung code cho 60 chức năng nghiệm thu đợt 1 – 22/10/2026
 
-Nhánh `feature/bo-sung-chuc-nang-hsmt`, chưa commit. Build 0 lỗi.
+Nhánh `feature/bo-sung-chuc-nang-hsmt`, commit 5d100ea. Build 0 lỗi.
 
 ## Đã làm
 
@@ -20,7 +20,8 @@ Nhánh `feature/bo-sung-chuc-nang-hsmt`, chưa commit. Build 0 lỗi.
 - Script `dot7` chạy 2 lần không lỗi.
 - Đường dẫn theo dõi lượt nhấp, ghi lượt chia sẻ: ghi đúng, chuyển đúng trang sự kiện.
 - Tải tệp hồ sơ: ghi nhật ký sự kiện 6; tải tệp chat khi chưa đăng nhập: chuyển trang đăng nhập.
-- Các màn hình CMS chưa mở thử trên trình duyệt (chưa có tài khoản quản trị trên máy) – cần đăng nhập kiểm tra.
+- CMS (đăng nhập quản trị): Báo cáo giao dịch, xuất PDF/Excel (PDF dùng font Times New Roman tiếng Việt), Thu chi PDF, Phân hạng NCC, Lịch sử mua hàng, Nhật ký hồ sơ, Nhật ký sự kiện “Tải tệp”, Thống kê sự kiện, danh sách sản phẩm, Hướng dẫn 14 bước: mở được, không lỗi.
+- Chưa thử bằng tài khoản người bán (màn hình quản lý đơn, quản lý sản phẩm) và chưa gửi tệp chat thật.
 
 ## Khi triển khai lên máy chủ
 
