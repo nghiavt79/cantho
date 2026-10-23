@@ -1,7 +1,7 @@
 # Triển khai mekongx.vn – 24/10/2026
 
 Cập nhật máy chủ từ bản 22/10/2026 (commit `2391743`) lên bản 24/10/2026: kết nối SMS Brandname South Telecom (CSKH trả trước).
-Trạng thái: **đã đóng gói, chưa chạy trên máy chủ**. Code SMS **chưa commit** tại thời điểm đóng gói.
+Trạng thái: **đã đóng gói, chưa chạy trên máy chủ**. Code SMS: commit `ca732ec` (gói build từ đúng nội dung này).
 
 ## 1. Code đưa lên (nhánh `feature/bo-sung-chuc-nang-hsmt`)
 
