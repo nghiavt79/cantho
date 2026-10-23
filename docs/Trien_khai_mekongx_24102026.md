@@ -16,7 +16,7 @@ Trạng thái: **đã đóng gói, chưa chạy trên máy chủ**. Code SMS: co
 ## 2. Gói triển khai
 
 - `deploy-mekongx-2026-10-24.zip` (thư mục gốc repo, không đưa vào git):
-  - `app\` – publish Release ra thư mục sạch `D:\2026\CanThoPublish_20261024` (97 file, danh sách giống gói 22/10).
+  - `app\TechExchangeApp.dll` – chỉ 1 file. Publish Release ra `D:\2026\CanThoPublish_20261024` rồi so với bản 22/10: chỉ `TechExchangeApp.dll/.exe/.pdb/.xml` khác, IIS chỉ cần `.dll`.
   - `sql\deploy-server-2026-10-24.sql`
   - `HUONG_DAN.txt` – các bước cập nhật và cấu hình SMS.
 - Không gồm `appsettings*.json`, `wwwroot\`.
@@ -39,7 +39,7 @@ sqlcmd -S <server> -d <database> -U <user> -P <pwd> -f 65001 -b -I -i deploy-ser
 1. Sao lưu cơ sở dữ liệu.
 2. Chạy script SQL ở mục 3.
 3. Dừng app pool (hoặc đặt `app_offline.htm` vào `D:\www\sgdcn\`).
-4. Chép đè toàn bộ `app\` vào `D:\www\sgdcn\` (không xóa `App_Data`).
+4. Chép đè `app\TechExchangeApp.dll` vào `D:\www\sgdcn\`.
 5. Khởi động lại app pool; kiểm tra trang chủ, đăng nhập, CMS > Tham số hệ thống (nhóm SMS), `https://mekongx.vn/api/sms/dlr` trả 403.
 
 Sau bước này hệ thống vẫn chỉ ghi nhật ký, chưa gửi tin thật.
