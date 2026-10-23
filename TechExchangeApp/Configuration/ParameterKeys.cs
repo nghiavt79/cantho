@@ -24,6 +24,12 @@ namespace TechExchangeApp.Configuration
         public const string SmsFromNumber          = "SMS_FROM_NUMBER";
         public const string SmsMaxRetry            = "SMS_MAX_RETRY";
         public const string SmsRetryDelaySeconds   = "SMS_RETRY_DELAY_SECONDS";
+        // South Telecom (SMS Brandname trả trước) — SMS_PROVIDER = SOUTHTELECOM
+        public const string SmsApiUrl              = "SMS_API_URL";
+        public const string SmsApiKey              = "SMS_API_KEY";            // sensitive (CMS che giá trị; không qua giải mã XOR vì key đã là base64)
+        public const string SmsBrandname           = "SMS_BRANDNAME";
+        public const string SmsDlrEnabled          = "SMS_DLR_ENABLED";
+        public const string SmsDlrAllowedIps       = "SMS_DLR_ALLOWED_IPS";
 
         // ── OTP ──────────────────────────────────────────────────────────────
         public const string OtpLength                  = "OTP_LENGTH";

@@ -100,9 +100,11 @@ namespace TechExchangeApp.Services
                     case NotificationChannel.Sms:
                         if (string.IsNullOrEmpty(notification.Target))
                             throw new InvalidOperationException("SMS target (phone number) is empty.");
-                        await _smsSender.SendAsync(
+                        // smsid "N{Id}" để báo cáo gửi tin (DLR) cập nhật lại đúng thông báo
+                        notification.ProviderResponse = await _smsSender.SendAsync(
                             notification.Target,
-                            notification.Content ?? "");
+                            notification.Content ?? "",
+                            $"N{notification.Id}");
                         break;
 
                     default:
@@ -142,7 +144,7 @@ namespace TechExchangeApp.Services
                     ? ex.Message[..1000]
                     : ex.Message;
 
-                notification.Status = notification.RetryCount < maxRetry
+                notification.Status = notification.RetryCount < maxRetry && ex is not SmsPermanentException
                     ? (int)NotificationStatus.Pending   // will retry
                     : (int)NotificationStatus.Failed;   // exhausted retries
 

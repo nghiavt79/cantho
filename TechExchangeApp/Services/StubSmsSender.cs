@@ -15,10 +15,10 @@ namespace TechExchangeApp.Services
             _logger = logger;
         }
 
-        public Task SendAsync(string to, string message)
+        public Task<string?> SendAsync(string to, string message, string? smsId = null)
         {
             _logger.LogInformation("[SMS-STUB] Would send to {To}: {Message}", to, message);
-            return Task.CompletedTask;
+            return Task.FromResult<string?>(null);
         }
     }
 }

@@ -611,7 +611,10 @@
                             <p>Kênh SMS dùng gửi mã xác thực, nhắc lịch, thông báo giao dịch.</p>
                             <ul>
                                 <li>NOTIFICATION_ENABLE_SMS: 1 = bật, 0 = tắt kênh SMS. SMS_MAX_RETRY, SMS_RETRY_DELAY_SECONDS: số lần và thời gian gửi lại khi lỗi.</li>
-                                <li>Hiện hệ thống chưa nối nhà cung cấp SMS Brandname: tin nhắn chỉ ghi vào nhật ký máy chủ, chưa gửi tới điện thoại. Chỉ bật kênh sau khi đơn vị vận hành đã nối tài khoản thương hiệu (tham số SMS_PROVIDER).</li>
+                                <li>Nhà cung cấp SMS Brandname là South Telecom. Nhập SMS_API_KEY (khoá kết nối South Telecom cấp, nhập nguyên chuỗi, không kèm chữ Basic) và SMS_BRANDNAME (tên thương hiệu đã đăng ký, đúng chữ hoa/thường). SMS_API_URL giữ mặc định trừ khi South Telecom đổi địa chỉ.</li>
+                                <li>SMS_PROVIDER: SOUTHTELECOM = gửi thật tới điện thoại; STUB = chỉ ghi nhật ký máy chủ, không gửi (dùng khi chạy thử hoặc chưa có tài khoản).</li>
+                                <li>SMS_DLR_ENABLED: 1 = nhận báo cáo giao tin từ nhà mạng tại địa chỉ /api/sms/dlr (phải gửi địa chỉ này cho South Telecom khai báo). SMS_DLR_ALLOWED_IPS: danh sách IP của South Telecom được gửi báo cáo, cách nhau dấu phẩy. Tin bị nhà mạng từ chối sẽ hiện trạng thái lỗi kèm lý do trong danh sách thông báo.</li>
+                                <li>Kiểm tra sau khi nhập: đăng nhập rồi mở /Secure/TestSms?to=09xxxxxxxx. Nội dung tin nên viết không dấu (1 tin tối đa 160 ký tự; có dấu chỉ 70 ký tự) và phải khớp mẫu đã đăng ký với nhà mạng.</li>
                             </ul>
                         </article>
                         <article>

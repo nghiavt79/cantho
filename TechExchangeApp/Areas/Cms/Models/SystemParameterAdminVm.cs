@@ -26,7 +26,7 @@ namespace TechExchangeApp.Areas.Cms.Models
         public int ID { get; set; }
         public string Name { get; set; } = "";
 
-        [StringLength(50, ErrorMessage = "Val tối đa 50 ký tự.")]
+        [StringLength(1000, ErrorMessage = "Val tối đa 1000 ký tự.")]
         public string? Val { get; set; }
 
         [StringLength(50, ErrorMessage = "Val2 tối đa 50 ký tự.")]

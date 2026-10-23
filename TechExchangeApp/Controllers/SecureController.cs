@@ -125,22 +125,22 @@ namespace TechExchangeApp.Controllers
 
         /// <summary>
         /// Admin tool: send a test SMS to verify SMS config in SYS_PARAMETERS.
-        /// Usage: GET /Secure/TestSms?to=+84xxxxxxxxx
+        /// Usage: GET /Secure/TestSms?to=0912345678 (hoặc 84912345678)
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> TestSms(string to = "")
         {
             if (string.IsNullOrEmpty(to))
-                return Content("Usage: /Secure/TestSms?to=+84xxxxxxxxx\n\nPhone number must include country code (e.g. +84912345678)");
+                return Content("Usage: /Secure/TestSms?to=0912345678\n\nChấp nhận 0912345678, 84912345678 hoặc +84912345678");
 
             try
             {
-                await _smsSender.SendAsync(to, $"[TechPort] Test SMS - Config OK. Sent at {DateTime.Now:HH:mm:ss}");
-                return Content($"✅ Test SMS sent successfully to: {to}\nTime: {DateTime.Now:HH:mm:ss}", "text/plain");
+                var response = await _smsSender.SendAsync(to, $"Kiem tra ket noi SMS san giao dich cong nghe Can Tho luc {DateTime.Now:HH:mm:ss}");
+                return Content($"✅ Test SMS sent successfully to: {to}\nTime: {DateTime.Now:HH:mm:ss}\nProvider response: {response ?? "(STUB - chỉ ghi log, chưa gửi thật)"}", "text/plain");
             }
             catch (Exception ex)
             {
-                return Content($"❌ Failed to send SMS to: {to}\n\nError: {ex.Message}\n\nCheck SYS_PARAMETERS: SMS_ACCOUNT_ID, SMS_AUTH_TOKEN, SMS_FROM_NUMBER", "text/plain");
+                return Content($"❌ Failed to send SMS to: {to}\n\nError: {ex.Message}\n\nCheck SYS_PARAMETERS: SMS_PROVIDER, SMS_API_URL, SMS_API_KEY, SMS_BRANDNAME", "text/plain");
             }
         }
     }

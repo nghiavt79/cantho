@@ -218,7 +218,6 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.ISelectionService, TechExc
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IScoringService, TechExchangeApp.Services.ScoringService>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IProjectMemberService, TechExchangeApp.Services.ProjectMemberService>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IOtpEmailService, TechExchangeApp.Services.OtpEmailService>();
-builder.Services.AddScoped<TechExchangeApp.Interfaces.ISmsSender, TechExchangeApp.Services.StubSmsSender>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.ILegalReviewService, TechExchangeApp.Services.LegalReviewService>();
 
 // Step 6+7: Contract & Digital Signing Services
@@ -260,7 +259,10 @@ builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.ProductEmbe
 builder.Services.AddScoped<TechExchangeApp.Interfaces.ISystemParameterService, TechExchangeApp.Services.SystemParameterService>();
 builder.Services.AddScoped<TechExchangeApp.Services.Translation.ITranslationServiceFactory, TechExchangeApp.Services.Translation.TranslationServiceFactory>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.IEmailSender, TechExchangeApp.Services.GmailEmailSender>();
-builder.Services.AddScoped<TechExchangeApp.Interfaces.ISmsSender, TechExchangeApp.Services.StubSmsSender>(); // Twilio replaced with stub â€” add Twilio back when SMS is needed
+// SMS: SMS_PROVIDER = SOUTHTELECOM gửi thật, giá trị khác chỉ ghi log
+builder.Services.AddScoped<TechExchangeApp.Services.StubSmsSender>();
+builder.Services.AddScoped<TechExchangeApp.Services.SouthTelecomSmsSender>();
+builder.Services.AddScoped<TechExchangeApp.Interfaces.ISmsSender, TechExchangeApp.Services.SmsSenderRouter>();
 builder.Services.AddScoped<TechExchangeApp.Interfaces.INotificationProcessor, TechExchangeApp.Services.NotificationProcessor>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.NotificationWorker>();
 builder.Services.AddHostedService<TechExchangeApp.BackgroundServices.DashboardBackgroundService>();
