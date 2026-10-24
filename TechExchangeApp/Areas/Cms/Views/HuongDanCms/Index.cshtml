@@ -166,7 +166,8 @@
                             <ul>
                                 <li>Lọc yêu cầu mới, chưa phân công, đang xử lý hoặc của riêng mình.</li>
                                 <li>Phân công cán bộ phụ trách, phản hồi và cập nhật trạng thái xử lý.</li>
-                                <li>Xuất Excel khi cần tổng hợp báo cáo.</li>
+                                <li>Hàng ô thứ hai cho biết thời gian phản hồi: số yêu cầu đã phản hồi, thời gian phản hồi trung bình, tỷ lệ phản hồi trong 02 giờ, số yêu cầu quá 02 giờ chưa phản hồi. Thời gian tính từ lúc người dùng gửi yêu cầu đến tin nhắn đầu tiên của cán bộ, theo giờ đồng hồ. Số liệu theo bộ lọc đang chọn (lọc theo ngày để lấy số liệu từng tháng).</li>
+                                <li>Xuất Excel khi cần tổng hợp báo cáo; tệp có thêm cột "Phản hồi lần đầu" và "Thời gian phản hồi (phút)".</li>
                             </ul>
                         </article>
                         <article>
@@ -632,6 +633,7 @@
                             <ul>
                                 <li>Lọc theo thời gian, tài khoản hoặc chức năng để khoanh vùng vấn đề.</li>
                                 <li>Sự kiện "Tải tệp": ai tải tệp hồ sơ giao dịch, hợp đồng, giấy tờ xác minh, tệp chat, lúc nào, từ địa chỉ IP nào. Người chưa đăng nhập ghi là "(khách)".</li>
+                                <li>Sự kiện "Đăng nhập", "Đăng xuất", "Đăng nhập không thành công": mỗi lần đăng nhập, đăng xuất, nhập sai mật khẩu, đăng nhập khi tài khoản bị khóa hoặc đang tạm khóa do nhập sai nhiều lần, xác thực lớp 2 vào CMS; kèm tên đăng nhập, thời gian, địa chỉ IP. Lọc "Đăng nhập không thành công" theo IP để phát hiện dò mật khẩu.</li>
                                 <li>Không dùng nhật ký thay cho báo cáo nghiệp vụ chính thức nếu dữ liệu chưa đối chiếu.</li>
                             </ul>
                         </article>
@@ -641,6 +643,7 @@
                             <ul>
                                 <li>Chọn năm/tháng để xem đúng kỳ cần báo cáo.</li>
                                 <li>Số liệu lấy từ bản tổng hợp sẵn nên có độ trễ; bấm làm mới nếu cần con số mới nhất.</li>
+                                <li>Khối "Lượt truy cập toàn Sàn": lượt xem trang và số người truy cập hôm nay, theo tháng/năm đang chọn, tổng cộng, kèm bảng từng ngày — dùng cho báo cáo kết quả cung cấp dịch vụ hằng tháng. Chỉ đếm trang của Sàn mở thành công; không đếm CMS, API, bot. Người truy cập phân biệt theo địa chỉ IP và trình duyệt trong ngày. Số liệu cập nhật mỗi phút.</li>
                                 <li>Đối chiếu lại với danh sách gốc trước khi đưa số vào báo cáo chính thức.</li>
                             </ul>
                         </article>
@@ -682,6 +685,7 @@
                             <ul>
                                 <li>Tài liệu API: /swagger (cần đăng nhập quản trị).</li>
                                 <li>Tình trạng hệ thống: /health — dùng cho công cụ giám sát thời gian hoạt động.</li>
+                                <li>Log hệ thống: thư mục logs trong thư mục ứng dụng trên máy chủ, mỗi ngày một tệp app-nămthángngày.log, tự xóa tệp cũ hơn 180 ngày (đổi tại mục FileLogging trong appsettings.json). Tài khoản chạy ứng dụng (App Pool IIS) phải có quyền ghi thư mục này.</li>
                                 <li>Sao lưu tự động và chạy thử phục hồi: thư mục Scripts/sao-luu trên máy chủ (sao lưu đầy đủ hằng ngày, vi sai mỗi 6 giờ, giữ 30 ngày).</li>
                             </ul>
                         </article>

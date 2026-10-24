@@ -47,6 +47,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         private int GetSiteId() =>
             int.TryParse(_configuration["AppSettings:SiteId"], out var id) ? id : 1;
 
+        private const int SupportResponseLimitHours = 2;
+
         public async Task<IActionResult> Index(int? status, int? requestType, int? serviceType, int? staffUserId, int? projectId, DateTime? dateFrom, DateTime? dateTo, string? search)
         {
             var currentUserId = await GetCurrentUserIdAsync();
@@ -67,6 +69,22 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             ViewBag.NewCount = await q.CountAsync(r => r.Status == (int)SupportRequestStatus.New);
             ViewBag.UnassignedCount = await q.CountAsync(r => !r.AssignedStaffUserId.HasValue || r.AssignedStaffUserId <= 0);
             ViewBag.CompletedCount = await q.CountAsync(r => r.Status == (int)SupportRequestStatus.Completed);
+
+            // Thời gian phản hồi lần đầu (HSMT 2.2: phản hồi hỗ trợ ≤ 02 giờ) — CreatedAt, FirstRespondedAt cùng lưu UTC.
+            var responded = await q.Where(r => r.FirstRespondedAt.HasValue)
+                .Select(r => new { r.CreatedAt, r.FirstRespondedAt })
+                .ToListAsync();
+            var responseMinutes = responded.Select(r => Math.Max(0, (r.FirstRespondedAt!.Value - r.CreatedAt).TotalMinutes)).ToList();
+            var overdueBefore = DateTime.UtcNow.AddHours(-SupportResponseLimitHours);
+            ViewBag.RespondedCount = responseMinutes.Count;
+            ViewBag.AvgResponseMinutes = responseMinutes.Count > 0 ? responseMinutes.Average() : (double?)null;
+            ViewBag.WithinLimitPercent = responseMinutes.Count > 0
+                ? responseMinutes.Count(m => m <= SupportResponseLimitHours * 60) * 100.0 / responseMinutes.Count
+                : (double?)null;
+            ViewBag.OverdueUnrespondedCount = await q.CountAsync(r => !r.FirstRespondedAt.HasValue
+                && r.Status != (int)SupportRequestStatus.Completed
+                && r.Status != (int)SupportRequestStatus.Cancelled
+                && r.CreatedAt < overdueBefore);
 
             var tickets = await q
                 .OrderByDescending(r => r.UpdatedAt ?? r.CreatedAt)
@@ -186,6 +204,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 SupportContextCode = t.SupportContextCode,
                 Subject = t.Subject,
                 CreatedAt = t.CreatedAt,
+                FirstRespondedAt = t.FirstRespondedAt,
+                ResponseMinutes = t.FirstRespondedAt.HasValue
+                    ? (int)Math.Round(Math.Max(0, (t.FirstRespondedAt.Value - t.CreatedAt).TotalMinutes))
+                    : null,
                 UpdatedAt = t.UpdatedAt,
                 ClosedAt = t.ClosedAt
             }).ToList();
@@ -633,6 +655,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public string? Subject { get; set; }
         [Display(Name = "Ngày tạo")]
         public DateTime CreatedAt { get; set; }
+        [Display(Name = "Phản hồi lần đầu")]
+        public DateTime? FirstRespondedAt { get; set; }
+        [Display(Name = "Thời gian phản hồi (phút)")]
+        public int? ResponseMinutes { get; set; }
         [Display(Name = "Ngày cập nhật")]
         public DateTime? UpdatedAt { get; set; }
         [Display(Name = "Ngày đóng")]

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TechExchangeApp.Interfaces;
 
 namespace TechExchangeApp.Areas.Cms.Controllers
@@ -27,8 +28,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // GET: /cms/AdminAnalytics
         // GET: /cms/AdminAnalytics?year=2025&month=6
         [HttpGet]
-        public async Task<IActionResult> Index(int? year, int? month)
+        public async Task<IActionResult> Index(int? year, int? month,
+            [FromServices] TechExchangeApp.Data.AppDbContext db)
         {
+            await LoadSiteVisitStatsAsync(db, year, month);
             try
             {
                 var vm = await _dashSvc.GetAdminDashboardAsync(year, month);
@@ -54,6 +57,45 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
                 ViewData["Title"] = "Analytics Dashboard";
                 return View(new TechExchangeApp.ViewModel.AdminDashboardVm());
+            }
+        }
+
+        /// <summary>
+        /// Lượt truy cập toàn Sàn (bảng SiteVisitDaily): hôm nay, tháng đang lọc (mặc định tháng hiện tại), năm, tổng cộng
+        /// và số liệu từng ngày của tháng — dùng cho Báo cáo kết quả cung cấp dịch vụ (Mẫu số 2).
+        /// </summary>
+        private async Task LoadSiteVisitStatsAsync(TechExchangeApp.Data.AppDbContext db, int? year, int? month)
+        {
+            try
+            {
+                var today = DateTime.Now.Date;
+                var y = year ?? today.Year;
+                var m = month is >= 1 and <= 12 ? month.Value : (year.HasValue ? 0 : today.Month);
+                var from = m > 0 ? new DateTime(y, m, 1) : new DateTime(y, 1, 1);
+                var to = m > 0 ? from.AddMonths(1) : from.AddYears(1);
+
+                var visits = db.SiteVisitDaily.AsNoTracking();
+                var todayRow = await visits.FirstOrDefaultAsync(v => v.VisitDate == today);
+                var periodRows = await visits.Where(v => v.VisitDate >= from && v.VisitDate < to)
+                    .OrderBy(v => v.VisitDate).ToListAsync();
+                var yearFrom = new DateTime(y, 1, 1);
+                var yearTo = yearFrom.AddYears(1);
+
+                ViewBag.VisitToday = todayRow;
+                ViewBag.VisitPeriodLabel = m > 0 ? $"Tháng {m}/{y}" : $"Năm {y}";
+                ViewBag.VisitPeriodPageViews = periodRows.Sum(v => (long)v.PageViews);
+                ViewBag.VisitPeriodVisitors = periodRows.Sum(v => (long)v.Visitors);
+                ViewBag.VisitYear = y;
+                ViewBag.VisitYearPageViews = await visits.Where(v => v.VisitDate >= yearFrom && v.VisitDate < yearTo).SumAsync(v => (long)v.PageViews);
+                ViewBag.VisitTotalPageViews = await visits.SumAsync(v => (long)v.PageViews);
+                ViewBag.VisitTotalVisitors = await visits.SumAsync(v => (long)v.Visitors);
+                ViewBag.VisitDays = periodRows;
+            }
+            catch (Exception ex)
+            {
+                // Chưa chạy Scripts/add-site-visit-daily.sql → ẩn khối lượt truy cập, không làm hỏng trang
+                _logger.LogWarning(ex, "[AdminAnalytics] Không đọc được bảng SiteVisitDaily");
+                ViewBag.VisitDays = null;
             }
         }
 

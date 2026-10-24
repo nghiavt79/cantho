@@ -127,6 +127,7 @@ namespace TechExchangeApp.Controllers
                 var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
                 if (throttle.GetLockRemaining(model.UserName, ip) is TimeSpan wait)
                 {
+                    await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, model.UserName, TechExchangeApp.Services.LoginAuditLog.EventLoginFailed, "Đăng nhập không thành công: đang tạm khóa do nhập sai nhiều lần");
                     ModelState.AddModelError(string.Empty, TooManyAttemptsMessage(wait));
                     return View(model);
                 }
@@ -142,6 +143,7 @@ namespace TechExchangeApp.Controllers
                     {
                         if (user.IsLocked)
                         {
+                            await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, model.UserName, TechExchangeApp.Services.LoginAuditLog.EventLoginFailed, "Đăng nhập không thành công: tài khoản đang bị khóa");
                             ModelState.AddModelError(string.Empty, I18n.T(HttpContext, "auth.err.locked"));
                             return View(model);
                         }
@@ -151,6 +153,7 @@ namespace TechExchangeApp.Controllers
 
                         user.LastLogin = DateTime.Now;
                         await _userManager.UpdateAsync(user);
+                        await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, user.UserName, TechExchangeApp.Services.LoginAuditLog.EventLogin, "Đăng nhập thành công");
 
                         // Set Session for legacy support
                         HttpContext.Session.SetInt32("UserId", user.Id);
@@ -165,6 +168,7 @@ namespace TechExchangeApp.Controllers
                 }
                 
                 throttle.RegisterFailure(model.UserName, ip);
+                await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, model.UserName, TechExchangeApp.Services.LoginAuditLog.EventLoginFailed, "Đăng nhập không thành công: sai tên đăng nhập hoặc mật khẩu");
                 ModelState.AddModelError(string.Empty, I18n.T(HttpContext, "auth.err.loginFailed"));
             }
             return View(model);
@@ -189,7 +193,10 @@ namespace TechExchangeApp.Controllers
             // Tạm khóa sau nhiều lần nhập sai (pentest 10/2026)
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
             if (throttle.GetLockRemaining(model.UserName, ip) is TimeSpan wait)
+            {
+                await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, model.UserName, TechExchangeApp.Services.LoginAuditLog.EventLoginFailed, "Đăng nhập không thành công: đang tạm khóa do nhập sai nhiều lần");
                 return Json(new { success = false, errors = new[] { TooManyAttemptsMessage(wait) } });
+            }
 
             // Manual lookup because Normalized columns are ignored
             var user = context.Users.FirstOrDefault(u => u.UserName == model.UserName);
@@ -201,13 +208,17 @@ namespace TechExchangeApp.Controllers
                 if (passwordVerification == PasswordVerificationResult.Success)
                 {
                     if (user.IsLocked)
+                    {
+                        await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, model.UserName, TechExchangeApp.Services.LoginAuditLog.EventLoginFailed, "Đăng nhập không thành công: tài khoản đang bị khóa");
                         return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.locked") } });
+                    }
 
                     await _signInManager.SignInAsync(user, isPersistent: model.RememberMe);
                     throttle.RegisterSuccess(model.UserName);
 
                     user.LastLogin = DateTime.Now;
                     await _userManager.UpdateAsync(user);
+                    await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, user.UserName, TechExchangeApp.Services.LoginAuditLog.EventLogin, "Đăng nhập thành công");
 
                     // Set Session for legacy support
                     HttpContext.Session.SetInt32("UserId", user.Id);
@@ -222,6 +233,7 @@ namespace TechExchangeApp.Controllers
             }
             
             throttle.RegisterFailure(model.UserName, ip);
+            await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, model.UserName, TechExchangeApp.Services.LoginAuditLog.EventLoginFailed, "Đăng nhập không thành công: sai tên đăng nhập hoặc mật khẩu");
             return Json(new { success = false, errors = new[] { I18n.T(HttpContext, "auth.err.loginFailed") } });
         }
 
@@ -400,7 +412,10 @@ namespace TechExchangeApp.Controllers
         {
             // Tăng số phiên để cookie cũ không dùng lại được sau khi đăng xuất (pentest 10/2026)
             if (int.TryParse(_userManager.GetUserId(User), out var userId))
+            {
                 await TechExchangeApp.Services.AccountLockGuard.RevokeSessionsAsync(context, cache, userId);
+                await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, User.Identity?.Name, TechExchangeApp.Services.LoginAuditLog.EventLogout, "Đăng xuất");
+            }
 
             await _signInManager.SignOutAsync();
             HttpContext.Session.Clear(); // Clear legacy session

@@ -470,6 +470,66 @@
 
     </div>
 
+    <!-- ═══ LƯỢT TRUY CẬP TOÀN SÀN (Báo cáo Mẫu số 2) ═══════════ -->
+    @if (ViewBag.VisitDays is List<TechExchangeApp.Entities.SiteVisitDaily> visitDays)
+    {
+        var visitToday = ViewBag.VisitToday as TechExchangeApp.Entities.SiteVisitDaily;
+        long periodViews = ViewBag.VisitPeriodPageViews is long pv ? pv : 0;
+        long periodVisitors = ViewBag.VisitPeriodVisitors is long pvs ? pvs : 0;
+        long yearViews = ViewBag.VisitYearPageViews is long yv ? yv : 0;
+        long totalViews = ViewBag.VisitTotalPageViews is long tv ? tv : 0;
+        long totalVisitors = ViewBag.VisitTotalVisitors is long tvs ? tvs : 0;
+
+        <div class="section-label"><i class="fas fa-eye"></i> Lượt truy cập toàn Sàn</div>
+        <div class="kpi-grid">
+            <div class="kpi-card indigo">
+                <div class="kpi-icon indigo"><i class="fas fa-calendar-day"></i></div>
+                <div class="kpi-number">@((visitToday?.PageViews ?? 0).ToString("N0"))</div>
+                <div class="kpi-label">Lượt xem hôm nay</div>
+                <div class="kpi-sub text-muted" style="font-size:.72rem">Người truy cập: @((visitToday?.Visitors ?? 0).ToString("N0"))</div>
+            </div>
+            <div class="kpi-card cyan">
+                <div class="kpi-icon cyan"><i class="fas fa-calendar-alt"></i></div>
+                <div class="kpi-number">@periodViews.ToString("N0")</div>
+                <div class="kpi-label">Lượt xem @ViewBag.VisitPeriodLabel</div>
+                <div class="kpi-sub text-muted" style="font-size:.72rem">Người truy cập: @periodVisitors.ToString("N0")</div>
+            </div>
+            <div class="kpi-card emerald">
+                <div class="kpi-icon emerald"><i class="fas fa-chart-line"></i></div>
+                <div class="kpi-number">@yearViews.ToString("N0")</div>
+                <div class="kpi-label">Lượt xem năm @ViewBag.VisitYear</div>
+            </div>
+            <div class="kpi-card amber">
+                <div class="kpi-icon amber"><i class="fas fa-globe"></i></div>
+                <div class="kpi-number">@totalViews.ToString("N0")</div>
+                <div class="kpi-label">Tổng lượt xem</div>
+                <div class="kpi-sub text-muted" style="font-size:.72rem">Người truy cập: @totalVisitors.ToString("N0")</div>
+            </div>
+        </div>
+        @if (visitDays.Any())
+        {
+            <div class="row g-4 mb-4">
+                <div class="col-12">
+                    <div class="chart-card">
+                        <div class="chart-card-title">Lượt truy cập theo ngày – @ViewBag.VisitPeriodLabel</div>
+                        <div class="chart-card-sub">Chỉ tính trang của Sàn trả về thành công; không tính CMS, API, bot. Người truy cập phân biệt theo IP và trình duyệt trong ngày.</div>
+                        <div class="table-responsive" style="max-height:320px">
+                            <table class="table table-sm table-hover mb-0">
+                                <thead><tr><th>Ngày</th><th class="text-end">Lượt xem</th><th class="text-end">Người truy cập</th></tr></thead>
+                                <tbody>
+                                    @foreach (var d in visitDays)
+                                    {
+                                        <tr><td>@d.VisitDate.ToString("dd/MM/yyyy")</td><td class="text-end">@d.PageViews.ToString("N0")</td><td class="text-end">@d.Visitors.ToString("N0")</td></tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
     <!-- ═══ ROW 2 — GROWTH TREND LINE CHART ══════════════════ -->
     <div class="section-label"><i class="fas fa-chart-area"></i> Tăng trưởng 12 Tháng</div>
     <div class="row g-4 mb-4">

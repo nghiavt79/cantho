@@ -14,6 +14,11 @@
     int newCount = ViewBag.NewCount is int nc ? nc : Model.Count(x => x.TicketStatus == 1);
     int unassignedCount = ViewBag.UnassignedCount is int uc ? uc : Model.Count(x => string.IsNullOrEmpty(x.AssignedStaffName));
     int completedCount = ViewBag.CompletedCount is int cc ? cc : Model.Count(x => x.TicketStatus == 6);
+    int respondedCount = ViewBag.RespondedCount is int rc ? rc : 0;
+    double? avgResponseMinutes = ViewBag.AvgResponseMinutes as double?;
+    double? withinLimitPercent = ViewBag.WithinLimitPercent as double?;
+    int overdueUnrespondedCount = ViewBag.OverdueUnrespondedCount is int oc ? oc : 0;
+    string FormatMinutes(double m) => m < 60 ? $"{m:0} phút" : $"{Math.Floor(m / 60):0} giờ {m % 60:0} phút";
 
     string StatusBadge(int s) => s switch
     {
@@ -71,6 +76,21 @@
             </div>
             <div class="col-md-3">
                 <div class="card h-100"><div class="card-body"><div class="text-muted small">Đã hoàn thành</div><div class="h4 mb-0 text-success">@completedCount</div></div></div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Đã phản hồi</div><div class="h4 mb-0">@respondedCount</div></div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Thời gian phản hồi trung bình</div><div class="h4 mb-0">@(avgResponseMinutes.HasValue ? FormatMinutes(avgResponseMinutes.Value) : "-")</div></div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Phản hồi trong 02 giờ</div><div class="h4 mb-0 text-success">@(withinLimitPercent.HasValue ? $"{withinLimitPercent.Value:0.#}%" : "-")</div></div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100"><div class="card-body"><div class="text-muted small">Quá 02 giờ chưa phản hồi</div><div class="h4 mb-0 text-danger">@overdueUnrespondedCount</div></div></div>
             </div>
         </div>
 

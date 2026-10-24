@@ -17,9 +17,21 @@ if (builder.Environment.IsDevelopment())
             Path.Combine(builder.Environment.ContentRootPath, ".dev-data-protection-keys")));
 }
 
+// Ghi log hệ thống ra file theo ngày (logs/app-yyyyMMdd.log) – cung cấp cho đơn vị giám sát chất lượng dịch vụ
+var fileLogOptions = builder.Configuration.GetSection("FileLogging").Get<TechExchangeApp.Infrastructure.Logging.FileLoggerOptions>()
+    ?? new TechExchangeApp.Infrastructure.Logging.FileLoggerOptions();
+if (fileLogOptions.Enabled)
+{
+    builder.Logging.AddProvider(new TechExchangeApp.Infrastructure.Logging.FileLoggerProvider(builder.Environment.ContentRootPath, fileLogOptions));
+    // Không ghi từng câu lệnh SQL vào file (quá nhiều, có thể chứa dữ liệu) — chỉ ghi cảnh báo, lỗi của EF
+    builder.Logging.AddFilter<TechExchangeApp.Infrastructure.Logging.FileLoggerProvider>("Microsoft.EntityFrameworkCore", LogLevel.Warning);
+}
+
 // Add services to the container.
 // Pentest 10/2026: tạm khóa đăng nhập sai nhiều lần + giới hạn tần suất các thao tác xác thực
 builder.Services.AddSingleton<TechExchangeApp.Services.LoginThrottle>();
+builder.Services.AddSingleton<TechExchangeApp.Services.SiteVisitCounter>();
+builder.Services.AddHostedService<TechExchangeApp.Services.SiteVisitFlushService>();
 builder.Services.AddRateLimiter(options =>
 {
     // Mỗi IP tối đa N lần/phút (mặc định 30, chỉnh bằng Security:AuthRateLimitPerMinute) cho đăng nhập,
@@ -356,6 +368,14 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+
+// Đếm lượt truy cập toàn Sàn (số liệu Báo cáo Mẫu số 2) — chỉ trang HTML trả về thành công
+app.Use(async (ctx, next) =>
+{
+    await next();
+    if (TechExchangeApp.Services.SiteVisitCounter.ShouldCount(ctx))
+        ctx.RequestServices.GetRequiredService<TechExchangeApp.Services.SiteVisitCounter>().Record(ctx);
+});
 
 // --- Äa ngÃ´n ngá»¯: gáº¯n cá» ngÃ´n ngá»¯ theo tiá»n tá»‘ "/en" (pháº£i náº±m TRÆ¯á»šC UseRouting) ---
 // KHÃ”NG cáº¯t path â€” URL tiáº¿ng Anh lÃ  route riÃªng vá»›i segment tiáº¿ng Anh (vd /en/news-event).

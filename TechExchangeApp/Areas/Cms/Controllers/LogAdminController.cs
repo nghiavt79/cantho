@@ -122,6 +122,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 4 => "Đăng nhập",
                 5 => "Đăng xuất",
                 6 => "Tải tệp",
+                7 => "Đăng nhập không thành công",
                 _ => eventId?.ToString() ?? ""
             };
         }

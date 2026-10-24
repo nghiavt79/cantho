@@ -72,13 +72,15 @@ namespace TechExchangeApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("auth")] // pentest 10/2026
-        public IActionResult Verify(string? code, string? returnUrl)
+        public async Task<IActionResult> Verify(string? code, string? returnUrl)
         {
             if (!_mfa.Verify(UserId, code))
             {
+                await LoginAuditLog.WriteAsync(_db, HttpContext, User.Identity?.Name, LoginAuditLog.EventLoginFailed, "Xác thực lớp 2 vào CMS không thành công");
                 TempData["MfaError"] = "Mã không đúng hoặc đã hết hạn.";
                 return RedirectToAction(nameof(Index), new { returnUrl });
             }
+            await LoginAuditLog.WriteAsync(_db, HttpContext, User.Identity?.Name, LoginAuditLog.EventLogin, "Xác thực lớp 2, vào CMS");
             HttpContext.Session.SetString(CmsMfaService.SessionKey, UserId.ToString());
             return LocalRedirect(SafeReturn(returnUrl));
         }
