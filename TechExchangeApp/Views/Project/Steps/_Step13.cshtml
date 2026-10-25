@@ -26,8 +26,8 @@
         ? (await DbCtx.Users.AsNoTracking().Where(u => u.Id == proj13.SelectedSellerId.Value).Select(u => u.FullName ?? u.UserName).FirstOrDefaultAsync()) ?? "Bên B"
         : "Bên B";
 
-    bool benASigned = hasData && !string.IsNullOrEmpty(acceptance!.ChuKyBenA);
-    bool benBSigned = hasData && !string.IsNullOrEmpty(acceptance!.ChuKyBenB);
+    bool benASigned = hasData && !string.IsNullOrEmpty(acceptance!.ChuKyBenA) && !acceptance!.ChuKyBenA.StartsWith("OTP-");
+    bool benBSigned = hasData && !string.IsNullOrEmpty(acceptance!.ChuKyBenB) && !acceptance!.ChuKyBenB.StartsWith("OTP-");
     bool fullySigned = benASigned && benBSigned;
 }
 

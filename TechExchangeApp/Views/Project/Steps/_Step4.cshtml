@@ -406,8 +406,8 @@
 </div>
 
 <script>
-    // Handle star rating clicks
-    $(document).ready(function() {
+    // Handle star rating clicks (jQuery có thể chưa nạp khi partial render cùng trang)
+    (window.jQuery ? function (f) { jQuery(f); } : function (f) { document.addEventListener('DOMContentLoaded', f); })(function() {
         // Star rating click handler
         $(document).on('click', '.star-rating i', function() {
             var star = $(this);
