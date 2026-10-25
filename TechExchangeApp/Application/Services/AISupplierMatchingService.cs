@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -66,7 +66,16 @@ namespace TechExchangeApp.Application.Services
             _logger.LogInformation("Finding matching suppliers for query: {Query}", queryText);
 
             // Step 1: Generate embedding for buyer input
-            var queryEmbedding = await _embeddingService.GenerateEmbeddingAsync(queryText, cancellationToken);
+            float[] queryEmbedding;
+            try
+            {
+                queryEmbedding = await _embeddingService.GenerateEmbeddingAsync(queryText, cancellationToken);
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            {
+                _logger.LogWarning(ex, "Embedding unavailable, falling back to keyword search");
+                return await FindByKeywordAsync(queryText, cancellationToken);
+            }
 
             // Step 2: Load all embeddings from cache
             var allEmbeddings = await GetAllEmbeddingsFromCacheAsync(cancellationToken);
@@ -248,6 +257,68 @@ namespace TechExchangeApp.Application.Services
                    (0.2 * averageTop3Score) +
                    (0.1 * normalizedRating) +
                    (0.1 * normalizedViewed);
+        }
+
+        /// <summary>
+        /// Fallback when the embedding provider is unavailable: match published product names
+        /// (accent-insensitive) and rank suppliers by number of matches, rating and views.
+        /// </summary>
+        private async Task<List<SupplierMatchResult>> FindByKeywordAsync(
+            string queryText,
+            CancellationToken cancellationToken)
+        {
+            var keyword = queryText.Trim();
+            var products = await _context.SanPhamCNTBs
+                .Where(p => p.StatusId == 3 && p.NCUId != null && p.Name != null
+                    && EF.Functions.Collate(p.Name, "Latin1_General_CI_AI").Contains(keyword))
+                .OrderByDescending(p => p.PublishedDate)
+                .Take(TOP_PRODUCTS_COUNT)
+                .Select(p => new { p.ID, p.Name, NCUId = p.NCUId!.Value })
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+
+            var supplierIds = products.Select(p => p.NCUId).Distinct().ToList();
+            var suppliers = await _context.NhaCungUngs
+                .Where(s => supplierIds.Contains(s.CungUngId))
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+
+            var maxViewed = suppliers.Count > 0 ? suppliers.Max(s => s.Viewed ?? 0) : 0;
+            var maxCount = products.Count > 0 ? products.GroupBy(p => p.NCUId).Max(g => g.Count()) : 1;
+
+            var results = suppliers
+                .Select(supplier =>
+                {
+                    var own = products.Where(p => p.NCUId == supplier.CungUngId).ToList();
+                    var textScore = (double)own.Count / maxCount;
+                    var rating = supplier.Rating ?? 0;
+                    var viewed = supplier.Viewed ?? 0;
+                    return new SupplierMatchResult
+                    {
+                        CungUngId = supplier.CungUngId,
+                        SupplierName = supplier.FullName ?? "Unknown",
+                        FinalScore = CalculateHybridScore(textScore, textScore, rating, viewed, maxViewed),
+                        SemanticScore = textScore,
+                        Rating = rating,
+                        Viewed = viewed,
+                        TopProducts = own.Take(TOP_PRODUCTS_PER_SUPPLIER)
+                            .Select(p => new ProductMatchResult
+                            {
+                                ProductId = p.ID,
+                                Name = p.Name ?? "Unknown",
+                                SimilarityScore = textScore
+                            })
+                            .ToList()
+                    };
+                })
+                .OrderByDescending(r => r.FinalScore)
+                .Take(TOP_SUPPLIERS_COUNT)
+                .ToList();
+
+            await _searchLogRepository.LogSearchAsync(queryText, results.Count, cancellationToken);
+            _logger.LogInformation("Keyword fallback found {Count} matching suppliers", results.Count);
+
+            return results;
         }
 
         private async Task<List<SanPhamEmbedding>> GetAllEmbeddingsFromCacheAsync(

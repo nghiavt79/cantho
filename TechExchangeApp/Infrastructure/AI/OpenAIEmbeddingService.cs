@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -35,7 +35,7 @@ namespace TechExchangeApp.Infrastructure.AI
                 ?? throw new InvalidOperationException("OpenAI:ApiKey is not configured in appsettings.json");
             
             _model = configuration["OpenAI:EmbeddingModel"] ?? "text-embedding-3-small";
-            _maxRetries = int.TryParse(configuration["OpenAI:MaxRetries"], out var retries) ? retries : 3;
+            _maxRetries = Math.Max(1, int.TryParse(configuration["OpenAI:MaxRetries"], out var retries) ? retries : 3);
 
             _httpClient.BaseAddress = new Uri("https://api.openai.com/v1/");
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
@@ -46,6 +46,11 @@ namespace TechExchangeApp.Infrastructure.AI
             if (string.IsNullOrWhiteSpace(text))
             {
                 throw new ArgumentException("Text cannot be null or empty", nameof(text));
+            }
+
+            if (string.IsNullOrWhiteSpace(_apiKey))
+            {
+                throw new InvalidOperationException("OpenAI:ApiKey is not configured");
             }
 
             var attempt = 0;
