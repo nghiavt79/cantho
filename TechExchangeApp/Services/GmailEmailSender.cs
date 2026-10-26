@@ -26,6 +26,7 @@ namespace TechExchangeApp.Services
             var displayName = await _params.GetAsync(ParameterKeys.SmtpDisplayName) ?? "TechPort";
             var maxRetry    = await _params.GetIntAsync(ParameterKeys.SmtpMaxRetry, 3);
             var retryDelay  = await _params.GetIntAsync(ParameterKeys.SmtpRetryDelaySeconds, 5);
+            var skipCert    = await _params.GetBoolAsync(ParameterKeys.SmtpSkipCertCheck, false);
 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(displayName, email));
@@ -43,7 +44,10 @@ namespace TechExchangeApp.Services
                 try
                 {
                     using var client = new SmtpClient();
-                    await client.ConnectAsync(host, port, SecureSocketOptions.StartTls);
+                    if (skipCert)
+                        client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    // Cổng 465 dùng SSL ngay khi kết nối, các cổng khác dùng STARTTLS
+                    await client.ConnectAsync(host, port, port == 465 ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.StartTls);
                     await client.AuthenticateAsync(email, password);
                     var response = await client.SendAsync(message);
                     await client.DisconnectAsync(true);

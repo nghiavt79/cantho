@@ -16,6 +16,7 @@ namespace TechExchangeApp.Configuration
         public const string SmtpDisplayName        = "SMTP_DISPLAY_NAME";
         public const string SmtpMaxRetry           = "SMTP_MAX_RETRY";
         public const string SmtpRetryDelaySeconds  = "SMTP_RETRY_DELAY_SECONDS";
+        public const string SmtpSkipCertCheck      = "SMTP_SKIP_CERT_CHECK";   // 1 = chấp nhận chứng chỉ tự ký
 
         // ── SMS ──────────────────────────────────────────────────────────────
         public const string SmsProvider            = "SMS_PROVIDER";
