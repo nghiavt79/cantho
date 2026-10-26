@@ -60,6 +60,7 @@ namespace TechExchangeApp.Controllers
 
         // POST /api/notifications/mark-read/{id}
         [HttpPost("mark-read/{id:int}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkRead(int id)
         {
             var n = await _context.Notifications
@@ -74,6 +75,7 @@ namespace TechExchangeApp.Controllers
 
         // POST /api/notifications/mark-all-read
         [HttpPost("mark-all-read")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> MarkAllRead()
         {
             var unread = await _context.Notifications

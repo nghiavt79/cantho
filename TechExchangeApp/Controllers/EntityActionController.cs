@@ -38,6 +38,7 @@ namespace TechExchangeApp.Controllers
 
         // ── POST /api/entity/{entityType}/{entityId}/rating/save ────────
         [HttpPost("{entityType}/{entityId:int}/rating/save")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveRating(
             string entityType, int entityId, [FromBody] SaveRatingRequest request)
         {

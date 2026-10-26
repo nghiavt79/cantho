@@ -153,9 +153,10 @@
                 input.disabled = true;
 
                 try {
+                    const token = document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '';
                     const res = await fetch(`/api/chat/${conversationId}/send`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
                         body: JSON.stringify({ message: msg })
                     });
                     const data = await res.json();

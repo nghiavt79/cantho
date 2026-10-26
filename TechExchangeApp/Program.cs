@@ -169,11 +169,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     // (sai số phiên) bị đăng xuất ở request kế tiếp
     options.Events.OnValidatePrincipal = TechExchangeApp.Services.AccountLockGuard.ValidatePrincipalAsync;
 
-    // For AJAX/fetch requests: return 401 instead of redirecting to login page
+    // For AJAX/fetch requests and /api/*: return 401 JSON instead of redirecting to login page
     options.Events.OnRedirectToLogin = ctx =>
     {
         var isAjax = ctx.Request.Headers["X-Requested-With"] == "XMLHttpRequest"
-                  || ctx.Request.Headers["Accept"].ToString().Contains("application/json");
+                  || ctx.Request.Headers["Accept"].ToString().Contains("application/json")
+                  || ctx.Request.Path.StartsWithSegments("/api");
         if (isAjax)
         {
             ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;

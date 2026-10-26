@@ -230,7 +230,7 @@
         const comment = document.getElementById('ratingComment').value.trim();
         try {
             const res = await fetch(`/api/entity/${entityType}/${entityId}/rating/save`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                method: 'POST', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': document.querySelector('meta[name="__RequestVerificationToken"]')?.content || '' },
                 body: JSON.stringify({ stars: selectedStars, comment })
             });
             if (res.status === 401) { document.getElementById('ratingSaveMsg').innerHTML = '<span class="text-danger">Vui lòng đăng nhập</span>'; btn.disabled = false; return; }

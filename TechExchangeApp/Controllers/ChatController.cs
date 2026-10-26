@@ -46,6 +46,7 @@ namespace TechExchangeApp.Controllers
 
         // ── POST /api/chat/start ────────────────────────────────────────────
         [HttpPost("/api/chat/start")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> StartConversation([FromBody] ChatStartRequest request)
         {
             var userId = await GetCurrentUserIdAsync();
@@ -94,6 +95,7 @@ namespace TechExchangeApp.Controllers
 
         // ── POST /api/chat/{id}/send ────────────────────────────────────────
         [HttpPost("/api/chat/{id:long}/send")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendMessage(long id, [FromBody] ChatSendRequest request)
         {
             var userId = await GetCurrentUserIdAsync();
