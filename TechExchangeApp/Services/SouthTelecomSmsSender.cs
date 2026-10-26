@@ -47,7 +47,10 @@ namespace TechExchangeApp.Services
             };
 
             using var request = new HttpRequestMessage(HttpMethod.Post, string.IsNullOrWhiteSpace(apiUrl) ? DefaultApiUrl : apiUrl.Trim());
-            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", apiKey.Trim());
+            // Chấp nhận cả khi nhập kèm chữ "Basic " như South Telecom gửi
+            var key = apiKey.Trim();
+            if (key.StartsWith("Basic ", StringComparison.OrdinalIgnoreCase)) key = key[6..].Trim();
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", key);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
 

@@ -125,17 +125,19 @@ namespace TechExchangeApp.Controllers
 
         /// <summary>
         /// Admin tool: send a test SMS to verify SMS config in SYS_PARAMETERS.
-        /// Usage: GET /Secure/TestSms?to=0912345678 (hoặc 84912345678)
+        /// Usage: GET /Secure/TestSms?to=0912345678 (hoặc 84912345678)&amp;text=noi dung (tuỳ chọn, phải khớp template đã đăng ký)
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> TestSms(string to = "")
+        public async Task<IActionResult> TestSms(string to = "", string? text = null)
         {
             if (string.IsNullOrEmpty(to))
-                return Content("Usage: /Secure/TestSms?to=0912345678\n\nChấp nhận 0912345678, 84912345678 hoặc +84912345678");
+                return Content("Usage: /Secure/TestSms?to=0912345678&text=noi dung\n\nChấp nhận 0912345678, 84912345678 hoặc +84912345678. text tuỳ chọn, phải khớp template đã đăng ký với nhà mạng.");
 
             try
             {
-                var response = await _smsSender.SendAsync(to, $"Kiem tra ket noi SMS san giao dich cong nghe Can Tho luc {DateTime.Now:HH:mm:ss}");
+                var response = await _smsSender.SendAsync(to, string.IsNullOrWhiteSpace(text)
+                    ? $"Kiem tra ket noi SMS san giao dich cong nghe Can Tho luc {DateTime.Now:HH:mm:ss}"
+                    : text.Trim());
                 return Content($"✅ Test SMS sent successfully to: {to}\nTime: {DateTime.Now:HH:mm:ss}\nProvider response: {response ?? "(STUB - chỉ ghi log, chưa gửi thật)"}", "text/plain");
             }
             catch (Exception ex)
