@@ -17,7 +17,8 @@ namespace TechExchangeApp.Infrastructure
         // Trang được xem: Tổng quan, Nhật ký, Thống kê, Yêu cầu hỗ trợ, Hướng dẫn
         private static readonly HashSet<string> ViewableControllers = new(StringComparer.OrdinalIgnoreCase)
         {
-            "", "Dashboard", "DashboardData", "LogAdmin", "AdminAnalytics", "SupportRequestsAdmin", "HuongDanCms"
+            "", "Dashboard", "DashboardData", "LogAdmin", "AdminAnalytics", "SupportRequestsAdmin",
+            "huong-dan-cms", "huog-dan-cms" // HuongDanCmsController dùng route riêng
         };
 
         private readonly RequestDelegate _next;
