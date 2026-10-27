@@ -68,13 +68,29 @@ namespace TechExchangeApp.Infrastructure.Health
         }
     }
 
-    /// <summary>Trả JSON gọn: trạng thái tổng và từng hạng mục, không lộ chi tiết exception.</summary>
+    /// <summary>
+    /// Công khai chỉ trả trạng thái tổng hợp (NCC-06 mục 3); chi tiết từng hạng mục chỉ trả cho
+    /// tài khoản có quyền CMS đã đăng nhập.
+    /// </summary>
     public static class HealthResponseWriter
     {
-        public static Task WriteAsync(HttpContext ctx, HealthReport report)
+        public static async Task WriteAsync(HttpContext ctx, HealthReport report)
         {
             ctx.Response.ContentType = "application/json; charset=utf-8";
             ctx.Response.Headers.CacheControl = "no-store";
+
+            var showDetail = false;
+            if (ctx.User.Identity?.IsAuthenticated == true)
+            {
+                var authz = ctx.RequestServices.GetRequiredService<Microsoft.AspNetCore.Authorization.IAuthorizationService>();
+                showDetail = (await Microsoft.AspNetCore.Authorization.AuthorizationServiceExtensions.AuthorizeAsync(authz, ctx.User, "CmsAccess")).Succeeded;
+            }
+            if (!showDetail)
+            {
+                await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { status = report.Status.ToString() }));
+                return;
+            }
+
             var payload = new
             {
                 status = report.Status.ToString(),
@@ -86,7 +102,7 @@ namespace TechExchangeApp.Infrastructure.Health
                     data = e.Value.Data.Count > 0 ? e.Value.Data : null
                 })
             };
-            return ctx.Response.WriteAsync(JsonSerializer.Serialize(payload));
+            await ctx.Response.WriteAsync(JsonSerializer.Serialize(payload));
         }
     }
 }

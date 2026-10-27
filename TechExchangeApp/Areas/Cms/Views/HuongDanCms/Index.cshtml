@@ -629,6 +629,16 @@
                             </ul>
                         </article>
                         <article>
+                            <h4>Tài khoản chỉ xem (đơn vị giám sát)</h4>
+                            <p>Tài khoản quản trị có tên trong tham số CMS_READONLY_USERS chỉ được xem, không thêm, sửa, xóa dữ liệu.</p>
+                            <ul>
+                                <li>Nhập tên đăng nhập vào CMS_READONLY_USERS, nhiều tài khoản cách nhau dấu phẩy (mặc định: gs_theodoi). Tài khoản vẫn phải có quyền vào CMS.</li>
+                                <li>Được xem: Tổng quan, Nhật ký, Thống kê, Yêu cầu hỗ trợ, Hướng dẫn. Mở trang khác hoặc bấm lưu, xóa, gửi đều bị từ chối.</li>
+                                <li>Mỗi lần bị từ chối được ghi Nhật ký với loại thao tác "Từ chối thao tác".</li>
+                                <li>Trang /health công khai chỉ trả trạng thái tổng hợp; chi tiết từng thành phần chỉ hiện khi đã đăng nhập tài khoản có quyền CMS.</li>
+                            </ul>
+                        </article>
+                        <article>
                             <h4>Nhật ký</h4>
                             <p>Dùng để kiểm tra hoạt động hệ thống và truy vết khi cần hỗ trợ.</p>
                             <ul>

@@ -438,6 +438,8 @@ app.UseWhen(ctx => ctx.Request.Path.StartsWithSegments("/cms"), cmsApp =>
         }
         await next();
     });
+    // Tài khoản chỉ xem (đơn vị giám sát): chặn thêm, sửa, xóa trong CMS
+    cmsApp.UseMiddleware<TechExchangeApp.Infrastructure.CmsReadOnlyMiddleware>();
 });
 
 // Swagger chỉ mở cho tài khoản có quyền CMS

@@ -13,11 +13,13 @@ namespace TechExchangeApp.Services
     {
         private readonly AppDbContext _context;
         private readonly IESignGateway _eSignGateway;
+        private readonly ISystemParameterService _sysParams;
 
-        public PermissionService(AppDbContext context, IESignGateway eSignGateway)
+        public PermissionService(AppDbContext context, IESignGateway eSignGateway, ISystemParameterService sysParams)
         {
             _context = context;
             _eSignGateway = eSignGateway;
+            _sysParams = sysParams;
         }
 
         public async Task<StepPermissionResult> GetStepPermissionsAsync(int projectId, int stepNumber, int userId)
@@ -76,7 +78,9 @@ namespace TechExchangeApp.Services
         {
             // Check if user is Admin (you may need to add IsAdmin field to Users table or check a role)
             var user = await _context.Users.FindAsync(userId);
-            if (user?.IsAdmin == true) // Assuming IsAdmin field exists
+            // Tài khoản CMS chỉ xem (đơn vị giám sát) không có quyền quản trị trên hồ sơ giao dịch
+            if (user?.IsAdmin == true
+                && !await Infrastructure.CmsReadOnlyMiddleware.IsReadOnlyAsync(_sysParams, user.UserName))
             {
                 return UserRoleType.Admin;
             }
