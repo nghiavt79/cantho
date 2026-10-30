@@ -1,7 +1,7 @@
 # Triển khai mekongx.vn – 25/10/2026
 
 Cập nhật máy chủ từ bản 22/10/2026 (commit `2391743`) lên bản 25/10/2026, **gộp luôn gói 24/10/2026 (SMS)** vì gói đó chưa chạy.
-Trạng thái: **đã đóng gói, chưa chạy trên máy chủ**. Code: commit `9032f2b` nhánh `feature/bo-sung-chuc-nang-hsmt`.
+Trạng thái: **đã cập nhật lên mekongx.vn ngày 25/10/2026** (kiểm tra từ ngoài: trang chủ 200, `/health` Healthy, `/api/sms/dlr` 403, `/cms` và `/Secure/TestSms` chuyển trang đăng nhập). Trên máy chủ đã có `D:\www\sgdcn\logs\app-20261025.log` (ghi log file chạy đúng). Chưa xác nhận: script tài khoản tùy chọn. Code: commit `9032f2b` nhánh `feature/bo-sung-chuc-nang-hsmt`.
 
 ## 1. Nội dung
 
