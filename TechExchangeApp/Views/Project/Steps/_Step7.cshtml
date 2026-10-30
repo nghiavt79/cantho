@@ -4,6 +4,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject TechExchangeApp.Data.AppDbContext DbCtx
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@inject TechExchangeApp.Interfaces.IContractSigningService SigningSvc
 
 @{
     int projectId = Model.ProjectId;
@@ -16,6 +17,13 @@
             .Where(x => x.ProjectId == projectId && x.IsActive)
             .OrderByDescending(x => x.VersionNumber)
             .FirstOrDefaultAsync();
+    }
+
+    // Hợp đồng ký OTP chưa có PDF đã ký → tạo bù
+    if (contract != null && contract.StatusId >= (int)TechExchangeApp.Enums.ContractStatus.ReadyToSign &&
+        (string.IsNullOrEmpty(contract.SignedFilePath) || !System.IO.File.Exists(contract.SignedFilePath)))
+    {
+        await SigningSvc.EnsureOtpSignedPdfAsync(contract.Id);
     }
 
     bool isLocked = Model.Steps.Count >= 7 && !Model.Steps[6].IsAccessible;

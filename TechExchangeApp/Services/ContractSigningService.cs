@@ -19,6 +19,9 @@ namespace TechExchangeApp.Services
         private readonly ISystemParameterService  _sysParams;
         private readonly IOtpEmailService         _otpEmail;
         private readonly IConfiguration            _configuration;
+        private readonly PdfSigningService         _pdfSigner;
+        private readonly HtmlToPdfService          _htmlToPdf;
+        private readonly IWebHostEnvironment       _env;
         private readonly ILogger<ContractSigningService> _logger;
 
         public ContractSigningService(
@@ -27,8 +30,13 @@ namespace TechExchangeApp.Services
             IContractAuditService audit, IWorkflowService workflow,
             ISystemParameterService sysParams, IOtpEmailService otpEmail,
             IConfiguration configuration,
+            PdfSigningService pdfSigner, HtmlToPdfService htmlToPdf,
+            IWebHostEnvironment env,
             ILogger<ContractSigningService> logger)
         {
+            _pdfSigner       = pdfSigner;
+            _htmlToPdf       = htmlToPdf;
+            _env             = env;
             _context         = context;
             _esign           = esign;
             _providerFactory = providerFactory;
@@ -162,6 +170,8 @@ namespace TechExchangeApp.Services
             else if (testMode2)
                 _logger.LogWarning("[TestMode] BuyerOTP signed — TryCompleteStep7 skipped");
 
+            await EnsureOtpSignedPdfAsync(req.ContractId, rebuild: true);
+
             await _audit.AppendAsync("ContractSignature", sig.Id.ToString(),
                 "BuyerSigned", new { userId, ipAddress }, userId, ipAddress);
 
@@ -282,6 +292,8 @@ namespace TechExchangeApp.Services
                 await TryCompleteStep7Async(contract3.ProjectId, req.ContractId);
             else if (testMode3)
                 _logger.LogWarning("[TestMode] SellerOTP signed — TryCompleteStep7 skipped");
+
+            await EnsureOtpSignedPdfAsync(req.ContractId, rebuild: true);
 
             await _audit.AppendAsync("ContractSignature", sig.Id.ToString(),
                 "SellerSigned", new { userId, ipAddress }, userId, ipAddress);
@@ -516,6 +528,108 @@ namespace TechExchangeApp.Services
 
             _logger.LogInformation("Step 7 completed for project {Id}.", projectId);
             return true;
+        }
+
+        // ─── PDF hợp đồng có khung chữ ký OTP ─────────────────────────────────
+        // Luồng OTP không có file ký từ USB/CA → tự sinh PDF từ nội dung hợp đồng (bỏ dòng "bản nháp")
+        // rồi chèn khung chữ ký điện tử cho từng bên đã ký OTP.
+        public async Task<bool> EnsureOtpSignedPdfAsync(int contractId, bool rebuild = false)
+        {
+            try
+            {
+                var contract = await _context.ProjectContracts.FindAsync(contractId);
+                if (contract == null) return false;
+
+                bool hasFile = !string.IsNullOrEmpty(contract.SignedFilePath) && File.Exists(contract.SignedFilePath);
+                if (hasFile && !rebuild) return true;
+
+                var sigs = await _context.ContractSignatures
+                    .Where(s => s.ContractId == contractId)
+                    .OrderBy(s => s.SignedAt)
+                    .ToListAsync();
+                var otpSigs = sigs.Where(s => s.Provider == "OTP").ToList();
+                if (otpSigs.Count == 0) return hasFile;
+
+                // Có chữ ký USB/CA và đã có file ký → chỉ chồng thêm chữ ký OTP mới nhất lên file đó
+                string sourcePdf;
+                string? tempBase = null;
+                if (hasFile && sigs.Any(s => s.Provider != "OTP"))
+                {
+                    sourcePdf = contract.SignedFilePath!;
+                    otpSigs = otpSigs.TakeLast(1).ToList();
+                }
+                else
+                {
+                    var dir = Path.Combine(_env.WebRootPath, "uploads", "contracts", $"proj_{contract.ProjectId}", "signed");
+                    Directory.CreateDirectory(dir);
+                    tempBase = Path.Combine(dir, $"otp_base_{contract.Id}_{DateTime.UtcNow:yyyyMMddHHmmssfff}.pdf");
+
+                    var orig = contract.OriginalFilePath;
+                    bool uploadedPdf = !string.IsNullOrEmpty(orig) && File.Exists(orig)
+                        && orig.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase)
+                        && !orig.EndsWith("_generated.pdf", StringComparison.OrdinalIgnoreCase);
+
+                    if (!uploadedPdf && !string.IsNullOrEmpty(contract.HtmlContent))
+                    {
+                        var html = System.Text.RegularExpressions.Regex.Replace(contract.HtmlContent,
+                            @"<div class=""watermark"">[\s\S]*?</div>", "");
+                        await File.WriteAllBytesAsync(tempBase, _htmlToPdf.Convert(html, contract.Title));
+                    }
+                    else if (!string.IsNullOrEmpty(orig) && File.Exists(orig) && orig.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                    {
+                        File.Copy(orig, tempBase, true);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("EnsureOtpSignedPdf: hợp đồng {Id} không có nội dung để tạo PDF.", contractId);
+                        return hasFile;
+                    }
+                    sourcePdf = tempBase;
+                }
+
+                var userIds = otpSigs.Select(s => s.UserId).Distinct().ToList();
+                var names = await _context.Users.AsNoTracking()
+                    .Where(u => userIds.Contains(u.Id))
+                    .ToDictionaryAsync(u => u.Id, u => u.FullName ?? u.UserName ?? "");
+
+                var intermediates = new List<string>();
+                foreach (var s in otpSigs)
+                {
+                    var signedAtLocal = s.SignedAt.HasValue
+                        ? DateTime.SpecifyKind(s.SignedAt.Value, DateTimeKind.Utc).ToLocalTime()
+                        : (DateTime?)null;
+                    var output = await _pdfSigner.EmbedVisibleSignatureAsync(
+                        sourcePdfPath:    sourcePdf,
+                        signatureBytes:   [],
+                        certificateBytes: [],
+                        certSubject:      $"CN={names.GetValueOrDefault(s.UserId, "")}",
+                        certIssuer:       "CN=Mã OTP gửi qua email",
+                        certSerial:       $"OTP-{s.Id}" + (string.IsNullOrEmpty(s.IPAddress) ? "" : $" · IP {s.IPAddress}"),
+                        role:             s.Role,
+                        projectId:        contract.ProjectId,
+                        otp:              true,
+                        signedAt:         signedAtLocal);
+                    if (sourcePdf != contract.SignedFilePath) intermediates.Add(sourcePdf);
+                    sourcePdf = output;
+                }
+
+                foreach (var f in intermediates.Where(f => f != sourcePdf))
+                    try { File.Delete(f); } catch { /* bỏ qua file tạm */ }
+
+                contract.SignedFilePath = sourcePdf;
+                contract.SignedFileName = Path.GetFileName(sourcePdf);
+                contract.Sha256Signed   = _hash.ComputeSha256(await File.ReadAllBytesAsync(sourcePdf));
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("EnsureOtpSignedPdf: hợp đồng {Id} → {Path}", contractId, sourcePdf);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Không làm hỏng việc ký nếu tạo PDF lỗi
+                _logger.LogError(ex, "EnsureOtpSignedPdf failed for contract {Id}", contractId);
+                return false;
+            }
         }
 
         // ─── Helper: hash OTP for storage/comparison ──────────────────────────

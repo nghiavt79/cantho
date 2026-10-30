@@ -35,7 +35,9 @@ public class PdfSigningService
         string   certIssuer,
         string   certSerial,
         int      role,           // 1 = Buyer (Bên A), 2 = Seller (Bên B)
-        int      projectId)
+        int      projectId,
+        bool     otp      = false,   // true = chữ ký điện tử xác thực OTP (không có chứng thư số)
+        DateTime? signedAt = null)    // giờ ký thực tế (giờ địa phương); null = hiện tại
     {
         _log.LogInformation("Embedding visible signature into PDF: {Path}", sourcePdfPath);
 
@@ -46,7 +48,7 @@ public class PdfSigningService
 
         var ownerName  = ParseCN(certSubject)  ?? certSubject;
         var issuerName = ParseCN(certIssuer)   ?? certIssuer;
-        var signedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+        var signedDate = (signedAt ?? DateTime.Now).ToString("dd/MM/yyyy HH:mm");
         // Bên A = Người bán (Seller, role=2) | Bên B = Người mua (Buyer, role=1)
         var roleLabel  = role == 1 ? "Bên B (Người mua)" : "Bên A (Người bán)";
 
@@ -82,16 +84,20 @@ public class PdfSigningService
             var pageSize   = targetPage.GetPageSize();
 
             // ── Tính vị trí signature block ──
-            float blockW = 220f;
-            float blockH = 80f;
+            // Tìm thấy ô ký → khung gọn, nằm giữa dòng "(Ký, ghi rõ họ tên…)" và tên người đại diện
+            bool  compact = anchorRect != null;
+            float blockW = compact ? 180f : 220f;
+            float blockH = compact ? 58f  : 80f;
+            float hdrH   = compact ? 14f  : 18f;
+            float lineH  = compact ? 10f  : 12f;
             float margin  = 18f;
             float x, y;
 
             if (anchorRect != null)
             {
-                // Đặt signature box ngay BÊN DƯỚI anchor text, căn theo X của anchor
-                x = anchorRect.GetX();
-                y = anchorRect.GetY() - blockH - 4f;
+                // Căn giữa theo dòng "ĐẠI DIỆN BÊN A/B", mép trên cách đáy dòng đó 25pt (chừa dòng "(Ký, ghi rõ…)")
+                x = anchorRect.GetX() + anchorRect.GetWidth() / 2f - blockW / 2f;
+                y = anchorRect.GetY() - 25f - blockH;
 
                 // Clamp để không tràn ra ngoài trang
                 x = Math.Max(pageSize.GetLeft() + margin, Math.Min(x, pageSize.GetRight() - blockW - margin));
@@ -150,19 +156,18 @@ public class PdfSigningService
                 ? new DeviceRgb(0.72f, 0.25f, 0.05f)  // đỏ cam — Bên A (Người bán)
                 : new DeviceRgb(0.1f, 0.45f, 0.75f);  // xanh dương — Bên B (Người mua)
             canvas.SetFillColor(headerColor);
-            canvas.Rectangle(x, y + blockH - 18f, blockW, 18f);
+            canvas.Rectangle(x, y + blockH - hdrH, blockW, hdrH);
             canvas.Fill();
 
             // Header text
             canvas.BeginText()
-                  .SetFontAndSize(fontBold, 8.5f)
+                  .SetFontAndSize(fontBold, compact ? 7.5f : 8.5f)
                   .SetFillColor(ColorConstants.WHITE)
-                  .MoveText(x + 8f, y + blockH - 13f)
-                  .ShowText($"\u2714 Chữ ký số — {roleLabel}")
+                  .MoveText(x + 8f, y + blockH - hdrH + 4f)
+                  .ShowText($"\u2714 {(otp ? "Chữ ký điện tử (OTP)" : "Chữ ký số")} — {roleLabel}")
                   .EndText();
 
-            float lineY = y + blockH - 28f;
-            float lineH = 12f;
+            float lineY = y + blockH - hdrH - 10f;
 
             // Ký bởi
             canvas.BeginText()
@@ -185,7 +190,7 @@ public class PdfSigningService
                   .SetFontAndSize(fontBold, 7f)
                   .SetFillColor(new DeviceRgb(0.3f, 0.3f, 0.3f))
                   .MoveText(x + 8f, lineY)
-                  .ShowText("Cấp bởi: ")
+                  .ShowText(otp ? "Xác thực: " : "Cấp bởi: ")
                   .EndText();
             canvas.BeginText()
                   .SetFontAndSize(fontRegular, 7f)
@@ -201,7 +206,7 @@ public class PdfSigningService
                   .SetFontAndSize(fontBold, 6.5f)
                   .SetFillColor(new DeviceRgb(0.4f, 0.4f, 0.4f))
                   .MoveText(x + 8f, lineY)
-                  .ShowText("Serial: ")
+                  .ShowText(otp ? "Mã ký: " : "Serial: ")
                   .EndText();
             canvas.BeginText()
                   .SetFontAndSize(fontRegular, 6.5f)
@@ -244,46 +249,27 @@ public class PdfSigningService
     }
 
     /// <summary>
-    /// Tìm tọa độ ô ký "Bên A" hoặc "Bên B" trong PDF bằng cách extract text
-    /// và dùng heuristic: template 2 cột ký — trái (Bên A) / phải (Bên B).
-    /// Trả về Rectangle tương đối nếu tìm thấy anchor.
+    /// Tìm tọa độ thật của dòng "Đại diện Bên A/B" (ô ký) trên trang.
+    /// Trả về Rectangle bao dòng chữ đó, hoặc null nếu trang không có.
     /// </summary>
     private Rectangle? FindTextPosition(PdfPage page, string[] anchors)
     {
         try
         {
-            // Extract toàn bộ text của trang
-            var fullText = PdfTextExtractor.GetTextFromPage(page,
-                new SimpleTextExtractionStrategy());
+            // anchors[0] = "Đại diện Bên A|B" → regex không phân biệt hoa thường, cho phép nhiều khoảng trắng
+            var words   = anchors[0].Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(System.Text.RegularExpressions.Regex.Escape);
+            var pattern = new System.Text.RegularExpressions.Regex(string.Join(@"\s+", words),
+                System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
 
-            if (string.IsNullOrWhiteSpace(fullText)) return null;
+            var strategy = new RegexBasedLocationExtractionStrategy(pattern);
+            new PdfCanvasProcessor(strategy).ProcessPageContent(page);
 
-            // Kiểm tra có chứa anchor không
-            bool found = anchors.Any(a =>
-                fullText.Contains(a, StringComparison.OrdinalIgnoreCase));
-
-            if (!found) return null;
-
-            var pageSize = page.GetPageSize();
-            float pageW  = pageSize.GetWidth();
-            float pageH  = pageSize.GetHeight();
-            float margin  = 20f;
-
-            // Template 2-cột ký: Bên A (trái), Bên B (phải)
-            // Dùng anchor[0] để xác định cột
-            bool isBenA = anchors[0].Contains("A", StringComparison.OrdinalIgnoreCase);
-
-            // Khu vực ký thường ở 1/4 dưới đáy trang
-            float signAreaH = pageH * 0.22f;  // 22% chiều cao trang
-            float colW      = (pageW - margin * 3f) / 2f;
-
-            float x = isBenA
-                ? pageSize.GetLeft() + margin                // Bên A: cột trái
-                : pageSize.GetLeft() + margin * 2f + colW;  // Bên B: cột phải
-
-            float y = pageSize.GetBottom() + signAreaH;
-
-            return new Rectangle(x, y, colW, signAreaH);
+            // Nhiều kết quả → lấy dòng thấp nhất trang (khối ký thường ở cuối)
+            return strategy.GetResultantLocations()
+                .Select(l => l.GetRectangle())
+                .OrderBy(r => r.GetY())
+                .FirstOrDefault();
         }
         catch (Exception ex)
         {

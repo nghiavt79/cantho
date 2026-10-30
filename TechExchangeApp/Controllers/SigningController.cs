@@ -438,6 +438,8 @@ namespace TechExchangeApp.Controllers
                 bool isSeller = proj?.SelectedSellerId == userId;
                 if (!isBuyer && !isSeller) return Forbid();
 
+                await _signing.EnsureOtpSignedPdfAsync(contractId);
+
                 if (string.IsNullOrEmpty(contract.SignedFilePath) ||
                     !System.IO.File.Exists(contract.SignedFilePath))
                 {

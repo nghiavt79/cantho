@@ -30,6 +30,9 @@ namespace TechExchangeApp.Interfaces
 
         /// <summary>Check if both parties signed → complete Step 7 and unlock Step 8.</summary>
         Task<bool> TryCompleteStep7Async(int projectId, int contractId);
+
+        /// <summary>Tạo PDF hợp đồng có khung chữ ký điện tử cho các chữ ký OTP (nếu chưa có hoặc rebuild=true).</summary>
+        Task<bool> EnsureOtpSignedPdfAsync(int contractId, bool rebuild = false);
     }
 
     public class ContractSigningStatusDto
