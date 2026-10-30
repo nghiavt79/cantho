@@ -60,7 +60,7 @@
             <div>
                 <h3>@Html.Text("common.contact")</h3>
                 <p><a href="@mapUrl" target="_blank" rel="noopener"><i class="bi bi-geo-alt"></i> @addressText</a></p>
-                <p><i class="bi bi-telephone"></i> @phone</p>
+                <p><i class="bi bi-telephone"></i> <a class="site-footer-v2__phone" href="tel:@(new string(phone.Where(c => char.IsDigit(c) || c == '+').ToArray()))">@phone</a></p>
                 <p><i class="bi bi-envelope"></i> @email</p>
                 <form class="site-footer-v2__newsletter">
                     <input type="email" placeholder="@Html.Text("footer.emailPlaceholder")" aria-label="@Html.Text("footer.emailLabel")">

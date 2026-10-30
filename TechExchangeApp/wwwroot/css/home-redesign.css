@@ -2402,6 +2402,12 @@ body.is-chat-open .action-dock-vr-shortcut {
     text-decoration: none;
 }
 
+.site-footer-v2 a.site-footer-v2__phone {
+    display: inline;
+    margin: 0;
+    white-space: nowrap;
+}
+
 .site-footer-v2__social {
     display: flex;
     gap: 10px;
@@ -2563,6 +2569,11 @@ body.is-chat-open .action-dock-vr-shortcut {
         font-size: 14px;
     }
 
+    /* Bỏ ngắt dòng cứng của mô tả banner để chữ không rơi lẻ 1 từ */
+    .home-v2-hero__content p br {
+        display: none;
+    }
+
     .home-v2-hero__content .hero-actions {
         width: 100%;
         gap: 10px;
@@ -2642,6 +2653,47 @@ body.is-chat-open .action-dock-vr-shortcut {
     .home-v2-partner-row,
     .site-footer-v2__grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Doanh nghiệp tiêu biểu / Đối tác đồng hành: vuốt ngang thay vì xếp dọc */
+    .home-v2-partner-row {
+        display: flex;
+        gap: 10px;
+        margin: 14px -22px 0;
+        padding: 4px 22px 8px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0 22px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .home-v2-partner-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .home-v2-partner {
+        flex: 0 0 42%;
+        scroll-snap-align: start;
+    }
+
+    .home-v2-partner:hover {
+        transform: none;
+    }
+
+    /* Tiêu đề, dòng ngắn: chia đều các dòng, tránh rơi lẻ 1 chữ */
+    h1, h2, h3, h4, h5,
+    .site-footer-v2__brand strong,
+    .site-footer-v2__bottom span {
+        text-wrap: balance;
+    }
+
+    p, li {
+        text-wrap: pretty;
+    }
+
+    .home-v2-hero__content h1 {
+        text-wrap: wrap;
     }
 
     .home-v2-stat {

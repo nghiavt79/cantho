@@ -15,7 +15,8 @@
                                 <h1>@item.Title</h1>
                                 @if (!string.IsNullOrWhiteSpace(item.Description))
                                 {
-                                    @Html.SafeHtml(item.Description)
+                                    @* Thêm dấu cách sau <br>: trên điện thoại ẩn <br> để chữ chảy liền mà không dính từ *@
+                                    @Html.SafeHtml(item.Description.Replace("<br>", "<br> "))
                                 }
                             </div>
                         </div>
