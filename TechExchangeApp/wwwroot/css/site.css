@@ -5124,10 +5124,6 @@ header {
         align-items: stretch;
     }
 
-    .tech-hero-stats {
-        grid-template-columns: 1fr;
-    }
-
     .section-heading {
         align-items: flex-start;
         flex-direction: column;
@@ -5150,6 +5146,43 @@ header {
     .support-box {
         position: static;
         margin-top: 20px;
+    }
+}
+
+/* Máy tính bảng (iPad mini 768px…): cột hỗ trợ col-sm-3 chỉ còn ~150px → xếp xuống dưới nội dung, chiếm hết chiều ngang */
+@media (max-width: 991.98px) {
+    #center_column.col-sm-9,
+    #left_column.col-sm-3 {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .support-box {
+        position: static;
+        margin-top: 20px;
+    }
+
+    /* Lưới sản phẩm col-sm-3 (4 thẻ/hàng) → 3 thẻ/hàng để tên sản phẩm không bị bóp */
+    .product-list.grid > .ListProductMobile.col-sm-3 {
+        flex: 0 0 33.3333%;
+        width: 33.3333%;
+        max-width: 33.3333%;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .product-list.grid > .ListProductMobile.col-sm-3 {
+        flex: 0 0 50%;
+        width: 50%;
+        max-width: 50%;
+    }
+}
+
+/* 3 ô thống kê chỉ xếp dọc trên điện thoại; máy tính bảng giữ 3 cột */
+@media (max-width: 575.98px) {
+    .tech-hero-stats {
+        grid-template-columns: 1fr;
     }
 }
 
