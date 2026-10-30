@@ -1,7 +1,7 @@
 # Cập nhật mekongx.vn – 31/10/2026
 
 Hai nội dung: (1) chỉnh giao diện trên điện thoại theo góp ý của khách; (2) PDF hợp đồng có khung chữ ký điện tử cho luồng ký OTP.
-Trạng thái: **đã commit, chưa đóng gói, chưa chạy trên máy chủ**. Code: nhánh `feature/bo-sung-chuc-nang-hsmt`, commit `363e5e6` (giao diện) và `2a33c72` (ký OTP).
+Trạng thái: **đã đóng gói `deploy-mekongx-2026-10-31.zip`, chưa chạy trên máy chủ**. Code: nhánh `feature/bo-sung-chuc-nang-hsmt`, commit `363e5e6`, `c770292`, `7ba90b8` (giao diện), `2a33c72` (ký OTP); gói tính từ bản máy chủ 27/10 (`502c2b9`) nên gồm cả `e1ed17f` (tài khoản chỉ xem mở Hướng dẫn CMS).
 
 ## 1. Giao diện điện thoại (commit `363e5e6`)
 
@@ -28,10 +28,14 @@ File: `Views/Shared/Components/HeroBanner/Default.cshtml`, `Views/Shared/_Footer
 
 File: `Controllers/SigningController.cs`, `Interfaces/IContractSigningService.cs`, `Services/ContractSigningService.cs`, `Services/PdfSigningService.cs`, `Views/Project/Steps/_Step7.cshtml`.
 
-## 3. Gói triển khai (khi đóng gói)
+## 3. Gói triển khai
+
+`deploy-mekongx-2026-10-31.zip` (thư mục gốc repo, không đưa vào git); publish Release ra `D:\2026\CanThoPublish_20261031`, chạy thử cổng 5299: trang chủ 200, `/health` Healthy.
 
 - `app\TechExchangeApp.dll` – view Razor đã biên dịch vào dll.
 - `app\wwwroot\css\home-redesign.css`.
+- `app\wwwroot\css\site.css` – commit `7ba90b8`: trang Sản phẩm/Công nghệ/Thiết bị/Tài sản trí tuệ ở máy tính bảng (dưới 992px khung "Trung tâm hỗ trợ" xuống dưới, lưới sản phẩm 3 thẻ/hàng, 3 ô thống kê một hàng).
+- `HUONG_DAN.txt`.
 - **Không có SQL**: dùng các cột sẵn có (`SignedFilePath`, `SignedFileName`, `Sha256Signed`).
 - Thư mục `wwwroot\uploads\contracts` trên máy chủ cần quyền ghi cho app pool (để lưu PDF ký OTP).
 
