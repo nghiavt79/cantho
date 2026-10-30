@@ -16,7 +16,7 @@
                                 @if (!string.IsNullOrWhiteSpace(item.Description))
                                 {
                                     @* Thêm dấu cách sau <br>: trên điện thoại ẩn <br> để chữ chảy liền mà không dính từ *@
-                                    @Html.SafeHtml(item.Description.Replace("<br>", "<br> "))
+                                    @Html.SafeHtml(System.Text.RegularExpressions.Regex.Replace(item.Description, @"<br\s*/?>", "$0 ", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                                 }
                             </div>
                         </div>
