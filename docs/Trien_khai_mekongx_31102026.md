@@ -35,8 +35,9 @@ File: `Controllers/SigningController.cs`, `Interfaces/IContractSigningService.cs
 - `app\TechExchangeApp.dll` – view Razor đã biên dịch vào dll.
 - `app\wwwroot\css\home-redesign.css`.
 - `app\wwwroot\css\site.css` – commit `7ba90b8`: trang Sản phẩm/Công nghệ/Thiết bị/Tài sản trí tuệ ở máy tính bảng (dưới 992px khung "Trung tâm hỗ trợ" xuống dưới, lưới sản phẩm 3 thẻ/hàng, 3 ô thống kê một hàng).
+- `sql\tuy-chon-xoa-san-pham-pentest.sql` – tùy chọn (nguồn `TechExchangeApp/Scripts/xoa-san-pham-pentest.sql`): xóa sản phẩm thử còn sót sau pentest đang hiện công khai ("QUY TRINH PENTEST", ID 44048; mô tả có `<img src=x onerror=alert(1)>`) và bản tiếng Anh. Chạy lần 1 `@ThucHien = 0` chỉ liệt kê; lần 2 `@ThucHien = 1` sao lưu vào `*_DeletedBackup_20261031` rồi xóa trong 1 giao dịch. Giữ hội thoại chat/yêu cầu chuyển giao/ô trưng bày (chỉ bỏ liên kết); có đơn OCOP thì dừng. Sản phẩm ID 39766 "Công nghệ tuần hoàn nước" (mô tả "Hiện nay abcafgedfh") chỉ được liệt kê, sửa tay trong CMS. Đã thử trên DB local với dữ liệu giả (xóa đúng, chạy lại không lỗi), dữ liệu thử đã dọn.
 - `HUONG_DAN.txt`.
-- **Không có SQL**: dùng các cột sẵn có (`SignedFilePath`, `SignedFileName`, `Sha256Signed`).
+- **Không có SQL bắt buộc**: dùng các cột sẵn có (`SignedFilePath`, `SignedFileName`, `Sha256Signed`).
 - Thư mục `wwwroot\uploads\contracts` trên máy chủ cần quyền ghi cho app pool (để lưu PDF ký OTP).
 
 ## 4. Lưu ý
