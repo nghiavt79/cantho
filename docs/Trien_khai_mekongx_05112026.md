@@ -19,14 +19,12 @@ Trạng thái: **đã đóng gói `deploy-mekongx-2026-11-05.zip`, chưa chạy 
 ## Gói
 
 - `app\TechExchangeApp.dll`: không đổi thư viện, CSS, JS.
-- `sql\add-econtract-columns.sql`: **bắt buộc, chạy trước khi chép dll** vì `ProjectContracts` có cột mới; `ECONTRACT_ENABLED` mặc định 0.
-- `sql\deploy-server-2026-11-04.sql`: **bắt buộc**, chạy lại được.
-- `sql\tuy-chon-xoa-du-lieu-ra-quet.sql`, `sql\tuy-chon-xoa-san-pham-pentest.sql`: tùy chọn, đều có chế độ chỉ liệt kê.
+- `sql\chay-mot-lan-2026-11-05.sql`: **chạy một lần, trước khi chép dll, sau khi sao lưu**. Gộp eContract, lĩnh vực, tìm kiếm, xóa sản phẩm thử và dữ liệu rác; nguồn là `add-econtract-columns.sql`, `deploy-server-2026-11-04.sql`, `xoa-san-pham-pentest.sql`, `xoa-du-lieu-ra-quet-2026-11.sql`.
 - `HUONG_DAN.txt`.
 
 ## Lưu ý
 
-- Phần xóa của `xoa-du-lieu-ra-quet-2026-11.sql` chưa chạy thử; phải thử trên bản sao trước.
+- Script gộp đã chạy thử trên CSDL local trong giao dịch hoàn tác, với dữ liệu giả: xóa đúng, giữ VHT2. Local không có sản phẩm pentest nên phần xóa sản phẩm chỉ được thử ngày 31/10.
 - Kiểm tra `Workflow:VisibleStepCount` trên máy chủ: phải là 14.
 - L2-12 (giờ máy chủ) và dữ liệu tài khoản thử xử lý trên máy chủ, không nằm trong code.
 - Khi đẩy tải 200 người dùng từ một IP, giới hạn "forms" có thể chặn thao tác gửi biểu mẫu; nới `Security:FormRateLimitPerMinute` trong lúc đo.

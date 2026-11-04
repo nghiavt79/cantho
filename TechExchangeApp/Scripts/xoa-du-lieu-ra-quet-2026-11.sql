@@ -2,7 +2,7 @@
    Dọn dữ liệu không hợp lệ theo L2-01, L2-03 (báo cáo kiểm tra 03/11/2026)
    ---------------------------------------------------------------------
    Chọn:
-     - Nhà cung ứng tên "pHqghUme..." hoặc số 555-666-0606, không gắn sản phẩm, không gắn tài khoản.
+     - Nhà cung ứng tên "pHqghUme..." hoặc số 555-666-0606, không gắn sản phẩm, gói gian hàng, thu chi, không thuộc tài khoản vht_*.
        (Hồ sơ 17924 gắn sản phẩm VHT2 nên không bị chọn: sửa thông tin trong CMS.)
      - Hồ sơ giao dịch có tên chứa pHqghUme, chuỗi mã thử hoặc chữ pentest, hoặc yêu cầu chuyển giao
        ghi số 555-666-0606; không gồm hồ sơ thử VHT2 và hồ sơ đã có hồ sơ đề xuất, hợp đồng.
@@ -26,8 +26,10 @@ CREATE TABLE #Prj (Id INT PRIMARY KEY);
 INSERT INTO #Ncc (Id)
 SELECT n.CungUngId FROM NhaCungUng n
 WHERE (n.FullName LIKE N'pHqghUme%' OR n.Phone = '555-666-0606')
-  AND n.UserId IS NULL
-  AND NOT EXISTS (SELECT 1 FROM SanPhamCNTB s WHERE s.NCUId = n.CungUngId);
+  AND NOT EXISTS (SELECT 1 FROM SanPhamCNTB s WHERE s.NCUId = n.CungUngId)
+  AND NOT EXISTS (SELECT 1 FROM Users u WHERE u.UserId = n.UserId AND u.UserName LIKE 'vht[_]%')
+  AND NOT EXISTS (SELECT 1 FROM SupplierSubscriptions x WHERE x.CungUngId = n.CungUngId)
+  AND NOT EXISTS (SELECT 1 FROM FinanceEntries x WHERE x.CungUngId = n.CungUngId);
 
 INSERT INTO #Prj (Id)
 SELECT p.Id FROM Projects p
