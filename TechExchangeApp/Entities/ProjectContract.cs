@@ -63,5 +63,35 @@ namespace TechExchangeApp.Entities
 
         [StringLength(1000)]
         public string? Note { get; set; }
+
+        // eContract MobiFone (null = hợp đồng theo luồng ký cũ)
+        [StringLength(30)]
+        public string? SigningProvider { get; set; }
+
+        [StringLength(20)]
+        public string? EContractEnv { get; set; }
+
+        public long? EContractId { get; set; }
+
+        [StringLength(100)]
+        public string? EContractNo { get; set; }
+
+        /// <summary>Trạng thái phía eContract, xem EContractConstants</summary>
+        public int? EContractStatus { get; set; }
+
+        /// <summary>See EContractIntegrationState enum</summary>
+        public int IntegrationState { get; set; } = 0;
+
+        [StringLength(500)]
+        public string? FrozenPdfPath { get; set; }
+
+        [StringLength(128)]
+        public string? FrozenPdfSha256 { get; set; }
+
+        public DateTime? EContractIssuedAt { get; set; }
+
+        public DateTime? EContractSyncedAt { get; set; }
+
+        public DateTime? EContractCompletedAt { get; set; }
     }
 }

@@ -160,6 +160,9 @@ namespace TechExchangeApp.Data
         public DbSet<ContractSignatureRequest> ContractSignatureRequests { get; set; } = null!;
         public DbSet<ContractSignature> ContractSignatures { get; set; } = null!;
         public DbSet<ContractAuditLog> ContractAuditLogs { get; set; } = null!;
+        public DbSet<EContractRecipient> EContractRecipients { get; set; } = null!;
+        public DbSet<EContractField> EContractFields { get; set; } = null!;
+        public DbSet<EContractOperation> EContractOperations { get; set; } = null!;
 
         // Profile verification
         public DbSet<UserOtp> UserOtps { get; set; } = null!;

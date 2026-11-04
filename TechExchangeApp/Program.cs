@@ -261,6 +261,13 @@ builder.Services.AddScoped<TechExchangeApp.Interfaces.ISigningProvider, TechExch
 builder.Services.AddScoped<TechExchangeApp.Services.ISigningProviderFactory, TechExchangeApp.Services.SigningProviderFactory>();
 builder.Services.AddHttpClient(); // IHttpClientFactory for CA provider adapters (stub auto-callback, real API calls)
 
+// eContract MobiFone: tự xử lý chuyển hướng để kiểm host khi tải PDF
+builder.Services.AddHttpClient<TechExchangeApp.Services.EContracts.IEContractClient, TechExchangeApp.Services.EContracts.EContractClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(120);
+}).ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler { AllowAutoRedirect = false });
+builder.Services.AddSingleton<TechExchangeApp.Services.EContracts.ISignaturePlacementService, TechExchangeApp.Services.EContracts.SignaturePlacementService>();
+
 
 // --- AI Semantic Matching Services ---
 builder.Services.AddMemoryCache();
