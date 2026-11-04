@@ -306,7 +306,7 @@
 
                             if (!data || data.length === 0) {
                                 $('#supplierSearchResults').html(
-                                    '<div class="text-center text-muted py-4"><i class="fas fa-inbox fa-2x d-block mb-2"></i>Không tìm thấy nhà cung ứng phù hợp.</div>'
+                                    '<div class="text-center text-muted py-4"><i class="fas fa-inbox fa-2x d-block mb-2"></i>@(isConsultant ? "Không tìm thấy nhà cung ứng phù hợp." : "Chưa có nhà cung ứng sẵn sàng nhận lời mời (hồ sơ nhà cung ứng của sản phẩm chưa xuất bản hoặc chưa kích hoạt). Vui lòng liên hệ tư vấn của Sàn.")</div>'
                                 );
                                 return;
                             }
@@ -505,6 +505,13 @@
             <button class="btn btn-secondary step-nav-btn" data-step="@previousStep.StepNumber">
                 <i class="fas fa-arrow-left"></i> Quay lại bước trước
             </button>
+        }
+        @if (rfq != null && Model.UserRole != 2 && !(ViewBag.InvitedSuppliers != null && ((IEnumerable<dynamic>)ViewBag.InvitedSuppliers).Any()))
+        {
+            <div class="alert alert-warning w-100 mb-2">
+                <i class="fas fa-triangle-exclamation me-1"></i>
+                Chưa mời nhà cung ứng nào. Bên bán chỉ tham gia được hồ sơ sau khi được mời: chọn nhà cung ứng ở trên rồi bấm <strong>Mời nhà cung ứng đã chọn</strong>.
+            </div>
         }
         @if (rfq != null && nextStep != null)
         {

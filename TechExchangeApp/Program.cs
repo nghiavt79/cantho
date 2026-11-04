@@ -45,6 +45,16 @@ builder.Services.AddRateLimiter(options =>
             Window = TimeSpan.FromMinutes(1),
             QueueLimit = 0
         }));
+    // Biểu mẫu tạo dữ liệu: nhà cung ứng, sản phẩm, nhu cầu, yêu cầu chuyển giao (L2-01); chỉnh bằng Security:FormRateLimitPerMinute
+    var formPermitPerMinute = builder.Configuration.GetValue("Security:FormRateLimitPerMinute", 20);
+    options.AddPolicy("forms", ctx => System.Threading.RateLimiting.RateLimitPartition.GetFixedWindowLimiter(
+        ctx.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new System.Threading.RateLimiting.FixedWindowRateLimiterOptions
+        {
+            PermitLimit = formPermitPerMinute,
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0
+        }));
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
     options.OnRejected = async (ctx, token) =>
     {

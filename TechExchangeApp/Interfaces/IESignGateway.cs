@@ -60,5 +60,7 @@ namespace TechExchangeApp.Interfaces
         /// Used for seller authorization checks
         /// </summary>
         Task<bool> HasUserSignedProjectNda(int projectId, int userId);
+        /// <summary>Hồ sơ có áp dụng NDA không (theo sản phẩm nguồn; mặc định không áp dụng).</summary>
+        Task<bool> ProjectRequiresNda(int projectId);
     }
 }

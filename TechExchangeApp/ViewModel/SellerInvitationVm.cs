@@ -8,6 +8,7 @@ namespace TechExchangeApp.ViewModel
         public Project Project { get; set; } = null!;
         public RFQRequest RFQ { get; set; } = null!;
         public bool NdaSigned { get; set; }
+        public bool NdaRequired { get; set; } = true;
         public bool ProposalSubmitted { get; set; }
         public bool DeadlinePassed { get; set; }
         public int DaysUntilDeadline { get; set; }

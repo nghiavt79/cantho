@@ -6,7 +6,8 @@
     var mergedStepName = Html.Text("dash.step.5");
     var sourceSteps = Model.Where(s => s.IsVisible).ToList();
     var visibleSteps = sourceSteps.Where(s => s.StepNumber != 6).ToList();
-    var totalVisible = visibleSteps.Count;
+    // Đếm theo đúng số bước quy trình; bước 5 và 6 chỉ gộp một dòng khi hiển thị
+    var totalVisible = sourceSteps.Count;
     bool IsDisplayStepCompleted(TechExchangeApp.ViewModel.ProjectStepNavVm step)
     {
         if (step.IsNotApplicable) return true;
@@ -15,7 +16,7 @@
         var legalReviewStep = sourceSteps.FirstOrDefault(s => s.StepNumber == 6);
         return step.StatusId > 0 && (legalReviewStep == null || legalReviewStep.StatusId > 0);
     }
-    var completedCount = visibleSteps.Count(IsDisplayStepCompleted);
+    var completedCount = sourceSteps.Count(s => s.IsNotApplicable || s.StatusId > 0);
     var progressPercent = totalVisible > 0 ? (int)Math.Round((completedCount / (double)totalVisible) * 100) : 0;
     var isComplete = totalVisible > 0 && completedCount == totalVisible;
 }
@@ -47,8 +48,8 @@
                     var targetStep = step.StepNumber == 5 && relatedLegalStep != null && step.StatusId > 0 && relatedLegalStep.IsAccessible
                         ? relatedLegalStep
                         : step;
-                    var displayStepNumber = i + 1;
-                    var displayStepName = step.StepNumber == 5 ? mergedStepName : step.StepName;
+                    var displayStepNumber = step.StepNumber;
+                    var displayStepName = step.StepNumber == 5 ? mergedStepName + " (5–6)" : step.StepName;
                     var displayCurrent = step.IsCurrent || (relatedLegalStep?.IsCurrent == true);
                     var displayCompleted = IsDisplayStepCompleted(step);
                     var displayAccessible = step.IsAccessible || (relatedLegalStep?.IsAccessible == true);

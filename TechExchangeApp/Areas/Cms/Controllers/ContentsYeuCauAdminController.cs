@@ -341,8 +341,11 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         // POST /cms/ContentsYeuCauAdmin/QuickConfig — cập nhật trạng thái nhanh
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> QuickConfig(long id, int? statusId, DateTime? publishedDate)
+        public async Task<IActionResult> QuickConfig(long id, int? statusId, DateTime? publishedDate, string? lyDoTraVe)
         {
+            if (statusId == 4 && string.IsNullOrWhiteSpace(lyDoTraVe))
+                return Json(new { success = false, message = "Vui lòng nhập lý do trả về." });
+
             var entity = await _context.ContentsYeuCaus
                 .FirstOrDefaultAsync(c => c.Id == id && c.MenuId == YeuCauMenuId);
 
@@ -359,6 +362,18 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             entity.Modified = DateTime.Now;
             entity.Modifier = User.Identity?.Name;
             await _context.SaveChangesAsync();
+
+            if (statusId == 4)
+            {
+                await CmsLogHelper.WriteLogAsync(_context, HttpContext, GetSiteId(), "ContentsYeuCauAdmin", null, 2,
+                    $"QuickConfig nhu cầu #{id}: Trả về, Lý do: {lyDoTraVe!.Trim()}");
+                var ownerId = await _context.Users.AsNoTracking()
+                    .Where(u => u.UserName == entity.Creator).Select(u => (int?)u.Id).FirstOrDefaultAsync();
+                if (ownerId.HasValue)
+                    await HttpContext.RequestServices.GetRequiredService<TechExchangeApp.Services.INotificationQueueService>()
+                        .QueueAsync(ownerId.Value, null, "Nhu cầu bị trả về",
+                            $"Nhu cầu '{entity.Title}' bị trả về. Lý do: {lyDoTraVe!.Trim()}");
+            }
 
             return Json(new { success = true, message = "Đã cập nhật trạng thái." });
         }

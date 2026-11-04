@@ -92,6 +92,7 @@ namespace TechExchangeApp.Controllers
                 // Add to Context directly to bypass Identity Validators that might rely on Normalized columns
                 context.Users.Add(user);
                 await context.SaveChangesAsync();
+                await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, user.UserName, TechExchangeApp.Services.LoginAuditLog.EventAdd, $"Đăng ký tài khoản: {user.UserName}");
                 
                 // Sign In
                 await _signInManager.SignInAsync(user, isPersistent: false);
@@ -290,6 +291,7 @@ namespace TechExchangeApp.Controllers
                 // Add to Context directly
                 context.Users.Add(user);
                 await context.SaveChangesAsync();
+                await TechExchangeApp.Services.LoginAuditLog.WriteAsync(context, HttpContext, user.UserName, TechExchangeApp.Services.LoginAuditLog.EventAdd, $"Đăng ký tài khoản: {user.UserName}");
 
                 // Sign In
                 await _signInManager.SignInAsync(user, isPersistent: false);

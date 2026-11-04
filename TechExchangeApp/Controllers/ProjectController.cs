@@ -133,6 +133,10 @@ namespace TechExchangeApp.Controllers
                     // Log seller access
                     await LogProjectAccessAsync(id.Value, userId, "ViewProject");
                 }
+                else
+                {
+                    await LogProjectAccessAsync(id.Value, userId, "ViewProject");
+                }
             }
             else
             {

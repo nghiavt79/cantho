@@ -546,8 +546,11 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> QuickConfig(int id, int? statusId, bool isActivated)
+        public async Task<IActionResult> QuickConfig(int id, int? statusId, bool isActivated, string? lyDoTraVe)
         {
+            if (statusId == 4 && string.IsNullOrWhiteSpace(lyDoTraVe))
+                return Json(new { success = false, message = "Vui lòng nhập lý do trả về." });
+
             var entity = await _context.NhaCungUngs.FindAsync(id);
             if (entity == null)
                 return Json(new { success = false, message = "Không tìm thấy bản ghi." });
@@ -574,7 +577,13 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     .FirstOrDefaultAsync() ?? ""
                 : "(trống)";
 
-            await WriteLog(2, $"QuickConfig NhaCungUng #{id}: Status={statusTitle}, IsActivated={isActivated}");
+            var reasonText = statusId == 4 ? $", Lý do: {lyDoTraVe!.Trim()}" : "";
+            await WriteLog(2, $"QuickConfig NhaCungUng #{id}: Status={statusTitle}, IsActivated={isActivated}{reasonText}");
+
+            if (statusId == 4 && entity.UserId.HasValue)
+                await HttpContext.RequestServices.GetRequiredService<TechExchangeApp.Services.INotificationQueueService>()
+                    .QueueAsync(entity.UserId.Value, null, "Hồ sơ nhà cung ứng bị trả về",
+                        $"Hồ sơ '{entity.FullName}' bị trả về. Lý do: {lyDoTraVe!.Trim()}");
 
             return Json(new { success = true, message = "Đã cập nhật cấu hình." });
         }

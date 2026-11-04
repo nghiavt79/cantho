@@ -511,6 +511,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
                 // Sync normalized tables
                 await CallSyncSP(entity.ID);
+                await ProductPublishSync.SyncSearchIndexAsync(_context, HttpContext, entity.ID);
 
                 await WriteLog(1, $"Create SanPhamCNTB: {entity.Name} (ID={entity.ID})");
 
@@ -579,6 +580,16 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 return RedirectToListByType(model.ProductType);
             }
 
+            if (model.StatusId == 3 && entity.StatusId != 3)
+            {
+                var blockReason = await ProductPublishSync.GetPublishBlockReasonAsync(_context, model.NCUId);
+                if (blockReason != null)
+                {
+                    TempData["Error"] = blockReason;
+                    return RedirectToListByType(model.ProductType);
+                }
+            }
+
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
@@ -605,6 +616,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 await _context.SaveChangesAsync();
 
                 await CallSyncSP(entity.ID);
+                await ProductPublishSync.SyncSearchIndexAsync(_context, HttpContext, entity.ID);
 
                 await WriteLog(2, $"Update SanPhamCNTB: {entity.Name} (ID={entity.ID})");
 
@@ -660,6 +672,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 _context.SanPhamCNTBs.Remove(entity);
                 await _context.SaveChangesAsync();
 
+                await ProductPublishSync.SyncSearchIndexAsync(_context, HttpContext, id);
                 await WriteLog(3, $"Delete SanPhamCNTB: {entity.Name} (ID={id})");
                 return Json(new { success = true, message = "Đã xóa sản phẩm thành công." });
             }
@@ -701,14 +714,23 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> QuickConfig(int id, int? statusId, int? productType,
-            DateTime? bEffectiveDate, DateTime? eEffectiveDate, string? keywords, bool isHot, byte? displayMode)
+            DateTime? bEffectiveDate, DateTime? eEffectiveDate, string? keywords, bool isHot, byte? displayMode, string? lyDoTraVe)
         {
+            if (statusId == 4 && string.IsNullOrWhiteSpace(lyDoTraVe))
+                return Json(new { success = false, message = "Vui lòng nhập lý do trả về." });
+
             var entity = await _context.SanPhamCNTBs.FindAsync(id);
             if (entity == null)
                 return Json(new { success = false, message = "Không tìm thấy sản phẩm." });
 
             if (entity.SiteId.HasValue && entity.SiteId.Value != GetSiteId())
                 return Json(new { success = false, message = "Không thể cấu hình sản phẩm thuộc sàn khác." });
+
+            if (statusId == 3 && entity.StatusId != 3)
+            {
+                var blockReason = await ProductPublishSync.GetPublishBlockReasonAsync(_context, entity.NCUId);
+                if (blockReason != null) return Json(new { success = false, message = blockReason });
+            }
 
             entity.StatusId = statusId;
             if (productType.HasValue && productType.Value is TypeCongNghe or TypeThietBi or TypeSanPhamTriTue or TypeOcop)
@@ -729,7 +751,20 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             }
 
             await _context.SaveChangesAsync();
-            await WriteLog(2, $"QuickConfig SanPhamCNTB: {entity.Name} (ID={id})");
+            await ProductPublishSync.SyncCategoriesAsync(_context, HttpContext, id);
+            await ProductPublishSync.SyncSearchIndexAsync(_context, HttpContext, id);
+            var reasonText = statusId == 4 ? $", Lý do: {lyDoTraVe!.Trim()}" : "";
+            await WriteLog(2, $"QuickConfig SanPhamCNTB: {entity.Name} (ID={id}){reasonText}");
+
+            if (statusId == 4)
+            {
+                var ownerId = await _context.Users.AsNoTracking()
+                    .Where(u => u.UserName == entity.Creator).Select(u => (int?)u.Id).FirstOrDefaultAsync();
+                if (ownerId.HasValue)
+                    await HttpContext.RequestServices.GetRequiredService<INotificationQueueService>()
+                        .QueueAsync(ownerId.Value, null, "Sản phẩm bị trả về",
+                            $"Sản phẩm '{entity.Name}' bị trả về. Lý do: {lyDoTraVe!.Trim()}");
+            }
 
             return Json(new { success = true, message = "Đã cập nhật cấu hình thành công." });
         }

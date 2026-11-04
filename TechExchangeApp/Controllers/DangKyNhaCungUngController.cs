@@ -87,8 +87,16 @@ namespace TechExchangeApp.Controllers
 
         // ── POST ──
         [HttpPost, ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("forms")]
         public async Task<IActionResult> DangKy(NhaCungUngFormVm vm)
         {
+            // Mỗi tài khoản một hồ sơ: đã có thì cập nhật hồ sơ đó, không sinh thêm bản ghi mới
+            if (vm.CungUngId <= 0)
+            {
+                var (_, current) = await GetCurrentUserAndEntityAsync();
+                if (current != null) vm.CungUngId = current.CungUngId;
+            }
+
             ValidateForm(vm);
 
             if (!ModelState.IsValid)
@@ -179,6 +187,8 @@ namespace TechExchangeApp.Controllers
 
                 _context.NhaCungUngs.Add(entity);
                 await _context.SaveChangesAsync();
+                await TechExchangeApp.Services.LoginAuditLog.WriteAsync(_context, HttpContext, User.Identity?.Name, TechExchangeApp.Services.LoginAuditLog.EventAdd,
+                    $"Đăng ký nhà cung ứng: {entity.FullName} (ID={entity.CungUngId})");
                 TempData["DangKySuccess"] = "Đăng ký thành công! Hồ sơ đang chờ Ban quản trị xét duyệt.";
             }
 

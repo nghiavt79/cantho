@@ -43,6 +43,9 @@ namespace TechExchangeApp.Services
                 Message = message,
                 CreatedAt = DateTime.UtcNow
             });
+            if (ctx != null)
+                _context.Logs.Add(LoginAuditLog.Build(ctx, ctx.User?.Identity?.Name, LoginAuditLog.EventUpdate,
+                    $"Hồ sơ #{projectId}: {message}"));
         }
 
         public async Task InitializeProjectSteps(int projectId)

@@ -226,8 +226,25 @@ namespace TechExchangeApp.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> ProjectRequiresNda(int projectId)
+        {
+            var tech = await _context.TechTransferRequests.AsNoTracking()
+                .Where(t => t.ProjectId == projectId)
+                .Select(t => new { t.FromId, t.TypeData })
+                .FirstOrDefaultAsync();
+            if (tech?.FromId == null || (tech.TypeData ?? 1) != 1) return false;
+
+            return await _context.SanPhamCNTBs.AsNoTracking()
+                .Where(p => p.ID == tech.FromId.Value)
+                .Select(p => p.RequiresNDA)
+                .FirstOrDefaultAsync() == true;
+        }
+
         public async Task<bool> HasUserSignedProjectNda(int projectId, int userId)
         {
+            // Hồ sơ không áp dụng NDA thì coi như đã qua bước này
+            if (!await ProjectRequiresNda(projectId)) return true;
+
             var ndaDoc = await GetProjectNdaAsync(projectId);
             if (ndaDoc == null || ndaDoc.Status != 2) // 2 = Signed
                 return false;

@@ -103,6 +103,7 @@ namespace TechExchangeApp.Controllers
                     Project = invitation.Project,
                     RFQ = invitation.RFQRequest,
                     NdaSigned = ndaSigned,
+                    NdaRequired = await _eSignGateway.ProjectRequiresNda(invitation.ProjectId),
                     ProposalSubmitted = proposalSubmitted,
                     DeadlinePassed = deadlinePassed,
                     DaysUntilDeadline = (invitation.RFQRequest.HanChotNopHoSo - DateTime.Now).Days

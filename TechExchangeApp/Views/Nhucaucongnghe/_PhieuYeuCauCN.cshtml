@@ -31,6 +31,24 @@
                 <input id="txtCode" name="CaptchaAnswer" type="number" inputmode="numeric" class="tech-form-input tech-form-captcha__input" placeholder="@Html.Text("technews.form.captchaPh")" required autocomplete="off" />
             </div>
         </div>
+        <div class="tech-form-field">
+            <label class="tech-form-label" for="ddlLinhVuc">@(TechExchangeApp.Helpers.LangHelper.IsEnglish(Context) ? "Field" : "Lĩnh vực")</label>
+            <select id="ddlLinhVuc" name="LinhVuc" class="tech-form-input">
+                <option value=""></option>
+                @foreach (var lv in Model.LinhVucs)
+                {
+                    <option value="@lv.Text">@lv.Text</option>
+                }
+            </select>
+        </div>
+        <div class="tech-form-field">
+            <label class="tech-form-label" for="txtNganSach">@(TechExchangeApp.Helpers.LangHelper.IsEnglish(Context) ? "Estimated budget" : "Ngân sách dự kiến")</label>
+            <input id="txtNganSach" name="NganSach" class="tech-form-input" maxlength="100" />
+        </div>
+        <div class="tech-form-field">
+            <label class="tech-form-label" for="txtThoiHan">@(TechExchangeApp.Helpers.LangHelper.IsEnglish(Context) ? "Desired deadline" : "Thời hạn mong muốn")</label>
+            <input id="txtThoiHan" type="date" name="ThoiHan" class="tech-form-input" />
+        </div>
         <div class="tech-form-field tech-form-field--full">
             <label class="tech-form-label" for="txtNoiDung">@Html.Text("technews.form.desc") <span class="req">*</span></label>
             <textarea id="txtNoiDung" name="NoiDung" class="tech-form-textarea" rows="4"

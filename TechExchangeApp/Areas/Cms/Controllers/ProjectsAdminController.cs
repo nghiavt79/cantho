@@ -63,6 +63,13 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     (pm, u) => new { pm.Id, pm.ProjectId, pm.Role, u.FullName, UserId = u.Id })
                 .ToListAsync();
 
+            // Bên bán được mời chưa là thành viên hồ sơ nhưng vẫn phải hiện ở cột Bên bán
+            var allInvited = await _context.RFQInvitations.AsNoTracking()
+                .Where(i => i.IsActive)
+                .Join(_context.Users.AsNoTracking(), i => i.SellerId, u => u.Id,
+                    (i, u) => new { i.ProjectId, u.FullName })
+                .ToListAsync();
+
             // Text search filter
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -144,7 +151,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
                 var sellers = allMembers
                     .Where(m => m.ProjectId == p.Id && m.Role == 2)
-                    .Select(m => m.FullName ?? "").ToList();
+                    .Select(m => m.FullName ?? "")
+                    .Concat(allInvited.Where(i => i.ProjectId == p.Id).Select(i => i.FullName ?? ""))
+                    .Distinct().ToList();
 
                 var consultants = allMembers
                     .Where(m => m.ProjectId == p.Id && m.Role == 3)
@@ -209,7 +218,8 @@ namespace TechExchangeApp.Areas.Cms.Controllers
 
         // ─── NHẬT KÝ HỒ SƠ (HSMT A.8.5): chuyển bước, truy cập, tải tệp ───
         [HttpGet]
-        public async Task<IActionResult> Logs(int id, string? action = null)
+        // Tham số lọc không được đặt tên "action": trùng giá trị route nên luôn nhận "Logs" và trả danh sách rỗng
+        public async Task<IActionResult> Logs(int id, string? logAction = null)
         {
             var project = await _context.Projects.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
             if (project == null) return NotFound();
@@ -229,7 +239,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                           from u in uj.DefaultIfEmpty()
                           where l.ProjectId == id
                           select new { l, u };
-            if (!string.IsNullOrWhiteSpace(action)) accessQ = accessQ.Where(x => x.l.Action == action);
+            if (!string.IsNullOrWhiteSpace(logAction)) accessQ = accessQ.Where(x => x.l.Action == logAction);
             var access = await accessQ.OrderByDescending(x => x.l.Timestamp).Take(1000)
                 .Select(x => new ProjectLogRow
                 {
@@ -238,10 +248,10 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     Detail = x.l.AdditionalData, Ip = x.l.IpAddress
                 }).ToListAsync();
 
-            var rows = (string.IsNullOrWhiteSpace(action) ? transitions : new List<ProjectLogRow>())
+            var rows = (string.IsNullOrWhiteSpace(logAction) ? transitions : new List<ProjectLogRow>())
                 .Concat(access).OrderByDescending(r => r.Time).ToList();
             ViewBag.Project = project;
-            ViewBag.ActionFilter = action;
+            ViewBag.ActionFilter = logAction;
             ViewBag.Actions = await _context.ProjectAccessLogs.AsNoTracking().Where(l => l.ProjectId == id)
                 .Select(l => l.Action).Distinct().OrderBy(a => a).ToListAsync();
             return View(rows);
@@ -335,6 +345,112 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             return Json(new { success = true, message = $"Đã thêm nhà tư vấn '{userName}' vào dự án." });
         }
 
+        // ─── GÁN BÊN BÁN (GET): nhà cung ứng đã xuất bản, kích hoạt và có tài khoản ───
+        [HttpGet]
+        public async Task<IActionResult> AddSeller(int projectId)
+        {
+            var project = await _context.Projects.AsNoTracking().FirstOrDefaultAsync(p => p.Id == projectId);
+            if (project == null) return NotFound();
+
+            var invited = await _context.RFQInvitations.AsNoTracking()
+                .Where(i => i.ProjectId == projectId && i.IsActive)
+                .Join(_context.Users.AsNoTracking(), i => i.SellerId, u => u.Id,
+                    (i, u) => new { i.Id, i.SellerId, u.FullName, u.UserName })
+                .ToListAsync();
+            var invitedIds = invited.Select(i => i.SellerId).ToList();
+
+            var available = await _context.NhaCungUngs.AsNoTracking()
+                .Where(n => n.UserId != null && n.IsActivated == true && n.StatusId == 3
+                    && n.LanguageId == 1 && !invitedIds.Contains(n.UserId!.Value))
+                .OrderBy(n => n.FullName)
+                .Select(n => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Value = n.UserId!.Value.ToString(),
+                    Text = n.FullName
+                })
+                .ToListAsync();
+
+            ViewBag.ProjectId = projectId;
+            ViewBag.ProjectName = project.ProjectName;
+            ViewBag.Available = available;
+            ViewBag.Invited = invited
+                .Select(i => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Value = i.Id.ToString(),
+                    Text = $"{i.FullName} ({i.UserName})"
+                }).ToList();
+            ViewBag.HasRfq = await _context.RFQRequests.AnyAsync(r => r.ProjectId == projectId);
+            return PartialView("_AddSellerPartial");
+        }
+
+        // ─── GÁN BÊN BÁN (POST): tạo lời mời như khi bên mua mời ở bước 3 ───
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddSeller(int projectId, int sellerUserId)
+        {
+            var project = await _context.Projects.FindAsync(projectId);
+            if (project == null)
+                return Json(new { success = false, message = "Không tìm thấy dự án." });
+
+            var rfq = await _context.RFQRequests.FirstOrDefaultAsync(r => r.ProjectId == projectId);
+            if (rfq == null)
+                return Json(new { success = false, message = "Hồ sơ chưa có yêu cầu báo giá (bước 3) nên chưa gán được bên bán." });
+
+            var isValidSeller = await _context.NhaCungUngs.AnyAsync(n =>
+                n.UserId == sellerUserId && n.IsActivated == true && n.StatusId == 3);
+            if (!isValidSeller)
+                return Json(new { success = false, message = "Hồ sơ nhà cung ứng chưa ở trạng thái Xuất bản và Kích hoạt." });
+
+            var invitation = await _context.RFQInvitations.FirstOrDefaultAsync(i =>
+                i.ProjectId == projectId && i.RFQId == rfq.Id && i.SellerId == sellerUserId);
+            if (invitation == null)
+            {
+                _context.RFQInvitations.Add(new RFQInvitation
+                {
+                    ProjectId = projectId,
+                    RFQId = rfq.Id,
+                    SellerId = sellerUserId,
+                    InvitedDate = DateTime.Now,
+                    StatusId = 0,
+                    IsActive = true
+                });
+            }
+            else
+            {
+                invitation.IsActive = true;
+                invitation.InvitedDate = DateTime.Now;
+                invitation.StatusId = 0;
+            }
+            rfq.StatusId = 2; // Sent
+            await _context.SaveChangesAsync();
+
+            await WriteLog(1, $"Add Seller #{sellerUserId} to Project '{project.ProjectCode}' (ProjectId={projectId})");
+            await _notificationService.QueueAsync(sellerUserId, null,
+                "📨 Bạn được mời nộp hồ sơ báo giá",
+                "Bạn được mời nộp hồ sơ báo giá. Hãy vào mục 'Lời mời tham gia' để xem chi tiết và nộp hồ sơ trước hạn.");
+
+            return Json(new { success = true, message = "Đã gán bên bán vào hồ sơ." });
+        }
+
+        // ─── THU HỒI BÊN BÁN: chỉ khi chưa nộp hồ sơ đề xuất ───
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveSeller(int invitationId)
+        {
+            var invitation = await _context.RFQInvitations.FindAsync(invitationId);
+            if (invitation == null)
+                return Json(new { success = false, message = "Không tìm thấy lời mời." });
+
+            var hasProposal = await _context.ProposalSubmissions.AnyAsync(p =>
+                p.ProjectId == invitation.ProjectId && p.NguoiTao == invitation.SellerId);
+            if (hasProposal)
+                return Json(new { success = false, message = "Bên bán đã nộp hồ sơ đề xuất, không thu hồi được." });
+
+            invitation.IsActive = false;
+            await _context.SaveChangesAsync();
+            await WriteLog(3, $"Remove Seller #{invitation.SellerId} from ProjectId={invitation.ProjectId}");
+            return Json(new { success = true, message = "Đã thu hồi lời mời." });
+        }
         // ─── REMOVE CONSULTANT ───
         [HttpPost]
         [ValidateAntiForgeryToken]

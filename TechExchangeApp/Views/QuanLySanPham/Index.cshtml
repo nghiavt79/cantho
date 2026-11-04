@@ -24,10 +24,10 @@
         _ => "bg-warning text-dark"
     };
     string StatusLabel(int? sid) => sid switch {
-        1 => "Chờ duyệt",
-        2 => "Đang duyệt",
-        3 => "Đã duyệt",
-        4 => "Từ chối",
+        1 => "Nháp",
+        2 => "Duyệt",
+        3 => "Xuất bản",
+        4 => "Trả về",
         _ => "—"
     };
     string ProductTypeLabel(int t) => t switch {
@@ -98,10 +98,10 @@
             <div class="col-md-2">
               <select name="statusId" class="form-select form-select-sm">
                 <option value="">-- Trạng thái --</option>
-                <option value="1" selected="@(sid == "1")">Chờ duyệt</option>
-                <option value="2" selected="@(sid == "2")">Đang duyệt</option>
-                <option value="3" selected="@(sid == "3")">Đã duyệt</option>
-                <option value="4" selected="@(sid == "4")">Từ chối</option>
+                <option value="1" selected="@(sid == "1")">Nháp</option>
+                <option value="2" selected="@(sid == "2")">Duyệt</option>
+                <option value="3" selected="@(sid == "3")">Xuất bản</option>
+                <option value="4" selected="@(sid == "4")">Trả về</option>
               </select>
             </div>
             <div class="col-md-2">

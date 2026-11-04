@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
@@ -40,6 +41,13 @@ namespace TechExchangeApp.Controllers.FrontEnd
             int.TryParse(_configuration["AppSettings:SiteId"], out var id) ? id : 1;
 
         // Sinh math captcha (kiểu trang liên hệ), lưu đáp án vào Session, trả câu hỏi.
+        private List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> LoadLinhVucOptions() =>
+            _context.Categories.AsNoTracking()
+                .Where(c => c.ParentId == 1)
+                .OrderBy(c => c.Sort).ThenBy(c => c.Title)
+                .Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Value = c.CatId.ToString(), Text = c.Title ?? "" })
+                .ToList();
+
         private string GenerateCaptcha()
         {
             var rng = new Random();
@@ -104,6 +112,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
             // Math captcha cho form gửi nhu cầu
             vm.PhieuYeuCau.CaptchaQuestion = GenerateCaptcha();
+            vm.PhieuYeuCau.LinhVucs = LoadLinhVucOptions();
 
             // Tự điền thông tin liên hệ nếu người dùng đã đăng nhập
             PrefillFromCurrentUser(vm.PhieuYeuCau);
@@ -269,6 +278,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("forms")]
         public async Task<IActionResult> GuiPhieuYeuCau(PhieuYeuCauCNViewModel model)
         {
             bool isAjax = string.Equals(Request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.OrdinalIgnoreCase);
@@ -310,6 +320,12 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 }
 
                 var noiDung = model.NoiDung?.Trim() ?? "";
+                // Thông tin thêm đi cùng nội dung phiếu để cán bộ dùng khi tạo tin công khai
+                var extras = new List<string>();
+                if (!string.IsNullOrWhiteSpace(model.LinhVuc)) extras.Add($"Lĩnh vực: {model.LinhVuc.Trim()}");
+                if (!string.IsNullOrWhiteSpace(model.NganSach)) extras.Add($"Ngân sách dự kiến: {model.NganSach.Trim()}");
+                if (model.ThoiHan.HasValue) extras.Add($"Thời hạn mong muốn: {model.ThoiHan.Value:dd/MM/yyyy}");
+                if (extras.Count > 0) noiDung += Environment.NewLine + Environment.NewLine + string.Join(Environment.NewLine, extras);
                 var email = model.Email?.Trim() ?? "";
                 var phone = model.Phone?.Trim() ?? "";
 
@@ -356,6 +372,8 @@ namespace TechExchangeApp.Controllers.FrontEnd
 
                 _context.PhieuYeuCauCNTBs.Add(p);
                 await _context.SaveChangesAsync();
+                await TechExchangeApp.Services.LoginAuditLog.WriteAsync(_context, HttpContext, User.Identity?.Name ?? model.FullName, TechExchangeApp.Services.LoginAuditLog.EventAdd,
+                    $"Đăng nhu cầu công nghệ: phiếu #{p.PhieuYeuCauId}");
 
                 // ── Send email notification to admin ──
                 if (!isSpam)
@@ -535,9 +553,32 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 DetailUrl = $"{_mainDomain}tim-mua-cong-nghe/{q.QueryString}-{q.Id}"
             }).ToList();
 
+            // Gợi ý sản phẩm, nhà cung ứng cùng lĩnh vực với nhu cầu
+            var catIds = (raw.LinhVucId ?? "").Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => int.TryParse(x.Trim(), out var c) ? c : 0).Where(c => c > 0).ToList();
+            if (catIds.Count > 0)
+            {
+                var goiY = (from sp in _context.SanPhamCNTBs.AsNoTracking()
+                            join c in _context.SanPhamCNTBCategories.AsNoTracking() on sp.ID equals c.SanPhamCNTBId
+                            join n in _context.NhaCungUngs.AsNoTracking() on sp.NCUId equals n.CungUngId into nj
+                            from n in nj.DefaultIfEmpty()
+                            where catIds.Contains(c.CatId) && sp.StatusId == 3 && sp.LanguageId == lang && sp.ProductType != 4
+                            orderby sp.PublishedDate descending
+                            select new { sp.ID, sp.Name, sp.QueryString, sp.QuyTrinhHinhAnh, NccName = n != null ? n.FullName : null })
+                           .Take(12).ToList();
+                vm.GoiYSanPhams = goiY.DistinctBy(x => x.ID).Take(4).Select(x => new GoiYSanPhamVm
+                {
+                    Name = x.Name,
+                    NccName = x.NccName,
+                    Image = x.QuyTrinhHinhAnh,
+                    DetailUrl = $"{_mainDomain}san-pham/{x.QueryString}-{x.ID}"
+                }).ToList();
+            }
+
 
             // Captcha cho modal liên hệ/tư vấn
             vm.PhieuYeuCau.CaptchaQuestion = GenerateCaptcha();
+            vm.PhieuYeuCau.LinhVucs = LoadLinhVucOptions();
 
             // Tự điền thông tin liên hệ nếu người dùng đã đăng nhập
             PrefillFromCurrentUser(vm.PhieuYeuCau);

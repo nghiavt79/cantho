@@ -13,6 +13,7 @@ namespace TechExchangeApp.ViewModel
         public int TargetId { get; set; }
 
         public int? CommentTypeId { get; set; }
+        public List<GoiYSanPhamVm> GoiYSanPhams { get; set; } = new();
         public PhieuYeuCauCNViewModel PhieuYeuCau { get; set; } = new();
 
         public PortletYeuCauMoiViewModel YeuCauMoi { get; set; } = new();
@@ -53,6 +54,14 @@ namespace TechExchangeApp.ViewModel
         // true nếu nhu cầu còn tiếp nhận đề xuất (trạng thái != đã kết thúc)
         public bool DangTiepNhan => (TrangThaiNhuCau ?? 1) != 3;
     }
+    public class GoiYSanPhamVm
+    {
+        public string? Name { get; set; }
+        public string? NccName { get; set; }
+        public string? Image { get; set; }
+        public string DetailUrl { get; set; } = "";
+    }
+
     public class RelationItemVm
     {
         public int Id { get; set; }

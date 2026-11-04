@@ -14,10 +14,10 @@
     var sidebarData = await AccountService.GetSidebarDataAsync(userId);
 
     string StatusLabel(int? sid) => sid switch {
-        1 => "Chờ duyệt",
-        2 => "Đang duyệt",
-        3 => "Đã duyệt",
-        4 => "Từ chối",
+        1 => "Nháp",
+        2 => "Duyệt",
+        3 => "Xuất bản",
+        4 => "Trả về",
         _ => "—"
     };
     string BadgeClass(int? sid) => sid switch {

@@ -234,6 +234,7 @@ namespace TechExchangeApp.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         [RequestSizeLimit(52_428_800)]
         [RequestFormLimits(ValueLengthLimit = 52_428_800, MultipartBodyLengthLimit = 52_428_800)]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("forms")]
         public async Task<IActionResult> TaoMoi(SanPhamCNTBFormVm model)
         {
             if (!ModelState.IsValid)
@@ -279,6 +280,10 @@ namespace TechExchangeApp.Controllers
 
                 _context.SanPhamCNTBs.Add(entity);
                 await _context.SaveChangesAsync();
+                await Services.ProductPublishSync.SyncCategoriesAsync(_context, HttpContext, entity.ID);
+                await Services.ProductPublishSync.SyncSearchIndexAsync(_context, HttpContext, entity.ID);
+                await Services.LoginAuditLog.WriteAsync(_context, HttpContext, User.Identity?.Name, Services.LoginAuditLog.EventAdd,
+                    $"Đăng sản phẩm: {entity.Name} (ID={entity.ID})");
                 await transaction.CommitAsync();
 
                 TempData["Success"] = $"Đã đăng ký '{entity.Name}' thành công! Hồ sơ đang chờ xét duyệt.";
@@ -348,6 +353,10 @@ namespace TechExchangeApp.Controllers
                 entity.QueryString = ToSlug(entity.Name ?? "");
 
                 await _context.SaveChangesAsync();
+                await Services.ProductPublishSync.SyncCategoriesAsync(_context, HttpContext, entity.ID);
+                await Services.ProductPublishSync.SyncSearchIndexAsync(_context, HttpContext, entity.ID);
+                await Services.LoginAuditLog.WriteAsync(_context, HttpContext, User.Identity?.Name, Services.LoginAuditLog.EventUpdate,
+                    $"Sửa sản phẩm: {entity.Name} (ID={entity.ID})");
                 await transaction.CommitAsync();
 
                 TempData["Success"] = "Cập nhật thành công! Hồ sơ đang chờ xét duyệt lại.";
@@ -381,6 +390,8 @@ namespace TechExchangeApp.Controllers
                 await _context.Database.ExecuteSqlRawAsync("DELETE FROM SanPhamCNTBMedia WHERE SanPhamCNTBId = {0}", id);
                 _context.SanPhamCNTBs.Remove(entity);
                 await _context.SaveChangesAsync();
+                await Services.LoginAuditLog.WriteAsync(_context, HttpContext, User.Identity?.Name, Services.LoginAuditLog.EventDelete,
+                    $"Xóa sản phẩm: {entity.Name} (ID={id})");
                 return Json(new { success = true, message = "Đã xóa sản phẩm." });
             }
             catch (Exception ex)

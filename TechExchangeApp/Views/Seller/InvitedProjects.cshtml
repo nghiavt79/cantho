@@ -83,7 +83,7 @@
                                             <text>@Html.Text("seller.inv.deadlinePrefix") @item.RFQ.HanChotNopHoSo.ToString(dateFmt) @string.Format(Html.Text("seller.inv.daysLeftFmt"), item.DaysUntilDeadline)</text>
                                         }
                                     </span>
-                                    <span><i class="fas @(item.NdaSigned ? "fa-file-circle-check" : "fa-file-signature")"></i>@(item.NdaSigned ? Html.Text("seller.inv.ndaSigned") : Html.Text("seller.inv.ndaNotSigned"))</span>
+                                    <span><i class="fas @(item.NdaSigned ? "fa-file-circle-check" : "fa-file-signature")"></i>@(!item.NdaRequired ? "NDA: Không áp dụng" : item.NdaSigned ? Html.Text("seller.inv.ndaSigned") : Html.Text("seller.inv.ndaNotSigned"))</span>
                                 </div>
 
                                 <div class="user-invitation-card-actions mt-auto">

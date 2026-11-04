@@ -204,6 +204,11 @@ $(function(){
     // ──────────────────────────────────────────────
     // ADD CONSULTANT
     // ──────────────────────────────────────────────
+    $(document).on('click', '.btn-add-seller', function(e) {
+        e.preventDefault();
+        openModal('@Url.Action("AddSeller","ProjectsAdmin",new{area="Cms"})?projectId=' + $(this).data('id'),
+            'Gán bên bán', 'bg-primary');
+    });
     $(document).on('click', '.btn-add-consultant', function(e) {
         e.preventDefault();
         var projectId = $(this).data('id');

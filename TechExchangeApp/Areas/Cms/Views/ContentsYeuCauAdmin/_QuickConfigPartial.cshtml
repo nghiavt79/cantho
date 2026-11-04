@@ -28,4 +28,8 @@
         <input type="datetime-local" name="publishedDate" class="form-control form-control-sm"
                value="@(publishedDate?.ToString("yyyy-MM-ddTHH:mm"))" />
     </div>
+    <div class="mb-2">
+        <label class="form-label fw-semibold small">Lý do trả về <span class="text-muted fw-normal">(bắt buộc khi chọn Trả về)</span></label>
+        <textarea name="lyDoTraVe" class="form-control form-control-sm" rows="2" maxlength="500"></textarea>
+    </div>
 </form>

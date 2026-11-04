@@ -123,6 +123,7 @@ namespace TechExchangeApp.Controllers
         // POST: /TechTransfer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Microsoft.AspNetCore.RateLimiting.EnableRateLimiting("forms")]
         public async Task<IActionResult> Create(TechTransferRequest model)
         {
             if (ModelState.IsValid)
@@ -192,6 +193,21 @@ namespace TechExchangeApp.Controllers
                          await _notifQueue.QueueAsync(userId, project.Id,
                              "Hồ sơ giao dịch/chuyển giao đã được tạo",
                              $"Yêu cầu chuyển giao '{model.TenCongNghe}' đã ghi nhận thành công. {nextStepMsg}");
+                         // Báo cho chủ sản phẩm biết có yêu cầu mới; quyền vào hồ sơ vẫn theo lời mời ở bước 3
+                         if (model.FromId.HasValue && (model.TypeData ?? 1) == 1)
+                         {
+                             var ownerId = await (from p in _context.SanPhamCNTBs.AsNoTracking()
+                                                  join n in _context.NhaCungUngs.AsNoTracking() on p.NCUId equals n.CungUngId
+                                                  where p.ID == model.FromId.Value
+                                                  select n.UserId).FirstOrDefaultAsync();
+                             if (ownerId.HasValue && ownerId.Value != userId)
+                                 await _notifQueue.QueueAsync(ownerId.Value, null,
+                                     "Có yêu cầu chuyển giao mới cho sản phẩm của bạn",
+                                     $"Có bên mua gửi yêu cầu chuyển giao cho '{model.TenCongNghe}'. Bạn sẽ nhận lời mời tại mục 'Lời mời tham gia' khi bên mua phát hành yêu cầu báo giá.");
+                         }
+
+                         await Services.LoginAuditLog.WriteAsync(_context, HttpContext, User.Identity?.Name, Services.LoginAuditLog.EventAdd,
+                             $"Tạo hồ sơ giao dịch {project.ProjectCode}: {model.TenCongNghe}");
 
                         await transaction.CommitAsync();
 

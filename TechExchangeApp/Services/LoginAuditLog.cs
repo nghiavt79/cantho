@@ -12,30 +12,40 @@ namespace TechExchangeApp.Services
         public const int EventLogin = 4;
         public const int EventLogout = 5;
         public const int EventLoginFailed = 7;
+        // Thao tác ở trang người dùng dùng chung danh mục sự kiện với CMS
+        public const int EventAdd = 1;
+        public const int EventUpdate = 2;
+        public const int EventDelete = 3;
 
-        public static async Task WriteAsync(AppDbContext context, HttpContext httpContext, string? userName, int eventId, string content)
+        /// <summary>Dựng bản ghi nhật ký, chưa lưu (dùng khi cần lưu cùng thao tác chính).</summary>
+        public static Log Build(HttpContext httpContext, string? userName, int eventId, string content)
         {
             static string? Trunc(string? s, int max) =>
                 string.IsNullOrEmpty(s) || s.Length <= max ? s : s[..max];
 
+            var config = httpContext.RequestServices.GetService<IConfiguration>();
+            var siteId = int.TryParse(config?["AppSettings:SiteId"], out var id) ? id : 1;
+
+            return new Log
+            {
+                FunctionID = 0,
+                ActTime = DateTime.Now,
+                EventID = eventId,
+                Content = Trunc(content, 2000),
+                ClientIP = Trunc(httpContext.Connection.RemoteIpAddress?.ToString(), 50),
+                UserName = Trunc(userName?.Trim(), 50),
+                Domain = Trunc(httpContext.Request.Host.Value, 500) ?? "",
+                LanguageId = 1,
+                ParentId = 0,
+                SiteId = siteId
+            };
+        }
+
+        public static async Task WriteAsync(AppDbContext context, HttpContext httpContext, string? userName, int eventId, string content)
+        {
             try
             {
-                var config = httpContext.RequestServices.GetService<IConfiguration>();
-                var siteId = int.TryParse(config?["AppSettings:SiteId"], out var id) ? id : 1;
-
-                context.Logs.Add(new Log
-                {
-                    FunctionID = 0,
-                    ActTime = DateTime.Now,
-                    EventID = eventId,
-                    Content = Trunc(content, 2000),
-                    ClientIP = Trunc(httpContext.Connection.RemoteIpAddress?.ToString(), 50),
-                    UserName = Trunc(userName?.Trim(), 50),
-                    Domain = Trunc(httpContext.Request.Host.Value, 500) ?? "",
-                    LanguageId = 1,
-                    ParentId = 0,
-                    SiteId = siteId
-                });
+                context.Logs.Add(Build(httpContext, userName, eventId, content));
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)
