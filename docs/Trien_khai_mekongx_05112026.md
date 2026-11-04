@@ -1,7 +1,7 @@
 # Cập nhật mekongx.vn – 05/11/2026
 
 Khắc phục lỗi L2-01 … L2-11 theo báo cáo kiểm tra chuỗi nghiệp vụ lõi ngày 03/11/2026, trước vận hành thử lần 2 (09–13/11/2026).
-Trạng thái: **đã đóng gói `deploy-mekongx-2026-11-05.zip`, chưa chạy trên máy chủ**. Code: nhánh `claude/sua-loi-l2-vht2`.
+Trạng thái: **đã đóng gói `deploy-mekongx-2026-11-05.zip`, chưa chạy trên máy chủ**. Code: `master` trên máy, gồm bản sửa L2, phần đầu tích hợp eContract (chưa có màn hình gọi) và hồ sơ thuê Sàn.
 
 ## Nội dung sửa
 
@@ -19,6 +19,7 @@ Trạng thái: **đã đóng gói `deploy-mekongx-2026-11-05.zip`, chưa chạy 
 ## Gói
 
 - `app\TechExchangeApp.dll`: không đổi thư viện, CSS, JS.
+- `sql\add-econtract-columns.sql`: **bắt buộc, chạy trước khi chép dll** vì `ProjectContracts` có cột mới; `ECONTRACT_ENABLED` mặc định 0.
 - `sql\deploy-server-2026-11-04.sql`: **bắt buộc**, chạy lại được.
 - `sql\tuy-chon-xoa-du-lieu-ra-quet.sql`, `sql\tuy-chon-xoa-san-pham-pentest.sql`: tùy chọn, đều có chế độ chỉ liệt kê.
 - `HUONG_DAN.txt`.
