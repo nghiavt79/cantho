@@ -42,5 +42,15 @@ namespace TechExchangeApp.Configuration
         public const string TranslationAutoPublish     = "TRANSLATION_AUTO_PUBLISH";     // 1 = hiển thị auto ngay, 0 = cần duyệt
         public const string TranslationAnthropicApiKey = "TRANSLATION_ANTHROPIC_API_KEY"; // sensitive (Haiku + Sonnet dùng chung)
         public const string TranslationGoogleApiKey    = "TRANSLATION_GOOGLE_API_KEY";    // sensitive
+
+        // ── ECONTRACT (MobiFone) ─────────────────────────────────────────────
+        public const string EContractEnabled       = "ECONTRACT_ENABLED";
+        public const string EContractEnv           = "ECONTRACT_ENV";
+        public const string EContractBaseUrl       = "ECONTRACT_BASE_URL";       // không gồm /api/v1
+        public const string EContractEmail         = "ECONTRACT_EMAIL";
+        public const string EContractPassword      = "ECONTRACT_PASSWORD";       // sensitive
+        public const string EContractTypeId        = "ECONTRACT_TYPE_ID";
+        public const string EContractOrgId         = "ECONTRACT_ORG_ID";
+        public const string EContractDownloadHosts = "ECONTRACT_DOWNLOAD_HOSTS"; // cách nhau dấu phẩy
     }
 }
