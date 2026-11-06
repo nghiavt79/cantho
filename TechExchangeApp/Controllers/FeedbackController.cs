@@ -19,7 +19,7 @@ namespace TechExchangeApp.Controllers
 
         // ===== GIỮ NGUYÊN LOGIC WEBFORMS =====
         private int SiteId => 1;
-        private string DomainName => string.IsNullOrWhiteSpace(_mainDomain) ? "techport.vn" : new Uri(_mainDomain).Host;
+        private string DomainName => string.IsNullOrWhiteSpace(_mainDomain) ? "mekongx.vn" : new Uri(_mainDomain).Host;
 
         public FeedbackController(AppDbContext context, IConfiguration config, IOptions<AppSettings> appSettings, ILogger<FeedbackController> logger)
         {

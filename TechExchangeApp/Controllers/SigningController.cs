@@ -325,7 +325,7 @@ namespace TechExchangeApp.Controllers
                     null,                        // no signed PDF in stub
                     dto.CertSerial  ?? "STUB-CERT-001",
                     dto.CertSubject ?? $"CN=Stub Signer",
-                    dto.CertIssuer  ?? "CN=TechPort Stub CA",
+                    dto.CertIssuer  ?? "CN=Mekongx Stub CA",
                     null);
 
                 if (ok)

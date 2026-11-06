@@ -31,9 +31,9 @@ namespace TechExchangeApp.Controllers
             _accountService = accountService;
             _verify         = verify;
 
-            // Lấy domain từ AppSettings, fallback về techport.vn
+            // Lấy domain từ AppSettings, fallback về mekongx.vn
             var raw = appSettings?.Value?.MainDomain ?? string.Empty;
-            _domainName = string.IsNullOrWhiteSpace(raw) ? "techport.vn" : new Uri(raw).Host;
+            _domainName = string.IsNullOrWhiteSpace(raw) ? "mekongx.vn" : new Uri(raw).Host;
             _mainDomain = raw.TrimEnd('/');
         }
 

@@ -215,7 +215,7 @@ namespace TechExchangeApp.Controllers
                     DateCreated = DateTime.Now,
                     Quantity = 1,
                     TypeId = 1,
-                    Domain = string.IsNullOrWhiteSpace(_mainDomain) ? "techport.vn" : new Uri(_mainDomain).Host
+                    Domain = string.IsNullOrWhiteSpace(_mainDomain) ? "mekongx.vn" : new Uri(_mainDomain).Host
                 };
 
                 _context.ShoppingCarts.Add(cart);

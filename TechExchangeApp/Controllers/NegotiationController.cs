@@ -337,7 +337,7 @@ namespace TechExchangeApp.Controllers
                     if (string.IsNullOrEmpty(phone))
                         return Json(new { success = false, message = "Không tìm thấy số điện thoại. Vui lòng nhập số điện thoại." });
 
-                    var smsMessage = $"[Techport] Mã OTP xác nhận ký Bước 5 (Dự án #{dto.ProjectId}): {otp}. Có hiệu lực {expiryMinutes} phút.";
+                    var smsMessage = $"[Sàn GDCN Cần Thơ] Mã OTP xác nhận ký Bước 5 (Dự án #{dto.ProjectId}): {otp}. Có hiệu lực {expiryMinutes} phút.";
                     await _smsSender.SendAsync(phone, smsMessage);
                     var maskedPhone = phone.Length > 4 ? new string('*', phone.Length - 4) + phone[^4..] : phone;
                     return Json(new { success = true, channel = "sms", message = $"OTP đã gửi đến SMS {maskedPhone}. Có hiệu lực {expiryMinutes} phút." });
