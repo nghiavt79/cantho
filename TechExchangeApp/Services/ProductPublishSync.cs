@@ -14,21 +14,26 @@ namespace TechExchangeApp.Services
 
         /// <summary>
         /// Tách CategoryId vào bảng lĩnh vực (trang lĩnh vực đọc từ bảng này). Không gọi sp_SyncSanPhamCNTB_Normalized
-        /// vì thủ tục đó còn ghi lại ảnh, giá. CategoryId trống thì giữ nguyên các dòng đang có.
+        /// vì thủ tục đó còn ghi lại ảnh, giá. Không có mã hợp lệ thì giữ nguyên các dòng đang có.
         /// </summary>
         public static async Task SyncCategoriesAsync(AppDbContext context, HttpContext http, int productId)
         {
             try
             {
                 await context.Database.ExecuteSqlInterpolatedAsync($@"
-                    IF EXISTS (SELECT 1 FROM dbo.SanPhamCNTB WHERE ID = {productId} AND NULLIF(LTRIM(RTRIM(CategoryId)), '') IS NOT NULL)
+                    DECLARE @Cat TABLE (CatId INT PRIMARY KEY);
+                    INSERT INTO @Cat (CatId)
+                    SELECT DISTINCT k.CatId
+                    FROM dbo.SanPhamCNTB s
+                    CROSS APPLY STRING_SPLIT(REPLACE(ISNULL(s.CategoryId, ''), ',', ';'), ';') v
+                    JOIN dbo.Category k ON k.CatId = TRY_CAST(LTRIM(RTRIM(v.value)) AS INT)
+                    WHERE s.ID = {productId};
+
+                    IF EXISTS (SELECT 1 FROM @Cat)
                     BEGIN
                         DELETE FROM dbo.SanPhamCNTBCategory WHERE SanPhamCNTBId = {productId};
                         INSERT INTO dbo.SanPhamCNTBCategory (SanPhamCNTBId, CatId)
-                        SELECT DISTINCT s.ID, TRY_CAST(LTRIM(RTRIM(v.value)) AS INT)
-                        FROM dbo.SanPhamCNTB s
-                        CROSS APPLY STRING_SPLIT(REPLACE(s.CategoryId, ',', ';'), ';') v
-                        WHERE s.ID = {productId} AND TRY_CAST(LTRIM(RTRIM(v.value)) AS INT) > 0;
+                        SELECT {productId}, CatId FROM @Cat;
                     END");
             }
             catch (Exception ex)

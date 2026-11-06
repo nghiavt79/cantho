@@ -367,15 +367,43 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             {
                 await CmsLogHelper.WriteLogAsync(_context, HttpContext, GetSiteId(), "ContentsYeuCauAdmin", null, 2,
                     $"QuickConfig nhu cầu #{id}: Trả về, Lý do: {lyDoTraVe!.Trim()}");
-                var ownerId = await _context.Users.AsNoTracking()
-                    .Where(u => u.UserName == entity.Creator).Select(u => (int?)u.Id).FirstOrDefaultAsync();
-                if (ownerId.HasValue)
-                    await HttpContext.RequestServices.GetRequiredService<TechExchangeApp.Services.INotificationQueueService>()
-                        .QueueAsync(ownerId.Value, null, "Nhu cầu bị trả về",
-                            $"Nhu cầu '{entity.Title}' bị trả về. Lý do: {lyDoTraVe!.Trim()}");
+                await NotifyDemandReturnedAsync(entity, lyDoTraVe!.Trim());
             }
 
             return Json(new { success = true, message = "Đã cập nhật trạng thái." });
+        }
+
+        // Người nhận lý do trả về: người đăng phiếu (tài khoản, hoặc email nếu gửi không đăng nhập);
+        // tin cán bộ tự tạo, không có phiếu thì báo người tạo tin
+        private async Task NotifyDemandReturnedAsync(ContentsYeuCau entity, string reason)
+        {
+            var phieu = entity.PhieuYeuCauCNTBId == null ? null : await _context.PhieuYeuCauCNTBs.AsNoTracking()
+                .Where(p => p.PhieuYeuCauId == entity.PhieuYeuCauCNTBId)
+                .Select(p => new { p.UserId, p.Email })
+                .FirstOrDefaultAsync();
+
+            var ownerId = phieu?.UserId ?? (phieu != null ? null : await _context.Users.AsNoTracking()
+                .Where(u => u.UserName == entity.Creator).Select(u => (int?)u.Id).FirstOrDefaultAsync());
+
+            if (ownerId.HasValue)
+            {
+                await HttpContext.RequestServices.GetRequiredService<TechExchangeApp.Services.INotificationQueueService>()
+                    .QueueAsync(ownerId.Value, null, "Nhu cầu bị trả về", $"Nhu cầu '{entity.Title}' bị trả về. Lý do: {reason}");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(phieu?.Email)) return;
+            try
+            {
+                await HttpContext.RequestServices.GetRequiredService<TechExchangeApp.Interfaces.IEmailSender>()
+                    .SendAsync(phieu.Email, "Nhu cầu bị trả về",
+                        $"Nhu cầu '{WebUtility.HtmlEncode(entity.Title)}' bị trả về. Lý do: {WebUtility.HtmlEncode(reason)}");
+            }
+            catch (Exception ex)
+            {
+                HttpContext.RequestServices.GetRequiredService<ILogger<ContentsYeuCauAdminController>>()
+                    .LogWarning(ex, "Không gửi được email lý do trả về nhu cầu #{Id}", entity.Id);
+            }
         }
 
         private async Task LoadFormSelectListsAsync(ContentsYeuCau entity)

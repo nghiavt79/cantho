@@ -75,6 +75,11 @@ SET IDENTITY_INSERT NhaCungUng_DeletedBackup_20261104 OFF;'
 FROM sys.columns WHERE object_id = OBJECT_ID('NhaCungUng');
 EXEC sp_executesql @Sql;
 
+-- Bảng con có khóa ngoại tới bảng cũng có ProjectId: phải xóa trước
+DELETE FROM SupportRequests WHERE ProjectId IN (SELECT Id FROM #Prj)
+   OR ConversationId IN (SELECT Id FROM ChatConversations WHERE ProjectId IN (SELECT Id FROM #Prj));
+DELETE FROM RFQInvitations WHERE ProjectId IN (SELECT Id FROM #Prj);
+
 -- Xóa dữ liệu con ở mọi bảng có cột ProjectId (trừ bảng sao lưu), rồi xóa hồ sơ
 SELECT @Sql = STRING_AGG(CAST(N'DELETE FROM ' AS NVARCHAR(MAX)) + QUOTENAME(t.name) + N' WHERE ProjectId IN (SELECT Id FROM #Prj);', CHAR(10))
 FROM sys.tables t JOIN sys.columns c ON c.object_id = t.object_id

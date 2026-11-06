@@ -93,7 +93,9 @@ $(function(){
     // ──────────────────────────────────────────────
     // AJAX: Load project list
     // ──────────────────────────────────────────────
+    var loadSeq = 0;
     function loadList(page) {
+        var seq = ++loadSeq; // kết quả về muộn của lần tải trước không được ghi đè kết quả mới
         currentPage = page || 1;
         var params = $('#searchForm').serialize()
             + '&page=' + currentPage
@@ -105,6 +107,7 @@ $(function(){
             data: params,
             headers: { 'X-Requested-With': 'XMLHttpRequest' },
             success: function(html) {
+                if (seq !== loadSeq) return;
                 $('#projectListContainer').html(html).css('opacity', '1');
                 var cnt = $('#partialTotalCount').text();
                 $('#badgeTotal').text(cnt);
