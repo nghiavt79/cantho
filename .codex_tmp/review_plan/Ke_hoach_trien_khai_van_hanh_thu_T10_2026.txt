@@ -1,0 +1,70 @@
+KẾ HOẠCH TRIỂN KHAI, VẬN HÀNH THỬ
+BẢO ĐẢM HOÀN THÀNH 85% KHỐI LƯỢNG TRONG THÁNG 10/2026
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+1. Mục tiêu và căn cứ
+Chủ trì thuê đề nghị thanh toán lần 1 trong tháng 10/2026, tương ứng 85% khối lượng công việc. Kế hoạch này bố trí lại tiến độ 30 ngày đã cam kết tại Mục 8 hồ sơ đề xuất kỹ thuật để đến ngày 30/10/2026 hoàn thành cài đặt, cấu hình, tích hợp, vận hành thử và đào tạo; phần còn lại (15%) gồm các việc phụ thuộc cơ quan, đơn vị bên ngoài và nghiệm thu đưa vào vận hành chính thức, hoàn thành trong tháng 11/2026.
+Căn cứ: Chương V Hồ sơ mời thầu (mục 2.7 – phương án triển khai; phần V – kiểm tra, nghiệm thu); hồ sơ đề xuất kỹ thuật của nhà thầu (Mục 3.2, Mục 8).
+2. Điều kiện thuận lợi
+Sàn giao dịch công nghệ đã vận hành tại địa chỉ mekongx.vn; bản cập nhật đầy đủ chức năng theo Hồ sơ mời thầu đã đưa lên ngày 16/10/2026, đã khắc phục các lỗ hổng theo kết quả kiểm tra an toàn thông tin của MobiFone (tháng 10/2026). Dữ liệu sẵn có để khởi tạo: 4.353 hồ sơ công nghệ, thiết bị; 1.808 chuyên gia; 84 nhà cung ứng. Do đó các việc cài đặt, nhập dữ liệu đã cơ bản hoàn thành; tháng 10 tập trung vào rà soát, tích hợp, vận hành thử và đào tạo.
+Việc còn chờ: 02 máy chủ cloud chưa bàn giao; cơ sở dữ liệu SQL Server đã có nhưng chưa có chứng từ bản quyền Windows Server Standard và SQL Server Standard. Đây là điều kiện để xác nhận hạng mục hạ tầng trong 85% khối lượng.
+3. Tiến độ chi tiết
+TT | Công việc | Thời gian | Thực hiện | Kết quả | Trạng thái
+1 | Họp thống nhất kế hoạch, đầu mối; Chủ trì thuê cung cấp tên miền, hồ sơ đăng ký thương hiệu SMS, danh sách cán bộ; gửi văn bản đề nghị Bộ KH&CN cấp tài khoản kết nối | 20/10 | MobiFone, VTISC, Chủ trì thuê | Biên bản họp, kế hoạch chi tiết | Chưa hoàn tất
+2 | Bàn giao 02 máy chủ cloud; cài đặt, kích hoạt bản quyền Windows Server Standard và SQL Server Standard; tường lửa, chứng thư bảo mật, tên miền | 20 – 24/10 | MobiFone | Biên bản bàn giao hạ tầng, chứng từ bản quyền | Chưa hoàn tất
+3 | Chụp 10 điểm cảnh quay VR360 tại Sàn; dựng tour; gắn nút “Tham quan VR360” | Chụp 20 – 22/10
+Dựng 23 – 28/10 | Đơn vị VR360 | Tour VR360 hoàn chỉnh trên Sàn | Chưa hoàn tất
+4 | Ứng dụng, dữ liệu khởi tạo đang chạy tại mekongx.vn (cập nhật 16/10/2026): đối chiếu số lượng dữ liệu; chuyển ứng dụng và dữ liệu sang máy chủ cloud khi được bàn giao | 20 – 21/10
+25 – 26/10 | VTISC | Ứng dụng chạy trên máy chủ cloud | Chưa hoàn tất
+5 | Cấu hình danh mục, tham số, tài khoản quản trị, phân quyền; sao lưu tự động, giám sát | 20 – 21/10 | VTISC, MobiFone | Cấu hình vận hành, lịch sao lưu chạy tự động | Chưa hoàn tất
+6 | Kết nối thư điện tử, hợp đồng điện tử, trợ lý AI, ký số bằng USB Token; SMS gửi bằng thương hiệu tạm trong thời gian chờ cấp thương hiệu chính thức | 20 – 22/10 | VTISC (MobiFone cấp tài khoản dịch vụ) | Biên bản kiểm tra kết nối | Chưa hoàn tất
+7 | Kiểm thử nội bộ toàn bộ chức năng; rà soát an toàn thông tin; phục hồi thử bản sao lưu | 21 – 22/10 | VTISC, MobiFone | Báo cáo kiểm thử, báo cáo rà soát | Chưa hoàn tất
+8 | Kiểm tra điều kiện sẵn sàng cùng Chủ trì thuê; đưa dịch vụ vào vận hành thử | 23/10 | MobiFone, Chủ trì thuê | Biên bản đủ điều kiện vận hành thử | Chưa hoàn tất
+9 | Vận hành thử: chạy trọn kịch bản nghiệm thu (đăng ký nhà cung cấp → duyệt → đăng sản phẩm → đăng nhu cầu → mời báo giá, nộp đề xuất → trao đổi trực tuyến → lập hợp đồng điện tử → ký số → thông báo email/SMS → nhật ký); ghi nhận, khắc phục lỗi | 23 – 30/10
+(từ 27/10 trên máy chủ cloud) | VTISC, cán bộ Chủ trì thuê | Báo cáo kết quả vận hành thử | Chưa hoàn tất
+10 | Đào tạo nhóm quản trị và nhóm nghiệp vụ; bàn giao tài liệu hướng dẫn, tài khoản thực hành | 27 – 28/10 | VTISC | Biên bản đào tạo, danh sách học viên | Chưa hoàn tất
+11 | Lập dự thảo hồ sơ đề xuất cấp độ và phương án an toàn thông tin cấp độ 2 | 23 – 30/10 | MobiFone, VTISC | Dự thảo hồ sơ gửi Chủ trì thuê | Chưa hoàn tất
+12 | Xác nhận khối lượng hoàn thành; lập hồ sơ thanh toán lần 1 | 30/10 | MobiFone, Chủ trì thuê | Biên bản xác nhận khối lượng 85% | Chưa hoàn tất
+
+4. Tỷ trọng khối lượng
+Tỷ trọng dưới đây là đề xuất để xác nhận khối lượng, tính trên phần việc của giai đoạn thiết lập; được điều chỉnh theo cách tính tại hợp đồng nếu có quy định khác.
+TT | Hạng mục | Tỷ trọng | Hoàn thành | Trạng thái
+1 | Khởi động, kế hoạch chi tiết, khởi động thủ tục bên ngoài | 3% | Tháng 10 | Chưa hoàn tất
+2 | Hạ tầng máy chủ, bản quyền phần mềm, bảo vệ mạng | 15% | Tháng 10 | Chưa hoàn tất
+3 | Cài đặt ứng dụng, dữ liệu khởi tạo | 15% | Tháng 10 | Chưa hoàn tất
+4 | Cấu hình nghiệp vụ, tài khoản, phân quyền, sao lưu, giám sát | 10% | Tháng 10 | Chưa hoàn tất
+5 | Kết nối thư điện tử, hợp đồng điện tử, AI, ký số USB Token, SMS (thương hiệu tạm) | 10% | Tháng 10 | Chưa hoàn tất
+6 | VR360 – 10 điểm cảnh quay dựng mới | 8% | Tháng 10 | Chưa hoàn tất
+7 | Kiểm thử nội bộ, rà soát an toàn thông tin, phục hồi thử | 7% | Tháng 10 | Chưa hoàn tất
+8 | Kiểm tra điều kiện sẵn sàng, đưa vào vận hành thử | 2% | Tháng 10 | Chưa hoàn tất
+9 | Vận hành thử, báo cáo kết quả | 8% | Tháng 10 | Chưa hoàn tất
+10 | Đào tạo, bàn giao tài liệu | 5% | Tháng 10 | Chưa hoàn tất
+11 | Dự thảo hồ sơ an toàn thông tin cấp độ 2 | 2% | Tháng 10 | Chưa hoàn tất
+ | Cộng hoàn thành trong tháng 10 | 85% |  | 
+12 | SMS gửi bằng thương hiệu chính thức; ký số từ xa bằng chứng thư thật | 4% | Tháng 11 | Chưa hoàn tất
+13 | Kết nối Sàn giao dịch KH&CN Việt Nam (khi Bộ KH&CN cấp tài khoản) | 4% | Tháng 11 | Chưa hoàn tất
+14 | Hoàn thiện hồ sơ an toàn thông tin theo ý kiến thẩm định | 2% | Tháng 11 | Chưa hoàn tất
+15 | Nghiệm thu, đưa vào vận hành chính thức | 5% | Tháng 11 | Chưa hoàn tất
+ | Cộng phần còn lại | 15% |  | 
+ | TỔNG CỘNG | 100% |  | 
+
+5. Hồ sơ đề nghị thanh toán lần 1 (dự kiến hoàn tất 30/10/2026)
+- Biên bản cấu hình hạ tầng; chứng từ bản quyền hệ điều hành, cơ sở dữ liệu;
+- Biên bản kiểm tra kết nối các dịch vụ tích hợp; nội dung VR360 đã đưa lên Sàn;
+- Báo cáo kiểm thử nội bộ, báo cáo rà soát an toàn thông tin;
+- Biên bản đủ điều kiện vận hành thử; báo cáo kết quả vận hành thử;
+- Biên bản đào tạo, danh sách học viên, tài liệu hướng dẫn sử dụng và quản trị;
+- Biên bản xác nhận khối lượng hoàn thành 85%.
+6. Việc cần Chủ trì thuê phối hợp
+- Ngày 20/10: cung cấp quyền cấu hình tên miền, hồ sơ pháp lý đăng ký thương hiệu SMS; ký văn bản đề nghị Bộ KH&CN cấp tài khoản kết nối (nhà thầu soạn sẵn dự thảo).
+- Ngày 20 – 22/10: bố trí người dẫn và mặt bằng để chụp VR360 tại Sàn.
+- Ngày 23 – 30/10: cử cán bộ tham gia vận hành thử; ngày 27 – 28/10 cử học viên dự đào tạo.
+- Ngày 30/10: tham gia xác nhận khối lượng.
+7. Rủi ro và cách xử lý
+Rủi ro | Cách xử lý
+Máy chủ cloud, bản quyền chưa bàn giao kịp 24/10 | Vận hành thử tiếp tục trên mekongx.vn để không chậm mốc 30/10. Hạng mục hạ tầng, bản quyền (15%) chỉ xác nhận được khi có máy chủ và chứng từ bản quyền, vì vậy MobiFone cần chốt ngày bàn giao ngay trong buổi họp 20/10.
+Phát sinh lỗi khi vận hành thử trên mekongx.vn | Sao lưu trước mỗi lần cập nhật; lỗi được khắc phục trong ngày, không gián đoạn khai thác.
+VR360 không kịp dựng xong 28/10 | Chụp ngay 20 – 22/10; dựng song song nhiều điểm; trường hợp chậm, đưa trước các điểm đã dựng và hoàn tất trước 30/10.
+Thương hiệu SMS, chứng thư ký số từ xa chưa được cấp | Vận hành thử bằng thương hiệu tạm và USB Token; phần dùng tài khoản chính thức đã tách vào 15% còn lại.
+Bộ KH&CN chưa cấp tài khoản kết nối | Bộ kết nối đã sẵn sàng; kết nối ngay khi có tài khoản; đã tách vào 15% còn lại.
+
+Vướng mắc phát sinh được nhà thầu báo Chủ trì thuê trong 01 ngày làm việc, kèm đề xuất cách xử lý.

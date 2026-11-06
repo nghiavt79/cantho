@@ -1,0 +1,280 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu\Tai lieu kem theo\TL04 - Bao cao tu kiem tra noi bo, san sang van hanh thu lan 1.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v báo cáo kết quả tự kiểm tra nội bộ, sẵn sàng vận hành thử lần 1
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày 26 tháng 10 năm 2026
+P11: Kính gửi:
+P12: - Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ;
+P13: - Công ty TNHH Công nghệ Tin học Bình Định (đơn vị vận hành thử);
+P14: - Công ty TNHH Chuyển Đổi Số 365 (đơn vị giám sát).
+P16: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone về việc thực hiện Gói thầu số 04: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ (Hợp đồng có hiệu lực từ ngày 22/10/2026); mục 1.6 Kế hoạch triển khai chi tiết Gói thầu số 04 của MobiFone Cần Thơ;
+P17: Tổng Công ty Viễn thông MobiFone báo cáo kết quả thiết lập dịch vụ và tự kiểm tra nội bộ (thực hiện ngày 25/10 – 26/10/2026) trước vận hành thử lần 1. Đây là kết quả tự kiểm tra của nhà cung cấp, không thay thế kết quả vận hành thử của đơn vị vận hành thử và không phải xác nhận hoàn thành khối lượng nghiệm thu.
+P18: I. KẾT QUẢ THIẾT LẬP DỊCH VỤ
+P19: Mục KH
+P20: Hạng mục
+P21: Kết quả đã kiểm tra
+P22: Minh chứng
+P23: 1.1
+P24: Hạ tầng: tên miền, chứng thư SSL, IPv6, sao lưu, công cụ giám sát
+P25: Tên miền mekongx.vn hoạt động, truy cập qua HTTPS; máy chủ chỉ chấp nhận TLS 1.2, TLS 1.3 (kiểm tra ngày 26/10/2026).
+P26: Chứng thư SSL đã gia hạn ngày 26/10/2026, hiệu lực đến 24/01/2027.
+P27: Chưa có bản ghi IPv6 cho tên miền (mục III).
+P28: Sao lưu tự động: đầy đủ 01:00, bổ sung 07:00, 13:00, 19:00, lưu tối thiểu 30 ngày.
+P29: Trang tình trạng hệ thống /health: cơ sở dữ liệu, ổ đĩa, hàng đợi thông báo bình thường (25/10/2026).
+P30: Công cụ giám sát: Uptime Kuma và trang quản trị hạ tầng cloud MobiFone (NCC-02).
+P31: Kết quả kiểm tra kết nối HTTPS, TLS, /health (mục II).
+P32: Nhật ký tác vụ sao lưu: công cụ giám sát (tài khoản xem theo NCC-02).
+P33: Xác nhận đơn vị giám sát truy cập thành công công cụ giám sát: bổ sung sau khi bàn giao tài khoản theo NCC-02.
+P34: 1.2
+P35: Nền tảng và 12 nhóm chức năng
+P36: Cập nhật phần mềm ngày 25/10/2026 và 26/10/2026. Đã thực hiện kiểm thử nội bộ 60 chức năng đợt 1; kết quả kế thừa Biên bản và được đối chiếu tại Kịch bản TC-CN-01 … 60. Ảnh/log chưa lưu tại thời điểm thực hiện được ghi riêng. VR360 thuộc đợt 2 theo Phụ lục 5 hợp đồng.
+P37: Gói cập nhật deploy-mekongx-2026-10-25, deploy-mekongx-2026-10-26; sổ phiên bản trong Quy trình vận hành (NCC-04).
+P38: Biên bản tự kiểm thử chức năng phần mềm đợt 1 (Phụ lục A: danh mục 60 chức năng).
+P39: 1.4
+P40: Tài khoản, phân quyền, dữ liệu mẫu
+P41: Đã tạo bộ 10 tài khoản vận hành thử trên hệ thống chính thức ngày 25/10/2026. Ngày 26/10 đã có ghi nhận đăng nhập vht_seller01, vht_admin. Các vai trò đã được kiểm thử theo xác nhận của đơn vị triển khai nhưng chưa lưu ảnh/log riêng từng tài khoản. Bộ vht_* dùng bàn giao, tái hiện khi cần; dữ liệu tham chiếu tại Kịch bản mục II không thay cho mã hồ sơ đã dùng trước đây. Mật khẩu bàn giao qua kênh riêng.
+P42: Danh sách tài khoản vận hành thử; xác nhận đăng nhập của người nhận: bổ sung sau khi bàn giao tài khoản.
+P44: Mục 1.3 – Dịch vụ tích hợp (trạng thái từng dịch vụ)
+P45: Dịch vụ
+P46: Trạng thái tích hợp
+P47: Phạm vi đã kiểm thử
+P48: Chưa kiểm thử / điều kiện
+P49: Minh chứng
+P50: Thư điện tử (Email)
+P51: Đã tích hợp chức năng gửi thông báo, mã xác thực (OTP), nhắc lịch; kênh thông báo email đang tắt
+P52: —
+P53: Bật kênh, gửi thử, lưu minh chứng (trước 28/10/2026)
+P54: Ảnh chụp thư nhận được, nhật ký gửi thư: bổ sung sau khi bật kênh (trước 28/10/2026)
+P55: SMS Brandname
+P56: Đã kết nối API SMS Brandname; đang ở chế độ thử (ghi nhật ký, không gửi)
+P57: Cấu hình tham số; địa chỉ nhận báo cáo giao tin từ chối IP lạ (403) – chỉ chứng minh cơ chế chặn truy cập
+P58: Chưa gửi tin thật: chờ tài khoản SMS Brandname (khóa kết nối, tên thương hiệu). Tình trạng tài khoản: đang chờ cấp tài khoản chính thức
+P59: Kết quả gửi thử, báo cáo giao tin: bổ sung khi có tài khoản
+P60: Chữ ký số
+P61: Chức năng ký số đang ở chế độ thử nghiệm; chưa kết nối chính thức tổ chức chứng thực
+P62: Đạt ở chế độ thử nghiệm theo Biên bản (TC-CN-54, TC-QT-07a); chưa lưu ảnh/log
+P63: Ký số từ xa bằng chứng thư thật: đợt 2, sau khi ký hợp đồng với tổ chức chứng thực
+P64: Theo Kịch bản và Biên bản; ảnh/log chưa lưu
+P65: Hợp đồng điện tử
+P66: Lập, lưu trữ hợp đồng trong quy trình giao dịch (bước 7); chưa kết nối dịch vụ ký của tổ chức chứng thực
+P67: Đạt theo Biên bản: tạo, khóa phiên bản, lưu trữ, tra cứu hợp đồng; chưa lưu ảnh/log
+P68: Ký nhiều bên bằng chứng thư thật: đợt 2
+P69: Theo Kịch bản và Biên bản; ảnh/log chưa lưu
+P70: Ứng dụng AI
+P71: Đã tích hợp: tìm kiếm ngữ nghĩa, chatbot (C.9, C.10)
+P72: Tìm kiếm, chatbot: Đạt theo Biên bản, chưa lưu ảnh/log. API-05: kiểm tra lại HTTP 200 ngày 26/10, có log KT-07
+P73: API-05 gợi ý nhà cung cấp: đã khắc phục lỗi 500, kiểm tra lại đạt ngày 26/10/2026 (mục III)
+P74: Theo Kịch bản và Biên bản; ảnh/log chưa lưu; MC-KT-07-20261026
+P75: Trao đổi trực tuyến – chat
+P76: Đã tích hợp (C.7)
+P77: Đã kiểm thử, kết quả Đạt theo Biên bản; chưa lưu ảnh/log riêng
+P78: —
+P79: Theo Kịch bản và Biên bản; ảnh/log chưa lưu
+P80: Trao đổi trực tuyến – gọi video, phòng họp
+P81: Hoạt động qua dịch vụ họp trực tuyến meet.jit.si (C.6)
+P82: Đã kiểm thử, kết quả Đạt theo Biên bản; chưa lưu ảnh/log riêng
+P83: Máy chủ họp riêng theo phương án đã chọn: 29/10 – 06/11/2026
+P84: Theo Kịch bản và Biên bản; ảnh/log chưa lưu
+P85: VR360
+P86: Thực hiện từ ngày 29/10 đến ngày 06/11/2026 (đợt 2, Phụ lục 5)
+P87: —
+P88: Ngoài phạm vi đợt 1
+P89: —
+P91: Mục 1.5 – Danh mục tài liệu kèm theo
+P92: STT
+P93: Tài liệu
+P94: Mã
+P95: Phiên bản, ngày
+P96: Ghi chú
+P97: 1
+P98: Hướng dẫn sử dụng dành cho người sử dụng Sàn (người mua, nhà cung cấp, chuyên gia), có hình minh họa
+P99: Mục 01a (PL-05)
+P100: 26/10/2026
+P101: Gắn nhãn trạng thái từng chức năng: Đã hoàn thành / Cần xác nhận / Triển khai đợt sau
+P102: 2
+P103: Hướng dẫn sử dụng dành cho cán bộ quản trị CMS, có hình minh họa
+P104: Mục 01b (PL-05)
+P105: 26/10/2026
+P106: Như trên
+P107: 3
+P108: Tài liệu mô tả dịch vụ, giải pháp kỹ thuật, phương án kết nối
+P109: Mục 02
+P110: 26/10/2026
+P112: 4
+P113: Đặc tả API (kết nối, liên thông, chia sẻ dữ liệu)
+P114: Mục 02 (PL-03)
+P115: 26/10/2026
+P116: 22 API, kết quả kiểm thử từng API, hạng mục chưa hoàn thành; bản trực tuyến tại trang tài liệu API
+P117: 5
+P118: Đặc tả cơ sở dữ liệu
+P119: Mục 02 (PL-04)
+P120: 25/10/2026
+P121: Từ điển dữ liệu, quan hệ dữ liệu, sao lưu, phục hồi, bàn giao dữ liệu
+P122: 6
+P123: Quy trình vận hành, xử lý sự cố, hỗ trợ, sao lưu, quản lý thay đổi
+P124: NCC-04
+P125: 26/10/2026
+P127: 7
+P128: Quy trình kiểm thử nội bộ
+P129: QT-KT
+P130: 26/10/2026
+P131: Quy định chung; lịch đợt 1 theo ngày thực tế
+P132: 8
+P133: Kịch bản kiểm thử chi tiết
+P134: KB-KT
+P135: 26/10/2026
+P136: 196 ca; mã minh chứng, sổ lỗi L-01 … L-06; tổng hợp tính từ từng ca
+P138: II. KẾT QUẢ TỰ KIỂM TRA NỘI BỘ
+P139: STT
+P140: Nội dung kiểm tra
+P141: Cách kiểm tra, công cụ
+P142: Kết quả
+P143: Đánh giá
+P144: 1
+P145: Thời gian tải trang chủ, đăng nhập, sản phẩm
+P146: curl đo 04 trang (/, /dang-nhap, /san-pham, /tin-su-kien) × 03 lần, ngày 26/10/2026 khung giờ sáng (TC-HT-01)
+P147: 12/12 lần HTTP 200; 1,24 – 1,67 giây (MC-HT-01-20261026)
+P148: Đạt một phần (≤ 03 giây; còn 02 khung giờ)
+P149: 2
+P150: Trang quản trị (CMS)
+P151: Truy cập khi chưa đăng nhập
+P152: Chuyển trang đăng nhập (HTTP 302 → /dang-nhap?ReturnUrl=%2Fcms) (MC-HT-02-20261026)
+P153: Đạt
+P154: 3
+P155: Trang tình trạng hệ thống
+P156: Truy cập /health
+P157: Cơ sở dữ liệu, ổ đĩa, hàng đợi thông báo bình thường (MC-HT-03-20261026)
+P158: Đạt
+P159: 4
+P160: Chứng thư SSL
+P161: Kiểm tra chứng thư khi kết nối HTTPS (26/10/2026)
+P162: Hiệu lực đến 24/01/2027 (đã gia hạn ngày 26/10/2026) (MC-HT-04-20261026)
+P163: Đạt
+P164: 5
+P165: Giao thức mã hóa
+P166: Thử kết nối lần lượt TLS 1.0, 1.1, 1.2, 1.3 (26/10/2026)
+P167: Từ chối TLS 1.0, 1.1; chấp nhận TLS 1.2, 1.3 (MC-HT-05-20261026)
+P168: Đạt
+P169: 6
+P170: IPv6
+P171: Tra cứu bản ghi tên miền
+P172: Không có bản ghi AAAA (MC-HT-06-20261026)
+P173: Không đạt – L-06 (mục III)
+P174: 7
+P175: Log hệ thống
+P176: Kiểm tra thư mục logs trên máy chủ
+P177: Báo cáo trước cập nhật ghi có app-20261025.log; chưa lưu ảnh/log kiểm tra gốc
+P178: Đạt theo Báo cáo trước cập nhật
+P179: 8
+P180: Chặn truy cập địa chỉ nhận báo cáo giao tin SMS
+P181: Truy cập từ IP không thuộc nhà mạng
+P182: Từ chối (403) (MC-HT-08-20261026)
+P183: Đạt – chỉ cơ chế chặn, không phải kết quả gửi SMS
+P184: 9
+P185: 60 chức năng đợt 1; quy trình giao dịch 14 bước
+P186: Kịch bản kiểm thử chi tiết, mục III, IV
+P187: Đã thực hiện kiểm thử; kết quả ghi tại Biên bản và Kịch bản. Ảnh/log chưa lưu tại thời điểm thực hiện; ca chi tiết chưa ghi kết quả riêng được phân biệt trong bảng tổng hợp.
+P188: Theo Kịch bản; còn nội dung email cần kiểm tra lại
+P189: 9a
+P190: 22 API
+P191: Đặc tả API (PL-03); Kịch bản mục V; script chay_kiem_thu_api.ps1
+P192: Kết quả kế thừa PL-03 và log ngày 26/10/2026. L-01, L-03 có log kiểm tra lại đạt; L-02 có log kiểm tra 4 API, API-18 tiếp tục đối chiếu. Luồng ghi 10 API đã thực hiện nhưng chưa lưu kết quả riêng và ảnh/log (L-04).
+P193: Đã kiểm thử; kết quả và nội dung hoàn thiện hồ sơ theo Kịch bản
+P194: 10
+P195: Khắc phục lỗ hổng an toàn thông tin
+P196: Đối chiếu báo cáo kiểm tra an toàn thông tin của Phòng An ninh mạng MobiFone (05 – 15/10/2026, 07 lỗi)
+P197: 06 lỗi khắc phục trong phần mềm (cập nhật 16/10/2026); lỗi giao thức TLS cũ khắc phục phía máy chủ, kiểm tra lại đạt (dòng 5). Kiểm tra lại của Phòng An ninh mạng: ……
+P198: Đạt tự kiểm tra; chờ kiểm tra lại
+P200: III. TỒN TẠI, ẢNH HƯỞNG VÀ KẾ HOẠCH XỬ LÝ
+P201: STT
+P202: Tồn tại
+P203: Ảnh hưởng
+P204: Biện pháp
+P205: Trách nhiệm
+P206: Thời hạn
+P207: 1
+P208: Chứng thư SSL đã gia hạn ngày 26/10/2026, hiệu lực đến 24/01/2027; chứng thư có thời hạn 90 ngày, cần gia hạn định kỳ
+P209: Phải xử lý trong vận hành thử lần 1, trước nghiệm thu đợt 1
+P210: Thiết lập gia hạn tự động; lưu minh chứng gia hạn
+P211: Bùi Nguyễn Hoàng Thái
+P212: 27/10/2026
+P213: 2
+P214: Chứng từ bản quyền Windows Server, SQL Server
+P215: Phải có trước nghiệm thu đợt 1 (khối lượng nghiệm thu)
+P216: Bàn giao chứng từ
+P217: Đinh Thị Hồng Anh
+P218: 27/10/2026
+P219: 3
+P220: L-01: API-05 gợi ý nhà cung cấp lỗi 500
+P221: Phải xử lý trong vận hành thử lần 1
+P222: Sửa lỗi, kiểm thử lại – đã hoàn thành, kiểm tra lại đạt ngày 26/10/2026
+P223: Nguyễn Nhĩ Thái
+P224: 26/10/2026
+P225: 4
+P226: L-04: thiếu bản ghi kết quả riêng, ảnh/log luồng ghi thành công 10 API; L-02 cần đối chiếu riêng API-18
+P227: Phải xử lý trước nghiệm thu đợt 1
+P228: Đối chiếu kết quả đã thực hiện; lưu bổ sung ảnh/log khi kiểm tra lại trước nghiệm thu
+P229: Nguyễn Nhĩ Thái; Lê Phước Trung
+P230: 27/10 – 28/10/2026
+P231: 5
+P232: L-05: Kênh thông báo email đang tắt; minh chứng kiểm thử email, AI
+P233: Phải xử lý trước nghiệm thu đợt 1
+P234: Bật kênh, gửi thử, chụp ảnh, lưu nhật ký
+P235: Lê Phước Trung
+P236: 27/10/2026
+P237: 6
+P238: SMS Brandname chưa gửi tin thật
+P239: Không ảnh hưởng bắt đầu vận hành thử; chưa ghi đạt cho gửi SMS thật
+P240: Nhập tài khoản SMS Brandname, gửi thử, lưu báo cáo giao tin
+P241: Nguyễn Thị Dung
+P242: Khi có tài khoản
+P243: 7
+P244: Ký số từ xa, hợp đồng điện tử chưa kết nối tổ chức chứng thực
+P245: Ngoài phạm vi đợt 1 (chức năng ký đang ở chế độ thử nghiệm)
+P246: Ký hợp đồng với tổ chức chứng thực; cấu hình; ký thử nhiều bên
+P247: Nguyễn Thị Dung
+P248: Đợt 2
+P249: 8
+P250: L-06: IPv6 chưa có bản ghi
+P251: Không thuộc điều kiện đợt 1: hợp đồng yêu cầu bảo đảm khả năng hỗ trợ IPv6 khi Chủ trì thuê có nhu cầu hoặc khi hạ tầng nâng cấp
+P252: Bổ sung địa chỉ, bản ghi IPv6; kiểm tra truy cập
+P253: Bùi Nguyễn Hoàng Thái
+P254: Trước 09/11/2026
+P255: 9
+P256: Gọi video dùng dịch vụ họp công cộng
+P257: Không ảnh hưởng vận hành thử lần 1
+P258: Dựng máy chủ họp, chuyển cấu hình
+P259: Nguyễn Nhĩ Thái
+P260: 29/10–06/11/2026
+P261: 10
+P262: VR360; kết nối Sàn KH&CN Việt Nam, API cho sàn khác
+P263: Ngoài phạm vi đợt 1
+P264: Thực hiện đợt 2; riêng VR360 từ ngày 29/10 đến ngày 06/11/2026
+P265: Đinh Thị Hồng Anh
+P266: Đợt 2
+P267: 11
+P268: Kiểm tra lại an toàn thông tin
+P269: Không ảnh hưởng bắt đầu vận hành thử
+P270: Đề nghị Phòng An ninh mạng kiểm tra lại
+P271: Bùi Nguyễn Hoàng Thái
+P272: ……
+P274: IV. KẾT LUẬN
+P275: - Nhà cung cấp đã thực hiện kiểm thử nội bộ chức năng, quy trình giao dịch, API và hạ tầng. Kết quả và giới hạn từng ca trình bày tại Kịch bản, Biên bản. Một phần kết quả đã ghi trong hồ sơ nhưng chưa lưu ảnh/log; một số ca chi tiết đã thực hiện nhưng chưa ghi kết quả riêng. Đề nghị các bên phối hợp bắt đầu vận hành thử lần 1 từ 27/10/2026, đồng thời kiểm tra lại các tồn tại và hoàn thiện hồ sơ theo mục III.
+P276: - Tồn tại 1 – 5 phải hoàn thành trước nghiệm thu đợt 1 (28–29/10/2026); các tồn tại còn lại thực hiện theo thời hạn tại mục III.
+P277: - Kết quả tại báo cáo này là tự kiểm tra của nhà cung cấp; việc đánh giá đạt hay không đạt thuộc kết quả vận hành thử của đơn vị vận hành thử và nghiệm thu của Chủ trì thuê. Theo kế hoạch: cập nhật kết quả thiết lập và tự kiểm tra nội bộ ngày 26/10/2026; bắt đầu vận hành thử lần 1 ngày 27/10/2026, hiệu chỉnh và khắc phục trong ngày 27–28/10/2026; nghiệm thu đợt 1 ngày 28–29/10/2026; đào tạo, hoàn thiện hồ sơ ATTT cấp độ 2, tích hợp trao đổi trực tuyến và VR360 từ ngày 29/10 đến ngày 06/11/2026; vận hành thử lần 2 ngày 09–13/11/2026; nghiệm thu hoàn thành và bàn giao đưa vào sử dụng chính thức ngày 18/11/2026. Thời gian thuê dịch vụ từ ngày 18/11/2026 đến ngày 17/11/2031.
+P278: Nơi nhận:
+P279: - Như trên;
+P280: - Lưu: VT, TTGPS.
+P281: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P282: (Ký, ghi rõ họ tên, đóng dấu)
+P286: Lã Thành Trung
+PART word/header1.xml
+PART word/footer1.xml
+PART word/header2.xml
+PART word/footer2.xml

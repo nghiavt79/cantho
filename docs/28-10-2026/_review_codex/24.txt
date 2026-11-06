@@ -1,0 +1,1122 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_muc_1.1_1.5_1.6\1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh\Muc 02 - Dac ta API (ket noi, lien thong, chia se du lieu) - PL03.docx
+PART word/document.xml
+P1: TRUNG TÂM ỨNG DỤNG TIẾN BỘ KHOA HỌC VÀ CÔNG NGHỆ THÀNH PHỐ CẦN THƠ
+P2: Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P3: MỤC 02 – PHỤ LỤC PL-03
+P4: TÀI LIỆU ĐẶC TẢ GIAO DIỆN LẬP TRÌNH ỨNG DỤNG (API)
+P5: ĐẶC TẢ API KẾT NỐI, LIÊN THÔNG, CHIA SẺ DỮ LIỆU
+P6: Sàn giao dịch công nghệ Cần Thơ – phục vụ vận hành thử và nghiệm thu đợt 1
+P7: Hệ thống
+P8: Sàn giao dịch công nghệ Cần Thơ – https://mekongx.vn
+P9: Phiên bản tài liệu
+P10: 2.0
+P11: Ngày cập nhật
+P12: 26/10/2026
+P13: Đối tượng sử dụng
+P14: Đơn vị vận hành thử, tư vấn giám sát, chủ trì thuê, cán bộ kỹ thuật
+P15: Cần Thơ, tháng 10/2026
+P16: THÔNG TIN TÀI LIỆU
+P17: Phiên bản
+P18: Ngày
+P19: Nội dung
+P20: Người thực hiện
+P21: 1.0
+P22: 25/10/2026
+P23: Tạo mới tài liệu
+P24: Đơn vị thực hiện
+P26: MỤC LỤC
+P27: 1. Thông tin chung5
+P28: 1.1. Mục đích5
+P29: 1.2. Căn cứ5
+P30: 1.3. Thông tin kỹ thuật5
+P31: 2. Phạm vi và phân loại API6
+P32: 3. Bảng tổng hợp trạng thái và kết quả kiểm thử7
+P33: 4. Xác thực, phân quyền và bảo mật (theo kiểm thử thực tế)9
+P34: 4.1. Xác thực9
+P35: 4.2. Mã chống giả mạo – hiện trạng9
+P36: 4.3. Phân quyền truy cập dữ liệu9
+P37: 4.4. Giới hạn tần suất và kiểm tra dữ liệu đầu vào10
+P38: 4.5. Mã kết quả và cấu trúc lỗi10
+P39: 5. Chi tiết từng API12
+P40: API-01. GET /api/ai-chat/suggestions12
+P41: API-02. GET /api/ai-chat/history?sessionKey={sessionKey}12
+P42: API-03. POST /api/ai-chat/message13
+P43: API-04. POST /api/ai-chat/submit-feedback13
+P44: API-05. POST /api/AISuggestion/suggest14
+P45: API-06. POST /api/chat/start14
+P46: API-07. POST /api/chat/{id}/send15
+P47: API-07b. POST /api/chat/{id}/upload16
+P48: API-08. GET /api/chat/unread-count16
+P49: API-09. GET /api/chat/{id}/messages?afterId={afterId}16
+P50: API-10. GET /api/entity/{entityType}/{entityId}/summary17
+P51: API-11. POST /api/entity/{entityType}/{entityId}/rating/save17
+P52: API-12. POST /api/entity/{entityType}/{entityId}/view/increase18
+P53: API-13. GET /api/entity/{entityType}/{entityId}/ratings?take={n}18
+P54: API-14. GET /api/home/analytics19
+P55: API-15. GET /api/notifications/latest?take={n}19
+P56: API-16. GET /api/notifications/unread-count20
+P57: API-17. POST /api/notifications/mark-read/{id}20
+P58: API-18. POST /api/notifications/mark-all-read20
+P59: API-19. POST /api/support/start21
+P60: API-20. POST /api/chat/{id}/video-call21
+P61: API-21. GET /api/sms/dlr22
+P62: API-22. GET /health22
+P63: 6. Tích hợp hệ thống bên ngoài24
+P64: 7. Hạng mục chưa hoàn thành và lưu ý tiến độ25
+P65: Phụ lục A. Nhật ký kiểm thử ngày 25/10/202626
+P66: Phụ lục B. Hướng dẫn kiểm tra nhanh API28
+P68: Bảng 1. Người lập, kiểm tra, phê duyệt
+P69: Vai trò
+P70: Họ tên
+P71: Chữ ký
+P72: Ngày
+P73: Người lập
+P77: Người kiểm tra
+P81: Người phê duyệt
+P86: 1. Thông tin chung
+P87: 1.1. Mục đích
+P88: Tài liệu cung cấp cho đơn vị vận hành thử, tư vấn giám sát và chủ trì thuê đủ thông tin để: (1) biết API nào đã triển khai, API nào thuộc phạm vi tích hợp, API nào đã kiểm thử đạt và API nào còn phải hoàn thiện; (2) tự gọi thử API trên hệ thống; (3) đối chiếu với hợp đồng và xác định phạm vi nghiệm thu đợt 1.
+P89: 1.2. Căn cứ
+P90: Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone về việc thực hiện Gói thầu số 04: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ (Hợp đồng có hiệu lực từ ngày 22/10/2026) và các phụ lục hợp đồng.
+P91: Kế hoạch triển khai chi tiết (hồ sơ Mục 1.1) – lịch bắt đầu vận hành thử lần 1 ngày 27/10/2026, hiệu chỉnh và khắc phục trong ngày 27–28/10/2026, nghiệm thu đợt 1 ngày 28–29/10/2026.
+P92: Tài liệu OpenAPI do hệ thống sinh tự động tại thời điểm 25/10/2026 và kết quả kiểm thử thực tế ghi tại Phụ lục A.
+P93: Nguyên tắc: tài liệu đặc tả không phải là căn cứ khẳng định đã tích hợp thành công. Chỉ API có kết quả kiểm thử Đạt kèm minh chứng ở Phụ lục A mới được đề nghị ghi nhận hoàn thành.
+P94: 1.3. Thông tin kỹ thuật
+P95: Bảng 2. Thông tin kỹ thuật API
+P96: Nội dung
+P97: Giá trị
+P98: Tên API
+P99: API Sàn giao dịch công nghệ thành phố Cần Thơ
+P100: Phiên bản API
+P101: v1
+P102: Chuẩn mô tả
+P103: OpenAPI 3.0.1 – tệp do hệ thống sinh tự động, kiểm tra ngày 25/10/2026: 22 đường dẫn API
+P104: Môi trường vận hành
+P105: https://mekongx.vn
+P106: Tài liệu tra cứu trực tuyến
+P107: Swagger UI: https://mekongx.vn/swagger; tệp OpenAPI: https://mekongx.vn/swagger/v1/swagger.json (chỉ mở được khi đăng nhập tài khoản quản trị; truy cập ẩn danh trả 404)
+P108: Kiểm tra tình trạng hệ thống
+P109: https://mekongx.vn/health – trả trạng thái cơ sở dữ liệu, ổ đĩa, hàng đợi thông báo
+P110: Môi trường kiểm thử
+P111: Kiểm thử trên môi trường vận hành bằng tài khoản kiểm thử do đơn vị thực hiện cấp cho đơn vị vận hành thử. Địa chỉ môi trường thử riêng (nếu có): không có
+P112: Định dạng dữ liệu
+P113: JSON, UTF-8, HTTPS. Thời gian theo giờ Việt Nam (UTC+7), định dạng ISO 8601
+P115: 2. Phạm vi và phân loại API
+P116: Tiêu đề tài liệu gồm “kết nối, liên thông, chia sẻ dữ liệu”, nhưng các API hiện có chủ yếu phục vụ giao diện web của Sàn. Để tránh hiểu nhầm, API được chia thành bốn nhóm; các API nhóm A không bao quát toàn bộ phạm vi tích hợp theo hợp đồng.
+P117: Bảng 3. Phân loại API
+P118: Nhóm
+P119: Mô tả
+P120: Số lượng
+P121: Trạng thái
+P122: A. API nội bộ
+P123: Do Sàn cung cấp, phục vụ trang web: trợ lý AI, gợi ý nhà cung cấp, tin nhắn, đánh giá, thông báo, thống kê, hỗ trợ giao dịch, gọi video
+P124: 20 (API-01 đến API-20)
+P125: Đã triển khai; kết quả kiểm thử tại Mục 3
+P126: B. API tích hợp do Sàn cung cấp cho hệ thống ngoài
+P127: Hệ thống ngoài gọi vào Sàn: nhận báo cáo giao tin SMS; kiểm tra tình trạng cho công cụ giám sát
+P128: 2 (API-21, API-22)
+P129: Đã triển khai; xem Mục 3, 5
+P130: C. Tích hợp dịch vụ bên ngoài (Sàn gọi ra)
+P131: SMS Brandname, email, ký số từ xa/OTP ký điện tử, gọi video, dịch tự động, AI
+P132: 7 dịch vụ
+P133: Phụ thuộc tài khoản, thông số của đối tác; xem Mục 5
+P134: D. API liên thông, chia sẻ dữ liệu theo hợp đồng
+P135: Kết nối Sàn giao dịch KH&CN Việt Nam; API chia sẻ dữ liệu cho sàn khác
+P136: —
+P137: Chưa triển khai – đợt 2 (Mục 6)
+P139: Ghi chú về số lượng
+P140: Tệp OpenAPI thực tế có 22 đường dẫn: 20 API của bản 1.0 cộng thêm POST /api/chat/{id}/upload (gửi tệp trong tin nhắn – nhóm A) và GET /api/sms/dlr (báo cáo giao tin SMS – nhóm B). Bản 2.0 đánh mã API-01 đến API-22 theo thứ tự này.
+P141: /health không nằm trong tệp OpenAPI nhưng được mô tả là API-22 vì dùng cho giám sát; API-21 là /api/sms/dlr. API gửi tệp trong tin nhắn được ghi là API-07b.
+P143: 3. Bảng tổng hợp trạng thái và kết quả kiểm thử
+P144: Kiểm thử thực hiện ngày 25/10/2026, 22:20–22:35, trên https://mekongx.vn, bằng tài khoản quản trị đã đăng nhập và yêu cầu ẩn danh (không gửi cookie). Để không làm thay đổi dữ liệu thật, các API ghi dữ liệu chỉ được kiểm thử với đối tượng không tồn tại hoặc dữ liệu không hợp lệ (kiểm tra xác thực, phân quyền, mã chống giả mạo, kiểm tra dữ liệu đầu vào); luồng ghi thành công cần kiểm thử bổ sung bằng tài khoản và dữ liệu kiểm thử trong vận hành thử.
+P145: Bảng 4. Danh mục API, đợt nghiệm thu và kết quả kiểm thử
+P146: Mã
+P147: Phương thức – đường dẫn
+P148: Nhóm
+P149: Đợt
+P150: Kết quả KT 25/10
+P151: Minh chứng
+P152: API-01
+P153: GET /api/ai-chat/suggestions
+P154: A
+P155: 1
+P156: Đạt
+P157: KT-01
+P158: API-02
+P159: GET /api/ai-chat/history
+P160: A
+P161: 1
+P162: Đạt (có khuyến nghị bảo mật)
+P163: KT-02, KT-25
+P164: API-03
+P165: POST /api/ai-chat/message
+P166: A
+P167: 1
+P168: Đạt
+P169: KT-03, KT-04
+P170: API-04
+P171: POST /api/ai-chat/submit-feedback
+P172: A
+P173: 1
+P174: Đạt một phần (mới KT từ chối)
+P175: KT-05
+P176: API-05
+P177: POST /api/AISuggestion/suggest
+P178: A
+P179: 1
+P180: Không đạt – trả 500; kiểm tra lại 26/10/2026: Đạt
+P181: KT-06, KT-07
+P182: API-06
+P183: POST /api/chat/start
+P184: A
+P185: 1
+P186: Đạt một phần – mã chống giả mạo bắt buộc từ 26/10/2026 (L-02 đã đóng); chưa kiểm thử luồng ghi thành công (L-04)
+P187: KT-08
+P188: API-07
+P189: POST /api/chat/{id}/send
+P190: A
+P191: 1
+P192: Đạt một phần – mã chống giả mạo bắt buộc từ 26/10/2026 (L-02 đã đóng); chưa kiểm thử luồng ghi thành công (L-04)
+P193: KT-09, KT-10
+P194: API-07b
+P195: POST /api/chat/{id}/upload
+P196: A
+P197: 1
+P198: Đạt một phần (mới KT từ chối)
+P199: KT-11
+P200: API-08
+P201: GET /api/chat/unread-count
+P202: A
+P203: 1
+P204: Đạt
+P205: KT-12
+P206: API-09
+P207: GET /api/chat/{id}/messages
+P208: A
+P209: 1
+P210: Đạt
+P211: KT-13, KT-14, KT-15
+P212: API-10
+P213: GET /api/entity/{entityType}/{entityId}/summary
+P214: A
+P215: 1
+P216: Đạt
+P217: KT-16
+P218: API-11
+P219: POST /api/entity/{entityType}/{entityId}/rating/save
+P220: A
+P221: 1
+P222: Đạt một phần – mã chống giả mạo bắt buộc từ 26/10/2026 (L-02 đã đóng); chưa kiểm thử luồng ghi thành công (L-04)
+P223: KT-17, KT-18
+P224: API-12
+P225: POST /api/entity/{entityType}/{entityId}/view/increase
+P226: A
+P227: 1
+P228: Đạt một phần (mới KT từ chối)
+P229: KT-19
+P230: API-13
+P231: GET /api/entity/{entityType}/{entityId}/ratings
+P232: A
+P233: 1
+P234: Đạt
+P235: KT-20
+P236: API-14
+P237: GET /api/home/analytics
+P238: A
+P239: 1
+P240: Đạt
+P241: KT-21
+P242: API-15
+P243: GET /api/notifications/latest
+P244: A
+P245: 1
+P246: Đạt – sau cập nhật 26/10/2026 trả 401 khi chưa đăng nhập (L-03 đã đóng)
+P247: KT-22
+P248: API-16
+P249: GET /api/notifications/unread-count
+P250: A
+P251: 1
+P252: Đạt – sau cập nhật 26/10/2026 trả 401 khi chưa đăng nhập (L-03 đã đóng)
+P253: KT-23
+P254: API-17
+P255: POST /api/notifications/mark-read/{id}
+P256: A
+P257: 1
+P258: Đạt một phần – mã chống giả mạo bắt buộc từ 26/10/2026 (L-02 đã đóng); chưa kiểm thử luồng ghi thành công (L-04)
+P259: KT-24
+P260: API-18
+P261: POST /api/notifications/mark-all-read
+P262: A
+P263: 1
+P264: Chưa kiểm thử
+P265: —
+P266: API-19
+P267: POST /api/support/start
+P268: A
+P269: 1
+P270: Đạt một phần (mới KT từ chối)
+P271: KT-26
+P272: API-20
+P273: POST /api/chat/{id}/video-call
+P274: A
+P275: 1
+P276: Đạt một phần; phụ thuộc máy chủ họp bên ngoài
+P277: KT-27
+P278: API-21
+P279: GET /api/sms/dlr
+P280: B
+P281: 1
+P282: Đạt (chặn IP ngoài danh sách); chưa nhận báo cáo thật
+P283: KT-28
+P284: API-22
+P285: GET /health
+P286: B
+P287: 1
+P288: Đạt
+P289: KT-29
+P291: Bảng 5. Tổng hợp kết quả
+P292: Kết quả
+P293: Số API
+P294: Mã API
+P295: Đạt
+P296: 13
+P297: API-01, 02, 03, 08, 09, 10, 13, 14, 21, 22; API-05 (L-01), API-15, 16 (L-03) – kiểm tra lại 26/10/2026
+P298: Đạt một phần
+P299: 9
+P300: API-04, 06, 07, 07b, 11, 12, 17, 19, 20 – cần kiểm thử luồng ghi thành công và/hoặc bổ sung mã chống giả mạo
+P301: Không đạt
+P302: 0
+P303: — (L-01, L-03 đã khắc phục, kiểm tra lại đạt ngày 26/10/2026)
+P304: Chưa kiểm thử
+P305: 1
+P306: API-18
+P308: 4. Xác thực, phân quyền và bảo mật (theo kiểm thử thực tế)
+P309: 4.1. Xác thực
+P310: Phiên đăng nhập: cookie phiên (HttpOnly) cấp sau khi đăng nhập tại trang đăng nhập của Sàn. Gọi thử từ trình duyệt đã đăng nhập; công cụ bên ngoài (Postman, curl) phải gửi kèm cookie phiên.
+P311: Khi chưa đăng nhập, hành vi thực tế chưa thống nhất: API tin nhắn và đánh giá trả 401; API thông báo (API-15 đến API-18) chuyển hướng 302 về trang đăng nhập (đã chuẩn hóa 401 JSON cho mọi đường dẫn /api từ bản cập nhật 26/10/2026); API-08 trả 200 với count = 0. Kiến nghị chuẩn hóa: mọi API bắt buộc đăng nhập trả 401 dạng JSON.
+P312: Mã chống giả mạo: lấy từ thẻ <meta name="__RequestVerificationToken"> trên trang web của Sàn (cùng phiên), gửi trong tiêu đề RequestVerificationToken.
+P313: 4.2. Mã chống giả mạo – hiện trạng
+P314: Bảng 6. Mã chống giả mạo: mô tả cũ và thực tế
+P315: API
+P316: Mô tả bản 1.0
+P317: Thực tế 25/10/2026
+P318: Kiến nghị
+P319: API-03, 04, 19, 20, 07b
+P320: Có (07b chưa mô tả)
+P321: Bắt buộc – thiếu mã trả 400
+P322: Giữ nguyên
+P323: API-06 chat/start
+P324: Không
+P325: Bắt buộc từ 26/10/2026 – thiếu mã trả 400 (kiểm tra trên máy chủ)
+P326: Đã thực hiện (L-02)
+P327: API-07 chat/send
+P328: Không
+P329: Bắt buộc từ 26/10/2026 – thiếu mã trả 400 (kiểm tra trên máy chủ)
+P330: Đã thực hiện (L-02)
+P331: API-11 rating/save
+P332: Không
+P333: Bắt buộc từ 26/10/2026 – thiếu mã trả 400 (kiểm tra trên máy chủ)
+P334: Đã thực hiện (L-02)
+P335: API-17, 18 thông báo
+P336: Không
+P337: Bắt buộc phía máy chủ từ 26/10/2026 (API-17 kiểm tra trên máy chủ; API-18 kiểm tra cùng KT-38)
+P338: Đã thực hiện (L-02)
+P339: API-12 view/increase
+P340: Không
+P341: Không kiểm tra
+P342: Chấp nhận được (không gắn người dùng); bổ sung giới hạn tần suất
+P344: 4.3. Phân quyền truy cập dữ liệu
+P345: Bảng 7. Kiểm soát truy cập
+P346: Dữ liệu
+P347: Cơ chế
+P348: Kết quả kiểm thử
+P349: Đánh giá
+P350: Tin nhắn (API-07, 09, 07b, 20)
+P351: Chỉ thành viên cuộc trò chuyện
+P352: Đọc cuộc trò chuyện không phải thành viên trả 404; ẩn danh trả 401
+P353: Đạt
+P354: Lịch sử trợ lý AI (API-02)
+P355: Theo sessionKey do máy chủ cấp (chuỗi ngẫu nhiên 32 ký tự hex), không yêu cầu đăng nhập
+P356: Có sessionKey thì đọc được lịch sử kể cả khi ẩn danh; sessionKey ngẫu nhiên lấy được lịch sử rỗng
+P357: Chấp nhận được; kiến nghị gắn lịch sử với tài khoản khi người dùng đã đăng nhập
+P358: Thông báo (API-15–18)
+P359: Theo tài khoản đăng nhập
+P360: Chỉ trả thông báo của tài khoản đang đăng nhập; mark-read với mã không tồn tại trả 404
+P361: Đạt
+P362: Hồ sơ giao dịch (API-19)
+P363: Chỉ thành viên hồ sơ
+P364: Hồ sơ không hợp lệ trả 400 “Thiếu thông tin dự án”; trường hợp không phải thành viên (403) cần kiểm thử bằng 2 tài khoản
+P365: Cần kiểm thử bổ sung
+P366: Tệp OpenAPI, Swagger
+P367: Chỉ quản trị
+P368: Ẩn danh trả 404
+P369: Đạt
+P370: API-21 sms/dlr
+P371: Danh sách IP nhà cung cấp SMS
+P372: Gọi từ IP ngoài danh sách trả 403
+P373: Đạt
+P375: 4.4. Giới hạn tần suất và kiểm tra dữ liệu đầu vào
+P376: Giới hạn tần suất: chỉ API-05 có cấu hình trả 429 (chưa kiểm thử). Các API khác chưa giới hạn; kiến nghị giới hạn cho API-03, 04, 06, 07, 12, 19.
+P377: Độ dài tối đa: message (API-03) 1–2.000 ký tự; input (API-05) bắt buộc, ≤ 2.000 ký tự; góp ý AI: fullName ≤ 255, email ≤ 100, phone ≤ 50, message ≤ 2.000, sessionKey ≤ 100.
+P378: Đánh giá (API-11): stars bắt buộc 1–5, ngoài khoảng trả 400 “Đánh giá phải từ 1 đến 5 sao.”
+P379: entityType chỉ nhận giá trị hợp lệ (ví dụ SanPhamCNTB cho công nghệ, thiết bị); giá trị khác trả 400 “Loại entity không hợp lệ.”
+P380: 4.5. Mã kết quả và cấu trúc lỗi
+P381: Bảng 8. Mã kết quả
+P382: Mã
+P383: Ý nghĩa
+P384: Dạng nội dung trả về thực tế
+P385: 200
+P386: Thành công
+P387: JSON theo từng API
+P388: 302
+P389: Chưa đăng nhập (API thông báo)
+P390: Đã thay bằng 401 JSON từ bản cập nhật 26/10/2026
+P391: 400
+P392: Dữ liệu không hợp lệ / thiếu mã chống giả mạo
+P393: {"success":false,"error":"…"} hoặc {"error":"…"}; lỗi kiểm tra mô hình theo chuẩn RFC 9110 (application/problem+json, trường errors); thiếu mã chống giả mạo trả trang HTML
+P394: 401
+P395: Chưa đăng nhập
+P396: {"success":false} / {"error":"Vui lòng đăng nhập."} hoặc trang HTML
+P397: 403
+P398: Không có quyền
+P399: application/problem+json
+P400: 404
+P401: Không tìm thấy
+P402: application/problem+json, {"success":false} hoặc trang HTML
+P403: 429
+P404: Vượt giới hạn tần suất
+P405: API-05
+P406: 500
+P407: Lỗi máy chủ
+P408: {"error":"An error occurred processing your request"}
+P410: Kiến nghị chuẩn hóa trước nghiệm thu
+P411: Mọi API trả lỗi dạng JSON thống nhất {"success":false,"error":"…"} – không trả trang HTML.
+P412: API bắt buộc đăng nhập trả 401, không chuyển hướng.
+P414: 5. Chi tiết từng API
+P415: API-01. GET /api/ai-chat/suggestions
+P416: Nội dung
+P417: Mô tả
+P418: Chức năng
+P419: Lấy danh sách nút gợi ý nhanh của khung trò chuyện AI.
+P420: Đăng nhập
+P421: Không yêu cầu
+P422: Mã chống giả mạo (thực tế)
+P423: Không áp dụng (GET)
+P424: Tham số / dữ liệu gửi
+P425: Không có
+P426: Mã kết quả
+P427: 200
+P428: Kết quả kiểm thử
+P429: Đạt (KT-01). Trường trả về: id (chuỗi, dùng làm actionId ở API-03), title (chuỗi).
+P431: Ví dụ trả về:
+P432: [{"id":"browse-congnghe","title":"Công nghệ"},
+P433:  {"id":"browse-cntb","title":"Thiết bị & sản phẩm"},
+P434:  {"id":"browse-chuyengia","title":"Chuyên gia"},
+P435:  {"id":"browse-nhacungung","title":"Nhà cung ứng"},
+P436:  {"id":"action-hotro","title":"Gửi yêu cầu tư vấn"}]
+P438: API-02. GET /api/ai-chat/history?sessionKey={sessionKey}
+P439: Nội dung
+P440: Mô tả
+P441: Chức năng
+P442: Lấy lịch sử trò chuyện AI theo phiên.
+P443: Đăng nhập
+P444: Không bắt buộc
+P445: Mã chống giả mạo (thực tế)
+P446: Không áp dụng (GET)
+P447: Tham số / dữ liệu gửi
+P448: sessionKey (truy vấn, chuỗi ≤ 100, bắt buộc để có dữ liệu) – do API-03 trả về
+P449: Mã kết quả
+P450: 200 (sessionKey không tồn tại: mảng rỗng [])
+P451: Kết quả kiểm thử
+P452: Đạt (KT-02, KT-25). role: "user" | "bot".
+P454: Ví dụ yêu cầu:
+P455: GET /api/ai-chat/history?sessionKey=355dd6dd…d61
+P457: Ví dụ trả về:
+P458: [{"role":"user","content":"Tìm công nghệ sấy nông sản","createdAt":"2026-10-25T22:30:00.31"},
+P459:  {"role":"bot","content":"Tôi tìm thấy một số thông tin liên quan trên website: …","createdAt":"…"}]
+P461: API-03. POST /api/ai-chat/message
+P462: Nội dung
+P463: Mô tả
+P464: Chức năng
+P465: Gửi câu hỏi tới trợ lý AI; trả lời dựa trên dữ liệu của Sàn kèm nguồn tham chiếu.
+P466: Đăng nhập
+P467: Không bắt buộc
+P468: Mã chống giả mạo (thực tế)
+P469: Bắt buộc
+P470: Tham số / dữ liệu gửi
+P471: Thân JSON: message (chuỗi, bắt buộc, 1–2.000); sessionKey (chuỗi ≤ 100, không bắt buộc – bỏ trống để mở phiên mới); actionId (chuỗi ≤ 100, mã nút gợi ý của API-01)
+P472: Mã kết quả
+P473: 200; 400 (thiếu message, quá dài, thiếu mã chống giả mạo); 500
+P474: Kết quả kiểm thử
+P475: Đạt (KT-03 thành công; KT-04 từ chối khi thiếu mã/thiếu message). mode: browse | search | action.
+P477: Ví dụ yêu cầu:
+P478: POST /api/ai-chat/message
+P479: Content-Type: application/json
+P480: RequestVerificationToken: <mã lấy từ trang web>
+P482: {"message":"Tìm công nghệ sấy nông sản"}
+P484: Ví dụ trả về:
+P485: {"success":true,
+P486:  "message":"Tôi tìm thấy một số thông tin liên quan trên website: …",
+P487:  "sessionKey":"355dd6dd73e14f7193ee2f26d0724d61",
+P488:  "sources":[{"sourceType":"Thiết bị","title":"…","url":"/san-pham/chi-tiet/…","summary":"…"}],
+P489:  "needsContactInfo":false,
+P490:  "mode":"search"}
+P492: API-04. POST /api/ai-chat/submit-feedback
+P493: Nội dung
+P494: Mô tả
+P495: Chức năng
+P496: Gửi thông tin liên hệ, góp ý từ khung trò chuyện AI để cán bộ Sàn liên hệ lại.
+P497: Đăng nhập
+P498: Không bắt buộc
+P499: Mã chống giả mạo (thực tế)
+P500: Bắt buộc
+P501: Tham số / dữ liệu gửi
+P502: Thân JSON: fullName (≤ 255), email (≤ 100), phone (≤ 50), message (≤ 2.000), sessionKey (≤ 100)
+P503: Mã kết quả
+P504: 200; 400; 500
+P505: Kết quả kiểm thử
+P506: Đạt một phần (KT-05: thiếu mã trả 400). Luồng gửi thành công kiểm thử trong vận hành thử (tạo bản ghi góp ý).
+P508: Ví dụ yêu cầu:
+P509: {"fullName":"Nguyễn Văn A","email":"nguoidung@example.com","phone":"0909000000",
+P510:  "message":"Đề nghị tư vấn công nghệ sấy","sessionKey":"355dd6dd…d61"}
+P512: Ví dụ trả về:
+P513: {"success":true,"message":"…"}
+P515: API-05. POST /api/AISuggestion/suggest
+P516: Nội dung
+P517: Mô tả
+P518: Chức năng
+P519: Gợi ý nhà cung cấp phù hợp với nhu cầu công nghệ theo tìm kiếm ngữ nghĩa.
+P520: Đăng nhập
+P521: Không yêu cầu
+P522: Mã chống giả mạo (thực tế)
+P523: Không
+P524: Tham số / dữ liệu gửi
+P525: Thân JSON: input (chuỗi, bắt buộc, ≤ 2.000) – mô tả nhu cầu của bên mua
+P526: Mã kết quả
+P527: 200; 400 (thiếu input); 429; 500
+P528: Kết quả kiểm thử
+P529: Không đạt (KT-06 thiếu input trả 400 đúng; KT-07 dữ liệu hợp lệ trả 500 ở 3/3 lần gọi). Kiểm tra lại ngày 26/10/2026: dữ liệu hợp lệ trả 200, có danh sách nhà cung cấp gợi ý – Đạt.
+P531: Ví dụ yêu cầu:
+P532: {"input":"Cần dây chuyền sấy nông sản quy mô 200 kg/mẻ"}
+P534: Ví dụ trả về:
+P535: {"error":"An error occurred processing your request"}   (thực tế 25/10/2026 – HTTP 500); kiểm tra lại 26/10/2026 – HTTP 200: {"suppliers":[{"cungUngId":8895,"supplierName":"…","finalScore":0.9,"topProducts":[{"productId":35431,"name":"…"}]}, …]}
+P537: API-06. POST /api/chat/start
+P538: Nội dung
+P539: Mô tả
+P540: Chức năng
+P541: Mở cuộc trò chuyện với nhà cung cấp từ trang sản phẩm.
+P542: Đăng nhập
+P543: Bắt buộc
+P544: Mã chống giả mạo (thực tế)
+P545: Không kiểm tra (kiến nghị bổ sung)
+P546: Tham số / dữ liệu gửi
+P547: Thân JSON: productId (số nguyên, bắt buộc – mã sản phẩm tồn tại)
+P548: Mã kết quả
+P549: 200; 400; 401
+P550: Kết quả kiểm thử
+P551: Đạt một phần (KT-08). Luồng mở cuộc trò chuyện thành công kiểm thử bằng tài khoản người mua.
+P553: Ví dụ yêu cầu:
+P554: {"productId":35393}
+P556: Ví dụ trả về:
+P557: Lỗi: {"success":false,"error":"Sản phẩm không tồn tại."}
+P559: API-07. POST /api/chat/{id}/send
+P560: Nội dung
+P561: Mô tả
+P562: Chức năng
+P563: Gửi tin nhắn trong cuộc trò chuyện.
+P564: Đăng nhập
+P565: Bắt buộc
+P566: Mã chống giả mạo (thực tế)
+P567: Không kiểm tra (kiến nghị bổ sung)
+P568: Tham số / dữ liệu gửi
+P569: id (đường dẫn, số nguyên 64 bit); thân JSON: message (chuỗi)
+P570: Mã kết quả
+P571: 200; 400; 401
+P572: Kết quả kiểm thử
+P573: Đạt một phần (KT-09, KT-10).
+P575: Ví dụ yêu cầu:
+P576: {"message":"Chào anh, tôi cần báo giá"}
+P578: Ví dụ trả về:
+P579: Lỗi: {"success":false,"error":"Không tìm thấy cuộc trò chuyện."}  ·  Ẩn danh: 401 {"success":false}
+P581: API-07b. POST /api/chat/{id}/upload
+P582: Nội dung
+P583: Mô tả
+P584: Chức năng
+P585: Gửi tệp (ảnh, PDF, Word, Excel, PowerPoint ≤ 10 MB) kèm lời nhắn trong cuộc trò chuyện.
+P586: Đăng nhập
+P587: Bắt buộc
+P588: Mã chống giả mạo (thực tế)
+P589: Bắt buộc
+P590: Tham số / dữ liệu gửi
+P591: id (đường dẫn); thân multipart/form-data: file (tệp), message (chuỗi)
+P592: Mã kết quả
+P593: 200; 400; 401
+P594: Kết quả kiểm thử
+P595: Đạt một phần (KT-11: thiếu mã trả 400). Gửi tệp thành công kiểm thử trên giao diện tin nhắn.
+P597: API-08. GET /api/chat/unread-count
+P598: Nội dung
+P599: Mô tả
+P600: Chức năng
+P601: Đếm số tin nhắn chưa đọc của người dùng.
+P602: Đăng nhập
+P603: Không bắt buộc (ẩn danh trả 0)
+P604: Mã chống giả mạo (thực tế)
+P605: Không áp dụng
+P606: Tham số / dữ liệu gửi
+P607: Không có
+P608: Mã kết quả
+P609: 200
+P610: Kết quả kiểm thử
+P611: Đạt (KT-12).
+P613: Ví dụ trả về:
+P614: {"count":0}
+P616: API-09. GET /api/chat/{id}/messages?afterId={afterId}
+P617: Nội dung
+P618: Mô tả
+P619: Chức năng
+P620: Lấy tin nhắn của cuộc trò chuyện, từ sau mã tin nhắn cho trước.
+P621: Đăng nhập
+P622: Bắt buộc
+P623: Mã chống giả mạo (thực tế)
+P624: Không áp dụng
+P625: Tham số / dữ liệu gửi
+P626: id (đường dẫn, số nguyên 64 bit); afterId (truy vấn, mặc định 0)
+P627: Mã kết quả
+P628: 200; 401; 404 (không phải thành viên hoặc không tồn tại)
+P629: Kết quả kiểm thử
+P630: Đạt (KT-13 thành viên; KT-14 ẩn danh 401; KT-15 không phải thành viên 404).
+P632: Ví dụ trả về:
+P633: {"messages":[{"id":10007,"senderName":"…","isMe":false,"isSystem":true,
+P634:   "message":"…","created":"14/10 10:39",
+P635:   "attachmentName":null,"attachmentUrl":null,"isImage":false}, …]}
+P637: API-10. GET /api/entity/{entityType}/{entityId}/summary
+P638: Nội dung
+P639: Mô tả
+P640: Chức năng
+P641: Số liệu tổng hợp của đối tượng: lượt xem, điểm đánh giá.
+P642: Đăng nhập
+P643: Không yêu cầu
+P644: Mã chống giả mạo (thực tế)
+P645: Không áp dụng
+P646: Tham số / dữ liệu gửi
+P647: entityType (đường dẫn, chuỗi – ví dụ SanPhamCNTB); entityId (đường dẫn, số nguyên)
+P648: Mã kết quả
+P649: 200; 400 (entityType không hợp lệ)
+P650: Kết quả kiểm thử
+P651: Đạt (KT-16). Lưu ý: entityId không tồn tại vẫn trả 200 với số liệu 0.
+P653: Ví dụ yêu cầu:
+P654: GET /api/entity/SanPhamCNTB/35393/summary
+P656: Ví dụ trả về:
+P657: {"entityType":"SanPhamCNTB","entityId":35393,"averageStars":1,"totalRatings":2,
+P658:  "totalViews":473,"starDistribution":[2,0,0,0,0],"userRating":null,"isOwner":true}
+P660: API-11. POST /api/entity/{entityType}/{entityId}/rating/save
+P661: Nội dung
+P662: Mô tả
+P663: Chức năng
+P664: Lưu đánh giá (số sao, tiêu đề, nhận xét).
+P665: Đăng nhập
+P666: Bắt buộc
+P667: Mã chống giả mạo (thực tế)
+P668: Không kiểm tra (kiến nghị bổ sung)
+P669: Tham số / dữ liệu gửi
+P670: Đường dẫn như API-10; thân JSON: stars (bắt buộc, 1–5), title, comment
+P671: Mã kết quả
+P672: 200; 400; 401
+P673: Kết quả kiểm thử
+P674: Đạt một phần (KT-17, KT-18).
+P676: Ví dụ yêu cầu:
+P677: {"stars":5,"title":"Hữu ích","comment":"Thông tin rõ ràng"}
+P679: Ví dụ trả về:
+P680: Lỗi: {"error":"Đánh giá phải từ 1 đến 5 sao."}  ·  Ẩn danh: 401 {"error":"Vui lòng đăng nhập."}
+P682: API-12. POST /api/entity/{entityType}/{entityId}/view/increase
+P683: Nội dung
+P684: Mô tả
+P685: Chức năng
+P686: Ghi nhận một lượt xem.
+P687: Đăng nhập
+P688: Không bắt buộc
+P689: Mã chống giả mạo (thực tế)
+P690: Không
+P691: Tham số / dữ liệu gửi
+P692: Đường dẫn như API-10; không có thân
+P693: Mã kết quả
+P694: 200; 400
+P695: Kết quả kiểm thử
+P696: Đạt một phần (KT-19).
+P698: Ví dụ trả về:
+P699: Lỗi: {"error":"Loại entity không hợp lệ."}
+P701: API-13. GET /api/entity/{entityType}/{entityId}/ratings?take={n}
+P702: Nội dung
+P703: Mô tả
+P704: Chức năng
+P705: Danh sách đánh giá của đối tượng.
+P706: Đăng nhập
+P707: Không yêu cầu
+P708: Mã chống giả mạo (thực tế)
+P709: Không áp dụng
+P710: Tham số / dữ liệu gửi
+P711: Đường dẫn như API-10; take (truy vấn, mặc định 20)
+P712: Mã kết quả
+P713: 200; 400
+P714: Kết quả kiểm thử
+P715: Đạt (KT-20). Dữ liệu hiện có nhiều đánh giá kiểm thử cần dọn trước nghiệm thu.
+P717: Ví dụ trả về:
+P718: {"ratings":[{"id":53,"userName":"…","stars":1,"comment":"…","created":"2026-10-13T17:08:31"}]}
+P720: API-14. GET /api/home/analytics
+P721: Nội dung
+P722: Mô tả
+P723: Chức năng
+P724: Số liệu thống kê tổng hợp trang chủ (lưu đệm 5 phút).
+P725: Đăng nhập
+P726: Không yêu cầu
+P727: Mã chống giả mạo (thực tế)
+P728: Không áp dụng
+P729: Tham số / dữ liệu gửi
+P730: Không có
+P731: Mã kết quả
+P732: 200
+P733: Kết quả kiểm thử
+P734: Đạt (KT-21). Lưu ý số liệu tăng trưởng tháng 10 bao gồm dữ liệu nhập/kiểm thử.
+P736: Ví dụ trả về:
+P737: {"totals":{"products":342,"projects":87,"suppliers":156,"experts":74},
+P738:  "mom":{…},"monthlyGrowth":{"labels":["T4/26",…],"products":[…],…},
+P739:  "productTypes":{"labels":["Công nghệ","Thiết bị",…],"values":[…]},
+P740:  "insights":{…}}
+P742: API-15. GET /api/notifications/latest?take={n}
+P743: Nội dung
+P744: Mô tả
+P745: Chức năng
+P746: Thông báo mới nhất của người dùng (chuông thông báo).
+P747: Đăng nhập
+P748: Bắt buộc
+P749: Mã chống giả mạo (thực tế)
+P750: Không áp dụng
+P751: Tham số / dữ liệu gửi
+P752: take (truy vấn, mặc định 10)
+P753: Mã kết quả
+P754: 200; 302 khi chưa đăng nhập (sẽ chuẩn hóa 401)
+P755: Kết quả kiểm thử
+P756: Đạt (KT-22) sau cập nhật 26/10/2026: chưa đăng nhập trả 401 JSON (L-03 đã đóng).
+P758: Ví dụ trả về:
+P759: [{"id":9797,"title":"Hồ sơ mới cần đánh giá","content":"Nhà cung ứng vừa nộp hồ sơ báo giá cho dự án #9527…",
+P760:   "isRead":false,"createdDate":"2026-10-14T15:53:39","projectId":9527,"channel":1,"url":null}]
+P762: API-16. GET /api/notifications/unread-count
+P763: Nội dung
+P764: Mô tả
+P765: Chức năng
+P766: Đếm thông báo chưa đọc.
+P767: Đăng nhập
+P768: Bắt buộc
+P769: Mã chống giả mạo (thực tế)
+P770: Không áp dụng
+P771: Tham số / dữ liệu gửi
+P772: Không có
+P773: Mã kết quả
+P774: 200; 302 khi chưa đăng nhập
+P775: Kết quả kiểm thử
+P776: Đạt (KT-23) sau cập nhật 26/10/2026: chưa đăng nhập trả 401 JSON (L-03 đã đóng).
+P778: Ví dụ trả về:
+P779: {"count":11}
+P781: API-17. POST /api/notifications/mark-read/{id}
+P782: Nội dung
+P783: Mô tả
+P784: Chức năng
+P785: Đánh dấu một thông báo đã đọc.
+P786: Đăng nhập
+P787: Bắt buộc
+P788: Mã chống giả mạo (thực tế)
+P789: Không kiểm tra phía máy chủ (giao diện có gửi)
+P790: Tham số / dữ liệu gửi
+P791: id (đường dẫn, số nguyên)
+P792: Mã kết quả
+P793: 200; 302; 404
+P794: Kết quả kiểm thử
+P795: Đạt một phần (KT-24).
+P797: API-18. POST /api/notifications/mark-all-read
+P798: Nội dung
+P799: Mô tả
+P800: Chức năng
+P801: Đánh dấu tất cả thông báo đã đọc.
+P802: Đăng nhập
+P803: Bắt buộc
+P804: Mã chống giả mạo (thực tế)
+P805: Chưa kiểm thử
+P806: Tham số / dữ liệu gửi
+P807: Không có
+P808: Mã kết quả
+P809: 200; 302
+P810: Kết quả kiểm thử
+P811: Chưa kiểm thử – thực hiện trong vận hành thử bằng tài khoản kiểm thử.
+P813: API-19. POST /api/support/start
+P814: Nội dung
+P815: Mô tả
+P816: Chức năng
+P817: Gửi yêu cầu Trung tâm tư vấn cho một hồ sơ giao dịch.
+P818: Đăng nhập
+P819: Bắt buộc
+P820: Mã chống giả mạo (thực tế)
+P821: Bắt buộc
+P822: Tham số / dữ liệu gửi
+P823: Thân JSON: projectId (bắt buộc, hồ sơ mà người gọi là thành viên); requestType (bắt buộc, số nguyên – loại yêu cầu: hỗ trợ sử dụng hệ thống hoặc tư vấn giao dịch/chuyển giao); serviceType (số nguyên, khi là tư vấn: tìm nhà cung cấp, đánh giá hồ sơ, đàm phán, pháp lý hợp đồng, hợp đồng điện tử, khác); stepNumber (1–14); subject; description; message; supportContextCode
+P824: Mã kết quả
+P825: 200; 400; 401; 403; 404
+P826: Kết quả kiểm thử
+P827: Đạt một phần (KT-26). Bảng mã số của requestType, serviceType do đơn vị phát triển bổ sung vào Swagger trước vận hành thử.
+P829: Ví dụ yêu cầu:
+P830: {"projectId":1027,"requestType":1,"stepNumber":5,
+P831:  "subject":"Cần hỗ trợ bước đàm phán","description":"…"}
+P833: Ví dụ trả về:
+P834: Lỗi: {"success":false,"error":"Thiếu thông tin dự án."}
+P836: API-20. POST /api/chat/{id}/video-call
+P837: Nội dung
+P838: Mô tả
+P839: Chức năng
+P840: Tạo phòng họp trực tuyến từ cuộc trò chuyện và gửi lời mời cho bên còn lại.
+P841: Đăng nhập
+P842: Bắt buộc
+P843: Mã chống giả mạo (thực tế)
+P844: Bắt buộc
+P845: Tham số / dữ liệu gửi
+P846: id (đường dẫn, số nguyên 64 bit)
+P847: Mã kết quả
+P848: 200; 400; 401; 404
+P849: Kết quả kiểm thử
+P850: Đạt một phần (KT-27). Phòng họp dùng máy chủ họp trực tuyến công cộng bên ngoài (Mục 5) – cần kiểm thử thực tế 2 người trong vận hành thử.
+P852: Ví dụ trả về:
+P853: Lỗi: 404 {"success":false}
+P855: API-21. GET /api/sms/dlr
+P856: Nội dung
+P857: Mô tả
+P858: Chức năng
+P859: Nhà cung cấp SMS Brandname gọi về để báo kết quả giao tin nhắn.
+P860: Đăng nhập
+P861: Không (giới hạn theo danh sách IP của nhà cung cấp SMS)
+P862: Mã chống giả mạo (thực tế)
+P863: Không áp dụng
+P864: Tham số / dữ liệu gửi
+P865: Truy vấn: smsid, status, errorcode, carrier, mnp, receivedts, deliveredts, to
+P866: Mã kết quả
+P867: 200; 403 (IP không được phép)
+P868: Kết quả kiểm thử
+P869: Đạt phần chặn truy cập (KT-28). Chưa nhận báo cáo thật vì kênh SMS đang ở chế độ thử (Mục 5).
+P871: API-22. GET /health
+P872: Nội dung
+P873: Mô tả
+P874: Chức năng
+P875: Kiểm tra tình trạng hệ thống cho công cụ giám sát.
+P876: Đăng nhập
+P877: Không
+P878: Mã chống giả mạo (thực tế)
+P879: Không áp dụng
+P880: Tham số / dữ liệu gửi
+P881: Không có
+P882: Mã kết quả
+P883: 200 (Healthy); 503 khi có thành phần lỗi
+P884: Kết quả kiểm thử
+P885: Đạt (KT-29).
+P887: Ví dụ trả về:
+P888: {"status":"Healthy","durationMs":5,"checks":{"database":{"status":"Healthy"},
+P889:  "disk":{"status":"Healthy"},"notification-queue":{"status":"Healthy","data":{"pendingOver30Min":0}}}}
+P891: 6. Tích hợp hệ thống bên ngoài
+P892: Trạng thái lấy từ màn hình Tham số hệ thống của CMS ngày 25/10/2026 (chỉ ghi trạng thái bật/tắt, chế độ; không ghi khóa, mật khẩu, địa chỉ máy chủ).
+P893: Bảng 9. Hiện trạng tích hợp hệ thống bên ngoài
+P894: Dịch vụ
+P895: Hướng
+P896: Hiện trạng cấu hình
+P897: Kết nối thử
+P898: Phụ thuộc
+P899: Đợt
+P900: SMS Brandname (South Telecom) – OTP, thông báo
+P901: Sàn gọi ra; nhà cung cấp gọi về API-21
+P902: Chế độ STUB (chỉ ghi nhật ký, không gửi thật); kênh thông báo SMS đang tắt; chưa khai báo brandname
+P903: Chưa thành công
+P904: Tài khoản, brandname, mẫu tin đăng ký với nhà mạng
+P905: Đợt 1 – cần hoàn tất trước nghiệm thu nếu OTP SMS thuộc phạm vi đợt 1
+P906: Email (SMTP) – OTP email, thông báo
+P907: Sàn gọi ra
+P908: Đã cấu hình máy chủ gửi; kênh thông báo email đang tắt
+P909: Chưa có minh chứng
+P910: Tài khoản email gửi của đơn vị vận hành
+P911: Đợt 1
+P912: Ký số từ xa (VNPT/Viettel/FPT) – hợp đồng điện tử
+P913: Sàn gọi ra
+P914: Chế độ TESTING; nhà cung cấp mặc định VNPT; chưa khai báo địa chỉ API, tài khoản
+P915: Chưa kết nối
+P916: Hợp đồng/tài khoản với tổ chức chứng thực
+P917: Đợt 2 (thời hạn: trước 18/11/2026)
+P918: OTP ký điện tử
+P919: Sàn gọi ra
+P920: Nhà cung cấp FPT; mã sống 300 giây
+P921: Chưa có minh chứng
+P922: Như trên
+P923: Theo ký số
+P924: USB Token
+P925: Máy người dùng
+P926: Phần mềm ký của nhà cung cấp chứng thư
+P927: Chưa có minh chứng
+P928: Chứng thư số của người ký
+P929: Đợt 1/2 – cần xác nhận
+P930: Gọi video (Jitsi)
+P931: Trình duyệt người dùng
+P932: Dùng máy chủ họp công cộng; khuyến nghị tự dựng máy chủ
+P933: Tạo phòng được; chưa thử 2 bên
+P934: Dịch vụ công cộng bên ngoài
+P935: Đợt 1 (chức năng); tự dựng máy chủ: 29/10–06/11/2026
+P936: Dịch tự động, trợ lý AI
+P937: Sàn gọi ra
+P938: Đang hoạt động (API-03 trả lời được)
+P939: Thành công (KT-03)
+P940: Khóa dịch vụ AI/dịch thuật
+P941: Đợt 1
+P942: Sàn giao dịch KH&CN Việt Nam / sàn khác
+P943: Hai chiều
+P944: Chưa có API
+P945: Chưa triển khai
+P946: Đặc tả, tài khoản kết nối của đơn vị quản lý sàn
+P947: Đợt 2 (thời hạn: trước 18/11/2026)
+P949: 7. Hạng mục chưa hoàn thành và lưu ý tiến độ
+P950: Theo kế hoạch: bắt đầu vận hành thử lần 1 ngày 27/10/2026, hiệu chỉnh và khắc phục trong ngày 27–28/10/2026, nghiệm thu đợt 1 ngày 28–29/10/2026. Các hạng mục sau chưa đủ điều kiện ghi nhận hoàn thành:
+P951: Bảng 10. Hạng mục chưa hoàn thành
+P952: STT
+P953: Hạng mục
+P954: Hiện trạng
+P955: Việc cần làm
+P956: Đợt
+P957: Thời hạn
+P958: 1
+P959: API-05 gợi ý nhà cung cấp
+P960: Lỗi 500
+P961: Sửa lỗi, kiểm thử lại
+P962: 1
+P963: Đã hoàn thành 26/10/2026
+P964: 2
+P965: Mã chống giả mạo API-06, 07, 11, 17, 18
+P966: Chưa kiểm tra phía máy chủ
+P967: Bổ sung, kiểm thử lại
+P968: 1
+P969: Trước 28/10/2026
+P970: 3
+P971: Chuẩn hóa lỗi JSON, 401 cho API thông báo
+P972: Trả HTML/302
+P973: Chuẩn hóa
+P974: 1
+P975: Trước 28/10/2026
+P976: 4
+P977: Kiểm thử luồng ghi thành công API-04, 06, 07, 07b, 11, 12, 17, 18, 19, 20
+P978: Mới kiểm thử từ chối
+P979: Kiểm thử bằng tài khoản kiểm thử, lưu minh chứng
+P980: 1
+P981: 27–28/10/2026
+P982: 5
+P983: SMS Brandname (OTP SMS)
+P984: Chế độ thử
+P985: Khai báo tài khoản, brandname; gửi thử; nhận báo cáo qua API-21
+P986: 1
+P987: Khi có tài khoản chính thức
+P988: 6
+P989: Thông báo email
+P990: Kênh đang tắt
+P991: Bật, gửi thử, lưu minh chứng
+P992: 1
+P993: Trước 28/10/2026
+P994: 7
+P995: Ký số từ xa, hợp đồng điện tử
+P996: Chưa kết nối
+P997: Ký hợp đồng với tổ chức chứng thực; cấu hình; ký thử nhiều bên
+P998: 2
+P999: Trước 18/11/2026
+P1000: 8
+P1001: Kết nối Sàn KH&CN Việt Nam, API cho sàn khác
+P1002: Chưa triển khai
+P1003: Thống nhất đặc tả với đơn vị quản lý sàn; xây dựng, kiểm thử
+P1004: 2
+P1005: Trước 18/11/2026
+P1006: 9
+P1007: Máy chủ họp video tự dựng
+P1008: Dùng dịch vụ công cộng
+P1009: Dựng máy chủ, chuyển cấu hình
+P1010: 2
+P1011: 29/10–06/11/2026
+P1012: 10
+P1013: Giới hạn tần suất các API công khai
+P1014: Chỉ API-05
+P1015: Bổ sung
+P1016: 2
+P1017: Trước 18/11/2026
+P1019: Danh mục API cần được đối chiếu với danh mục chức năng, hạng mục và khối lượng dự kiến nghiệm thu đợt 1 trong kế hoạch triển khai; thời hạn theo các mốc tại Kế hoạch triển khai chi tiết (nghiệm thu đợt 1: 28 – 29/10/2026; nghiệm thu đợt 2: 18/11/2026).
+P1020: Phụ lục A. Nhật ký kiểm thử ngày 25/10/2026
+P1021: Người kiểm thử: đơn vị thực hiện. Công cụ: trình duyệt (fetch) trên https://mekongx.vn. “Đã đăng nhập” = tài khoản quản trị; “Ẩn danh” = không gửi cookie.
+P1022: Bảng 11. Nhật ký kiểm thử
+P1023: Mã KT
+P1024: Yêu cầu
+P1025: Điều kiện
+P1026: Kết quả
+P1027: Đánh giá
+P1028: KT-01
+P1029: GET /api/ai-chat/suggestions
+P1030: Đã đăng nhập
+P1031: 200, 5 gợi ý
+P1032: Đạt
+P1033: KT-02
+P1034: GET /api/ai-chat/history?sessionKey=<ngẫu nhiên>
+P1035: Đã đăng nhập
+P1036: 200, []
+P1037: Đạt
+P1038: KT-03
+P1039: POST /api/ai-chat/message (có mã, câu hỏi hợp lệ)
+P1040: Đã đăng nhập
+P1041: 200, success=true, có sessionKey, sources
+P1042: Đạt
+P1043: KT-04
+P1044: POST /api/ai-chat/message không mã / message rỗng
+P1045: Đã đăng nhập
+P1046: 400 / 400 lỗi kiểm tra Message
+P1047: Đạt
+P1048: KT-05
+P1049: POST /api/ai-chat/submit-feedback không mã
+P1050: Đã đăng nhập
+P1051: 400
+P1052: Đạt
+P1053: KT-06
+P1054: POST /api/AISuggestion/suggest thiếu input
+P1055: Đã đăng nhập
+P1056: 400 “Input is required”
+P1057: Đạt
+P1058: KT-07
+P1059: POST /api/AISuggestion/suggest input hợp lệ (3 lần)
+P1060: Đã đăng nhập
+P1061: 500
+P1062: Không đạt (25/10); kiểm tra lại 26/10/2026: 200 – Đạt
+P1063: KT-08
+P1064: POST /api/chat/start productId=0, không mã
+P1065: Đã đăng nhập
+P1066: 400 “Sản phẩm không tồn tại.” (không kiểm tra mã)
+P1067: Kiểm tra lại 26/10/2026 (vht_buyer01): không mã trả 400, có mã qua kiểm tra – Đạt (MC-KT-08-20261026-vht_buyer01)
+P1068: KT-09
+P1069: POST /api/chat/0/send không mã
+P1070: Đã đăng nhập
+P1071: 400 “Không tìm thấy cuộc trò chuyện.” (không kiểm tra mã)
+P1072: Kiểm tra lại 26/10/2026 (vht_buyer01): không mã trả 400, có mã qua kiểm tra – Đạt (MC-KT-09-20261026-vht_buyer01)
+P1073: KT-10
+P1074: POST /api/chat/0/send
+P1075: Ẩn danh
+P1076: 401
+P1077: Đạt
+P1078: KT-11
+P1079: POST /api/chat/0/upload không mã
+P1080: Đã đăng nhập
+P1081: 400
+P1082: Đạt
+P1083: KT-12
+P1084: GET /api/chat/unread-count
+P1085: Đã đăng nhập / ẩn danh
+P1086: 200 {"count":0} / 200 {"count":0}
+P1087: Đạt
+P1088: KT-13
+P1089: GET /api/chat/{id}/messages (thành viên)
+P1090: Đã đăng nhập
+P1091: 200, danh sách tin nhắn
+P1092: Đạt
+P1093: KT-14
+P1094: GET /api/chat/{id}/messages
+P1095: Ẩn danh
+P1096: 401
+P1097: Đạt
+P1098: KT-15
+P1099: GET /api/chat/1/messages (không phải thành viên)
+P1100: Đã đăng nhập
+P1101: 404
+P1102: Đạt
+P1103: KT-16
+P1104: GET /api/entity/SanPhamCNTB/35393/summary; entityType sai
+P1105: Đã đăng nhập
+P1106: 200 / 400
+P1107: Đạt
+P1108: KT-17
+P1109: POST rating/save stars=0, không mã
+P1110: Đã đăng nhập
+P1111: 400 “1 đến 5 sao” (không kiểm tra mã)
+P1112: Kiểm tra lại 26/10/2026 (vht_buyer01): không mã trả 400, có mã qua kiểm tra – Đạt (MC-KT-17-20261026-vht_buyer01)
+P1113: KT-18
+P1114: POST rating/save
+P1115: Ẩn danh
+P1116: 401 “Vui lòng đăng nhập.”
+P1117: Đạt
+P1118: KT-19
+P1119: POST view/increase entityType sai
+P1120: Đã đăng nhập
+P1121: 400
+P1122: Đạt
+P1123: KT-20
+P1124: GET /api/entity/SanPhamCNTB/35393/ratings?take=2
+P1125: Đã đăng nhập
+P1126: 200
+P1127: Đạt
+P1128: KT-21
+P1129: GET /api/home/analytics
+P1130: Đã đăng nhập
+P1131: 200
+P1132: Đạt
+P1133: KT-22
+P1134: GET /api/notifications/latest?take=2
+P1135: Đã đăng nhập / ẩn danh
+P1136: 200 / 302 về trang đăng nhập
+P1137: Không đạt 25/10 (302); kiểm tra lại 26/10/2026 sau cập nhật: 401 – Đạt (MC-KT-22/23-20261026-2)
+P1138: KT-23
+P1139: GET /api/notifications/unread-count
+P1140: Đã đăng nhập / ẩn danh
+P1141: 200 / 302
+P1142: Không đạt 25/10 (302); kiểm tra lại 26/10/2026 sau cập nhật: 401 – Đạt (MC-KT-22/23-20261026-2)
+P1143: KT-24
+P1144: POST /api/notifications/mark-read/0 không mã / có mã
+P1145: Đã đăng nhập
+P1146: 404 / 404 (không kiểm tra mã)
+P1147: Kiểm tra lại 26/10/2026 (vht_buyer01): không mã trả 400, có mã qua kiểm tra – Đạt (MC-KT-24-20261026-vht_buyer01)
+P1148: KT-25
+P1149: GET /api/ai-chat/history với sessionKey của KT-03
+P1150: Ẩn danh
+P1151: 200, trả lịch sử
+P1152: Đạt; khuyến nghị gắn tài khoản
+P1153: KT-26
+P1154: POST /api/support/start projectId=0 không mã / có mã
+P1155: Đã đăng nhập
+P1156: 400 / 400 “Thiếu thông tin dự án.”
+P1157: Đạt
+P1158: KT-27
+P1159: POST /api/chat/0/video-call không mã / có mã
+P1160: Đã đăng nhập
+P1161: 400 / 404
+P1162: Đạt
+P1163: KT-28
+P1164: GET /api/sms/dlr
+P1165: Ngoài danh sách IP
+P1166: 403
+P1167: Đạt
+P1168: KT-29
+P1169: GET /health
+P1170: —
+P1171: 200 Healthy
+P1172: Đạt
+P1173: KT-30
+P1174: GET /swagger/v1/swagger.json
+P1175: Ẩn danh / quản trị
+P1176: 404 / 200 (OpenAPI 3.0.1, 22 đường dẫn)
+P1177: Đạt
+P1179: Minh chứng kèm theo: ảnh chụp màn hình Swagger và kết quả các lệnh kiểm thử được lưu cùng hồ sơ; khi vận hành thử, đơn vị vận hành thử ghi bổ sung kết quả vào bảng theo cùng mã KT.
+P1180: Phụ lục B. Hướng dẫn kiểm tra nhanh API
+P1181: Đăng nhập https://mekongx.vn bằng tài khoản kiểm thử được cấp (tài khoản quản trị để xem Swagger).
+P1182: Mở https://mekongx.vn/swagger để xem danh sách API, tham số và cấu trúc dữ liệu.
+P1183: Gọi thử API GET trực tiếp trên thanh địa chỉ trình duyệt, ví dụ https://mekongx.vn/api/notifications/unread-count.
+P1184: Gọi thử API POST: mở một trang bất kỳ của Sàn, nhấn F12 › Console, chạy lệnh mẫu dưới đây (lệnh tự lấy mã chống giả mạo của trang).
+P1185: Ghi kết quả (mã HTTP, nội dung trả về, thời điểm) vào Phụ lục A theo mã KT.
+P1186: const tok = document.querySelector('meta[name="__RequestVerificationToken"]').content;
+P1187: const r = await fetch('/api/ai-chat/message', {
+P1188:   method: 'POST',
+P1189:   headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': tok },
+P1190:   body: JSON.stringify({ message: 'Tìm công nghệ sấy nông sản' })
+P1191: });
+P1192: console.log(r.status, await r.json());
+PART word/footer1.xml
+P1: Trang 28 / 28
+PART word/header1.xml
+P1: PL-03 Đặc tả API – Sàn giao dịch công nghệ Cần Thơ – Phiên bản 2.0

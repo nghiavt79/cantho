@@ -1,0 +1,7 @@
+Mã minh chứng: MC-HT-08-20261026
+Ca kiểm thử: TC-HT-08 Chặn truy cập địa chỉ nhận báo cáo giao tin SMS
+Thời điểm (UTC+7): 26/10/2026 08:39:19
+Máy thực hiện: máy tính kết nối Internet, công cụ curl 8.11.0, openssl
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+GET /api/sms/dlr  HTTP 403

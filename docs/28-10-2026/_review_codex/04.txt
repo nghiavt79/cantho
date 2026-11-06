@@ -1,0 +1,123 @@
+D:\2026\CanTho\docs\28-10-2026\BienBanKiemTra\3b-Bien ban khac phuc loi van hanh thu lan 1.docx
+PART word/document.xml
+P4: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P5: Độc lập - Tự do - Hạnh phúc
+P6: ───────────────
+P7: Cần Thơ, ngày …… tháng 10 năm 2026
+P9: BIÊN BẢN KHẮC PHỤC LỖI
+P10: VÀ KIỂM TRA LẠI SAU KHẮC PHỤC – VẬN HÀNH THỬ LẦN 1
+P11: Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P12: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone thực hiện Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ;
+P13: Căn cứ Biên bản ghi nhận lỗi trong tự kiểm thử và vận hành thử lần 1 ngày …… tháng 10 năm 2026;
+P14: Hôm nay, ngày …… tháng …… năm 2026, các bên gồm:
+P15: Thành phần:
+P16: 1. Nhà cung cấp dịch vụ – Tổng Công ty Viễn thông MobiFone (MobiFone Cần Thơ): Ông/Bà Lê Phước Trung – Kiểm thử (QA/QC); Ông/Bà Nguyễn Thị Dung – Trưởng nhóm kỹ thuật; Ông/Bà Nguyễn Nhĩ Thái – Kỹ sư triển khai.
+P17: 2. Đơn vị vận hành thử – Công ty TNHH Công nghệ Tin học Bình Định: Ông/Bà ……………………, chức vụ ……………………
+P18: 3. Đơn vị giám sát – Công ty TNHH Chuyển Đổi Số 365: Ông Trần Gia Bảo – Giám sát viên.
+P19: Cùng kiểm tra lại kết quả khắc phục các lỗi đã ghi nhận như sau:
+P20: Mã
+P21: Chức năng, thành phần
+P22: Nguyên nhân
+P23: Biện pháp khắc phục
+P24: Ngày hoàn thành, phiên bản cập nhật
+P25: Kết quả kiểm tra lại, minh chứng
+P26: Đánh giá
+P27: L01
+P28: API-05 gợi ý nhà cung cấp (C.10 Chatbot AI)
+P29: ……………………
+P30: Sửa lỗi xử lý của API-05; kiểm thử lại với dữ liệu có và không có nhà cung cấp phù hợp; lưu ảnh chụp, nhật ký gọi API
+P31: 26/10/2026 (nhà cung cấp báo đã sửa)
+P32: ……………
+P33: ☐ Đạt
+P34: ☐ Chưa đạt
+P35: L02
+P36: API-06, API-07, API-11, API-17, API-18
+P37: Các API chưa được gắn bước kiểm tra mã chống giả mạo
+P38: Bổ sung kiểm tra mã chống giả mạo cho 05 API; kiểm thử trường hợp thiếu, sai mã (phải bị từ chối) và trường hợp hợp lệ
+P39: ……/……/2026
+P40: ……………
+P41: ☐ Đạt
+P42: ☐ Chưa đạt
+P43: L03
+P44: API thông báo
+P45: Cơ chế xác thực áp dụng chung cách chuyển hướng tới trang đăng nhập cho cả API
+P46: Cấu hình riêng cho các API: trả JSON mã 401 khi chưa xác thực; cập nhật Đặc tả API
+P47: ……/……/2026
+P48: ……………
+P49: ☐ Đạt
+P50: ☐ Chưa đạt
+P51: L04
+P52: 10 API ghi dữ liệu; API-18
+P53: Kịch bản tự kiểm thử ban đầu chỉ gồm trường hợp bị từ chối
+P54: Bổ sung kịch bản ghi thành công bằng tài khoản kiểm thử; lưu ảnh chụp, nhật ký từng API
+P55: ……/……/2026
+P56: ……………
+P57: ☐ Đạt
+P58: ☐ Chưa đạt
+P59: L05
+P60: Thông báo qua thư điện tử (A.1.4, A.4.5, A.8.4)
+P61: Kênh gửi thư để ở trạng thái tắt trong thời gian tự kiểm thử
+P62: Bật kênh gửi thư; gửi thử thông báo chuyển bước, nhắc lịch sự kiện, mã OTP; lưu nhật ký gửi thư (trạng thái Đã gửi)
+P63: ……/……/2026
+P64: ……………
+P65: ☐ Đạt
+P66: ☐ Chưa đạt
+P67: L06
+P68: Bước 10 quy trình giao dịch (A.2.5)
+P69: Nhãn ô gạt bước 10 dùng lại nhãn của bước 11
+P70: Sửa nhãn thành nội dung xác nhận đã nhận bàn giao; chụp lại Hình 33 tài liệu Mục 01a
+P71: ……/……/2026
+P72: ……………
+P73: ☐ Đạt
+P74: ☐ Chưa đạt
+P75: L07
+P76: Trang kiểm tra tình trạng hệ thống /health
+P77: Trang trả về kết quả chi tiết của từng thành phần kiểm tra
+P78: Chỉ trả trạng thái tổng hợp và mã HTTP; chi tiết thành phần chỉ xem trên công cụ giám sát; chụp minh chứng nội dung trả về
+P79: ……/……/2026
+P80: ……………
+P81: ☐ Đạt
+P82: ☐ Chưa đạt
+P83: L08
+P84: CMS – Cấu hình nhanh sản phẩm (A.2.6)
+P85: Hộp Cấu hình nhanh chưa thiết kế trường lý do
+P86: Bổ sung ô lý do bắt buộc khi Trả về; gửi thông báo kèm lý do cho nhà cung cấp
+P87: ……/……/2026
+P88: ……………
+P89: ☐ Đạt
+P90: ☐ Chưa đạt
+P91: L09
+P92: Tên miền mekongx.vn – IPv6
+P93: Chưa khai báo địa chỉ IPv6, bản ghi AAAA
+P94: Cấp địa chỉ IPv6 cho máy chủ ứng dụng, khai báo bản ghi AAAA; kiểm tra truy cập qua IPv6
+P95: ……/……/2026
+P96: ……………
+P97: ☐ Đạt
+P98: ☐ Chưa đạt
+P99: L10
+P100: Chứng thư SSL
+P101: Chưa lập tài liệu minh chứng cấu hình gia hạn
+P102: Cung cấp ảnh chụp tác vụ gia hạn tự động, nhật ký lần gia hạn thử
+P103: ……/……/2026
+P104: ……………
+P105: ☐ Đạt
+P106: ☐ Chưa đạt
+P108: Tổng hợp kết quả
+P109: Số lỗi đã khắc phục, kiểm tra lại đạt: ……/10; số lỗi chưa đạt: ……; số lỗi chuyển theo dõi đợt 2 (dự kiến L09 – IPv6, hạn 09/11/2026): ……
+P110: Các thay đổi phần mềm được thực hiện theo quy trình quản lý thay đổi, phiên bản (NCC-14 mục VI) và ghi vào Sổ theo dõi phiên bản. Nhật ký thay đổi, ảnh chụp kết quả kiểm tra lại được lưu kèm biên bản này.
+P111: Ý kiến của đơn vị giám sát
+P112: ……………………………………………………………………………………………………………………………………………………
+P113: Biên bản lập thành 03 (ba) bản, mỗi bên giữ 01 (một) bản./.
+P114: ĐẠI DIỆN
+P115: NHÀ CUNG CẤP DỊCH VỤ
+P116: (Ký, ghi rõ họ tên)
+P121: Nguyễn Thị Dung
+P122: ĐẠI DIỆN
+P123: ĐƠN VỊ VẬN HÀNH THỬ
+P124: (Ký, ghi rõ họ tên)
+P129: ……………………
+P130: ĐẠI DIỆN
+P131: ĐƠN VỊ GIÁM SÁT
+P132: (Ký, ghi rõ họ tên)
+P137: Trần Gia Bảo
+PART word/footer1.xml

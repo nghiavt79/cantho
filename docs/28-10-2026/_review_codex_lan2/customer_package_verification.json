@@ -1,0 +1,10 @@
+{
+  "zip": "D:\\2026\\CanTho\\docs\\28-10-2026\\Bo_du_thao_gui_khach_28-10-2026.zip",
+  "files": 74,
+  "bytes": 10542392,
+  "removed": [
+    "Bo_du_thao_gui_khach_28-10-2026/01_Van_ban_du_thao/NCC-08 Cong van de nghi nghiem thu dot 1 (du thao).docx"
+  ],
+  "sha256": "cfe5e68f169efcdb33e5ba3090b655d5e61d03be204d1dc5378d782b539412cf",
+  "verification": "All retained members match previous package, except updated customer contents list. NCC-07 and NCC-08 documents absent."
+}

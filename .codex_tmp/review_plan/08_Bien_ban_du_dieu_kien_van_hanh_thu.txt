@@ -1,0 +1,36 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN XÁC NHẬN
+Đủ điều kiện triển khai vận hành thử
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Căn cứ Báo cáo kết quả kiểm thử nội bộ và rà soát an toàn thông tin ngày ……/10/2026;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+I. Kiểm tra điều kiện sẵn sàng (mục 2.7a Chương V)
+TT | Kết quả đầu ra | Minh chứng | Trạng thái
+1 | Môi trường dịch vụ được thiết lập hoàn chỉnh theo phạm vi yêu cầu | Biên bản 03, 05 | Chưa hoàn tất
+2 | Tài khoản, phân quyền, cấu hình vận hành và dữ liệu khởi tạo được thiết lập | Biên bản 05 | Chưa hoàn tất
+3 | Kết nối các dịch vụ tích hợp đã được kiểm tra | Biên bản 06 | Chưa hoàn tất
+4 | Báo cáo kết quả kiểm tra điều kiện sẵn sàng | Báo cáo 07 | Chưa hoàn tất
+
+II. Tổ chức vận hành thử
+- Thời gian: từ ngày ……/10/2026 đến ngày ……/10/2026;
+- Địa chỉ: ……………………… (mekongx.vn / máy chủ cloud chính thức);
+- Dữ liệu: dữ liệu mẫu và dữ liệu được Bên thuê cho phép;
+- Cán bộ Bên thuê tham gia: ………………………………………………
+Kết luận
+Dịch vụ đủ điều kiện / chưa đủ điều kiện (gạch bỏ phần không phù hợp) đưa vào vận hành thử.
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

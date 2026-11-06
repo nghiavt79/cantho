@@ -1,0 +1,24 @@
+Mã minh chứng: MC-HT-03-20261026-2
+Ca kiểm thử: TC-HT-03 /health sau cập nhật
+Thời điểm (UTC+7): 26/10/2026 09:27:16
+Công cụ: curl 8.11.0 trên máy tính kết nối Internet
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập); máy chủ đã cập nhật bản sửa L-02, L-03
+------------------------------------------------------------
+Yêu cầu: GET /health
+
+HTTP/1.1 200 OK
+Cache-Control: no-store
+Pragma: no-cache
+Transfer-Encoding: chunked
+Content-Type: application/json; charset=utf-8
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Server: Microsoft-IIS/10.0
+Strict-Transport-Security: max-age=2592000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+Date: Mon, 26 Oct 2026 09:22:56 GMT
+
+{"status":"Healthy","durationMs":12,"checks":{"database":{"status":"Healthy","description":null,"data":null},"disk":{"status":"Healthy","description":null,"data":{"freeGB":914.7}},"notification-queue":{"status":"Healthy","description":null,"data":{"pendingOver30Min":0}}}}

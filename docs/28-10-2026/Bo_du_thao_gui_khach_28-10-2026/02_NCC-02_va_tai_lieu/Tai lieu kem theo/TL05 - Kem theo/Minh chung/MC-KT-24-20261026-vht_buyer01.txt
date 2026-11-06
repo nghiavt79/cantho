@@ -1,0 +1,23 @@
+Mã minh chứng: MC-KT-24-20261026-vht_buyer01
+Ca kiểm thử: KT-24 – kiểm tra lại L-02 (mã chống giả mạo phía máy chủ) sau bản cập nhật 26/10/2026
+Ngày: 26/10/2026
+Tài khoản: vht_buyer01 (đã đăng nhập; phiên xác nhận bằng GET /api/notifications/unread-count trả {"count":0})
+Môi trường: https://mekongx.vn, trình duyệt Chrome (Chromium), gọi từ trang https://mekongx.vn/Dashboard
+Người thực hiện: Nhóm kỹ thuật MobiFone Cần Thơ
+------------------------------------------------------------
+Yêu cầu: POST /api/notifications/mark-read/0
+Thân: (không có)
+
+Lần 1 – không gửi mã chống giả mạo (RequestVerificationToken)
+  Thời điểm: 16:31:21
+  Kết quả: HTTP 400
+  Nội dung: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"Bad Request","status":400,"traceId":"00-1d4c7631757ab23efab5301a0c78355b-63333058e4773f53-00"}
+  Mong đợi: 400 (thiếu mã chống giả mạo) → Khớp
+
+Lần 2 – có gửi mã chống giả mạo lấy từ thẻ meta của trang
+  Thời điểm: 16:31:23
+  Kết quả: HTTP 404
+  Nội dung: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.5","title":"Not Found","status":404,"traceId":"00-79be437e17833376a6c796ac0f5a68e4-81e2e5acf8f8edb2-00"}
+  Mong đợi: qua lớp kiểm tra mã, trả lỗi nghiệp vụ do dữ liệu không hợp lệ → Khớp
+
+Kết luận: máy chủ kiểm tra mã chống giả mạo – Đạt. Dữ liệu dùng là đối tượng không tồn tại / 0 sao, không làm thay đổi dữ liệu.

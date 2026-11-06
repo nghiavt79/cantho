@@ -1,0 +1,46 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN BÀN GIAO
+Hạ tầng máy chủ và bản quyền phần mềm
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+I. Máy chủ cloud (02 máy chủ)
+TT | Tiêu chí theo HSMT | Máy chủ 1 | Máy chủ 2 | Trạng thái
+1 | CPU Intel Xeon Gold 6330 hoặc tương đương |  |  | Chưa hoàn tất
+2 | Tối thiểu 8 lõi |  |  | Chưa hoàn tất
+3 | Lưu trữ tối thiểu 500 GB SSD |  |  | Chưa hoàn tất
+4 | RAM tối thiểu 32 GB |  |  | Chưa hoàn tất
+5 | 01 địa chỉ IP; hỗ trợ IPv4/IPv6 |  |  | Chưa hoàn tất
+6 | Sao lưu, snapshot; giám sát; mở rộng tài nguyên; kiểm soát truy cập; báo cáo tài nguyên |  |  | Chưa hoàn tất
+7 | Dữ liệu và bản sao lưu lưu trữ tại Việt Nam |  |  | Chưa hoàn tất
+
+II. Bản quyền phần mềm
+TT | Phần mềm | Số lượng gói | Số chứng từ / mã kích hoạt | Trạng thái
+1 | Windows Server 2022 Standard (gói 16 lõi) | 02 |  | Chưa hoàn tất
+2 | SQL Server 2022 Standard (gói 02 lõi) | 04 |  | Chưa hoàn tất
+
+Giấy phép đứng tên Chủ trì thuê, sử dụng trong suốt thời gian thuê và được bàn giao lại cho Chủ trì thuê khi kết thúc hợp đồng.
+III. Bảo vệ, truy cập
+TT | Nội dung | Kết quả | Trạng thái
+1 | Tường lửa chỉ mở các cổng cần thiết; cơ sở dữ liệu không mở ra Internet |  | Chưa hoàn tất
+2 | Chứng thư bảo mật (SSL) cho tên miền chính thức |  | Chưa hoàn tất
+3 | Tên miền trỏ về máy chủ chính thức |  | Chưa hoàn tất
+4 | Tài khoản quản trị máy chủ bàn giao cho đầu mối được chỉ định |  | Chưa hoàn tất
+
+Kết luận
+Hạ tầng máy chủ và bản quyền phần mềm đã được bàn giao đủ / chưa đủ (gạch bỏ phần không phù hợp) theo yêu cầu tại Chương V Hồ sơ mời thầu.
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

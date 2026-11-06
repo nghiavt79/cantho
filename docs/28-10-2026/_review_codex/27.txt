@@ -1,0 +1,138 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_muc_1.1_1.5_1.6\1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh\NCC-14 Quy trinh van hanh xu ly su co ho tro sao luu quan ly thay doi.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: QUY TRÌNH VẬN HÀNH, XỬ LÝ SỰ CỐ, HỖ TRỢ NGƯỜI DÙNG, SAO LƯU
+P5: VÀ QUẢN LÝ THAY ĐỔI, PHIÊN BẢN
+P6: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P7: Phiên bản: 2.0    Ngày ban hành: 26/10/2026    Người phê duyệt: ………………
+P8: I. PHẠM VI ÁP DỤNG
+P9: Quy trình áp dụng cho nhân sự của Tổng Công ty Viễn thông MobiFone và các bên liên quan trong vận hành trang web Sàn giao dịch công nghệ Cần Thơ trong thời gian thiết lập, vận hành thử và thời gian thuê dịch vụ 05 năm (18/11/2026–17/11/2031).
+P10: II. QUY TRÌNH VẬN HÀNH HẰNG NGÀY
+P11: STT
+P12: Công việc
+P13: Tần suất
+P14: Người thực hiện
+P15: 1
+P16: Kiểm tra cảnh báo của công cụ giám sát (địa chỉ kiểm tra tình trạng /health): tính sẵn sàng, CPU, RAM, ổ đĩa, hạn chứng thư SSL
+P17: Hằng ngày
+P18: Quản trị hệ thống
+P19: 2
+P20: Kiểm tra kết quả sao lưu tự động đêm trước và các lần sao lưu bổ sung
+P21: Hằng ngày
+P22: Quản trị hệ thống
+P23: 3
+P24: Xem log hệ thống (thư mục logs trên máy chủ, mỗi ngày một tệp app-nămthángngày.log, lưu 180 ngày): lỗi, cảnh báo mới phát sinh
+P25: Hằng ngày
+P26: Quản trị hệ thống
+P27: 4
+P28: Xem nhật ký đăng nhập tại CMS › Quản trị hệ thống › Nhật ký: lọc sự kiện “Đăng nhập không thành công” theo địa chỉ IP để phát hiện dò mật khẩu
+P29: Hằng ngày
+P30: An toàn thông tin
+P31: 5
+P32: Xử lý yêu cầu hỗ trợ tồn đọng tại CMS › Giao dịch › Yêu cầu Trung tâm tư vấn; kiểm tra ô “Quá 02 giờ chưa phản hồi”
+P33: Hằng ngày
+P34: Hỗ trợ người dùng
+P35: 6
+P36: Tổng hợp số liệu báo cáo kết quả cung cấp dịch vụ (Mẫu số 2): lượt truy cập (CMS › Thống kê), thời gian phản hồi hỗ trợ, sự cố, sao lưu
+P37: Hằng tháng
+P38: Đầu mối kỹ thuật
+P40: III. QUY TRÌNH HỖ TRỢ NGƯỜI DÙNG
+P41: Bước
+P42: Nội dung
+P43: Cách thực hiện
+P44: Thời hạn
+P45: 1
+P46: Tiếp nhận
+P47: Người dùng gửi yêu cầu qua nút “Yêu cầu Trung tâm tư vấn” trong chi tiết hồ sơ giao dịch, nút “Gửi yêu cầu tư vấn” trên Sàn, hotline +84 292 3907 037 hoặc thư điện tử trungtamungdung@cantho.gov.vn; yêu cầu ngoài hệ thống được cán bộ nhập lại vào hệ thống
+P48: Ngay khi nhận
+P49: 2
+P50: Phân công
+P51: Đầu mối mở yêu cầu tại CMS › Giao dịch › Yêu cầu Trung tâm tư vấn (lọc “Mới”), bấm “Xử lý”, chọn cán bộ/chuyên gia ở “Gán cho nhân viên / tư vấn”, bấm “Gán”
+P52: Trong 01 giờ
+P53: 3
+P54: Phản hồi
+P55: Cán bộ nhập nội dung phản hồi, bấm “Gửi”; phản hồi đến mục Tin nhắn của người dùng. Thời gian phản hồi tính từ lúc người dùng gửi đến tin nhắn đầu tiên của cán bộ
+P56: ≤ 02 giờ trong giờ hành chính
+P57: 4
+P58: Xử lý
+P59: Hướng dẫn, khắc phục; cập nhật “Trạng thái xử lý” (Đang xử lý, Chờ doanh nghiệp bổ sung…); chuyển quy trình xử lý sự cố (Mục IV) nếu là lỗi hệ thống
+P60: Theo mức độ
+P61: 5
+P62: Đóng yêu cầu
+P63: Ghi kết quả vào nội dung trao đổi, bấm “Hoàn thành” (trạng thái “Đã hoàn thành”); yêu cầu không thực hiện được bấm “Hủy” và ghi lý do
+P64: Khi xong
+P65: 6
+P66: Thống kê
+P67: Lọc theo khoảng ngày của tháng, bấm “Xuất Excel” (có cột “Phản hồi lần đầu”, “Thời gian phản hồi (phút)”); lấy số liệu thời gian phản hồi trung bình, tỷ lệ phản hồi trong 02 giờ cho báo cáo kết quả cung cấp dịch vụ gửi đến địa chỉ email của Chủ đầu tư định kỳ tuần đầu mỗi tháng
+P68: Hằng tháng
+P70: IV. QUY TRÌNH XỬ LÝ SỰ CỐ
+P71: 1. Phân loại sự cố
+P72: Mức độ
+P73: Mô tả
+P74: Thời hạn khắc phục
+P75: Nghiêm trọng
+P76: Dừng dịch vụ; mất hoặc lộ lọt dữ liệu; tấn công mạng
+P77: ≤ 08 giờ
+P78: Thông thường
+P79: Một chức năng lỗi, dịch vụ vẫn hoạt động
+P80: ≤ 24 giờ
+P82: 2. Các bước xử lý
+P83: Bước 1. Phát hiện: từ cảnh báo của công cụ giám sát (/health), log hệ thống, nhật ký CMS, phản ánh của người dùng hoặc đơn vị giám sát.
+P84: Bước 2. Ghi nhận vào sổ theo dõi sự cố: thời điểm phát hiện, mô tả, mức độ, người xử lý.
+P85: Bước 3. Thông báo: sự cố nghiêm trọng báo ngay cho Chủ trì thuê và đơn vị giám sát; sự cố an ninh mạng, lộ lọt dữ liệu báo theo cam kết bảo mật.
+P86: Bước 4. Khắc phục: khoanh vùng nguyên nhân; khôi phục dịch vụ, khi cần khôi phục từ bản sao lưu gần nhất.
+P87: Bước 5. Kiểm tra lại: xác nhận dịch vụ hoạt động bình thường, dữ liệu toàn vẹn.
+P88: Bước 6. Báo cáo: thời gian gián đoạn, nguyên nhân, biện pháp phòng ngừa; đưa vào báo cáo tháng.
+P89: V. QUY TRÌNH SAO LƯU, PHỤC HỒI
+P90: Nội dung
+P91: Quy định
+P92: Sao lưu đầy đủ
+P93: Hằng ngày lúc 01:00 (tác vụ tự động)
+P94: Sao lưu vi sai (bổ sung)
+P95: Lúc 07:00, 13:00, 19:00 hằng ngày (06 giờ/lần, tác vụ tự động)
+P96: Thời gian lưu giữ
+P97: Tối thiểu 30 ngày; bản sao lưu lưu tách biệt với máy chủ ứng dụng
+P98: Mức mất dữ liệu tối đa (RPO)
+P99: ≤ 06 giờ
+P100: Thời gian khôi phục tối đa (RTO)
+P101: ≤ 08 giờ
+P102: Chạy thử phục hồi
+P103: Ít nhất 01 lần/06 tháng trên môi trường thử; lập biên bản ghi kết quả
+P104: Công cụ
+P105: Bộ tập lệnh trong thư mục Scripts/sao-luu trên máy chủ: sao lưu đầy đủ, sao lưu vi sai, đăng ký tác vụ tự động, chạy thử phục hồi
+P107: VI. QUẢN LÝ THAY ĐỔI, PHIÊN BẢN
+P108: Bước 1. Đề nghị thay đổi: ghi nội dung, lý do, ảnh hưởng; thay đổi làm khác hợp đồng thực hiện theo văn bản đề xuất thay đổi gửi Chủ trì thuê.
+P109: Bước 2. Đánh giá, phê duyệt: đầu mối kỹ thuật đánh giá ảnh hưởng đến chất lượng, an toàn thông tin.
+P110: Bước 3. Kiểm thử trên môi trường thử trước khi cập nhật.
+P111: Bước 4. Sao lưu cơ sở dữ liệu và bản đang chạy trước khi cập nhật; thực hiện ngoài giờ cao điểm, thông báo trước nếu phải dừng dịch vụ.
+P112: Bước 5. Cập nhật: chạy tập lệnh cơ sở dữ liệu (nếu có) trước, sau đó thay tệp ứng dụng; kiểm tra lại các chức năng chính. Thay đổi cấu hình tại CMS › Tham số hệ thống có hiệu lực sau khoảng 01 phút (ghi lý do trước khi sửa); chuỗi giao diện nạp bằng tập lệnh SQL chỉ có hiệu lực sau khi khởi động lại ứng dụng.
+P113: Bước 6. Ghi chú phát hành: số phiên bản, ngày, nội dung thay đổi vào Sổ theo dõi phiên bản; cập nhật tài liệu hướng dẫn người sử dụng Sàn (Mục 01a), hướng dẫn cán bộ quản trị CMS (Mục 01b), trang “Hướng dẫn” và “Hướng dẫn CMS” khi thay đổi chức năng.
+P114: Bước 7. Khôi phục bản trước nếu cập nhật gây lỗi.
+P115: Sổ theo dõi phiên bản
+P116: STT
+P117: Phiên bản
+P118: Ngày cập nhật
+P119: Nội dung thay đổi
+P120: Người thực hiện
+P121: 1
+P122: 2026.10.22
+P123: 22/10/2026
+P124: Hoàn thiện 60 chức năng nghiệm thu đợt 1: lịch sử mua hàng (giá trị đơn, trạng thái thanh toán); tiêu chí xếp hạng nhà cung cấp; gửi hình ảnh, tệp trong trao đổi trực tuyến; hướng dẫn trực tuyến quy trình giao dịch 14 bước; cập nhật Hướng dẫn CMS.
+P125: Nguyễn Nhĩ Thái
+P126: 2
+P127: 2026.10.24
+P128: 24/10/2026
+P129: Kết nối dịch vụ SMS Brandname: gửi tin nhắn, nhận báo cáo giao tin (chỉ nhận từ địa chỉ của nhà mạng), bổ sung tham số SMS trong CMS. Bản này đưa lên máy chủ cùng bản 25/10/2026.
+P130: Nguyễn Nhĩ Thái
+P131: 3
+P132: 2026.10.25
+P133: 25/10/2026
+P134: Đưa lên máy chủ nội dung bản 24/10/2026; bổ sung nhật ký đăng nhập, ghi log hệ thống ra tệp theo ngày, thống kê lượt truy cập, thống kê thời gian phản hồi yêu cầu hỗ trợ (≤ 02 giờ).
+P135: Nguyễn Nhĩ Thái
+P136: 4
+P137: 2026.10.26
+P138: 26/10/2026
+P139: Sửa lỗi chức năng gợi ý nhà cung cấp (API-05); sửa chấm điểm đánh giá bước 4 và hiển thị trạng thái ký xác nhận bằng mã OTP bước 13; SMS: gửi thử theo mẫu nội dung đăng ký với nhà mạng.
+P140: Nguyễn Nhĩ Thái

@@ -1,0 +1,2711 @@
+{
+  "info": {
+    "_postman_id": "4409d075-5422-489d-b0a2-67cd0b10778b",
+    "name": "eContract — USB Token External Signing (SOURCE_OBSERVED)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Theo USB_TOKEN_EXTERNAL_SIGNING_GUIDE.md, source working tree 2026-10-25, tạo 2026-10-26. Chạy thủ công từng request; CHỌN nhánh plugin và upload, không Run toàn collection. APP chưa được xác nhận public external contract; runtime/plugin chưa kiểm chứng. Không có PIN/private key. Không có auto retry/poll. Xem README.md và GAP trong guide."
+  },
+  "item": [
+    {
+      "name": "00 — Xác thực Creator và Signer",
+      "description": "Hai identity độc lập. Nếu dùng SSO, điền *_sso_access_token theo môi trường; không phải client_credentials.",
+      "item": [
+        {
+          "name": "Login creator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/auth",
+            "description": "AuthController.signIn → AuthService.signInCustom. KD/NB tùy effective site. HTTP 200 chưa đủ; kiểm code 00 và token.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{creator_email}}\",\n  \"password\": \"{{creator_password}}\",\n  \"type\": 0,\n  \"access_token\": \"{{creator_sso_access_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "pm.environment.unset(\"creator_token\");",
+                  "if (!pm.environment.get(\"creator_sso_access_token\") && (!pm.environment.get(\"creator_email\") || !pm.environment.get(\"creator_password\"))) throw new Error(\"Điền email/password hoặc SSO access_token cho creator\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (j.code !== \"00\") throw new Error(\"Login nghiệp vụ thất bại: \" + j.code);",
+                  "if (j[\"access_token\"] === undefined || j[\"access_token\"] === null || j[\"access_token\"] === \"\") throw new Error(\"Thiếu access_token\");",
+                  "pm.environment.set(\"creator_token\", String(j[\"access_token\"]));",
+                  "if (j.customer && j.customer.info && j.customer.info.organizationId) pm.environment.set(\"org_id\", String(j.customer.info.organizationId));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/auth",
+                "description": "AuthController.signIn → AuthService.signInCustom. KD/NB tùy effective site. HTTP 200 chưa đủ; kiểm code 00 và token.",
+                "auth": {
+                  "type": "noauth"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{creator_email}}\",\n  \"password\": \"{{creator_password}}\",\n  \"type\": 0,\n  \"access_token\": \"{{creator_sso_access_token}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"00\",\n  \"type\": \"Bearer\",\n  \"access_token\": \"<JWT>\",\n  \"customer\": {\n    \"type\": 0,\n    \"info\": {\n      \"id\": 123,\n      \"organizationId\": 456\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login signer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/auth",
+            "description": "AuthController.signIn → AuthService.signInCustom. KD/NB tùy effective site. HTTP 200 chưa đủ; kiểm code 00 và token.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{signer_email}}\",\n  \"password\": \"{{signer_password}}\",\n  \"type\": 0,\n  \"access_token\": \"{{signer_sso_access_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "pm.environment.unset(\"signer_token\");",
+                  "if (!pm.environment.get(\"signer_sso_access_token\") && (!pm.environment.get(\"signer_email\") || !pm.environment.get(\"signer_password\"))) throw new Error(\"Điền email/password hoặc SSO access_token cho signer\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (j.code !== \"00\") throw new Error(\"Login nghiệp vụ thất bại: \" + j.code);",
+                  "if (j[\"access_token\"] === undefined || j[\"access_token\"] === null || j[\"access_token\"] === \"\") throw new Error(\"Thiếu access_token\");",
+                  "pm.environment.set(\"signer_token\", String(j[\"access_token\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/auth",
+                "description": "AuthController.signIn → AuthService.signInCustom. KD/NB tùy effective site. HTTP 200 chưa đủ; kiểm code 00 và token.",
+                "auth": {
+                  "type": "noauth"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{signer_email}}\",\n  \"password\": \"{{signer_password}}\",\n  \"type\": 0,\n  \"access_token\": \"{{signer_sso_access_token}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"00\",\n  \"type\": \"Bearer\",\n  \"access_token\": \"<JWT>\",\n  \"customer\": {\n    \"type\": 0,\n    \"info\": {\n      \"id\": 123,\n      \"organizationId\": 456\n    }\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 — TP: Tạo và phát hành",
+      "description": "Chọn file PDF trong multipart file_contract. Tạo draft chưa phát hành; không tự retry create sau timeout.",
+      "item": [
+        {
+          "name": "TP — Tạo draft và upload PDF",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{base_url}}/api/v1/tp/contracts/create",
+            "description": "TpContractController.createContract → TpContractService.create. sign_time: yyyy-MM-ddTHH:mm:ssZ theo guide. Payload sinh bằng JSON.stringify tránh hỏng escape. Một số lỗi trả 201 + success=false.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{creator_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file_contract",
+                  "type": "file",
+                  "src": [],
+                  "description": "Bắt buộc: chọn PDF thực tế chưa có chữ ký."
+                },
+                {
+                  "key": "jsonRequest",
+                  "type": "text",
+                  "value": "{{create_payload_json}}"
+                },
+                {
+                  "key": "attached_files",
+                  "type": "file",
+                  "src": [],
+                  "disabled": true,
+                  "description": "Tùy chọn; thêm nhiều dòng để upload nhiều tệp."
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"creator_token\") === undefined || pm.environment.get(\"creator_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: creator_token\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_email\") === undefined || pm.environment.get(\"signer_email\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_email\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_name\") === undefined || pm.environment.get(\"signer_name\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_name\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_card_id\") === undefined || pm.environment.get(\"signer_card_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_card_id\");",
+                  "}",
+                  "if (pm.environment.get(\"tax_code\") === undefined || pm.environment.get(\"tax_code\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: tax_code\");",
+                  "}",
+                  "if (pm.environment.get(\"sign_time\") === undefined || pm.environment.get(\"sign_time\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: sign_time\");",
+                  "}",
+                  "pm.environment.unset(\"contract_id\");",
+                  "pm.environment.unset(\"recipient_id\");",
+                  "pm.environment.unset(\"field_id\");",
+                  "pm.environment.unset(\"working_document_id\");",
+                  "pm.environment.unset(\"working_document_path\");",
+                  "pm.environment.unset(\"signed_document_id\");",
+                  "pm.environment.unset(\"signed_document_path\");",
+                  "pm.environment.unset(\"contract_status\");",
+                  "pm.environment.unset(\"base64_temp_data\");",
+                  "pm.environment.unset(\"hex_digest_temp_file\");",
+                  "pm.environment.unset(\"pdf_signature_field_name\");",
+                  "pm.environment.unset(\"signature_base64\");",
+                  "pm.environment.unset(\"signed_pdf_base64\");",
+                  "const e = k => pm.environment.get(k);",
+                  "const n = k => { const v=Number(e(k)); if (!Number.isFinite(v) || v<=0) throw new Error(\"Số dương bắt buộc: \"+k); return v; };",
+                  "const contract={name:e(\"contract_name\"),sign_time:e(\"sign_time\")};",
+                  "if (e(\"contract_no\")) contract.contract_no=e(\"contract_no\");",
+                  "const payload={contract,participants:[{name:e(\"participant_name\"),type:n(\"participant_type\"),ordering:1,tax_code:e(\"tax_code\"),recipients:[{name:e(\"signer_name\"),email:e(\"signer_email\"),login_by:\"email\",role:3,ordering:1,card_id:e(\"signer_card_id\"),sign_type:[{id:2}]}]}],fields:[{email_or_phone:e(\"signer_email\"),name:\"Chữ ký số\",type:3,page:n(\"field_page\"),coordinate_x:Number(e(\"field_x\")),coordinate_y:Number(e(\"field_y\")),width:n(\"field_width\"),height:n(\"field_height\"),font:e(\"field_font\"),font_size:n(\"field_font_size\")}]};",
+                  "pm.variables.set(\"create_payload_json\",JSON.stringify(payload));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (!Number.isInteger(j.id) || j.id<=0) throw new Error(\"Không phải ContractDto thành công\");",
+                  "if (j[\"id\"] === undefined || j[\"id\"] === null || j[\"id\"] === \"\") throw new Error(\"Thiếu id\");",
+                  "pm.environment.set(\"contract_id\", String(j[\"id\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": "{{base_url}}/api/v1/tp/contracts/create",
+                "description": "TpContractController.createContract → TpContractService.create. sign_time: yyyy-MM-ddTHH:mm:ssZ theo guide. Payload sinh bằng JSON.stringify tránh hỏng escape. Một số lỗi trả 201 + success=false.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{creator_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "file_contract",
+                      "type": "file",
+                      "src": [],
+                      "description": "Bắt buộc: chọn PDF thực tế chưa có chữ ký."
+                    },
+                    {
+                      "key": "jsonRequest",
+                      "type": "text",
+                      "value": "{{create_payload_json}}"
+                    },
+                    {
+                      "key": "attached_files",
+                      "type": "file",
+                      "src": [],
+                      "disabled": true,
+                      "description": "Tùy chọn; thêm nhiều dòng để upload nhiều tệp."
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 123,\n  \"name\": \"Hợp đồng ký USB Token\",\n  \"status\": 0\n}"
+            }
+          ]
+        },
+        {
+          "name": "TP — Phát hành draft",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/tp/contracts/my-contract/issue",
+            "description": "Body array contract IDs. Gọi lại GET contract để xác nhận PROCESSING=20; cần quyền phát hành/quota/BPMN.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{creator_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[{{contract_id}}]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"creator_token\") === undefined || pm.environment.get(\"creator_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: creator_token\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_id\") === undefined || pm.environment.get(\"contract_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_id\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (j.success !== true) throw new Error(\"Issue chưa thành công\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "url": "{{base_url}}/api/v1/tp/contracts/my-contract/issue",
+                "description": "Body array contract IDs. Gọi lại GET contract để xác nhận PROCESSING=20; cần quyền phát hành/quota/BPMN.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{creator_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Phát hành tất cả hợp đồng thành công\",\n  \"details\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 — APP: Lấy dữ liệu ký",
+      "description": "Token identity người ký. APP surface cần eContract xác nhận hỗ trợ external origin. Script chỉ tự chọn recipient/field/document khi khớp duy nhất; không lấy phần tử đầu trong danh sách mơ hồ.",
+      "item": [
+        {
+          "name": "APP — Contract và recipient theo email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/contracts/{{contract_id}}",
+            "description": "ContractController.findById; null/204 không cho phép đi tiếp.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_id\") === undefined || pm.environment.get(\"contract_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_id\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_email\") === undefined || pm.environment.get(\"signer_email\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_email\");",
+                  "}",
+                  "pm.environment.unset(\"recipient_id\");",
+                  "pm.environment.unset(\"contract_status\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "",
+                  "if (String(j.id) !== pm.environment.get(\"contract_id\")) throw new Error(\"Sai contract_id\");",
+                  "const candidates=(j.participants||[]).flatMap(p=>p.recipients||[]).filter(r=>r.email===pm.environment.get(\"signer_email\") && r.role===3);",
+                  "if (candidates.length!==1) throw new Error(\"Không có duy nhất recipient signer theo email; kiểm tra mapping trước khi tiếp tục\");",
+                  "pm.environment.set(\"recipient_id\",String(candidates[0].id));",
+                  "if (j[\"status\"] === undefined || j[\"status\"] === null || j[\"status\"] === \"\") throw new Error(\"Thiếu status\");",
+                  "pm.environment.set(\"contract_status\", String(j[\"status\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/contracts/{{contract_id}}",
+                "description": "ContractController.findById; null/204 không cho phép đi tiếp.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 123,\n  \"status\": 20,\n  \"participants\": [\n    {\n      \"id\": 200,\n      \"recipients\": [\n        {\n          \"id\": 321,\n          \"email\": \"signer@example.com\",\n          \"role\": 3,\n          \"status\": 1\n        }\n      ]\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "APP — Documents đang xử lý",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/documents/by-contract/{{contract_id}}",
+            "description": "DocumentController.getByContract; FINALLY=2, fallback PRIMARY=1 để xem/chuẩn bị. Không dùng fallback PRIMARY làm final signed PDF.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_id\") === undefined || pm.environment.get(\"contract_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_id\");",
+                  "}",
+                  "pm.environment.unset(\"working_document_id\");",
+                  "pm.environment.unset(\"working_document_path\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (!Array.isArray(j)) throw new Error(\"Cần DocumentDto[]\");",
+                  "let candidates=j.filter(d=>d.type===2);",
+                  "if (!candidates.length) candidates=j.filter(d=>d.type===1);",
+                  "if (candidates.length!==1 || !candidates[0].path) throw new Error(\"Cần duy nhất FINALLY hoặc PRIMARY để xem; không tự chọn khi mơ hồ\");",
+                  "pm.environment.set(\"working_document_id\",String(candidates[0].id));",
+                  "pm.environment.set(\"working_document_path\",candidates[0].path);"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "APP — Fields của recipient",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/fields/by-contract/{{contract_id}}",
+            "description": "FieldController.getByContract. Tọa độ mẫu dùng tạo field; prepare dùng field DB. Nhiều field: chọn field_id thủ công và xử lý tuần tự trên PDF mới nhất.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_id\") === undefined || pm.environment.get(\"contract_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_id\");",
+                  "}",
+                  "if (pm.environment.get(\"recipient_id\") === undefined || pm.environment.get(\"recipient_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: recipient_id\");",
+                  "}",
+                  "pm.environment.unset(\"field_id\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (!Array.isArray(j)) throw new Error(\"Cần FieldDto[]\");",
+                  "const selected=j.filter(x=>String(x.recipient_id)===pm.environment.get(\"recipient_id\") && x.type===3);",
+                  "if (selected.length!==1) throw new Error(\"Cần xử lý từng field; không tự chọn khi có 0 hoặc nhiều ô ký\");",
+                  "pm.environment.set(\"field_id\",String(selected[0].id));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "APP — Organization và plugin version",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/organizations/basic-info/{{org_id}}",
+            "description": "OrganizationController.getBasicOrgInfoById. Chỉ chọn nhánh plugin tương ứng usb_token_version; đây không phải workflow V2.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"org_id\") === undefined || pm.environment.get(\"org_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: org_id\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "pm.test(\"Có USB plugin version\",()=>pm.expect([1,2]).to.include(Number(j.usb_token_version)));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "APP — Tải working PDF (Send and Download)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{working_document_path}}",
+            "description": "Dùng path authenticated /tmp do APP trả. Chỉ gửi signer JWT tới file endpoint eContract đã xác nhận; nếu path là storage presigned, dùng request noauth ở folder download. Với plugin v1, tự base64 bytes PDF vào pdf_base64; không stringify binary response.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"working_document_path\") === undefined || pm.environment.get(\"working_document_path\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: working_document_path\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03A — LOCAL plugin v2: Session và certificate",
+      "description": "Chạy bằng Postman Desktop/Desktop Agent trên đúng máy có USB Token; cloud agent không truy cập máy người ký.",
+      "item": [
+        {
+          "name": "V2 — OperationId 1: Session",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{local_v2_url}}",
+            "description": "LOCAL v2: body request=base64(JSON), response base64(JSON). Không có JWT/PIN/private key trong request; người dùng thao tác plugin thực tế.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "request",
+                  "value": "{{local_request_base64}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"local_v2_url\") === undefined || pm.environment.get(\"local_v2_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_v2_url\");",
+                  "}",
+                  "if (pm.environment.get(\"pkcs11_libraries_json\") === undefined || pm.environment.get(\"pkcs11_libraries_json\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: pkcs11_libraries_json\");",
+                  "}",
+                  "pm.environment.unset(\"session_id\");",
+                  "pm.environment.unset(\"certificate_base64\");",
+                  "pm.environment.unset(\"cert_serial\");",
+                  "pm.environment.unset(\"base64_temp_data\");",
+                  "pm.environment.unset(\"hex_digest_temp_file\");",
+                  "pm.environment.unset(\"pdf_signature_field_name\");",
+                  "pm.environment.unset(\"signature_base64\");",
+                  "pm.environment.unset(\"signed_pdf_base64\");",
+                  "const op={OperationId:1,pkcs11Lib:JSON.parse(pm.environment.get(\"pkcs11_libraries_json\"))};",
+                  "const Buffer = require(\"buffer\").Buffer;",
+                  "pm.variables.set(\"local_request_base64\",Buffer.from(JSON.stringify(op),\"utf8\").toString(\"base64\"));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const Buffer = require(\"buffer\").Buffer;",
+                  "const j=JSON.parse(Buffer.from(pm.response.text().trim(),\"base64\").toString(\"utf8\"));",
+                  "",
+                  "if (!j[\"SessionId\"]) throw new Error(\"Local thiếu SessionId\"); pm.environment.set(\"session_id\",String(j[\"SessionId\"]));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "V2 — OperationId 2: Certificate",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{local_v2_url}}",
+            "description": "LOCAL v2: body request=base64(JSON), response base64(JSON). Không có JWT/PIN/private key trong request; người dùng thao tác plugin thực tế.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "request",
+                  "value": "{{local_request_base64}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"local_v2_url\") === undefined || pm.environment.get(\"local_v2_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_v2_url\");",
+                  "}",
+                  "if (pm.environment.get(\"session_id\") === undefined || pm.environment.get(\"session_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: session_id\");",
+                  "}",
+                  "pm.environment.unset(\"certificate_base64\");",
+                  "pm.environment.unset(\"cert_serial\");",
+                  "pm.environment.unset(\"base64_temp_data\");",
+                  "pm.environment.unset(\"hex_digest_temp_file\");",
+                  "pm.environment.unset(\"pdf_signature_field_name\");",
+                  "pm.environment.unset(\"signature_base64\");",
+                  "pm.environment.unset(\"signed_pdf_base64\");",
+                  "const op={OperationId:2,SessionId:pm.environment.get(\"session_id\"),checkOCSP:0};",
+                  "const Buffer = require(\"buffer\").Buffer;",
+                  "pm.variables.set(\"local_request_base64\",Buffer.from(JSON.stringify(op),\"utf8\").toString(\"base64\"));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const Buffer = require(\"buffer\").Buffer;",
+                  "const j=JSON.parse(Buffer.from(pm.response.text().trim(),\"base64\").toString(\"utf8\"));",
+                  "if (j.ResponseCode !== 0) throw new Error(\"Local lỗi: \" + j.ResponseMsg);",
+                  "",
+                  "if (!j[\"certInfo\"][\"Base64Encode\"]) throw new Error(\"Local thiếu certInfo.Base64Encode\"); pm.environment.set(\"certificate_base64\",String(j[\"certInfo\"][\"Base64Encode\"]));",
+                  "if (!j[\"certInfo\"][\"SerialNumber\"]) throw new Error(\"Local thiếu certInfo.SerialNumber\"); pm.environment.set(\"cert_serial\",String(j[\"certInfo\"][\"SerialNumber\"]));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03B — LOCAL plugin v1: Certificate",
+      "description": "Nhánh thay thế 03A; source response là object có Serial/CN/Base64. Nếu plugin trả nhiều certificate, tự chọn theo SDK thực tế; không chọn first/latest.",
+      "item": [
+        {
+          "name": "V1 — Lấy certificate",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{local_v1_base_url}}/api/mobi/getcert?mst=",
+            "description": "FE getAllAccountsDigital giữ query mst rỗng. Không truyền Bearer tới local plugin.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"local_v1_base_url\") === undefined || pm.environment.get(\"local_v1_base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_v1_base_url\");",
+                  "}",
+                  "pm.environment.unset(\"cert_serial\");",
+                  "pm.environment.unset(\"certificate_base64\");",
+                  "pm.environment.unset(\"base64_temp_data\");",
+                  "pm.environment.unset(\"hex_digest_temp_file\");",
+                  "pm.environment.unset(\"pdf_signature_field_name\");",
+                  "pm.environment.unset(\"signature_base64\");",
+                  "pm.environment.unset(\"signed_pdf_base64\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "",
+                  "if (j[\"Serial\"] === undefined || j[\"Serial\"] === null || j[\"Serial\"] === \"\") throw new Error(\"Thiếu Serial\");",
+                  "pm.environment.set(\"cert_serial\", String(j[\"Serial\"]));",
+                  "if (j[\"Base64\"] === undefined || j[\"Base64\"] === null || j[\"Base64\"] === \"\") throw new Error(\"Thiếu Base64\");",
+                  "pm.environment.set(\"certificate_base64\", String(j[\"Base64\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{local_v1_base_url}}/api/mobi/getcert?mst=",
+                "description": "FE getAllAccountsDigital giữ query mst rỗng. Không truyền Bearer tới local plugin.",
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Serial\": \"<SERIAL>\",\n  \"CN\": \"<TEN>\",\n  \"Base64\": \"<CERT_BASE64>\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 — APP: Kiểm tra certificate và marker xử lý",
+      "description": "Sau lấy certificate, trước prepare/local sign. check-process-is-sign có side effect marker, không dùng làm polling nền.",
+      "item": [
+        {
+          "name": "APP — Đối chiếu MST/CCCD certificate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/contracts/check-mst-exist",
+            "description": "ContractController.checkMSTExist: không chứng minh integrity/trust chain/revocation.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mst\": \"{{signer_card_id}}\",\n  \"certB64\": \"{{certificate_base64}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_card_id\") === undefined || pm.environment.get(\"signer_card_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_card_id\");",
+                  "}",
+                  "if (pm.environment.get(\"certificate_base64\") === undefined || pm.environment.get(\"certificate_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: certificate_base64\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (j.success !== true) throw new Error(\"MST/CCCD không khớp\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/contracts/check-mst-exist",
+                "description": "ContractController.checkMSTExist: không chứng minh integrity/trust chain/revocation.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"mst\": \"{{signer_card_id}}\",\n  \"certB64\": \"{{certificate_base64}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"message\": \"MST/CCCD valid\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "APP — Kiểm tra và đặt marker xử lý",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/sign/check-process-is-sign/{{recipient_id}}",
+            "description": "SignController.checkProcessIsSign → SignService.checkProcessIsSign.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"recipient_id\") === undefined || pm.environment.get(\"recipient_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: recipient_id\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (j.success !== true) throw new Error(\"Đang có người xử lý khác; dừng ký\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/sign/check-process-is-sign/{{recipient_id}}",
+                "description": "SignController.checkProcessIsSign → SignService.checkProcessIsSign.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05A — Plugin v2: Prepare → local sign → merge",
+      "description": "GAP: dev config merge trỏ SignService v4 trong khi BE gửi file theo v5. Xác nhận effective deployment. Không nhầm với /sign/v2/external của workflow V2.",
+      "item": [
+        {
+          "name": "APP V2 — Prepare chữ ký",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/processes/digital-sign/{{recipient_id}}/create-empty-token",
+            "description": "SignService.createPcksEmptyToken: hexDigestTempFile là PDF tạm dạng hex. Giữ nguyên base64TempData; không tự hash lại.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{{prepare_payload_json}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"recipient_id\") === undefined || pm.environment.get(\"recipient_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: recipient_id\");",
+                  "}",
+                  "if (pm.environment.get(\"field_id\") === undefined || pm.environment.get(\"field_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: field_id\");",
+                  "}",
+                  "if (pm.environment.get(\"certificate_base64\") === undefined || pm.environment.get(\"certificate_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: certificate_base64\");",
+                  "}",
+                  "pm.environment.unset(\"base64_temp_data\");",
+                  "pm.environment.unset(\"hex_digest_temp_file\");",
+                  "pm.environment.unset(\"pdf_signature_field_name\");",
+                  "pm.environment.unset(\"signature_base64\");",
+                  "pm.environment.unset(\"signed_pdf_base64\");",
+                  "const e=k=>pm.environment.get(k);",
+                  "pm.variables.set(\"prepare_payload_json\",JSON.stringify({fieldId:Number(e(\"field_id\")),image:e(\"image_base64\")||null,cert:e(\"certificate_base64\"),page:Number(e(\"field_page\")),x:Number(e(\"field_x\")),y:Number(e(\"field_y\")),width:Number(e(\"field_width\")),height:Number(e(\"field_height\")),type:3}));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "",
+                  "if (j[\"base64TempData\"] === undefined || j[\"base64TempData\"] === null || j[\"base64TempData\"] === \"\") throw new Error(\"Thiếu base64TempData\");",
+                  "pm.environment.set(\"base64_temp_data\", String(j[\"base64TempData\"]));",
+                  "if (j[\"hexDigestTempFile\"] === undefined || j[\"hexDigestTempFile\"] === null || j[\"hexDigestTempFile\"] === \"\") throw new Error(\"Thiếu hexDigestTempFile\");",
+                  "pm.environment.set(\"hex_digest_temp_file\", String(j[\"hexDigestTempFile\"]));",
+                  "if (j[\"fieldName\"] === undefined || j[\"fieldName\"] === null || j[\"fieldName\"] === \"\") throw new Error(\"Thiếu fieldName\");",
+                  "pm.environment.set(\"pdf_signature_field_name\", String(j[\"fieldName\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/processes/digital-sign/{{recipient_id}}/create-empty-token",
+                "description": "SignService.createPcksEmptyToken: hexDigestTempFile là PDF tạm dạng hex. Giữ nguyên base64TempData; không tự hash lại.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{prepare_payload_json}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"fieldName\": \"<FIELD_NAME>\",\n  \"base64TempData\": \"<OPAQUE_SIGN_DATA>\",\n  \"hexDigestTempFile\": \"<TEMP_PDF_HEX>\",\n  \"base64Cert\": \"<CERT_BASE64>\",\n  \"message\": \"Thành công\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "LOCAL V2 — OperationId 5: Ký dữ liệu",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{local_v2_url}}",
+            "description": "LOCAL v2: body request=base64(JSON), response base64(JSON). Không có JWT/PIN/private key trong request; người dùng thao tác plugin thực tế.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "request",
+                  "value": "{{local_request_base64}}",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"local_v2_url\") === undefined || pm.environment.get(\"local_v2_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_v2_url\");",
+                  "}",
+                  "if (pm.environment.get(\"session_id\") === undefined || pm.environment.get(\"session_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: session_id\");",
+                  "}",
+                  "if (pm.environment.get(\"base64_temp_data\") === undefined || pm.environment.get(\"base64_temp_data\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base64_temp_data\");",
+                  "}",
+                  "pm.environment.unset(\"signature_base64\");",
+                  "pm.environment.unset(\"signed_pdf_base64\");",
+                  "const op={OperationId:5,SessionId:pm.environment.get(\"session_id\"),DataToBeSign:pm.environment.get(\"base64_temp_data\"),checkOCSP:0,reqDigest:0,algDigest:\"SHA_256\"};",
+                  "const Buffer = require(\"buffer\").Buffer;",
+                  "pm.variables.set(\"local_request_base64\",Buffer.from(JSON.stringify(op),\"utf8\").toString(\"base64\"));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const Buffer = require(\"buffer\").Buffer;",
+                  "const j=JSON.parse(Buffer.from(pm.response.text().trim(),\"base64\").toString(\"utf8\"));",
+                  "if (j.ResponseCode !== 0) throw new Error(\"Local lỗi: \" + j.ResponseMsg);",
+                  "",
+                  "if (!j[\"Signature\"]) throw new Error(\"Local thiếu Signature\"); pm.environment.set(\"signature_base64\",String(j[\"Signature\"]));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "APP V2 — Merge signature và timestamp",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/processes/digital-sign/{{recipient_id}}/merge-time-stamp",
+            "description": "ProcessService.mergeTimestamp. filedName là spelling thật. isTimestamp là string. Merge chưa lưu PDF vào contract.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractId\": {{contract_id}},\n  \"signature\": \"{{signature_base64}}\",\n  \"filedName\": \"{{pdf_signature_field_name}}\",\n  \"cert\": \"{{certificate_base64}}\",\n  \"isTimestamp\": \"{{is_timestamp}}\",\n  \"hexDigestTempFile\": \"{{hex_digest_temp_file}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"recipient_id\") === undefined || pm.environment.get(\"recipient_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: recipient_id\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_id\") === undefined || pm.environment.get(\"contract_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_id\");",
+                  "}",
+                  "if (pm.environment.get(\"signature_base64\") === undefined || pm.environment.get(\"signature_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signature_base64\");",
+                  "}",
+                  "if (pm.environment.get(\"pdf_signature_field_name\") === undefined || pm.environment.get(\"pdf_signature_field_name\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: pdf_signature_field_name\");",
+                  "}",
+                  "if (pm.environment.get(\"certificate_base64\") === undefined || pm.environment.get(\"certificate_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: certificate_base64\");",
+                  "}",
+                  "if (pm.environment.get(\"hex_digest_temp_file\") === undefined || pm.environment.get(\"hex_digest_temp_file\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: hex_digest_temp_file\");",
+                  "}",
+                  "pm.environment.unset(\"signed_pdf_base64\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "",
+                  "if (j[\"base64Data\"] === undefined || j[\"base64Data\"] === null || j[\"base64Data\"] === \"\") throw new Error(\"Thiếu base64Data\");",
+                  "pm.environment.set(\"signed_pdf_base64\", String(j[\"base64Data\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/processes/digital-sign/{{recipient_id}}/merge-time-stamp",
+                "description": "ProcessService.mergeTimestamp. filedName là spelling thật. isTimestamp là string. Merge chưa lưu PDF vào contract.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contractId\": {{contract_id}},\n  \"signature\": \"{{signature_base64}}\",\n  \"filedName\": \"{{pdf_signature_field_name}}\",\n  \"cert\": \"{{certificate_base64}}\",\n  \"isTimestamp\": \"{{is_timestamp}}\",\n  \"hexDigestTempFile\": \"{{hex_digest_temp_file}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"base64Data\": \"<SIGNED_PDF_BASE64>\",\n  \"hexDataSigned\": null,\n  \"message\": \"Thành công\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05B — Plugin v1: GenImage → local sign PDF",
+      "description": "Nhánh thay thế 05A. Điền pdf_base64 từ working PDF hiện tại. local_px/py/pw/ph phải là tọa độ sau transform; pw=x+width, ph=y+height theo FE, không dùng kích thước canvas trực tiếp.",
+      "item": [
+        {
+          "name": "APP V1 — Tạo ảnh hiển thị",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/sign/token/genImage",
+            "description": "UsbTokenGenImageRequest: base64_cert bắt buộc; image/type optional, lấy type theo field cấu hình.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{{image_payload_json}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"certificate_base64\") === undefined || pm.environment.get(\"certificate_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: certificate_base64\");",
+                  "}",
+                  "pm.environment.unset(\"generated_image_base64\");",
+                  "const e=k=>pm.environment.get(k);",
+                  "const b={base64_cert:e(\"certificate_base64\"),base64_image:e(\"image_base64\")||null};",
+                  "if (e(\"type_image_signature\")) b.type_image_signature=Number(e(\"type_image_signature\"));",
+                  "pm.variables.set(\"image_payload_json\",JSON.stringify(b));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (j.status !== true) throw new Error(\"Gen image thất bại\");",
+                  "if (j[\"data\"] === undefined || j[\"data\"] === null || j[\"data\"] === \"\") throw new Error(\"Thiếu data\");",
+                  "pm.environment.set(\"generated_image_base64\", String(j[\"data\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/sign/token/genImage",
+                "description": "UsbTokenGenImageRequest: base64_cert bắt buộc; image/type optional, lấy type theo field cấu hình.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{{image_payload_json}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": true,\n  \"actionDate\": \"<DATE>\",\n  \"data\": \"<IMAGE_BASE64>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "LOCAL V1 — Ký toàn bộ PDF",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{local_v1_base_url}}/api/mobi/signpdf",
+            "description": "Literals signDate/typeSign theo FE consumer, không phải thời gian ký nghiệp vụ/HSM. Response lỗi có thể có ErrorDetail.",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"certSerial\": \"{{cert_serial}}\",\n  \"fieldName\": \"\",\n  \"fileData\": \"{{pdf_base64}}\",\n  \"imageData\": \"{{generated_image_base64}}\",\n  \"page\": \"{{local_page}}\",\n  \"ph\": \"{{local_ph}}\",\n  \"pw\": \"{{local_pw}}\",\n  \"px\": \"{{local_px}}\",\n  \"py\": \"{{local_py}}\",\n  \"signDate\": \"11-05-2019 09:55:55\",\n  \"typeSign\": \"4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"local_v1_base_url\") === undefined || pm.environment.get(\"local_v1_base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_v1_base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"cert_serial\") === undefined || pm.environment.get(\"cert_serial\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: cert_serial\");",
+                  "}",
+                  "if (pm.environment.get(\"pdf_base64\") === undefined || pm.environment.get(\"pdf_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: pdf_base64\");",
+                  "}",
+                  "if (pm.environment.get(\"generated_image_base64\") === undefined || pm.environment.get(\"generated_image_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: generated_image_base64\");",
+                  "}",
+                  "if (pm.environment.get(\"local_px\") === undefined || pm.environment.get(\"local_px\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_px\");",
+                  "}",
+                  "if (pm.environment.get(\"local_py\") === undefined || pm.environment.get(\"local_py\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_py\");",
+                  "}",
+                  "if (pm.environment.get(\"local_pw\") === undefined || pm.environment.get(\"local_pw\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_pw\");",
+                  "}",
+                  "if (pm.environment.get(\"local_ph\") === undefined || pm.environment.get(\"local_ph\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: local_ph\");",
+                  "}",
+                  "pm.environment.unset(\"signed_pdf_base64\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "",
+                  "if (j[\"FileDataSigned\"] === undefined || j[\"FileDataSigned\"] === null || j[\"FileDataSigned\"] === \"\") throw new Error(\"Thiếu FileDataSigned\");",
+                  "pm.environment.set(\"signed_pdf_base64\", String(j[\"FileDataSigned\"]));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{local_v1_base_url}}/api/mobi/signpdf",
+                "description": "Literals signDate/typeSign theo FE consumer, không phải thời gian ký nghiệp vụ/HSM. Response lỗi có thể có ErrorDetail.",
+                "auth": {
+                  "type": "noauth"
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"certSerial\": \"{{cert_serial}}\",\n  \"fieldName\": \"\",\n  \"fileData\": \"{{pdf_base64}}\",\n  \"imageData\": \"{{generated_image_base64}}\",\n  \"page\": \"{{local_page}}\",\n  \"ph\": \"{{local_ph}}\",\n  \"pw\": \"{{local_pw}}\",\n  \"px\": \"{{local_px}}\",\n  \"py\": \"{{local_py}}\",\n  \"signDate\": \"11-05-2019 09:55:55\",\n  \"typeSign\": \"4\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"FileDataSigned\": \"<SIGNED_PDF_BASE64>\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06A — APP: Lưu PDF và approval",
+      "description": "Chỉ chạy một trong 06A hoặc 06B. Approval [] chỉ phù hợp USB-only không còn text/first-handler fields cần xử lý.",
+      "item": [
+        {
+          "name": "APP — Lưu PDF đã ký",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/processes/digital-sign/{{field_id}}",
+            "description": "ProcessController.digitalSign → ProcessService.digitalSign. content là toàn bộ PDF base64, không phải raw signature.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{signed_filename}}\",\n  \"content\": \"{{signed_pdf_base64}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"field_id\") === undefined || pm.environment.get(\"field_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: field_id\");",
+                  "}",
+                  "if (pm.environment.get(\"recipient_id\") === undefined || pm.environment.get(\"recipient_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: recipient_id\");",
+                  "}",
+                  "if (pm.environment.get(\"signed_pdf_base64\") === undefined || pm.environment.get(\"signed_pdf_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signed_pdf_base64\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (String(j.recipient_id)!==pm.environment.get(\"recipient_id\")) throw new Error(\"Sai/mất recipient_id trong kết quả upload\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/processes/digital-sign/{{field_id}}",
+                "description": "ProcessController.digitalSign → ProcessService.digitalSign. content là toàn bộ PDF base64, không phải raw signature.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"{{signed_filename}}\",\n  \"content\": \"{{signed_pdf_base64}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 789,\n  \"recipient_id\": 321,\n  \"document_id\": 456,\n  \"contract_id\": 123,\n  \"type\": 3,\n  \"status\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "APP — Approval tiến BPMN",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/processes/approval/{{recipient_id}}",
+            "description": "Chỉ sau upload thành công. Recipient APPROVAL không đồng nghĩa contract SIGNED.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{{approval_fields_json}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"recipient_id\") === undefined || pm.environment.get(\"recipient_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: recipient_id\");",
+                  "}",
+                  "if (pm.environment.get(\"approval_fields_json\") === undefined || pm.environment.get(\"approval_fields_json\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: approval_fields_json\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (String(j.id)!==pm.environment.get(\"recipient_id\") || j.status!==2) throw new Error(\"Recipient chưa APPROVAL\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "url": "{{base_url}}/api/v1/processes/approval/{{recipient_id}}",
+                "description": "Chỉ sau upload thành công. Recipient APPROVAL không đồng nghĩa contract SIGNED.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 321,\n  \"status\": 2\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06B — TP: Nhận PDF và approval (thay thế APP)",
+      "description": "Chỉ chạy một trong 06A hoặc 06B. Approval [] chỉ phù hợp USB-only không còn text/first-handler fields cần xử lý.",
+      "item": [
+        {
+          "name": "TP — Nhận một hoặc nhiều PDF đã ký",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/tp/contracts/multi/usb-token",
+            "description": "TpProcessService.digitalSign dùng document gắn với field. Tự mở rộng body cho batch; kiểm từng result.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"fieldId\": {{field_id}},\n    \"digitalSign\": {\n      \"name\": \"{{signed_filename}}\",\n      \"content\": \"{{signed_pdf_base64}}\"\n    }\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"field_id\") === undefined || pm.environment.get(\"field_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: field_id\");",
+                  "}",
+                  "if (pm.environment.get(\"signed_pdf_base64\") === undefined || pm.environment.get(\"signed_pdf_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signed_pdf_base64\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (!Array.isArray(j) || j.length!==1 || String(j[0].fieldId)!==pm.environment.get(\"field_id\") || !j[0].result || j[0].result.success!==true) throw new Error(\"TP upload thất bại hoặc sai field\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/tp/contracts/multi/usb-token",
+                "description": "TpProcessService.digitalSign dùng document gắn với field. Tự mở rộng body cho batch; kiểm từng result.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"fieldId\": {{field_id}},\n    \"digitalSign\": {\n      \"name\": \"{{signed_filename}}\",\n      \"content\": \"{{signed_pdf_base64}}\"\n    }\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"fieldId\": 789,\n    \"result\": {\n      \"success\": true\n    }\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "TP — Approval tiến BPMN",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/tp/contracts/approval/{{recipient_id}}",
+            "description": "Chỉ sau upload thành công. Recipient APPROVAL không đồng nghĩa contract SIGNED.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{{approval_fields_json}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"recipient_id\") === undefined || pm.environment.get(\"recipient_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: recipient_id\");",
+                  "}",
+                  "if (pm.environment.get(\"approval_fields_json\") === undefined || pm.environment.get(\"approval_fields_json\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: approval_fields_json\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (String(j.id)!==pm.environment.get(\"recipient_id\") || j.status!==2) throw new Error(\"Recipient chưa APPROVAL\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "url": "{{base_url}}/api/v1/tp/contracts/approval/{{recipient_id}}",
+                "description": "Chỉ sau upload thành công. Recipient APPROVAL không đồng nghĩa contract SIGNED.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 321,\n  \"status\": 2\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 — TP: Trạng thái và download",
+      "description": "Không tự poll hoặc retry mutation. Lấy đúng contract_id trong PageDto. Chỉ chọn FINALLY=2 cho legacy USB; CERTIFIED=11 cần workflow riêng.",
+      "item": [
+        {
+          "name": "TP — Kiểm tra trạng thái đúng contract",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/tp/contracts?email={{signer_email}}&contractStatus=-1&page=0&size=100",
+            "description": "TpContractController.getContracts. Source filter contractStatus có giới hạn; script match id/status. Đổi page khi cần, không coi missing ở trang đầu là contract không tồn tại.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{creator_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"creator_token\") === undefined || pm.environment.get(\"creator_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: creator_token\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_email\") === undefined || pm.environment.get(\"signer_email\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_email\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_id\") === undefined || pm.environment.get(\"contract_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_id\");",
+                  "}",
+                  "pm.environment.unset(\"contract_status\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "const found=(j.entities||[]).filter(c=>String(c.id)===pm.environment.get(\"contract_id\"));",
+                  "if (found.length!==1) throw new Error(\"Không thấy contract trong trang này; duyệt page tiếp theo, không chọn hợp đồng khác\");",
+                  "pm.environment.set(\"contract_status\",String(found[0].status));",
+                  "pm.test(\"Contract đã SIGNED=30\",()=>pm.expect(found[0].status).to.eql(30));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/tp/contracts?email={{signer_email}}&contractStatus=-1&page=0&size=100",
+                "description": "TpContractController.getContracts. Source filter contractStatus có giới hạn; script match id/status. Đổi page khi cần, không coi missing ở trang đầu là contract không tồn tại.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{creator_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_pages\": 1,\n  \"total_elements\": 1,\n  \"entities\": [\n    {\n      \"id\": 123,\n      \"status\": 30\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "TP — Lấy URL PDF hoàn tất",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/tp/contracts/{{contract_id}}/documents",
+            "description": "TpContractService.getDocuments → DocumentService.findByContract; path đã là URL được cấp.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{creator_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"creator_token\") === undefined || pm.environment.get(\"creator_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: creator_token\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_id\") === undefined || pm.environment.get(\"contract_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_id\");",
+                  "}",
+                  "if (pm.environment.get(\"contract_status\") === undefined || pm.environment.get(\"contract_status\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: contract_status\");",
+                  "}",
+                  "pm.environment.unset(\"signed_document_id\");",
+                  "pm.environment.unset(\"signed_document_path\");",
+                  "if (pm.environment.get(\"contract_status\")!==\"30\") throw new Error(\"Cần đọc lại contract SIGNED=30 trước download final\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (!Array.isArray(j) || j.some(d=>d.type===11)) throw new Error(\"Cần DocumentDto[] legacy; CERTIFIED phải theo workflow riêng\");",
+                  "const docs=j.filter(d=>d.type===2);",
+                  "if (docs.length!==1 || !docs[0].path) throw new Error(\"Không có duy nhất FINALLY; không tải PRIMARY làm bản signed\");",
+                  "pm.environment.set(\"signed_document_id\",String(docs[0].id));",
+                  "pm.environment.set(\"signed_document_path\",docs[0].path);"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/tp/contracts/{{contract_id}}/documents",
+                "description": "TpContractService.getDocuments → DocumentService.findByContract; path đã là URL được cấp.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{creator_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 456,\n    \"type\": 2,\n    \"filename\": \"contract.pdf\",\n    \"path\": \"<URL_SERVER_TRA>\",\n    \"contract_id\": 123\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Download — Presigned PDF, no Bearer (Send and Download)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{signed_document_path}}",
+            "description": "Chỉ URL thực tế do API trả; không gắn JWT vào storage host. URL hết hạn: lấy lại document list.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"signed_document_path\") === undefined || pm.environment.get(\"signed_document_path\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signed_document_path\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Download — Authenticated file endpoint (nếu được cấp)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{signed_document_path}}",
+            "description": "Thay thế request presigned khi deployment trả authenticated file endpoint thuộc eContract. Kiểm host trước gửi JWT; không chạy cả hai download nếu không cần.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"signed_document_path\") === undefined || pm.environment.get(\"signed_document_path\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signed_document_path\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "08 — APP: Phụ trợ batch",
+      "description": "Tùy chọn, không chạy lại upload khi một route khác đã thành công.",
+      "item": [
+        {
+          "name": "APP — Page info của document",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/sign/multi/usb-token/page-info?documentId={{working_document_id}}",
+            "description": "SignController.getPageInfo → SignService.getPageInfo. Kích thước PDF dùng chuyển tọa độ.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"working_document_id\") === undefined || pm.environment.get(\"working_document_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: working_document_id\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (!Array.isArray(j) || !j.length) throw new Error(\"Không đọc được page info\");"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "SOURCE_OBSERVED — minh họa, chưa gọi runtime",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/sign/multi/usb-token/page-info?documentId={{working_document_id}}",
+                "description": "SignController.getPageInfo → SignService.getPageInfo. Kích thước PDF dùng chuyển tọa độ.",
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{signer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"page\": 1,\n    \"width\": 595,\n    \"height\": 842\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "APP — Batch nhận PDF đã ký",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/sign/multi/usb-token",
+            "description": "SignController.signMultiUsbToken → ProcessService.digitalSign. Đây là upload route thay thế, không ký local tự động.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{signer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"fieldId\": {{field_id}},\n    \"digitalSign\": {\n      \"name\": \"{{signed_filename}}\",\n      \"content\": \"{{signed_pdf_base64}}\"\n    }\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get(\"base_url\") === undefined || pm.environment.get(\"base_url\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: base_url\");",
+                  "}",
+                  "if (pm.environment.get(\"signer_token\") === undefined || pm.environment.get(\"signer_token\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signer_token\");",
+                  "}",
+                  "if (pm.environment.get(\"field_id\") === undefined || pm.environment.get(\"field_id\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: field_id\");",
+                  "}",
+                  "if (pm.environment.get(\"signed_pdf_base64\") === undefined || pm.environment.get(\"signed_pdf_base64\") === \"\") {",
+                  "  if (pm.execution && pm.execution.skipRequest) pm.execution.skipRequest();",
+                  "  throw new Error(\"Cần đặt environment variable: signed_pdf_base64\");",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP thành công\", function () { pm.expect(pm.response.code).to.be.within(200, 299); });",
+                  "if (pm.response.code < 200 || pm.response.code >= 300) throw new Error(\"HTTP lỗi; không dùng dữ liệu response để đi tiếp\");",
+                  "const j = pm.response.json();",
+                  "if (j === null || j.success === false) throw new Error(\"Response rỗng hoặc lỗi nghiệp vụ; đọc body\");",
+                  "if (!Array.isArray(j) || !j.length || j.some(r=>!r.result || r.result.success!==true)) throw new Error(\"Batch có phần tử thất bại\");"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "noauth"
+  }
+}

@@ -1,0 +1,21 @@
+Mã minh chứng: MC-KT-22-20261026
+Ca kiểm thử: KT-22 API-15 thông báo mới nhất khi chưa đăng nhập (sai lệch L-03)
+Thời điểm (UTC+7): 26/10/2026 08:40:18
+Công cụ: curl 8.11.0 trên máy tính kết nối Internet
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+Yêu cầu: GET /api/notifications/latest?take=2
+
+HTTP/1.1 302 Found
+Transfer-Encoding: chunked
+Location: https://mekongx.vn/dang-nhap?ReturnUrl=%2Fapi%2Fnotifications%2Flatest%3Ftake%3D2
+Server: Microsoft-IIS/10.0
+Strict-Transport-Security: max-age=2592000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+Date: Mon, 26 Oct 2026 08:35:57 GMT
+
+

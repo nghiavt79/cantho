@@ -1,0 +1,418 @@
+ĐỀ XUẤT KỸ THUẬT – GÓI THẦU SỐ 4: THUÊ DỊCH VỤ THIẾT LẬP, VẬN HÀNH TRANG WEB SÀN GIAO DỊCH CÔNG NGHỆ CẦN THƠ
+Căn cứ lập đề xuất
+Đề xuất kỹ thuật được trình bày theo đúng thứ tự 11 tiêu chí tại Mục 3 – Tiêu chuẩn đánh giá về kỹ thuật, Chương III của E-HSMT; mỗi phần dưới đây ứng với một tiêu chí và kết thúc bằng cam kết của Nhà thầu.
+Căn cứ:
+E-HSMT Gói thầu số 4: Chương III – Mục 3 Tiêu chuẩn đánh giá về kỹ thuật; Chương IV – Phạm vi cung cấp; Chương V – Yêu cầu về kỹ thuật.
+Kế hoạch thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ đã được phê duyệt.
+Luật Giao dịch điện tử số 20/2023/QH15; Luật Dữ liệu số 60/2024/QH15; Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15; Luật An ninh mạng số 116/2025/QH15; Luật Chuyển đổi số số 148/2025/QH15.
+Nghị định số 356/2025/NĐ-CP; Nghị định số 224/2026/NĐ-CP; Nghị định số 331/2026/NĐ-CP; Nghị định số 278/2025/NĐ-CP; Thông tư số 39/2017/TT-BTTTT; Quyết định số 37/2026/QĐ-UBND của UBND thành phố Cần Thơ.
+Thuật ngữ: Bên thuê / Chủ trì thuê là Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ; Nhà thầu là đơn vị cung cấp dịch vụ; Hệ thống là Trang web Sàn giao dịch công nghệ Cần Thơ cùng hạ tầng và các dịch vụ tích hợp kèm theo.
+1. Mức độ hiểu biết về tính chất, mục đích công việc gói thầu (tiêu chí 1a)
+Nhà thầu hiểu Gói thầu số 4 là gói thuê dịch vụ công nghệ số trọn gói trong 05 năm, bao gồm thiết lập, cấu hình, hoàn thiện các chức năng và vận hành hệ thống trong thời gian thuê: Bên thuê trả tiền theo kết quả dịch vụ và mức chất lượng cam kết (SLA), Nhà thầu chịu trách nhiệm toàn bộ phần mềm, hạ tầng, dịch vụ tích hợp, vận hành và an toàn thông tin.
+1.1. Tính chất và mục đích của công việc
+Tính chất. Gói thầu có ba đặc điểm chi phối cách Nhà thầu tổ chức thực hiện:
+1. Thuê dịch vụ, đầu mối duy nhất. Nhà thầu cung cấp đồng bộ 01 trang web Sàn giao dịch công nghệ và 01 hệ thống hạ tầng máy chủ (02 máy chủ cloud), kèm bản quyền hệ điều hành, hệ quản trị cơ sở dữ liệu và các dịch vụ tích hợp: VR360 (10 điểm cảnh quay dựng mới), SMS Brandname (3.600 tin/năm), thư điện tử (60 địa chỉ, 25 GB, 05 Mail List), chữ ký số và hợp đồng điện tử (2.000 hợp đồng/năm). Với các dịch vụ mua của nhà cung cấp khác, Nhà thầu vẫn chịu trách nhiệm toàn diện.
+2. Nghiệp vụ giao dịch công nghệ kéo dài, nhiều chủ thể. Một giao dịch chuyển giao công nghệ đi qua nhiều bước từ quan tâm, bảo mật thông tin, báo giá, đàm phán, ký hợp đồng đến nghiệm thu, thanh lý, với sự tham gia của bên mua, bên bán, chuyên gia tư vấn và cán bộ Sàn. Hệ thống vì vậy phải quản lý theo trạng thái, lưu vết và có ký số, hợp đồng điện tử.
+3. Kết hợp sàn thực và sàn số. Điểm khác biệt của Sàn Cần Thơ là gắn không gian trưng bày thực tế (phòng, vị trí trưng bày, sự kiện trực tiếp) với tham quan VR360, giao dịch trực tuyến và trợ lý AI trên cùng một nền tảng.
+Mục đích. Dịch vụ nhằm hình thành nền tảng số để: công bố, tra cứu công nghệ, thiết bị, kết quả nghiên cứu; kết nối cung – cầu và hỗ trợ giao dịch, chuyển giao công nghệ; tổ chức sự kiện, triển lãm, xúc tiến; liên thông dữ liệu với Sàn giao dịch khoa học và công nghệ Việt Nam; qua đó khẳng định vai trò Cần Thơ là trung tâm kết nối, chuyển giao công nghệ của vùng Đồng bằng sông Cửu Long.
+1.2. Phương án tổ chức cung cấp dịch vụ
+Nhà thầu tổ chức cung cấp dịch vụ theo hai giai đoạn, phân rõ trách nhiệm hai bên:
+Giai đoạn thiết lập (tối đa 30 ngày kể từ ngày hợp đồng có hiệu lực): cài đặt, cấu hình, tích hợp và đưa dịch vụ vào vận hành thử trong 20 ngày; đào tạo, nghiệm thu và đưa vào vận hành chính thức trong 10 ngày tiếp theo (chi tiết tại Mục 8).
+Giai đoạn vận hành (05 năm kể từ ngày hệ thống được nghiệm thu, đưa vào vận hành chính thức theo hợp đồng): vận hành, giám sát, sao lưu, bảo trì, cập nhật, hỗ trợ kỹ thuật theo SLA; báo cáo SLA hằng tháng; chuyển giao dữ liệu khi kết thúc hợp đồng.
+
+1.3. Hiệu quả dự kiến
+Sẵn sàng triển khai: Nhà thầu sử dụng nền tảng hiện có để cấu hình và hoàn thiện theo phạm vi gói thầu. Dữ liệu khởi tạo được kiểm kê, đối chiếu nguồn và quyền sử dụng trước khi nhập; chỉ công bố số lượng hồ sơ công nghệ, thiết bị và chuyên gia khi có biên bản xác nhận tại PL-07. Quy trình giao dịch 14 bước được kiểm thử trọn vòng và lập biên bản tại PL-06 trước khi đưa vào vận hành thử; không dùng dữ liệu mẫu để chứng minh khả năng vận hành với tài khoản dịch vụ thật.
+Hạn chế đầu tư ban đầu: Nhà thầu cung cấp, vận hành hạ tầng, bản quyền và nhân sự kỹ thuật theo hình thức thuê dịch vụ; dữ liệu, sản phẩm hình thành được bàn giao theo hợp đồng; chi phí dự toán được, chia theo năm.
+Giao dịch trên môi trường điện tử: hệ thống hỗ trợ các bước giao dịch từ đăng nhu cầu, báo giá, đàm phán đến lập và ký số hợp đồng điện tử theo phạm vi E-HSMT, giảm thời gian và chi phí đi lại cho doanh nghiệp, viện, trường.
+Liên thông quốc gia: triển khai đồng bộ sản phẩm chào bán, tin chào mua và đăng ký gian hàng địa phương theo tài liệu API, danh mục mã và quyền truy cập được cơ quan quản lý Sàn quốc gia cấp; phạm vi hoàn thành được xác nhận bằng kiểm thử kết nối tại PL-06.
+Dữ liệu thuộc Bên thuê: toàn bộ dữ liệu được bàn giao khi kết thúc hợp đồng theo Mục 7.
+1.4. Danh mục tài liệu chứng minh kèm theo E-HSDT
+ Tên file PL-01 đến PL-07 là quy ước đóng gói hồ sơ; chỉ ghi nhận đã nộp khi tài liệu thực tế được đính kèm. [CẦN XÁC NHẬN: MobiFone chốt nguồn cung, thông tin cấp phép và hoàn thiện phụ lục trước khi phát hành hồ sơ].
+
+2. Đáp ứng nội dung, phạm vi công việc tại Chương IV, Chương V (tiêu chí 1b)
+Nhà thầu cam kết cung cấp đầy đủ phạm vi dịch vụ tại Chương IV và đáp ứng toàn bộ yêu cầu kỹ thuật tại Chương V của E-HSMT, không loại trừ hạng mục nào.
+
+Tài liệu chứng minh được quản lý theo mã và tên file tại Mục 1.4. PL-01, PL-02, PL-03, PL-04, PL-05, PL-06 và PL-07 phải được kiểm tra, đính kèm hoặc dẫn chiếu đúng vị trí trong bộ HSDT trước khi nộp; danh mục không thay cho tài liệu thực tế. Chứng từ kích hoạt tài khoản, cấu hình môi trường thật và biên bản vận hành được bổ sung trước vận hành thử; không trì hoãn minh chứng bắt buộc của HSDT đến khi triển khai.
+3. Giải pháp kỹ thuật, biện pháp tổ chức và kế hoạch triển khai (tiêu chí 2)
+Nhà thầu triển khai hệ thống theo kiến trúc nhiều lớp, mô-đun nghiệp vụ độc lập và lớp tích hợp dùng chung, cài đặt trên 02 máy chủ cloud tại Việt Nam; quy trình đưa vào vận hành gồm 4 bước theo mục 2.7 Chương V.
+3.1. Giải pháp kỹ thuật
+Kiến trúc hệ thống. Hệ thống tổ chức thành 6 lớp; kiến trúc phân lớp, mô-đun hóa nhằm hạn chế tác động dây chuyền khi cập nhật, nâng cấp hoặc thay thế thành phần.
+
+Giải pháp cho 12 nhóm chức năng. Nhà thầu tổ chức các mô-đun để cung cấp đủ 12 nhóm chức năng theo hợp đồng: quản trị hệ thống; nhà cung cấp, người mua, tổ chức và chuyên gia; sản phẩm, công nghệ, phòng và vị trí trưng bày; kết nối cung – cầu và quy trình chuyển giao công nghệ 14 bước; sự kiện; cổng thông tin song ngữ; VR360; AI; tích hợp; quản trị dữ liệu và ATTT; hạ tầng; báo cáo thống kê. Mô tả tại Mục 4 là phương án cung cấp và cam kết thực hiện, không thay thế biên bản kiểm chứng hiện trạng. Các chức năng bổ sung phải được kiểm thử tại PL-06 trước vận hành thử.
+Quy trình giao dịch chuyển giao công nghệ 14 bước. Hệ thống cung cấp đủ 14 bước của quy trình chuyển giao công nghệ theo nhóm 6 Chương V, từ yêu cầu chuyển giao đến nghiệm thu và thanh lý hợp đồng; mặc định hiển thị và cho phép thực hiện đủ 14 bước. Không có bước nào bị ẩn hoặc được coi là đã hoàn thành khi chưa thực hiện; mọi bước đều được xử lý và lưu vết đầy đủ. Hệ thống kiểm soát chuyển bước theo điều kiện hoàn thành và quyền theo vai trò: bước sau chỉ mở khi bước trước đã hoàn thành; bước không áp dụng được ghi nhận trạng thái “Không áp dụng”; kết quả thẩm định pháp lý chưa đạt được ghi nhận trạng thái và nhật ký để các bên bổ sung. Mỗi bước có trạng thái Chưa bắt đầu – Đang thực hiện – Hoàn thành, quyền thao tác theo vai trò và được ghi nhật ký chuyển trạng thái, nhật ký truy cập hồ sơ. Bước 2 (NDA) áp dụng khi sản phẩm được đánh dấu yêu cầu bảo mật; khi áp dụng, các bên phải ký NDA mới xem được thông tin từ bước 3; khi không áp dụng, hệ thống ghi “Không áp dụng” và mở bước 3 ngay sau bước 1.
+
+Mỗi lần chuyển bước, hệ thống gửi thông báo cho các bên liên quan qua email và trên web. Cán bộ Sàn theo dõi tiến độ toàn bộ giao dịch, thành viên tham gia và nhật ký từng bước.
+Quản lý tổ chức, chuyên gia, tư vấn viên.
+Tổ chức: hồ sơ nhà cung cấp được phân loại theo loại hình: viện, trung tâm nghiên cứu; trường đại học; doanh nghiệp KH&CN; doanh nghiệp sản xuất; tổ chức trung gian, tư vấn. Quản trị viên thẩm định hồ sơ pháp lý, phê duyệt, phân hạng, bật/tắt gian hàng trước khi công bố.
+Tư vấn viên và dịch vụ tư vấn: tổ chức, cá nhân đăng ký làm tư vấn viên trực tuyến; quản trị viên duyệt; cổng thông tin công bố hồ sơ tư vấn viên và các dịch vụ tư vấn công nghệ của Sàn; chuyên gia tư vấn được phân công tham gia từng giao dịch.
+Chuyên gia: danh bạ chuyên gia công khai, tra cứu theo lĩnh vực; hồ sơ chuyên gia, tư vấn viên được quản trị viên thêm, sửa, xóa, duyệt và xuất Excel trên trang quản trị; AI gợi ý chuyên gia phù hợp với nhu cầu.
+Nhà đầu tư: tham gia Sàn bằng tài khoản thành viên với vai trò bên mua: đăng nhu cầu công nghệ, mời báo giá, theo dõi giao dịch. Hồ sơ viện/trường, chuyên gia và tư vấn viên quản lý thông tin định danh, lĩnh vực, năng lực, tài liệu và trạng thái duyệt; dịch vụ tư vấn có đơn vị cung cấp, mô tả, lĩnh vực và đầu mối liên hệ. Phạm vi dữ liệu công khai được Bên thuê phê duyệt.
+Nguyên tắc AI. AI chỉ hỗ trợ tra cứu, tư vấn, gợi ý; trả lời dựa trên dữ liệu của Sàn; không tự sửa hoặc phê duyệt dữ liệu nghiệp vụ; quản trị viên bật/tắt được; khi dịch vụ AI gián đoạn, hệ thống tự chuyển về tìm kiếm toàn văn.
+Báo cáo và dashboard: số liệu lấy từ đơn hàng, hồ sơ giao dịch, chứng từ thu chi, hồ sơ thành viên và nhật ký sự kiện; chỉ tiêu gồm số giao dịch theo trạng thái, doanh thu/thu chi được xác nhận, nhà cung cấp/người mua, sản phẩm và hoạt động sự kiện. Kỳ ngày, tháng, quý, năm hoặc khoảng ngày; lọc theo đơn vị/lĩnh vực và thời điểm chốt. Xuất Excel/PDF, biểu đồ và dashboard theo phân quyền; người bán/người mua chỉ xem dữ liệu của mình, cán bộ Sàn xem trong phạm vi được giao. Kiểm thử đối chiếu số liệu tại PL-06.
+3.2. Biện pháp tổ chức triển khai, cài đặt, cấu hình, tích hợp và đưa vào vận hành thử
+Nhà thầu thành lập Tổ triển khai gồm: 01 Chủ nhiệm dự án (đầu mối làm việc với Bên thuê), 01 Kỹ sư hạ tầng và ATTT, 02 Kỹ sư phần mềm, 01 Kỹ sư tích hợp, 01 Cán bộ kiểm thử và đào tạo; đồng thời bố trí tổ thực hiện VR360 với nhân sự phù hợp khối lượng 10 điểm cảnh.
+1. Cài đặt, thiết lập và kiểm tra điều kiện sẵn sàng. Khởi tạo 02 máy chủ, cài hệ điều hành, CSDL; cấu hình tên miền, chứng thư SSL, tường lửa; cài ứng dụng; khởi tạo danh mục, tham số, tài khoản quản trị và phân quyền; cấu hình và kiểm tra từng kết nối tích hợp; thiết lập sao lưu, giám sát. Kết quả: biên bản xác nhận đủ điều kiện vận hành thử.
+2. Vận hành thử. Chạy trên dữ liệu mẫu hoặc dữ liệu được Bên thuê cho phép; chạy bộ kịch bản nghiệm thu tại phần V Chương V; ghi nhận, khắc phục lỗi. Kết quả: báo cáo vận hành thử.
+3. Đào tạo, chuyển giao. Đào tạo riêng nhóm quản trị và nhóm nghiệp vụ; bàn giao tài liệu hướng dẫn sử dụng, tài liệu quản trị; cấp tài khoản thực hành. Kết quả: biên bản đào tạo, danh sách học viên.
+4. Nghiệm thu, đưa vào vận hành chính thức. Nghiệm thu theo bộ kịch bản kiểm thử; bàn giao hồ sơ ATTT cấp độ 2. Kết quả: biên bản nghiệm thu.
+Kịch bản nghiệm thu Nhà thầu cam kết chạy trọn vòng: đăng ký nhà cung cấp → duyệt → đăng sản phẩm → đăng nhu cầu công nghệ → mời báo giá, nộp đề xuất → trao đổi trực tuyến → lập hợp đồng điện tử → ký số → thông báo email/SMS → nhật ký. Ngoài kịch bản bắt buộc tại phần V Chương V, Nhà thầu chạy kịch bản đầy đủ quy trình 14 bước (có và không có NDA), kiểm tra phân quyền, trạng thái và nhật ký từng bước; kết quả ghi tại PL-06.
+3.3. Tiến độ và kế hoạch thực hiện
+Mục tiêu kiểm thử hiệu năng đề xuất, cần đội thực hiện xác nhận trước khi chốt HSDT: 200 người dùng đồng thời, thời gian phản hồi p95 không quá 3 giây cho tra cứu/danh sách thông thường, tỷ lệ lỗi dưới 1% trong 30 phút tải ổn định. Dữ liệu đo tải là dữ liệu sinh giả lập (khoảng 10.000 sản phẩm, 2.000 chuyên gia, 5.000 hồ sơ giao dịch), chỉ dùng cho kiểm thử, không phải quy mô dữ liệu đầu vào của Bên thuê. Kiểm thử đọc/ghi theo kịch bản tại PL-06; đo riêng AI, ký số, tải tệp và dịch vụ ngoài, không bỏ các phép đo này khỏi báo cáo. Khi chưa đạt, tối ưu truy vấn/chỉ mục, bộ nhớ đệm và mở rộng CPU/RAM/lưu trữ trong phạm vi giá chào, kiểm thử lại trước vận hành thử. [CẦN XÁC NHẬN: kỹ thuật/hạ tầng phê duyệt mục tiêu và tài nguyên tại PL-01].
+Toàn bộ 4 bước hoàn thành trong 30 ngày thực hiện gói thầu, trong đó dịch vụ vào vận hành thử không quá ngày thứ 20. Bảng tiến độ chi tiết có mốc, nhân sự và kết quả đầu ra tại Mục 8.
+3.4. Biện pháp bảo đảm ATTT và duy trì hoạt động ổn định trong quá trình triển khai
+Tài khoản quản trị máy chủ cấp theo tên người, xác thực 2 lớp; đổi toàn bộ mật khẩu mặc định trước khi mở truy cập.
+Chỉ mở cổng 443 (HTTPS) ra Internet; cổng quản trị giới hạn theo địa chỉ IP của Tổ triển khai.
+Tách môi trường kiểm thử và môi trường vận hành; dữ liệu mẫu không dùng thông tin cá nhân thật.
+Rà soát lỗ hổng trước khi đưa vào vận hành thử; sao lưu toàn bộ trước mỗi lần cập nhật cấu hình.
+Mọi thay đổi trên môi trường vận hành được ghi nhật ký và có phương án khôi phục.
+3.5. Cam kết
+Nhà thầu cam kết thực hiện đầy đủ giải pháp kỹ thuật, biện pháp tổ chức và tiến độ đã đề xuất tại Mục này và Mục 8.
+4. Tính đầy đủ của chức năng, nghiệp vụ, hạng mục dịch vụ (tiêu chí 3a)
+Nhà thầu đáp ứng đủ 63 chức năng chi tiết tại mục A, B, C và 12 thành phần dịch vụ tại mục 2.1 Chương V; cột “Giải pháp đáp ứng” mô tả cách hệ thống thực hiện từng yêu cầu.
+Cột “Đáp ứng” thể hiện cam kết cung cấp theo hợp đồng. Từng chức năng được kiểm thử theo kịch bản tại PL-06 trước vận hành thử và nghiệm thu theo phần V Chương V; chức năng chỉ được xác nhận đã có trên môi trường vận hành khi có biên bản kiểm thử.
+4.1. Thành phần dịch vụ (mục 2.1)
+
+(*) Các hạng mục phụ thuộc tài khoản, chứng thư, cấu hình và nội dung thực địa được hoàn tất trong giai đoạn thiết lập: SMS Brandname; ký số thật; 10 điểm VR360; dịch vụ họp trực tuyến; kết nối Sàn quốc gia. Chỉ xác nhận đã có hoặc đã vận hành khi có minh chứng PL-06; chế độ mô phỏng, tài khoản thử nghiệm và dữ liệu mẫu không thay cho kiểm thử dịch vụ thật.
+4.2. Website quản lý (mục A)
+
+4.3. Website bán hàng (mục B)
+
+4.4. Tiện ích khác (mục C)
+
+5. Tính tương thích, khả năng mở rộng, hạn chế phụ thuộc nhà cung cấp; kết nối, liên thông và chia sẻ dữ liệu (tiêu chí 3b)
+Nhà thầu cam kết đủ 5 nội dung của tiêu chí; mọi giao diện kết nối và cấu trúc dữ liệu được tài liệu hóa và bàn giao cho Bên thuê.
+5.1. Cam kết
+
+Lớp tích hợp thay thế được. Mỗi dịch vụ bên ngoài (SMS, thư điện tử, ký số, AI, họp trực tuyến) được gọi qua một giao diện chung; khi đổi nhà cung cấp chỉ thay bộ kết nối và tham số cấu hình, không sửa nghiệp vụ lõi. Hệ thống đã có sẵn bộ kết nối ký số từ xa với nhiều tổ chức cung cấp dịch vụ chứng thực (VNPT, FPT, Viettel); kết nối được kích hoạt với tài khoản, chứng thư thật trong giai đoạn thiết lập.
+
+5.2. Ma trận tích hợp
+Ma trận sơ bộ dưới đây được Nhà thầu hoàn thiện và bàn giao khi triển khai. Đầu mối chịu trách nhiệm với Bên thuê trong mọi trường hợp là Nhà thầu.
+(*) Nhà thầu chịu SLA tổng thể: sẵn sàng ≥ 99,5%/tháng; phản hồi ≤ 02 giờ theo Mục 9; khắc phục nghiêm trọng ≤ 08 giờ, thông thường ≤ 24 giờ. SLA riêng và phạm vi đo của đối tác dẫn chiếu PL-01; không loại trừ sự cố đối tác khỏi trách nhiệm Nhà thầu.
+
+Đầu mối từng kết nối. Phía Nhà thầu, Kỹ sư tích hợp là đầu mối kỹ thuật cho toàn bộ kết nối trong ma trận; Cán bộ phụ trách dịch vụ chịu trách nhiệm trước Bên thuê về SLA tổng thể, kể cả với dịch vụ mua ngoài. Phía đối tác: bộ phận hỗ trợ kỹ thuật của từng nhà cung cấp dịch vụ (thư điện tử, SMS, chứng thực chữ ký số, AI, hạ tầng cloud) và đơn vị quản lý Sàn giao dịch KH&CN Việt Nam; tên, số điện thoại, email của từng đầu mối được ghi trong ma trận bàn giao khi triển khai. Khi dịch vụ bên ngoài lỗi, Kỹ sư tích hợp phối hợp với đầu mối đối tác; thời gian khắc phục vẫn tính theo cam kết của Nhà thầu tại Mục 9.
+5.3. Kết nối Sàn giao dịch khoa học và công nghệ Việt Nam
+Nhà thầu triển khai bộ kết nối với Sàn giao dịch KH&CN Việt Nam theo tài liệu và quyền truy cập chính thức được cấp. Phạm vi bộ kết nối hiện có phải được chứng minh tại PL-06 trước khi ghi nhận đã vận hành; không suy ra kết nối sản xuất từ mô tả hoặc thử nghiệm trên dữ liệu mẫu.
+
+Điều kiện kết nối: tài khoản, tài liệu API, quyền truy cập và danh mục mã lĩnh vực do cơ quan quản lý Sàn quốc gia cung cấp. Nhà thầu lập đặc tả, phát triển bộ kết nối theo tài liệu được cấp, kiểm thử xác thực, tạo/cập nhật, chống trùng, gửi lại và đối soát; kết quả môi trường thật ghi tại PL-06. Endpoint, quyền truy cập, tần suất và giới hạn API được thống nhất với đơn vị quản lý, không tự coi JSON/XML/CSV đều là định dạng được hỗ trợ.
+6. Phương án bảo đảm an toàn thông tin, an ninh mạng (tiêu chí 3c)
+Nhà thầu phối hợp Bên thuê xác định cấp độ, lập và bàn giao hồ sơ đề xuất cấp độ cùng phương án bảo đảm ATTT đáp ứng tối thiểu cấp độ 2 theo hồ sơ kế hoạch thuê đã được phê duyệt và quy định hiện hành, trước khi nghiệm thu đưa hệ thống vào vận hành chính thức.
+Căn cứ: Luật An ninh mạng số 116/2025/QH15; Nghị định số 331/2026/NĐ-CP; Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 và Nghị định số 356/2025/NĐ-CP; Quyết định số 37/2026/QĐ-UBND của UBND thành phố Cần Thơ; TCVN 11930:2017 về yêu cầu cơ bản bảo đảm an toàn hệ thống thông tin theo cấp độ và văn bản thay thế (nếu có).
+6.1. Biện pháp kỹ thuật
+
+6.2. Biện pháp quản lý
+Ban hành quy chế vận hành, quy trình cấp và thu hồi tài khoản; tài khoản cấp theo tên người, không dùng chung.
+Nhân sự vận hành ký cam kết bảo mật; thu hồi quyền ngay khi thay đổi nhân sự.
+Kiểm tra ATTT nội bộ định kỳ và báo cáo Bên thuê.
+Phối hợp với cơ quan chuyên trách ATTT của thành phố khi có yêu cầu kiểm tra, đánh giá.
+6.3. Ứng cứu sự cố
+1. Phát hiện: qua cảnh báo giám sát hoặc phản ánh của Bên thuê.
+2. Phân loại và thông báo Bên thuê trong 02 giờ; sự cố tấn công mạng được báo cáo cơ quan có thẩm quyền theo quy định.
+3. Ngăn chặn: cô lập thành phần bị ảnh hưởng, khóa tài khoản nghi vấn, giữ nguyên nhật ký.
+4. Khôi phục: phục hồi từ bản sao lưu sạch gần nhất, kiểm tra toàn vẹn trước khi mở lại dịch vụ.
+5. Báo cáo: nguyên nhân, thiệt hại, biện pháp phòng ngừa; gửi Bên thuê trong 03 ngày làm việc.
+7. Quản lý và chuyển giao dữ liệu (tiêu chí 3d)
+Nhà thầu cam kết toàn bộ dữ liệu, thông tin, tài liệu điện tử, cơ sở dữ liệu, hồ sơ nghiệp vụ, nhật ký hệ thống, cấu hình và các sản phẩm, kết quả hình thành từ việc cung cấp dịch vụ theo hợp đồng thuộc quyền quản lý, sử dụng và sở hữu của Bên thuê theo quy định của pháp luật và hợp đồng (mục 2.10 Chương V). Bản quyền các thành phần phần mềm thương mại được cung cấp theo quyền sử dụng hợp pháp tại PL-02. Nhà thầu bảo đảm khả năng trích xuất, sao lưu, bàn giao dữ liệu và phối hợp chuyển đổi sang đơn vị được Bên thuê chỉ định trong thời gian thuê và khi kết thúc hoặc chấm dứt hợp đồng.
+7.1. Cam kết trong thời gian thuê
+Chỉ xử lý dữ liệu trong phạm vi cần thiết để thực hiện hợp đồng; không sao chép, khai thác, cung cấp dữ liệu cho bên thứ ba khi chưa có chấp thuận của Bên thuê.
+Bảo đảm an toàn, bảo mật, sao lưu, phục hồi theo Mục 6.
+Cung cấp bản sao CSDL hoặc bản trích xuất dữ liệu trong 03 ngày làm việc khi Bên thuê yêu cầu.
+Không dùng định dạng hoặc cơ chế kỹ thuật độc quyền làm hạn chế quyền khai thác dữ liệu của Bên thuê.
+7.2. Phương án thoát dịch vụ (exit plan)
+Áp dụng khi hết hạn, chấm dứt trước hạn hoặc khi Nhà thầu không còn khả năng cung cấp dịch vụ.
+
+Nhà thầu không khóa, hạn chế hoặc làm mất khả năng truy cập, khai thác dữ liệu của Bên thuê trong quá trình chuyển giao và sau khi hợp đồng kết thúc hoặc chấm dứt, trừ trường hợp có yêu cầu khác của cơ quan nhà nước có thẩm quyền hoặc được Bên thuê chấp thuận bằng văn bản.
+Hoàn trả kinh phí. Trường hợp hợp đồng chấm dứt trước thời hạn (do thay đổi chủ trương, nhu cầu sử dụng, hoặc do Nhà thầu không còn khả năng cung cấp dịch vụ) mà Bên thuê đã thanh toán cho thời gian dịch vụ chưa được cung cấp, Nhà thầu hoàn trả phần kinh phí tương ứng với thời gian và phạm vi dịch vụ chưa thực hiện, sau khi đối trừ các khoản chi phí, nghĩa vụ tài chính hợp pháp khác (nếu có) theo hợp đồng và quy định của pháp luật (mục 2.9 Chương V).
+8. Tiến độ cung cấp dịch vụ (tiêu chí 4)
+Nhà thầu cam kết đưa dịch vụ vào vận hành thử vào ngày thứ 20 và sẵn sàng nghiệm thu đưa vào vận hành chính thức trong 30 ngày kể từ ngày hợp đồng có hiệu lực; việc thực hiện song song các hạng mục không làm giảm chất lượng và tính đầy đủ của dịch vụ.
+Ngày tính theo ngày lịch, ngày 1 là ngày hợp đồng có hiệu lực.
+
+Nhân sự Tổ triển khai gồm 06 người và tổ thực hiện VR360 theo mục 3.2. Các việc phụ thuộc Bên thuê (cung cấp tên miền, hồ sơ đăng ký thương hiệu SMS, bố trí cán bộ tham gia vận hành thử và đào tạo) được thống nhất ngay tại buổi khởi động.
+Các việc phụ thuộc bên ngoài và cách bảo đảm tiến độ. Cam kết vận hành thử ngày 20 và nghiệm thu ngày 30 giữ nguyên; Nhà thầu khởi động các thủ tục bên ngoài ngay ngày đầu tiên và theo dõi hằng ngày.
+
+Vướng mắc phát sinh được Chủ nhiệm dự án báo Bên thuê bằng văn bản trong 01 ngày làm việc, kèm đề xuất cách xử lý.
+Kiểm thử mô phỏng, thương hiệu SMS thử và USB Token không thay thế nghiệm thu chức năng SMS Brandname, ký số từ xa hoặc kết nối Sàn quốc gia theo phạm vi hợp đồng. Trước vận hành thử phải kiểm tra tài khoản thật và lập biên bản điều kiện sẵn sàng. Nếu phụ thuộc chưa được giải quyết, Nhà thầu báo ngay Bên thuê và phối hợp cơ quan/nhà cung cấp theo đầu mối đã thống nhất; không tự xác nhận đã hoàn thành, không tự gia hạn mốc 20/30 ngày hoặc thu hẹp phạm vi.
+9. Bảo hành, xử lý sự cố và hỗ trợ kỹ thuật (tiêu chí 5a)
+Nhà thầu bảo hành, hỗ trợ kỹ thuật trong suốt 05 năm thuê, phản hồi yêu cầu trong 02 giờ (giờ hành chính), khắc phục sự cố nghiêm trọng trong 08 giờ và sự cố thông thường trong 24 giờ.
+9.1. Đầu mối và phương thức tiếp nhận
+Đầu mối: 01 Cán bộ phụ trách dịch vụ (chịu trách nhiệm chung với Bên thuê) và 01 Kỹ sư trực kỹ thuật; họ tên, số điện thoại, email thông báo bằng văn bản khi ký hợp đồng và khi thay đổi.
+Kênh tiếp nhận: phiếu hỗ trợ trên hệ thống (kênh chính); đường dây nóng; thư điện tử hỗ trợ. Yêu cầu qua điện thoại được Kỹ sư trực nhập thành phiếu để theo dõi.
+Theo dõi: mỗi phiếu được phân công người xử lý, theo dõi trạng thái Mới – Đang xử lý – Hoàn thành; Bên thuê xem và xuất báo cáo phiếu bất kỳ lúc nào.
+9.2. Phân loại và thời gian xử lý
+
+Trường hợp sự cố nằm ở dịch vụ Nhà thầu mua của nhà cung cấp khác (SMS, thư điện tử, ký số, cloud), Nhà thầu vẫn là đầu mối xử lý và chịu trách nhiệm về thời gian khắc phục.
+9.3. Quy trình xử lý
+1. Tiếp nhận, tạo phiếu, xác nhận đã nhận với người báo.
+2. Phân loại mức độ, phân công kỹ sư; sự cố nghiêm trọng báo ngay Cán bộ phụ trách và Bên thuê.
+3. Xử lý tạm thời để duy trì dịch vụ (chuyển kênh thông báo, phục hồi từ sao lưu…), sau đó khắc phục triệt để.
+4. Bên thuê xác nhận kết quả; đóng phiếu.
+5. Sự cố nghiêm trọng: báo cáo nguyên nhân và biện pháp phòng ngừa trong 03 ngày làm việc.
+9.4. Trách nhiệm các bên
+
+10. Bảo trì, cập nhật và điều chỉnh (tiêu chí 5b)
+Nhà thầu thực hiện bảo trì định kỳ và cập nhật, điều chỉnh theo yêu cầu trong phạm vi dịch vụ thuê, không tính thêm chi phí; mọi thay đổi trên môi trường vận hành đều có sao lưu trước và phương án khôi phục.
+10.1. Nội dung và tần suất
+
+10.2. Quy trình thực hiện thay đổi
+1. Lập kế hoạch: nội dung, thời điểm, ảnh hưởng, phương án khôi phục.
+2. Thông báo Bên thuê tối thiểu 03 ngày làm việc trước đợt bảo trì có dừng dịch vụ; bảo trì thực hiện ngoài giờ hành chính.
+3. Thử nghiệm trên môi trường kiểm thử.
+4. Sao lưu toàn bộ trước khi áp dụng.
+5. Áp dụng, kiểm tra sau thay đổi; lỗi thì khôi phục về trạng thái trước.
+6. Ghi nhật ký thay đổi, cập nhật tài liệu liên quan, báo cáo trong báo cáo tháng.
+Yêu cầu bổ sung chức năng mới hoặc mở rộng quy mô ngoài phạm vi hợp đồng được xử lý theo quy định về hợp đồng, không làm gián đoạn dịch vụ đang khai thác.
+10.3. Hướng dẫn, đào tạo bổ sung trong thời gian thuê
+Ngoài đào tạo ban đầu tại Mục 8, Nhà thầu hướng dẫn, đào tạo bổ sung trong suốt 05 năm, không tính thêm chi phí trong phạm vi dịch vụ thuê:
+
+Cán bộ kiểm thử và đào tạo chịu trách nhiệm cập nhật tài liệu; mọi buổi đào tạo bổ sung có biên bản và được nêu trong báo cáo tháng.
+11. Vận hành, quản trị dịch vụ (tiêu chí 5c)
+Nhà thầu duy trì dịch vụ với tính sẵn sàng từ 99,5%/tháng trong suốt 05 năm, giám sát liên tục và báo cáo SLA hằng tháng cho Bên thuê.
+11.1. Nhân sự và đầu mối kỹ thuật giai đoạn vận hành
+
+11.2. Quản trị tài khoản, phân quyền, cấu hình
+Bên thuê giữ tài khoản quản trị nghiệp vụ cao nhất; Nhà thầu chỉ giữ tài khoản quản trị kỹ thuật, cấp theo tên người, xác thực 2 lớp.
+Cấp, thay đổi, thu hồi quyền theo yêu cầu bằng văn bản hoặc phiếu hỗ trợ của Bên thuê; rà soát tài khoản không hoạt động hằng quý.
+Tham số vận hành quản lý tập trung; mọi thay đổi cấu hình được ghi nhật ký.
+11.3. Giám sát hiệu năng và ATTT
+
+11.4. Cam kết SLA và báo cáo
+Tỷ lệ sẵn sàng tính theo công thức tại mục 2.2 Chương V:
+Tỷ lệ sẵn sàng (%) = (Tổng thời gian cung cấp – Thời gian gián đoạn tính SLA) / Tổng thời gian cung cấp × 100%
+Nguồn số liệu: công cụ giám sát tính sẵn sàng kiểm tra từ bên ngoài hệ thống, mỗi 1 phút.
+Loại trừ: chỉ thời gian bảo trì theo kế hoạch đã được thông báo trước và thống nhất với Bên thuê (mục 2.2 Chương V).
+Báo cáo hằng tháng gửi Bên thuê trước ngày 05 tháng sau: tỷ lệ sẵn sàng; danh sách sự cố và thời gian xử lý; số phiếu hỗ trợ theo trạng thái; kết quả sao lưu và kiểm tra phục hồi; các cập nhật đã thực hiện; tình hình sử dụng hạn mức SMS, hợp đồng điện tử.
+Lịch sử sự cố được lưu trong suốt thời gian thuê và bàn giao khi kết thúc hợp đồng.
+12. Cam kết chung của Nhà thầu
+Nhà thầu cam kết:
+1. Cung cấp đầy đủ phạm vi dịch vụ tại Chương IV và đáp ứng toàn bộ yêu cầu kỹ thuật tại Chương V của E-HSMT.
+2. Thực hiện đúng giải pháp kỹ thuật, biện pháp tổ chức, tiến độ đã đề xuất: vận hành thử không quá 20 ngày, nghiệm thu trong 30 ngày kể từ ngày hợp đồng có hiệu lực.
+3. Bảo đảm tương thích, mở rộng, tài liệu hóa đầy đủ giao diện và dữ liệu; không hạn chế quyền khai thác, sao lưu, chuyển giao, di chuyển dữ liệu của Bên thuê.
+4. Bảo đảm an toàn thông tin theo cấp độ 2 và bàn giao hồ sơ trước khi nghiệm thu.
+5. Toàn bộ dữ liệu, thông tin, tài liệu, cấu hình và sản phẩm, kết quả hình thành theo hợp đồng thuộc quyền quản lý, sử dụng và sở hữu của Bên thuê; thực hiện đúng phương án thoát dịch vụ.
+6. Duy trì chất lượng dịch vụ theo SLA; bảo hành, bảo trì, hỗ trợ kỹ thuật trong suốt 05 năm thuê.
+7. Chuẩn bị đầy đủ môi trường, tài khoản, dữ liệu mẫu để Demo hệ thống khi Chủ đầu tư yêu cầu, trong phạm vi Chương V và các nội dung đã cam kết tại đề xuất này.
+Nội dung | Nhà thầu | Bên thuê
+Phần mềm, hạ tầng, bản quyền | Cung cấp, cài đặt, vận hành, nâng cấp | Kiểm tra, nghiệm thu
+Dịch vụ tích hợp (VR360, SMS, email, ký số, hợp đồng điện tử) | Mua, tích hợp, chịu trách nhiệm chất lượng | Cung cấp tên thương hiệu, tên miền, hồ sơ đăng ký cần thiết
+Nghiệp vụ, nội dung, tài khoản người dùng | Cấu hình, điều chỉnh theo yêu cầu | Quyết định, phê duyệt, quản lý khai thác
+An toàn thông tin | Lập, thực hiện phương án cấp độ 2 | Phê duyệt cấp độ, giám sát tuân thủ
+Chất lượng dịch vụ | Duy trì SLA, báo cáo hằng tháng | Theo dõi, xác nhận
+Mã phụ lục | Tên file hoặc vị trí dẫn chiếu | Nội dung và thời điểm cung cấp
+— | Thuyết minh trong Đề xuất kỹ thuật (Mục 3–7) | Kiến trúc, bảng đáp ứng, ma trận tích hợp, ATTT và thoát dịch vụ; nằm trong bản đề xuất.
+PL-01 | PL01_Nguon_cung_va_cau_hinh_dich_vu.docx | Nguồn cung, gói cloud, cấu hình, kho sao lưu, email, SMS, AI, họp, CA và hợp đồng điện tử; nộp cùng HSDT.
+PL-02 | PL02_Ban_quyen_va_quyen_su_dung.docx | Phiên bản, SKU, phạm vi cấp phép Standard; xác nhận quyền cung cấp/sử dụng đủ 05 năm; nộp cùng HSDT. Chứng từ kích hoạt bổ sung trước vận hành thử.
+PL-03 | PL03_Dac_ta_API.docx | OpenAPI xuất từ phiên bản hiện hành: 20 API JSON hiện có, xác thực, schema và mã lỗi; nộp cùng HSDT. API kết nối Sàn KH&CN Việt Nam và API cho sàn khác bổ sung vào phụ lục khi hoàn thành, trước vận hành thử.
+PL-04 | PL04_Dac_ta_CSDL.docx | Bảng, trường, khóa, quan hệ, từ điển dữ liệu và phương án xuất/khôi phục; nộp cùng HSDT.
+PL-05 | PL05_Huong_dan_su_dung.docx | Hướng dẫn sử dụng cho người dùng và cán bộ quản trị, quy trình giao dịch 14 bước, đối chiếu chức năng với E-HSMT; nộp cùng HSDT.
+PL-06 | PL06_Bien_ban_kiem_thu_va_tich_hop.docx | Bằng chứng hiện trạng, quy trình giao dịch 14 bước, chức năng bổ sung và tích hợp; nộp bằng chứng sẵn có cùng HSDT; bổ sung kết quả môi trường thật trước vận hành thử.
+PL-07 | PL07_Kiem_ke_va_quyen_su_dung_du_lieu.docx | Nguồn, số lượng, quyền sử dụng, điều kiện công bố dữ liệu khởi tạo; nộp cùng HSDT.
+Hạng mục | Khối lượng theo E-HSMT | Cam kết của Nhà thầu
+Thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ | 01 hệ thống, 05 năm | Đáp ứng đủ 12 nhóm chức năng và toàn bộ chức năng chi tiết mục A, B, C; cài đặt, cấu hình, hướng dẫn, vận hành, bảo hành, bảo trì, hỗ trợ kỹ thuật 05 năm
+Bản quyền hệ điều hành máy chủ, hệ quản trị CSDL | Suốt thời gian thuê | Windows Server Standard cho 02 máy chủ và SQL Server Standard cho máy chủ CSDL; quyền sử dụng hợp pháp đủ 05 năm, phù hợp số lõi/đối tượng truy cập theo mô hình cấp phép được chọn; nâng cấp trước khi hết hỗ trợ. [CẦN XÁC NHẬN: phiên bản, SKU, mô hình và số lượng giấy phép tại PL-01/PL-02 trước khi nộp HSDT].
+VR360 | 10 điểm cảnh quay dựng mới | Chụp, dựng mới 10 điểm tại Sàn; tích hợp nút “Tham quan VR360”; chạy trên trình duyệt máy tính và điện thoại; bàn giao nội dung
+SMS Brandname | 05 năm, 3.600 tin/năm | Đăng ký thương hiệu của đơn vị, tích hợp qua API, hàng đợi có trạng thái, gửi lại, nhật ký, bật/tắt kênh
+Thư điện tử | 05 năm, 60 địa chỉ, 25 GB, 05 Mail List | Thư theo tên miền riêng của đơn vị; gửi thư tự động qua SMTP có hàng đợi, gửi lại khi lỗi; chống thư rác
+Chữ ký số | 05 năm | Ký số từ xa qua tổ chức cung cấp dịch vụ chứng thực và USB Token; nhúng chữ ký PDF; kiểm tra toàn vẹn; nhật ký ký số
+Hợp đồng điện tử | 05 năm, 2.000 hợp đồng/năm | Dự thảo, phiên bản, phê duyệt và ký nhiều bên, theo dõi trạng thái, nhật ký; giá dự thầu đã bao gồm hạn mức
+Hạ tầng máy chủ cloud | 02 máy; mỗi máy 08 Cores (Intel Xeon Gold 6330 hoặc tương đương), RAM ≥ 32 GB, SSD ≥ 500 GB, 01 IP | Đáp ứng bằng hoặc cao hơn cấu hình yêu cầu; dữ liệu và bản sao lưu lưu trữ tại Việt Nam
+Chất lượng dịch vụ (mục 2.2) | Sẵn sàng ≥ 99,5%/tháng; phản hồi ≤ 2 giờ; khắc phục ≤ 8 giờ / ≤ 24 giờ | Cam kết đúng các chỉ tiêu; báo cáo SLA hằng tháng (Mục 9, 11)
+Kết nối, tương thích, dữ liệu, ATTT (mục 2.3, 2.4, 2.10, 2.11) | Theo Chương V | Thuyết minh tại Mục 5, 6, 7
+Triển khai, đào tạo, nghiệm thu (mục 2.7, 2.10, phần V) | Theo Chương V | Thuyết minh tại Mục 3, 8
+Lớp | Thành phần | Giải pháp của Nhà thầu
+Truy cập | Website công khai (tiếng Việt, tiếng Anh), khu tài khoản thành viên, trang quản trị | Giao diện web tương thích máy tính, máy tính bảng, điện thoại; truy cập qua HTTPS; hỗ trợ IPv4/IPv6
+Ứng dụng nghiệp vụ | 12 nhóm chức năng; quy trình giao dịch chuyển giao công nghệ 14 bước | Nền tảng ASP.NET Core 8; mỗi nhóm chức năng là một mô-đun; phân quyền theo vai trò, chức năng và theo từng bước quy trình
+Tích hợp | Email, SMS, ký số, hợp đồng điện tử, AI, VR360, Sàn KH&CN Việt Nam, API mở | Mỗi dịch vụ ngoài nối qua một giao diện chuẩn, thay được nhà cung cấp mà không sửa nghiệp vụ lõi; hàng đợi gửi có trạng thái, gửi lại, nhật ký
+Dữ liệu | CSDL nghiệp vụ tập trung, tệp đính kèm, chỉ mục tìm kiếm | SQL Server Standard; mã định danh thống nhất; lịch sử phiên bản; xuất JSON, XML, CSV, Excel; phiên bản và cấp phép theo PL-01/PL-02.
+An toàn thông tin | Xác thực, phân quyền, mã hóa, nhật ký, sao lưu | Theo phương án cấp độ 2 tại Mục 6
+Hạ tầng, vận hành | 02 máy chủ cloud, giám sát, sao lưu | Máy chủ 1: ứng dụng web và dịch vụ nền; máy chủ 2: CSDL. Kho sao lưu độc lập với hai máy chủ và dữ liệu gốc, lưu tại Việt Nam; không đặt bản sao lưu duy nhất trên máy chủ CSDL. Windows Server Standard, SQL Server Standard theo PL-01/PL-02; giám sát và mở rộng tài nguyên trong giá chào.
+Bước | Nội dung | Vai trò thực hiện | Chứng từ, kết quả
+1 | Yêu cầu chuyển giao công nghệ | Bên mua tạo; cán bộ Sàn tiếp nhận | Phiếu yêu cầu
+2 | Thỏa thuận bảo mật (NDA) | Bên mua, bên bán | NDA đã ký
+3 | Yêu cầu báo giá (RFQ), mời nhà cung cấp | Bên mua, chuyên gia tư vấn | RFQ, thư mời
+4 | Nộp và chấm hồ sơ đề xuất | Bên bán nộp (sau khi nhận lời mời); bên mua, chuyên gia chấm | Hồ sơ đề xuất, bảng điểm
+5 | Đàm phán thương mại | Bên mua, bên bán | Kết quả đàm phán được xác nhận
+6 | Kiểm tra pháp lý | Chuyên gia tư vấn, cán bộ Sàn | Kết quả thẩm định pháp lý
+7 | Ký hợp đồng | Bên mua, bên bán | Hợp đồng điện tử ký số, nhật ký ký số
+8 | Xác nhận tạm ứng | Bên mua, bên bán | Xác nhận tạm ứng
+9 | Thử nghiệm (pilot) | Bên bán thực hiện; bên mua xác nhận | Kết quả thử nghiệm
+10 | Bàn giao, triển khai | Bên bán, bên mua | Biên bản bàn giao
+11 | Đào tạo, chuyển giao vận hành | Bên bán | Biên bản đào tạo
+12 | Bàn giao hồ sơ kỹ thuật | Bên bán | Danh mục hồ sơ kỹ thuật
+13 | Nghiệm thu | Bên mua, bên bán, chuyên gia tư vấn | Biên bản nghiệm thu
+14 | Thanh lý hợp đồng | Bên mua, bên bán | Biên bản thanh lý, đóng hợp đồng
+STT | Thành phần | Đáp ứng | Giải pháp đáp ứng
+1 | Nền tảng dịch vụ | Đáp ứng | Môi trường vận hành ứng dụng, quản trị dữ liệu, phân quyền, giám sát, sao lưu, hỗ trợ người dùng
+2 | Hạ tầng máy chủ | Đáp ứng | 02 máy chủ cloud tại Việt Nam; giám sát tài nguyên, mở rộng khi cần
+3 | Thư điện tử | Đáp ứng | 60 địa chỉ email theo tên miền riêng của đơn vị, dung lượng lưu trữ 25 GB, 05 Mail List theo E-HSMT; thư tự động qua hàng đợi (quên mật khẩu, xác nhận đăng ký, nhắc lịch, thông báo từng bước giao dịch)
+4 | SMS Brandname | Đáp ứng | 3.600 tin/năm; OTP, thông báo, nhắc lịch; trạng thái chờ gửi / đã gửi / lỗi; gửi lại theo số lần cấu hình; bật/tắt kênh (*)
+5 | VR360 | Đáp ứng | 10 điểm cảnh quay dựng mới; nút “Tham quan VR360” trên giao diện Sàn (*)
+6 | Chữ ký số | Đáp ứng | Ký số từ xa, USB Token; nhúng chữ ký PDF; kiểm tra mã băm toàn vẹn; nhật ký ký số (*)
+7 | Hợp đồng điện tử | Đáp ứng | Hạn mức đến 2.000 hợp đồng/năm trong 05 năm thuê; khởi tạo, dự thảo, quản lý phiên bản, phê duyệt và ký số nhiều bên, theo dõi trạng thái, tra cứu, lưu trữ, kiểm tra toàn vẹn, nhật ký
+8 | Thông báo tự động | Đáp ứng | Email, SMS và chuông thông báo trên web theo sự kiện, trạng thái giao dịch
+9 | Tương tác trực tuyến | Đáp ứng | Chat; gọi video từ cuộc trò chuyện; liên kết phát trực tiếp theo từng sự kiện (*)
+10 | AI | Đáp ứng | Chatbot, tìm kiếm ngữ nghĩa kết hợp toàn văn, gợi ý công nghệ, nhà cung cấp, chuyên gia
+11 | Kết nối API | Đáp ứng | API JSON có tài liệu OpenAPI (PL-03); kết nối Sàn KH&CN Việt Nam (*)
+12 | Giám sát, hỗ trợ vận hành | Đáp ứng | Giám sát tình trạng hệ thống; sao lưu, phục hồi; phiếu hỗ trợ trên hệ thống
+Mục | Chức năng | Đáp ứng | Giải pháp đáp ứng
+A.1.1 | Xác thực | Đáp ứng | Đăng nhập, đăng xuất, đổi mật khẩu; quên mật khẩu qua liên kết email hiệu lực 30 phút, dùng 1 lần; hiển thị tài khoản đang đăng nhập
+A.1.2 | Quản trị người dùng | Đáp ứng | Khai báo người dùng, thông tin cá nhân, thông tin đăng nhập
+A.1.3 | Phân quyền | Đáp ứng | Vai trò; quyền theo từng chức năng và từng bước quy trình
+A.1.4 | Thông báo | Đáp ứng | Thông báo, nhắc hẹn qua email
+A.1.5 | Tiện ích | Đáp ứng | Giao diện trực quan, bố cục thống nhất; tương thích máy tính và điện thoại
+A.2.1 | Danh mục lĩnh vực công nghệ | Đáp ứng | Thêm, sửa, xóa lĩnh vực
+A.2.2 | Danh mục nhà cung cấp | Đáp ứng | Đăng ký kèm hồ sơ pháp lý (giấy phép kinh doanh, quyết định thành lập); quản trị viên thẩm định, phê duyệt trước khi cấp quyền bán; phân hạng
+A.2.3 | Gian hàng nhà cung cấp | Đáp ứng | Gói gian hàng theo số sản phẩm (5, 10…) có giá và thời hạn; hiển thị hạn mức, chặn đăng vượt gói khi Bên thuê quyết định áp dụng thu phí (bật bằng tham số); bật/tắt gian hàng khi vi phạm
+A.2.4 | Hạng nhà cung cấp | Đáp ứng | Thiết lập tiêu chí; gợi ý hạng theo số liệu; gán hạng Vàng, Bạc, Thành viên; huy hiệu tại gian hàng
+A.2.5 | Giao dịch của nhà cung cấp | Đáp ứng | Thống kê lượt xem, lượt liên hệ, lượt giao dịch; theo dõi giao dịch từ quan tâm, thương thảo, ký kết đến nghiệm thu
+A.2.6 | Duyệt sản phẩm | Đáp ứng | Sản phẩm mới và bản chỉnh sửa chờ duyệt trước khi công bố
+A.2.7 | Lịch sử chỉnh sửa sản phẩm | Đáp ứng | Tự động lưu phiên bản mỗi lần sửa; so sánh hai phiên bản, làm nổi trường thay đổi (giá, mô tả, trạng thái pháp lý)
+A.2.8 | Bài viết của nhà cung cấp | Đáp ứng | Nhà cung cấp gửi bài, quản trị viên duyệt trước khi đăng
+A.2.9 | Ủy quyền bán hàng cho Sàn | Đáp ứng | Sàn đăng sản phẩm thay và gán cho nhà cung cấp
+A.2.10 | Lịch sử chat người bán | Đáp ứng | Xem hội thoại theo người bán
+A.3.1 | Nhóm sản phẩm | Đáp ứng | Nhóm theo công nghệ; phân loại “Trưng bày tại Sàn” và “Trực tuyến”
+A.3.2 | Danh mục sản phẩm | Đáp ứng | Sản phẩm của nhà cung cấp và của Sàn; truy cập nhanh trang sửa và lịch sử chỉnh sửa
+A.3.3 | Phòng trưng bày | Đáp ứng | Tạo, sửa, xóa phòng, khu vực triển lãm
+A.3.4 | Vị trí trưng bày | Đáp ứng | Vị trí trong từng phòng; gán sản phẩm; xem vị trí trống, đang dùng
+A.4.1 | Sự kiện, hội thảo, triển lãm | Đáp ứng | Tên, mô tả, thời gian, địa điểm (thực tế/trực tuyến), banner; danh sách đăng ký, xuất Excel, điểm danh bằng mã QR
+A.4.2 | Tin tức, bài đăng | Đáp ứng | Soạn, duyệt, xuất bản tin tức, bài quảng cáo
+A.4.3 | Gian hàng sự kiện | Đáp ứng | Mô hình gian hàng (diện tích), giá theo vị trí, dịch vụ đi kèm; đăng ký thuê, duyệt
+A.4.4 | Thống kê sự kiện | Đáp ứng | Thống kê riêng lượt nhấp banner, nhấp đường dẫn/trang sự kiện, chia sẻ qua nút chia sẻ của Sàn, lượt xem, quan tâm, nhắc lịch, đăng ký và điểm danh theo ngày/sự kiện. Ghi thời điểm, mã sự kiện, loại hành động; lượt nhấp chia sẻ không được diễn giải thành lượt chia sẻ thành công trên nền tảng ngoài. Kiểm thử tại PL-06.
+A.4.5 | Nhắc lịch | Đáp ứng | Mốc nhắc cấu hình theo từng sự kiện (ví dụ 24 giờ trước khi bắt đầu); gửi qua email, SMS, web; thông báo email khi có tin nhắn trao đổi mới
+A.5.1 | Danh sách người mua | Đáp ứng | Tìm kiếm, xem hồ sơ và lịch sử; khóa/mở khóa có lý do, đăng xuất ngay phiên đang dùng
+A.5.2 | Lịch sử mua hàng | Đáp ứng | Tra cứu theo người mua: mã đơn, ngày đặt, sản phẩm, nhà cung cấp, tổng giá trị, trạng thái thanh toán, giao hàng/hoàn thành; liên kết hồ sơ giao dịch. Tổng tiền đã chi tính theo khoản thanh toán được xác nhận, tách hủy/hoàn tiền; giỏ hàng và đăng ký sự kiện không được tính là đơn đã thanh toán. Kiểm thử tại PL-06.
+A.5.3 | Lịch sử chat người mua | Đáp ứng | Đọc toàn bộ hội thoại; tìm từ khóa; gắn cờ vi phạm
+A.5.4 | Lịch sử bình luận | Đáp ứng | Danh sách theo người dùng, liên kết trang gốc; sửa, ẩn, xóa
+A.6.1 | Quản lý thu chi | Đáp ứng | Tỷ lệ hoa hồng, hoa hồng giao dịch/phí gian hàng, sổ thu chi; báo cáo Excel/PDF và biểu đồ theo kỳ, phân quyền theo Mục 3.1; số liệu từ chứng từ đã xác nhận, tách dự kiến và thực thu.
+A.7.1 | Bình luận | Đáp ứng | Bình luận bài viết, gian hàng, sản phẩm
+A.7.2 | Mẫu đăng ký | Đáp ứng | Định nghĩa trường, trường bắt buộc; hành động sau gửi (thông báo, chuyển trang, email tự động)
+A.7.3 | FAQ | Đáp ứng | Cặp hỏi – đáp, phân nhóm, bật/tắt hiển thị
+A.8.1 | Báo cáo giao dịch | Đáp ứng | Báo cáo giao dịch, doanh thu và cảnh báo giao dịch mới; Excel/PDF, biểu đồ/dashboard; nguồn hồ sơ giao dịch và chứng từ đã xác nhận; kỳ ngày/tháng/quý/năm hoặc khoảng ngày, chỉ tiêu và quyền xem theo Mục 3.1. Kiểm thử tại PL-06.
+A.8.2 | Cảnh báo trùng lặp, quá hạn | Đáp ứng | Cảnh báo trùng tên, trùng mô tả ngắn và sản phẩm quá hạn cập nhật theo số ngày cấu hình; quét hằng ngày và theo yêu cầu; danh sách cảnh báo có loại, thời điểm và trạng thái xử lý
+A.8.3 | Phiên bản nội dung | Đáp ứng | Xem danh sách phiên bản sản phẩm, thời điểm và người cập nhật; so sánh hai phiên bản, làm nổi trường thay đổi
+A.8.4 | Thông báo nhắc lịch | Đáp ứng | Email xác nhận kèm vé QR; nhắc lịch tự động
+A.8.5 | Lịch sử thao tác | Đáp ứng | Nhật ký đăng, sửa, duyệt, xem, tải tệp và tìm kiếm; nhật ký quy trình, hợp đồng, ký số, truy cập hồ sơ. Tra cứu theo người dùng, thời gian, chức năng; ghi từ khóa tìm kiếm trong phạm vi cần thiết, tránh dữ liệu nhạy cảm. Lưu trong suốt 05 năm thuê theo Mục 6.1; chỉ cấp quyền cán bộ được phân công, ghi vết truy cập/xuất nhật ký. Kiểm thử tại PL-06.
+Mục | Chức năng | Đáp ứng | Giải pháp đáp ứng
+B.1.1 | Trang chủ | Đáp ứng | Giới thiệu, liên hệ, lĩnh vực nổi bật, gian hàng tiêu biểu, tin tức, sự kiện
+B.1.2 | Tham quan VR360 | Đáp ứng | 10 điểm cảnh quay; xoay 360°, chuyển cảnh; chạy trên trình duyệt; nút “Tham quan VR360”; bàn giao nội dung
+B.1.3 | Thông tin nổi bật | Đáp ứng | Tin tức, sự kiện, triển lãm nổi bật
+B.1.4 | Danh sách sản phẩm | Đáp ứng | Hiển thị theo quyền truy cập; tra cứu, lọc theo lĩnh vực, nhà cung cấp, trạng thái, nhóm trưng bày thực tế/trực tuyến
+B.1.5 | Banner | Đáp ứng | Quản trị cập nhật, thay đổi banner
+B.1.6 | Mẫu đăng ký nhận thông tin | Đáp ứng | Đăng ký nhận bản tin; đăng ký tham gia sự kiện
+B.2.1 | Gian hàng người bán | Đáp ứng | Trang gian hàng kèm huy hiệu hạng
+B.2.2 | Hồ sơ pháp lý | Đáp ứng | Tải lên tài liệu xác thực pháp lý
+B.2.3 | Lịch sử giao dịch người bán | Đáp ứng | Lượt xem, lượt liên hệ và số lượt giao dịch theo sản phẩm/nhà cung cấp/khoảng thời gian; tra cứu danh sách đơn đặt hàng và hồ sơ giao dịch liên quan, tách các trạng thái hoàn thành/hủy. Quy định mã giao dịch để chống đếm trùng; tổng hợp và xuất báo cáo. Kiểm thử tại PL-06.
+B.2.4 | Báo giá | Đáp ứng | Tạo, lưu báo giá; yêu cầu báo giá và hồ sơ đề xuất
+B.2.5 | Quản lý sản phẩm | Đáp ứng | Hình ảnh, video, mô tả, tệp kèm, giá, tình trạng pháp lý (số văn bằng, ngày cấp, thời hạn bảo hộ; quyết định thẩm định của Hội đồng KH&CN đính kèm dạng tệp)
+B.3.1 | Đăng tin tìm mua | Đáp ứng | Đăng nhu cầu công nghệ; công khai hoặc chỉ cho nhà cung cấp phù hợp; nhận báo giá, giải pháp
+B.3.2 | Bình luận tin tìm mua | Đáp ứng | Bình luận hiển thị ngay dưới tin
+B.3.3 | Quan tâm sản phẩm | Đáp ứng | Lưu sản phẩm quan tâm; trang “Sản phẩm quan tâm”
+B.3.4 | Giỏ hàng | Đáp ứng | Gộp sản phẩm từ nhiều nhà cung cấp trước khi đặt
+B.3.5 | Bình luận sản phẩm | Đáp ứng | Bình luận hiển thị ngay dưới sản phẩm
+Mục | Chức năng | Đáp ứng | Giải pháp đáp ứng
+C.1 | Tham quan VR360 | Đáp ứng | Xem B.1.2
+C.2 | Tích hợp với sàn giao dịch khác | Đáp ứng | Triển khai bộ kết nối theo Mục 5.3: gian hàng địa phương, sản phẩm chào bán, tin chào mua, mã định danh, ánh xạ lĩnh vực; kiểm thử bằng tài khoản được cấp. Không xác nhận đang vận hành khi chưa có PL-06; API cho sàn khác được xây dựng, phân quyền bằng khóa API hoặc token và bổ sung tài liệu vào PL-03 trong giai đoạn thiết lập.
+C.3 | Liên kết mạng xã hội | Đáp ứng | Nút chia sẻ đường dẫn sản phẩm, bài viết, sự kiện lên mạng xã hội; đánh giá sản phẩm trên Sàn
+C.4 | Ký số hợp đồng điện tử | Đáp ứng | Xem 4.1 dòng 6, 7
+C.5 | In mã QR sản phẩm | Đáp ứng | Mã QR và nút in nhãn ở trang chi tiết sản phẩm
+C.6 | Phòng họp ảo, livestream | Đáp ứng | Liên kết phát trực tiếp (YouTube, Facebook, TikTok) theo sự kiện; phòng họp trực tuyến
+C.7 | Liên hệ trực tiếp | Đáp ứng | Chat, gọi video giữa người bán, người mua, Sàn; phòng họp chạy trên máy chủ họp riêng hoặc dịch vụ được Bên thuê chấp thuận
+C.8 | Dịch Anh/Việt | Đáp ứng | Giao diện Anh/Việt và quản trị nội dung dịch; các trang, trường dữ liệu thuộc phạm vi dịch được kiểm tra bằng bộ kịch bản song ngữ tại PL-06
+C.9 | AI tìm kiếm | Đáp ứng | Tìm sản phẩm, dịch vụ, nhà cung cấp, chuyên gia; gợi ý khi gõ; tìm bằng giọng nói
+C.10 | Chatbot AI | Đáp ứng | Gợi ý theo ngành, từ khóa, sản phẩm đã xem; trả lời trên dữ liệu của Sàn; bật/tắt; không sửa dữ liệu nghiệp vụ
+Nội dung tiêu chí | Cam kết và giải pháp của Nhà thầu
+Tương thích, nâng cấp, mở rộng, tích hợp với hạ tầng, hệ thống khác | Kiến trúc mô-đun; tài nguyên cloud mở rộng được; chạy trên IPv4 và IPv6; tích hợp qua API REST/JSON hoặc Web Service; sẵn sàng kết nối Cổng thông tin, nền tảng xác thực, hệ thống truy xuất nguồn gốc và các hệ thống của Bộ KH&CN, UBND thành phố khi có yêu cầu
+Tài liệu hóa giao diện, cấu trúc, định dạng dữ liệu | Tài liệu API theo chuẩn OpenAPI (cấu trúc dữ liệu, xác thực, mã lỗi); tài liệu đặc tả CSDL các bảng nghiệp vụ; ma trận tích hợp (mục 5.2)
+Không hạn chế quyền khai thác, sao lưu, chuyển giao, di chuyển dữ liệu | Dữ liệu lưu trên hệ quản trị CSDL thông dụng, không mã hóa độc quyền; xuất được JSON, XML, CSV, Excel; Bên thuê có quyền yêu cầu bản sao CSDL bất kỳ lúc nào; chi tiết tại Mục 7
+Kết nối, chia sẻ theo quy định pháp luật, tiêu chuẩn | Tuân thủ Nghị định 278/2025/NĐ-CP, Thông tư 39/2017/TT-BTTTT; triển khai, phối hợp kiểm thử và duy trì kết nối Sàn KH&CN Việt Nam theo tài liệu kỹ thuật, quyền truy cập và điều kiện do đơn vị quản lý nền tảng cung cấp; có xác thực, phân quyền, nhật ký trên mọi kết nối
+Phối hợp cập nhật khi có thay đổi | Khi quy định, chuẩn kết nối hoặc API của cơ quan quản lý thay đổi, Nhà thầu cập nhật trong phạm vi dịch vụ thuê, không tính thêm chi phí
+Hệ thống / dịch vụ | Chiều dữ liệu | Phương thức | Xác thực | Nhật ký | Gửi lại | Xử lý lỗi | SLA | Đầu mối chịu trách nhiệm
+Thư điện tử | Sàn → người dùng | SMTP qua TLS, hàng đợi | Tài khoản SMTP riêng | Trạng thái từng thư | Tự động theo số lần cấu hình | Đánh dấu lỗi, cảnh báo quản trị khi hàng đợi ùn | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư tích hợp); phối hợp nhà cung cấp thư điện tử
+SMS Brandname | Sàn → người dùng; trạng thái gửi về Sàn | API HTTPS, hàng đợi | Khóa API | Trạng thái chờ / đã gửi / lỗi | Tự động theo số lần cấu hình | Chuyển sang thông báo email/web; bật/tắt kênh | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư tích hợp); phối hợp nhà cung cấp SMS
+Chữ ký số từ xa | Hai chiều: tệp cần ký → CA; chữ ký → Sàn | API HTTPS của tổ chức chứng thực | Tài khoản, chứng thư người ký, OTP | Nhật ký ký số | Người ký thực hiện lại | Giữ nguyên trạng thái chờ ký; kiểm tra mã băm | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư tích hợp); phối hợp tổ chức chứng thực
+Ký số USB Token | Máy người ký → Sàn | Phần mềm ký cài trên máy người dùng | Chứng thư trên Token, mã PIN | Nhật ký ký số | Người ký thực hiện lại | Kiểm tra chữ ký và mã băm trước khi lưu | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư tích hợp); phối hợp tổ chức chứng thực
+Hợp đồng điện tử | Nội bộ hệ thống | Mô-đun hợp đồng + ký số | Phân quyền theo bên tham gia | Nhật ký thao tác hợp đồng | — | Khóa phiên bản đã ký | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư phần mềm)
+Dịch vụ AI | Sàn → AI (câu hỏi, dữ liệu công khai); AI → Sàn (gợi ý) | API HTTPS | Khóa API | Nhật ký truy vấn | Không | Chuyển về tìm kiếm toàn văn | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư tích hợp); phối hợp nhà cung cấp AI
+VR360 | Sàn → người dùng | Nhúng trình xem trên web | Không (nội dung công khai) | Thống kê truy cập | — | Hiển thị thông báo, kiểm tra trong giám sát | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Nhóm VR360, Kỹ sư phần mềm)
+Sàn KH&CN Việt Nam | Hai chiều: sản phẩm chào bán, tin chào mua; mã xác thực | API, phương thức và định dạng theo đặc tả do cơ quan quản lý Sàn quốc gia cung cấp; đồng bộ khi sản phẩm được duyệt công bố và theo lô để đối soát, gửi lại | Tài khoản, mã xác thực do Bộ cấp | Nhật ký đồng bộ từng bản ghi | Tự động ở lần đồng bộ sau | Kiểm tra toàn vẹn, chống trùng bản ghi | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư tích hợp); phối hợp đơn vị quản lý Sàn quốc gia
+Hệ thống khác (API mở) | Hai chiều theo yêu cầu | API REST/JSON, tài liệu OpenAPI | Khóa API hoặc token | Nhật ký truy cập API | Theo thỏa thuận kết nối | Mã lỗi chuẩn hóa | SLA tổng thể của Nhà thầu (*) | Nhà thầu (Kỹ sư tích hợp); phối hợp đơn vị kết nối
+Nội dung | Hiện trạng | Phần cần hoàn thiện | Kế hoạch và minh chứng
+Xác thực, lấy mã truy cập | Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này. | Dùng tài khoản do Bộ cấp cho đơn vị | Kiểm thử xác thực với tài khoản được cấp tại bước 6 Mục 8. Minh chứng: biên bản kiểm thử tại PL-06.
+Đăng ký gian hàng của địa phương | Chưa có | Xây dựng theo API của Bộ; thực hiện một lần khi được cấp quyền | Phát triển theo tài liệu API được cấp, đăng ký khi có quyền. Minh chứng: kết quả đăng ký gian hàng trên Sàn quốc gia, ghi tại PL-06.
+Cung cấp danh sách sản phẩm chào bán | Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này. | Thêm đồng bộ ngay khi sản phẩm được duyệt công bố, giữ đồng bộ theo lô định kỳ để bù bản ghi lỗi | Kiểm thử tạo, cập nhật, gửi lại tại bước 6 Mục 8. Minh chứng: nhật ký đồng bộ và đối soát số bản ghi tại PL-06.
+Cung cấp danh sách tin chào mua | Chưa có | Xây dựng theo API của Bộ, cùng cơ chế với sản phẩm | Phát triển theo tài liệu API được cấp, kiểm thử cùng đợt với sản phẩm. Minh chứng: nhật ký đồng bộ và đối soát tại PL-06.
+Mã định danh thống nhất, chống trùng | Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này. | Ghép mã định danh Sàn Cần Thơ với mã do Sàn quốc gia trả về | Kiểm thử gửi trùng và gửi lại cùng bản ghi. Minh chứng: kết quả kiểm thử chống trùng tại PL-06.
+Ánh xạ danh mục lĩnh vực | Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này. | Lập bảng ánh xạ danh mục lĩnh vực của Sàn Cần Thơ sang bộ mã do Bộ ban hành; Bên thuê xác nhận trước khi áp dụng | Lập bảng ánh xạ khi nhận danh mục mã của Bộ. Minh chứng: bảng ánh xạ có xác nhận của Bên thuê.
+Nhật ký, xử lý lỗi | Đã có nhật ký từng lô | Ghi nhật ký từng bản ghi; bản ghi lỗi tự gửi lại ở lần đồng bộ sau và báo cáo trong báo cáo tháng | Bổ sung nhật ký từng bản ghi trước vận hành thử. Minh chứng: nhật ký đồng bộ tại PL-06 và báo cáo tháng.
+Nhóm biện pháp | Nội dung thực hiện
+Phân quyền, xác thực | Phân quyền theo vai trò, chức năng và bước quy trình; mật khẩu lưu dạng băm; xác thực 2 lớp bằng mã OTP cho tài khoản quản trị (bật bắt buộc khi đưa vào vận hành thử); khóa tài khoản vi phạm và đăng xuất ngay phiên đang dùng; quên mật khẩu qua liên kết dùng 1 lần
+Mã hóa | HTTPS/TLS cho toàn bộ truy cập, bắt buộc HTTPS (HSTS); kết nối tích hợp qua HTTPS; khóa bí mật, mật khẩu dịch vụ không lưu trong mã nguồn
+Bảo vệ ứng dụng | Chống giả mạo yêu cầu (CSRF); cookie phiên HttpOnly, Secure; tiêu đề bảo mật (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy); kiểm tra loại và dung lượng tệp tải lên
+Bảo vệ mạng, máy chủ | Tường lửa chỉ mở cổng cần thiết; quản trị giới hạn IP; CSDL không mở Internet. WAF phát hiện/chặn mẫu tấn công ứng dụng, giới hạn tốc độ và đăng nhập bất thường; giám sát nhật ký, chống mã độc máy chủ và phối hợp chống DDoS của cloud. Sản phẩm, gói bảo vệ, tài nguyên, hạn mức và đầu mối chốt tại PL-01; chi phí nằm trong giá chào; kiểm thử cảnh báo/chặn và ứng cứu trước vận hành thử.
+Nhật ký | Ghi đăng nhập, quản trị, tìm kiếm, quy trình, hợp đồng, ký số và truy cập hồ sơ; lưu trong suốt 05 năm thuê và bàn giao khi kết thúc. Nhật ký được lưu tập trung, phân quyền riêng, bảo vệ khỏi sửa/xóa trái phép, ghi vết việc truy cập và xuất; chỉ cán bộ được phân công được xem. Chính sách lưu nhật ký độc lập với thời hạn giữ bản sao lưu 30 ngày; rà soát dữ liệu nhạy cảm, dung lượng và nghĩa vụ lưu giữ theo hồ sơ ATTT.
+Sao lưu, phục hồi | CSDL: sao lưu toàn phần hằng ngày, bổ sung 6 giờ/lần; tệp: hằng ngày. Giữ các điểm phục hồi ít nhất 30 ngày trên kho sao lưu riêng tại Việt Nam, độc lập với máy chủ ứng dụng, máy chủ CSDL và dữ liệu gốc; tài khoản sao lưu riêng, mã hóa, hạn chế quyền xóa. Dung lượng kho tính theo kích thước bản toàn phần, phần tăng thêm/tệp thay đổi trong 30 ngày và dự phòng 20%; mức GB, gói và vị trí được chốt tại PL-01. Kho và lưu lượng sao lưu đã nằm trong giá chào. RPO CSDL ≤ 6 giờ, tệp ≤ 24 giờ; RTO ≤ 8 giờ, đo bằng phục hồi thử trước vận hành và hằng quý. Phục hồi nhất quán CSDL và tệp: sau khi phục hồi CSDL và tệp từ các điểm gần nhất, đối chiếu danh sách tệp đính kèm được CSDL tham chiếu với tệp thực có và lập danh sách tệp thiếu (tệp phát sinh sau lượt sao lưu tệp gần nhất). Hợp đồng và chứng từ ký số được kiểm tra bằng mã băm SHA-256 lưu trong CSDL tại thời điểm ký; chỉ tệp trùng mã băm mới được coi là bản hợp lệ. Tệp thiếu hoặc lệch mã băm được thông báo cho các bên ký và Bên thuê; bản PDF đã ký do các bên lưu giữ chỉ được tiếp nhận lại khi trùng mã băm đã lưu. Kết quả đối chiếu ghi vào biên bản phục hồi.
+Giám sát | Giám sát liên tục tình trạng website, CSDL, ổ đĩa, CPU, RAM, hàng đợi thông báo, kết quả sao lưu, thời hạn chứng thư SSL; cảnh báo qua email/SMS cho cán bộ trực
+Rà soát lỗ hổng | Rà soát trước khi đưa vào vận hành và định kỳ 06 tháng/lần; khắc phục lỗ hổng mức cao trong 07 ngày
+Bảo vệ dữ liệu cá nhân | Thông báo và ghi nhận sự đồng ý xử lý dữ liệu cá nhân khi đăng ký (thời điểm, phiên bản điều khoản); áp dụng chính sách bảo vệ dữ liệu cá nhân do Bên thuê ban hành; phân quyền, bảo mật dữ liệu; tiếp nhận và xử lý yêu cầu của chủ thể dữ liệu theo pháp luật hiện hành; dữ liệu lưu tại Việt Nam
+Nội dung | Cam kết của Nhà thầu
+Danh mục dữ liệu | Toàn bộ CSDL nghiệp vụ (tài khoản, nhà cung cấp, sản phẩm, nhu cầu, chuyên gia, giao dịch, hợp đồng, sự kiện, tin bài, bản dịch); tệp đính kèm, hình ảnh, video; hợp đồng đã ký số; nội dung VR360; nhật ký hệ thống; báo cáo
+Định dạng | Bản sao lưu CSDL nguyên bản; bản xuất CSV/JSON từng bảng; tệp gốc giữ nguyên cấu trúc thư mục; hợp đồng ký số dạng PDF còn nguyên chữ ký
+Tài liệu API, cấu hình | Tài liệu OpenAPI; đặc tả CSDL; danh mục tham số cấu hình; ma trận tích hợp cập nhật; tài liệu quản trị và hướng dẫn sử dụng
+Tài khoản | Danh sách tài khoản quản trị; chuyển quyền quản trị tên miền, hộp thư, thương hiệu SMS (thuộc đơn vị) cho Bên thuê hoặc đơn vị tiếp nhận
+Thời gian hỗ trợ chuyển đổi | Bàn giao trong 15 ngày kể từ khi có yêu cầu; hỗ trợ đơn vị tiếp nhận tối thiểu 30 ngày sau bàn giao; duy trì dịch vụ cũ đến khi hệ thống mới vận hành nếu hợp đồng còn hiệu lực
+Kiểm tra toàn vẹn | Đối chiếu số bản ghi từng bảng, mã băm tệp; phục hồi thử bản sao lưu trên môi trường của bên tiếp nhận
+Xác nhận bàn giao | Biên bản bàn giao có danh mục, số lượng, mã băm; Bên thuê ký xác nhận
+Xóa bản sao | Sau khi Bên thuê xác nhận, xóa toàn bộ bản sao dữ liệu trên hạ tầng của Nhà thầu trong 15 ngày, lập biên bản xóa; trừ dữ liệu phải lưu theo quy định pháp luật
+STT | Công việc | Thời gian | Nhân sự thực hiện | Kết quả đầu ra
+1 | Họp khởi động; thống nhất kế hoạch, đầu mối, danh mục thông tin Bên thuê cung cấp (tên miền, thương hiệu SMS, danh sách cán bộ) | Ngày 1–2 | Chủ nhiệm dự án | Biên bản họp, kế hoạch chi tiết
+2 | Khởi tạo 02 máy chủ cloud; cài hệ điều hành, CSDL; tường lửa, chứng thư SSL, tên miền | Ngày 1–4 | Kỹ sư hạ tầng và ATTT | Hạ tầng sẵn sàng, biên bản cấu hình
+3 | Đăng ký thương hiệu SMS, khởi tạo 60 hộp thư, tài khoản ký số và hợp đồng điện tử | Ngày 1–10 | Kỹ sư tích hợp | Tài khoản dịch vụ hoạt động
+4 | Chụp, dựng 10 điểm cảnh quay VR360 tại Sàn | Ngày 3–14 | Nhóm dựng VR360 | Tour VR360 hoàn chỉnh
+5 | Cài đặt ứng dụng; khởi tạo dữ liệu ban đầu | Ngày 4–8 | 02 Kỹ sư phần mềm | Ứng dụng chạy trên môi trường vận hành
+6 | Cấu hình, kiểm tra tích hợp: email, SMS, ký số, hợp đồng điện tử, AI, Sàn KH&CN Việt Nam; tích hợp VR360 | Ngày 8–15 | Kỹ sư tích hợp, Kỹ sư phần mềm | Ma trận tích hợp hoàn thiện, biên bản kiểm tra kết nối
+7 | Thiết lập danh mục, tham số, tài khoản quản trị, phân quyền; sao lưu, giám sát | Ngày 9–15 | Kỹ sư phần mềm, Kỹ sư hạ tầng và ATTT | Cấu hình vận hành, lịch sao lưu chạy tự động
+8 | Kiểm thử nội bộ toàn bộ chức năng; rà soát lỗ hổng; phục hồi thử sao lưu | Ngày 15–18 | Cán bộ kiểm thử, Kỹ sư hạ tầng và ATTT | Báo cáo kiểm thử, báo cáo rà soát
+9 | Kiểm tra điều kiện sẵn sàng cùng Bên thuê | Ngày 19 | Chủ nhiệm dự án, Tổ triển khai | Biên bản đủ điều kiện vận hành thử
+10 | Đưa dịch vụ vào vận hành thử | Ngày 20 | Tổ triển khai | Dịch vụ hoạt động trên Internet
+11 | Vận hành thử; chạy kịch bản nghiệm thu; khắc phục lỗi | Ngày 20–27 | Tổ triển khai, cán bộ Bên thuê | Báo cáo vận hành thử
+12 | Đào tạo nhóm quản trị và nhóm nghiệp vụ; bàn giao tài liệu | Ngày 21–25 | Cán bộ kiểm thử và đào tạo | Biên bản đào tạo, danh sách học viên, tài liệu
+13 | Hoàn thiện hồ sơ đề xuất cấp độ và phương án ATTT cấp độ 2 | Ngày 20–27 | Kỹ sư hạ tầng và ATTT | Hồ sơ ATTT bàn giao Bên thuê
+14 | Nghiệm thu, đưa vào vận hành chính thức | Ngày 28–30 | Chủ nhiệm dự án | Biên bản nghiệm thu
+Việc phụ thuộc | Điều kiện | Đầu mối phối hợp | Chuẩn bị sớm, xử lý vướng mắc
+Tài khoản, API Sàn KH&CN Việt Nam | Văn bản đề nghị của Bên thuê gửi Bộ KH&CN | Chủ nhiệm dự án; cán bộ đầu mối của Bên thuê | Nhà thầu soạn sẵn dự thảo văn bản trong ngày 1–2; bộ kết nối hiện có dùng ngay khi có tài khoản; các chức năng mới kiểm thử trên dữ liệu mẫu trước
+Đăng ký thương hiệu SMS Brandname | Hồ sơ pháp lý, giấy ủy quyền của Bên thuê | Kỹ sư tích hợp | Nộp hồ sơ trong ngày 1–3; tích hợp, kiểm thử kênh gửi trước với tên thương hiệu tạm của nhà cung cấp
+Tài khoản, chứng thư số ký từ xa | Hợp đồng với tổ chức cung cấp dịch vụ chứng thực | Kỹ sư tích hợp | Chuẩn bị song song với cài đặt hạ tầng; ký bằng USB Token sẵn sàng ngay
+Tên miền, hộp thư theo tên miền đơn vị | Bên thuê cung cấp quyền cấu hình tên miền | Kỹ sư hạ tầng và ATTT | Thống nhất tại buổi khởi động
+Mức | Ví dụ | Phản hồi | Khắc phục
+Nghiêm trọng | Website ngừng hoạt động; mất hoặc sai lệch dữ liệu; bị tấn công | ≤ 02 giờ; ngoài giờ hành chính xử lý ngay khi có cảnh báo giám sát | ≤ 08 giờ
+Thông thường | Một chức năng lỗi nhưng hệ thống vẫn hoạt động; dịch vụ tích hợp gián đoạn | ≤ 02 giờ | ≤ 24 giờ
+Yêu cầu hỗ trợ | Hướng dẫn sử dụng; cấp, khóa tài khoản; điều chỉnh tham số | ≤ 02 giờ | Theo kế hoạch thống nhất, tối đa 03 ngày làm việc; không áp dụng thay cho thời hạn khắc phục sự cố
+Nhà thầu | Bên thuê
+Bố trí đầu mối, kỹ sư trực; tiếp nhận qua đủ các kênh | Cử cán bộ đầu mối phía Bên thuê
+Xử lý đúng thời hạn, kể cả dịch vụ mua ngoài | Mô tả sự cố, cung cấp thông tin cần thiết
+Báo cáo xử lý, lưu lịch sử sự cố | Xác nhận kết quả xử lý
+Khắc phục lỗi phần mềm, hạ tầng và các dịch vụ thuộc phạm vi cung cấp trong suốt thời gian thuê theo SLA; chi phí thuộc giá dự thầu | Phê duyệt việc dừng dịch vụ có kế hoạch khi cần
+Nội dung | Tần suất / thời hạn
+Bản vá lỗi phần mềm ứng dụng | Theo mức sự cố tại Mục 9; tổng hợp phát hành hằng tháng
+Cập nhật bảo mật hệ điều hành, CSDL, nền tảng ứng dụng | Hằng tháng; bản vá khẩn cấp trong 07 ngày kể từ khi nhà sản xuất công bố
+Nâng cấp phiên bản nền tảng khi hết hỗ trợ | Trước khi phiên bản đang dùng hết hạn hỗ trợ của nhà sản xuất
+Điều chỉnh cấu hình, danh mục, biểu mẫu, báo cáo, phân quyền, tham số vận hành | Theo yêu cầu của Bên thuê, tối đa 03 ngày làm việc
+Cập nhật kết nối, tích hợp khi cơ quan quản lý hoặc nhà cung cấp dịch vụ thay đổi giao diện | Trước ngày thay đổi có hiệu lực, hoặc theo thời hạn cơ quan quản lý yêu cầu
+Cập nhật theo thay đổi quy định pháp luật, tiêu chuẩn, ATTT | Theo thời hạn của văn bản
+Kiểm tra phục hồi sao lưu | Hằng quý, có biên bản
+Bảo trì định kỳ hạ tầng (xoay vòng nhật ký kỹ thuật của máy chủ và ứng dụng, tối ưu CSDL, kiểm tra dung lượng, gia hạn chứng thư SSL). Nhật ký đăng nhập, quản trị, quy trình, hợp đồng, ký số và truy cập hồ sơ tại Mục 6.1 không thuộc đối tượng xoay vòng và không bị xóa trong thời hạn lưu 05 năm. | Hằng tháng
+Trường hợp | Hình thức | Thời hạn | Tài liệu
+Thay đổi chức năng, giao diện sau cập nhật | Hướng dẫn trực tuyến cho nhóm liên quan | Trước hoặc ngay khi áp dụng thay đổi | Cập nhật hướng dẫn sử dụng trên trang hướng dẫn của Sàn và tài liệu quản trị
+Thay đổi quy trình nghiệp vụ theo yêu cầu của Bên thuê | Buổi đào tạo cho nhóm nghiệp vụ | Trong 05 ngày làm việc kể từ khi áp dụng | Tài liệu quy trình cập nhật
+Thay đổi nhân sự của Bên thuê, hoặc Bên thuê có nhu cầu | Đào tạo lại nhóm quản trị hoặc nghiệp vụ | Theo lịch thống nhất, tối đa 10 ngày làm việc kể từ khi có yêu cầu | Bộ tài liệu theo phiên bản đang vận hành
+Vai trò | Số lượng | Nhiệm vụ
+Cán bộ phụ trách dịch vụ | 01 | Đầu mối với Bên thuê; theo dõi SLA; báo cáo tháng
+Kỹ sư vận hành hạ tầng và ATTT | 01 | Giám sát, sao lưu, vá bảo mật, ứng cứu sự cố
+Kỹ sư phần mềm | 01 | Sửa lỗi, điều chỉnh cấu hình, tích hợp
+Kỹ sư trực hỗ trợ | 01 | Tiếp nhận, hướng dẫn người dùng, xử lý phiếu hỗ trợ
+Đối tượng giám sát | Ngưỡng cảnh báo | Hành động
+Tính sẵn sàng website | Không truy cập được 02 lần kiểm tra liên tiếp (mỗi 1 phút) | Cảnh báo email/SMS cho Kỹ sư trực; xử lý theo mức nghiêm trọng
+CPU, RAM máy chủ | Trên 85% kéo dài 15 phút | Kiểm tra nguyên nhân; mở rộng tài nguyên khi cần
+Dung lượng ổ đĩa | Còn dưới 15% | Xóa tệp tạm, xoay vòng nhật ký kỹ thuật hoặc mở rộng; không xóa nhật ký phải lưu theo Mục 6.1
+CSDL, hàng đợi thông báo | CSDL không phản hồi; hàng đợi tồn đọng | Khắc phục, chuyển kênh thông báo
+Kết quả sao lưu | Một lần sao lưu không thành công | Sao lưu lại ngay trong ngày
+Chứng thư SSL | Còn dưới 30 ngày | Gia hạn
+Dấu hiệu tấn công (đăng nhập sai nhiều lần, truy cập bất thường) | Theo quy tắc tường lửa và nhật ký | Chặn nguồn, xử lý theo mục 6.3

@@ -1,0 +1,19 @@
+﻿DANH MỤC BỘ DỰ THẢO GỬI PHỐI HỢP RÀ SOÁT NGÀY 28/10/2026
+
+01_Van_ban_du_thao
+  NCC-03; VHT-04; NCC-05; NCC-06 kèm phụ lục xác nhận; GS-02; NCC-08.
+
+02_NCC-02_va_tai_lieu
+  Văn bản NCC-02 và 11 tài liệu TL01–TL11.
+  Kèm kịch bản, quy trình kiểm thử, minh chứng và tập lệnh kiểm thử API.
+  Quy trình NCC-04 nằm trong TL03, không phát hành riêng.
+
+03_Minh_chung_NCC-06
+  Minh chứng giám sát và kiểm thử được viện dẫn trong NCC-06.
+  Các log trước và sau khắc phục được giữ để đối chiếu diễn biến kiểm thử.
+
+04_Checklist
+  Checklist hồ sơ V8 ngày 28/10/2026.
+
+Bộ tài liệu dùng để phối hợp rà soát, bổ sung số liệu thực tế và xác nhận các bên.
+Các vị trí còn để …… dành cho đơn vị phụ trách hoàn thiện; chưa phải bộ đã ký phát hành.

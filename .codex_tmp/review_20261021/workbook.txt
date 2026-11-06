@@ -1,0 +1,78 @@
+
+=== Tổng hợp đợt 1 ===
+1: A=BẢNG XÁC ĐỊNH GIÁ TRỊ KHỐI LƯỢNG CÔNG VIỆC ĐỢT 1 (THEO PHỤ LỤC 5 HỢP ĐỒNG)
+3: A=STT | B=Hạng mục | C=Giá trị hợp đồng (sau thuế) | D=Đợt 1 (sau thuế) | E=Tỷ lệ | F=Công việc cần hoàn thành để nghiệm thu đợt 1
+4: A=1.1 | B=Thiết lập trang web Sàn | C=1187709727 | D=='Mục 1.1'!D31 | E==D4/C4 | F=60 chức năng nhóm A, B, C đạt kiểm thử, gồm VR360 trên giao diện (xem sheet Mục 1.1)
+5: A=1.2 | B=Cài đặt, cấu hình, hướng dẫn, vận hành, bảo hành, bảo trì, hỗ trợ 05 năm | C=558775400 | D=='Mục 1.2'!D28 | E==D5/C5 | F=Cài đặt, cấu hình, tích hợp, dữ liệu, đào tạo, vận hành thử (xem sheet Mục 1.2)
+6: A=1.3 | B=Bản quyền Windows Server, SQL Server | C=157290000 | D=157290000 | E==D6/C6 | F=Bàn giao chứng từ bản quyền, kích hoạt trên máy chủ
+7: A=1.4.1 | B=VR360 – 10 điểm cảnh | C=45000000 | D=45000000 | E==D7/C7 | F=Quay dựng 10 điểm, tích hợp, bàn giao (Phụ lục 5 tính 100% ở đợt 1)
+8: A=1.4.2–1.4.6 | B=SMS, email, token ký số, hợp đồng điện tử, gói SMS | C=88344602 | D=88344602 | E==D8/C8 | F=Kích hoạt tài khoản, gói dịch vụ; biên bản kiểm tra kết nối
+9: A=2 | B=Hạ tầng máy chủ cloud | C=693000000 | D=693000000 | E==D9/C9 | F=Bàn giao 02 máy chủ đúng cấu hình
+10: B=Tổng cộng | C==SUM(C4:C9) | D==SUM(D4:D9) | E==D10/C10
+12: B=Phụ lục 5: tổng đợt 1 = 2.321.437.218 đồng, bằng 85% giá hợp đồng 2.730.119.729 đồng.
+13: B=Bản quyền, VR360, các gói dịch vụ tích hợp và hạ tầng cloud tính 100% vào đợt 1, bàn giao xong trước ngày 30/10/2026.
+14: B=Tổng tính theo bảng là 2.321.437.217 đồng, lệch 1 đồng so với Phụ lục 5 do làm tròn.
+
+=== Mục 1.1 ===
+1: A=MỤC 1.1 – THIẾT LẬP TRANG WEB SÀN GIAO DỊCH CÔNG NGHỆ CẦN THƠ
+2: A=Giá trị mục 1.1 (Phụ lục 4): 1.187.709.727 đồng. Nghiệm thu đợt 1: 75% = 890.782.296 đồng (Phụ lục 5). Chức năng theo Phụ lục 3.
+4: A=STT | B=Công việc / chức năng nghiệm thu | C=Tỷ trọng | D=Giá trị (đồng, sau thuế) | E=Đợt | F=Minh chứng nghiệm thu | G=Trạng thái
+5: A=1 | B=A. Website quản lý – 37 chức năng (A.1 – A.8) | C=0.35 | D==ROUND(1187709727*C5,0) | E=1 | F=Biên bản nghiệm thu, mục I.8 | G=Hoàn tất
+6: B=   – A.1 Chức năng chung: xác thực; quản trị người dùng; phân quyền; thông báo, nhắc hẹn qua email; giao diện trên máy tính, điện thoại
+7: B=   – A.2 Nhà cung cấp: lĩnh vực công nghệ; duyệt nhà cung cấp, hồ sơ pháp lý; gian hàng; hạng nhà cung cấp; giao dịch; duyệt sản phẩm; lịch sử chỉnh sửa; bài viết; ủy quyền bán hàng; lịch sử chat
+8: B=   – A.3 Danh mục sản phẩm: nhóm sản phẩm (trưng bày thực tế / trực tuyến); danh mục sản phẩm; phòng trưng bày; vị trí trưng bày
+9: B=   – A.4 Sự kiện: quản lý sự kiện, hội thảo, triển lãm; tin tức; gian hàng và giá theo sự kiện; thống kê lượt nhấp, quan tâm; nhắc lịch
+10: B=   – A.5 Người mua: danh sách, khóa tài khoản; lịch sử mua hàng; lịch sử chat; lịch sử bình luận
+11: B=   – A.6 Quản lý thu chi: hoa hồng theo %, hoa hồng đăng ký gian hàng
+12: B=   – A.7 Bình luận; quản lý mẫu đăng ký; câu hỏi thường gặp
+13: B=   – A.8 Báo cáo giao dịch, cảnh báo giao dịch mới; cảnh báo sản phẩm trùng lặp, quá hạn; phiên bản nội dung; nhắc lịch; nhật ký thao tác
+14: A=2 | B=B. Website bán hàng – 15 chức năng (trừ B.1.2 VR360) | C=0.2 | D==ROUND(1187709727*C14,0) | E=1 | F=Biên bản nghiệm thu, mục I.8 | G=Hoàn tất
+15: B=   – B.1 Trang chủ; thông tin nổi bật; danh sách sản phẩm, bộ lọc; quản lý banner; mẫu đăng ký nhận thông tin
+16: B=   – B.2 Gian hàng người bán; hồ sơ pháp lý; lịch sử giao dịch; báo giá; quản lý sản phẩm (hình ảnh, video, mô tả, giá, trạng thái pháp lý)
+17: B=   – B.3 Đăng tin tìm mua; bình luận tin tìm mua; quan tâm sản phẩm; giỏ hàng; bình luận sản phẩm
+18: A=3 | B=C. Tiện ích khác – 7 chức năng đang hoạt động | C=0.1 | D==ROUND(1187709727*C18,0) | E=1 | F=Biên bản nghiệm thu, mục I.8 | G=Hoàn tất
+19: B=   – C.3 Chia sẻ, đánh giá lên mạng xã hội
+20: B=   – C.5 In mã QR sản phẩm
+21: B=   – C.6 Liên kết phát trực tiếp (TikTok, Facebook, YouTube)
+22: B=   – C.7 Chat trực tiếp giữa người bán, người mua và Sàn
+23: B=   – C.8 Giao diện song ngữ Việt – Anh
+24: B=   – C.9, C.10 Tìm kiếm thông minh, tìm kiếm bằng giọng nói; trợ lý AI gợi ý công nghệ, nhà cung cấp, chuyên gia
+25: A=4 | B=C.4 Ký số hợp đồng điện tử – luồng lập, ký, nhúng chữ ký vào PDF, kiểm tra toàn vẹn, nhật ký | C=0.05 | D==ROUND(1187709727*C25,0) | E=1 | F=Biên bản nghiệm thu, mục I.6, II.7 – II.8 | G=Hoàn tất
+26: A=5 | B=B.1.2, C.1 Tham quan VR360 trên giao diện Sàn (10 điểm cảnh) | C=0.05 | D==890782295-(D5+D14+D18+D25) | E=1 | F=Biên bản nghiệm thu, mục I.7 | G=Hoàn tất
+27: A=6 | B=C.2 Kết nối Sàn giao dịch KH&CN Việt Nam và các sàn khác | C=0.07 | D==ROUND(1187709727*C27,0) | E=2 | F=Nhật ký đồng bộ (đợt 2) | G=Chưa hoàn tất
+28: A=7 | B=C.7 Gọi video giữa người bán, người mua và Sàn (cấu hình máy chủ họp) | C=0.03 | D==ROUND(1187709727*C28,0) | E=2 | F=Kiểm tra tại đợt 2 | G=Chưa hoàn tất
+29: A=8 | B=Kiểm thử toàn bộ trên hạ tầng chính thức; nghiệm thu đưa vào vận hành | C=0.15 | D==1187709727-890782295-(D27+D28) | E=2 | F=Biên bản nghiệm thu bàn giao | G=Chưa hoàn tất
+31: B=Cộng đợt 1 | C==C5+C14+C18+C25+C26 | D==D5+D14+D18+D25+D26
+32: B=Cộng đợt 2 | C==C27+C28+C29 | D==D27+D28+D29
+33: B=Tổng mục (theo Phụ lục 4) | C==C31+C32 | D=1187709727
+35: B=Ghi chú: Phụ lục 5 ghi 890.782.296 đồng; bảng này lấy 890.782.295 đồng theo số MobiFone thông báo (lệch 1 đồng do làm tròn).
+
+=== Mục 1.2 ===
+1: A=MỤC 1.2 – CÀI ĐẶT, CẤU HÌNH, HƯỚNG DẪN SỬ DỤNG, VẬN HÀNH, BẢO HÀNH, BẢO TRÌ, HỖ TRỢ KỸ THUẬT 05 NĂM
+2: A=Giá trị mục 1.2 (Phụ lục 4): 558.775.400 đồng. Nghiệm thu đợt 1: 80% = 447.020.320 đồng (Phụ lục 5).
+4: A=STT | B=Công việc / chức năng nghiệm thu | C=Tỷ trọng | D=Giá trị (đồng, sau thuế) | E=Đợt | F=Minh chứng nghiệm thu | G=Trạng thái
+5: A=1 | B=Cài đặt hệ thống trên hạ tầng của gói thầu | C=0.15 | D==ROUND(558775400*C5,0) | E=1 | F=Biên bản nghiệm thu, mục I.1 – I.3 | G=Hoàn tất
+6: B=   – Cài hệ điều hành, cơ sở dữ liệu trên 02 máy chủ cloud; kích hoạt bản quyền
+7: B=   – Cài đặt ứng dụng; tên miền, chứng thư bảo mật, tường lửa
+8: A=2 | B=Cấu hình hệ thống | C=0.15 | D==ROUND(558775400*C8,0) | E=1 | F=Biên bản nghiệm thu, mục I.4 | G=Hoàn tất
+9: B=   – Danh mục dùng chung: lĩnh vực, nhóm sản phẩm, phòng và vị trí trưng bày
+10: B=   – Tham số hệ thống, mẫu thông báo; quy trình giao dịch 14 bước
+11: B=   – Tài khoản quản trị, vai trò, phân quyền cho cán bộ Bên A
+12: A=3 | B=Tích hợp, đồng bộ dữ liệu với các giải pháp kèm theo | C=0.15 | D==ROUND(558775400*C12,0) | E=1 | F=Biên bản nghiệm thu, mục I.6 | G=Hoàn tất
+13: B=   – Thư điện tử, SMS, chữ ký số, hợp đồng điện tử, trợ lý AI
+14: B=   – Hàng đợi gửi, nhật ký, tự gửi lại khi lỗi
+15: A=4 | B=Chuẩn hóa, nhập dữ liệu khởi tạo | C=0.1 | D==ROUND(558775400*C15,0) | E=1 | F=Biên bản nghiệm thu, mục I.5 | G=Hoàn tất
+16: B=   – Kiểm kê, đối chiếu nguồn và quyền sử dụng; nhập hồ sơ công nghệ, chuyên gia, nhà cung ứng, tin bài
+17: A=5 | B=Hướng dẫn sử dụng, đào tạo | C=0.1 | D==ROUND(558775400*C17,0) | E=1 | F=Biên bản nghiệm thu, mục I.10; danh sách học viên | G=Hoàn tất
+18: B=   – Tài liệu hướng dẫn sử dụng, tài liệu quản trị
+19: B=   – Đào tạo nhóm quản trị và nhóm nghiệp vụ; tài khoản thực hành
+20: A=6 | B=Thiết lập vận hành và vận hành thử | C=0.15 | D==447020320-(D5+D8+D12+D15+D17) | E=1 | F=Biên bản nghiệm thu, mục I.9, II | G=Hoàn tất
+21: B=   – Giám sát hệ thống, sao lưu tự động hằng ngày, phục hồi thử
+22: B=   – Kênh tiếp nhận hỗ trợ, quy trình xử lý sự cố theo cam kết chất lượng dịch vụ
+23: B=   – Vận hành thử theo kịch bản nghiệm thu; khắc phục lỗi
+24: A=7 | B=Vận hành chính thức, bảo hành, bảo trì, hỗ trợ kỹ thuật trong 05 năm | C=0.15 | D==ROUND(558775400*C24,0) | E=2 | F=Giấy cam kết cung cấp dịch vụ 05 năm; báo cáo định kỳ | G=Chưa hoàn tất
+25: B=   – Giám sát, sao lưu, xử lý sự cố, cập nhật bản vá, hỗ trợ người dùng; báo cáo chất lượng dịch vụ hằng tháng
+26: A=8 | B=Nghiệm thu, bàn giao hồ sơ, đưa vào vận hành chính thức | C=0.05 | D==558775400-447020320-(D24) | E=2 | F=Biên bản nghiệm thu bàn giao | G=Chưa hoàn tất
+28: B=Cộng đợt 1 | C==C5+C8+C12+C15+C17+C20 | D==D5+D8+D12+D15+D17+D20
+29: B=Cộng đợt 2 | C==C24+C26 | D==D24+D26
+30: B=Tổng mục (theo Phụ lục 4) | C==C28+C29 | D=558775400

@@ -1,0 +1,162 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-06 Nhat ky he thong, so lieu giam sat lan 1 va ket qua khac phuc ton tai.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v cung cấp nhật ký hệ thống, số liệu giám sát vận hành thử lần 1 và kết quả khắc phục tồn tại
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày 28 tháng 10 năm 2026
+P11: Kính gửi:
+P12: - Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ;
+P13: - Công ty TNHH Công nghệ Tin học Bình Định (đơn vị vận hành thử);
+P14: - Công ty TNHH Chuyển Đổi Số 365 (đơn vị giám sát).
+P16: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone về việc thực hiện Gói thầu số 04: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ; Văn bản NCC-02 ngày 26/10/2026; Báo cáo tự kiểm tra nội bộ, sẵn sàng vận hành thử lần 1 (bản 20 giờ ngày 26/10/2026),
+P17: Tổng Công ty Viễn thông MobiFone cung cấp nhật ký hệ thống, số liệu giám sát trong vận hành thử lần 1 và kết quả khắc phục tồn tại 1 – 5 trước nghiệm thu đợt 1 như sau:
+P18: 1. Số liệu giám sát (từ 08 giờ ngày 26/10/2026 đến …… giờ ngày ……/10/2026)
+P19: STT
+P20: Chỉ số
+P21: Ngưỡng (NCC-02)
+P22: Kết quả
+P23: Nguồn, minh chứng
+P24: 1
+P25: Tính sẵn sàng (trang chủ, trang đăng nhập, /health)
+P26: ≥ 99,5%/tháng
+P27: Tỷ lệ: ……%; số lần gián đoạn: ……; tổng thời gian gián đoạn: …… phút
+P28: Công cụ giám sát tính sẵn sàng
+P29: 2
+P30: Thời gian tải trang chính
+P31: ≤ 03 giây/trang
+P32: 1,45 – 1,76 giây (04 trang × 03 lần, 09 giờ 04 ngày 27/10/2026)
+P33: MC-HT-01-20261027
+P34: 3
+P35: CPU cao nhất MC-01; MC-02
+P36: Cảnh báo trên 80% liên tục 15 phút
+P37: ……%; ……%
+P38: Trang quản trị hạ tầng cloud
+P39: 4
+P40: RAM cao nhất MC-01; MC-02
+P41: Cảnh báo trên 85% liên tục 15 phút
+P42: ……%; ……%
+P43: Trang quản trị hạ tầng cloud
+P44: 5
+P45: Dung lượng ổ đĩa
+P46: Cảnh báo sử dụng trên 80%
+P47: MC-01: còn trống 914,7 GB (09 giờ 03 ngày 27/10/2026); MC-02: ……
+P48: MC-HT-03-20261027; trang quản trị hạ tầng cloud
+P49: 6
+P50: Chứng thư SSL
+P51: Cảnh báo còn dưới 30 ngày
+P52: Hiệu lực từ 26/10/2026 đến 24/01/2027
+P53: MC-HT-04-20261027
+P54: 7
+P55: Giao thức mã hóa
+P56: Chỉ TLS 1.2, TLS 1.3
+P57: TLS 1.0, 1.1: từ chối; TLS 1.2, 1.3: chấp nhận
+P58: MC-HT-05-20261027
+P59: 8
+P60: Trang /health
+P61: Chỉ trạng thái tổng hợp
+P62: Trả trạng thái tổng hợp, HTTP 200 (sau bản cập nhật 27/10/2026)
+P63: MC-HT-03-20261027-2
+P64: 9
+P65: Sao lưu tự động
+P66: Không có lần sao lưu lỗi
+P67: Số lần sao lưu thành công: ……; lỗi: ……
+P68: Công cụ giám sát; nhật ký tác vụ sao lưu
+P69: 10
+P70: Cảnh báo phát sinh, sự cố
+P71: Sự cố nghiêm trọng xử lý ≤ 08 giờ
+P72: Số cảnh báo: ……; sự cố nghiêm trọng: ……
+P73: Lịch sử cảnh báo trên công cụ giám sát
+P75: 2. Nhật ký hệ thống
+P76: Tra cứu bằng tài khoản quyền xem gs_theodoi tại CMS › Nhật ký hệ thống, khoảng ngày 26/10/2026 – 27/10/2026 (minh chứng MC-HT-10-20261027):
+P77: STT
+P78: Loại thao tác
+P79: Số dòng
+P80: Ghi chú
+P81: 1
+P82: Đăng nhập
+P83: 07
+P84: Mới nhất #1177, 09 giờ 29 ngày 27/10/2026
+P85: 2
+P86: Đăng nhập không thành công
+P87: 02
+P88: Mới nhất #1169, 16 giờ 26 ngày 26/10/2026
+P89: 3
+P90: Tải tệp
+P91: 04
+P92: Mới nhất #1175, 16 giờ 41 ngày 26/10/2026
+P93: 4
+P94: Từ chối thao tác
+P95: 10
+P96: Kiểm tra quyền chỉ xem của tài khoản gs_theodoi; mới nhất #1187, 09 giờ 30 ngày 27/10/2026
+P97: 5
+P98: Thêm, sửa, xóa
+P99: 00
+P100: Không phát sinh
+P101: 6
+P102: Yêu cầu hỗ trợ, tư vấn (26/10 – 28/10/2026)
+P103: 00
+P104: Chưa có yêu cầu; không có yêu cầu quá 02 giờ chưa phản hồi
+P106: Mỗi dòng nhật ký có mã, thời điểm, loại thao tác, nội dung, tài khoản, địa chỉ IP; giao diện không có chức năng sửa, xóa nhật ký. Số liệu đến hết vận hành thử lần 1: ……. Bản trích tệp log ứng dụng, nhật ký truy cập web được cung cấp trong 01 ngày làm việc khi có yêu cầu (NCC-02, Tài liệu số 02).
+P107: 3. Nhật ký cập nhật phiên bản trong giai đoạn thiết lập, vận hành thử lần 1
+P108: STT
+P109: Ngày
+P110: Nội dung cập nhật
+P111: Kết quả kiểm tra sau cập nhật
+P112: 1
+P113: 25/10/2026
+P114: Gửi tin nhắn thương hiệu; nhật ký đăng nhập, log hệ thống ra tệp; thống kê lượt truy cập, thời gian phản hồi hỗ trợ
+P115: Trang chủ HTTP 200; /health Healthy; /cms chuyển trang đăng nhập
+P116: 2
+P117: 26/10/2026
+P118: Khắc phục L01 (API-05), L02 (mã chống giả mạo 05 API ghi dữ liệu), L03 (API trả lỗi 401 khi chưa đăng nhập); gửi thư điện tử qua cổng 465
+P119: Kiểm tra lại L01, L02, L03 đạt (MC-KT-xx-20261026)
+P120: 3
+P121: 27/10/2026
+P122: Khắc phục L07 (/health chỉ trả trạng thái tổng hợp); tài khoản CMS chỉ xem cho gs_theodoi
+P123: MC-HT-03-20261027-2; MC-HT-09-20261027
+P125: Các lần cập nhật thực hiện theo quy trình quản lý thay đổi, phiên bản (NCC-04, mục VI) và ghi vào Sổ theo dõi phiên bản.
+P126: 4. Kết quả khắc phục tồn tại 1 – 5 (Báo cáo tự kiểm tra nội bộ, bản 20 giờ ngày 26/10/2026)
+P127: STT
+P128: Tồn tại
+P129: Đã thực hiện
+P130: Minh chứng
+P131: Tình trạng
+P132: 1
+P133: Chứng thư SSL thời hạn 90 ngày, chưa có minh chứng gia hạn tự động (L10)
+P134: Đã gia hạn ngày 26/10/2026, hiệu lực đến 24/01/2027; cấu hình tác vụ gia hạn tự động: ……
+P135: MC-HT-04-20261027; ảnh chụp tác vụ gia hạn tự động, nhật ký lần gia hạn thử: ……
+P136: ……
+P137: 2
+P138: Chứng từ bản quyền Windows Server, SQL Server
+P139: ……
+P140: Chứng từ số ……, ngày ……
+P141: ……
+P142: 3
+P143: L-01: API-05 gợi ý nhà cung cấp lỗi 500 (L01)
+P144: Sửa lỗi, cập nhật ngày 26/10/2026; kiểm tra lại đạt
+P145: MC-KT-06, MC-KT-07-20261026
+P146: Hoàn thành
+P147: 4
+P148: L-04: kết quả riêng, ảnh, nhật ký luồng ghi thành công 10 API; API-18; L-02 (L04, L02)
+P149: L-02: bổ sung kiểm tra mã chống giả mạo 05 API, cập nhật ngày 26/10/2026, kiểm tra lại đạt. Luồng ghi thành công 10 API, API-18: ……
+P150: MC-KT-08, 09, 17, 24-20261026-vht_buyer01; ảnh, nhật ký luồng ghi: ……
+P151: L-02: Hoàn thành; L-04: ……
+P152: 5
+P153: L-05: kênh thông báo thư điện tử đang tắt (L05)
+P154: Phần mềm hỗ trợ gửi thư qua cổng 465 (bản cập nhật 26/10/2026); bật kênh, gửi thử thông báo chuyển bước, nhắc lịch, mã OTP: ……
+P155: Nhật ký gửi thư (trạng thái Đã gửi), ảnh chụp hộp thư nhận: ……
+P156: ……
+P158: Nội dung còn để trống được nhà cung cấp cập nhật kèm minh chứng trước khi đơn vị vận hành thử lập Báo cáo kết quả vận hành thử lần 1 (VHT-05a) và trước nghiệm thu đợt 1. Tồn tại 6 – 11 thực hiện theo thời hạn tại Báo cáo tự kiểm tra nội bộ.
+P159: Gửi kèm: thư mục minh chứng MC-HT-xx-20261027, MC-KT-xx-20261026.
+P160: Tổng Công ty Viễn thông MobiFone trân trọng đề nghị Quý đơn vị xem xét, phối hợp./.
+P161: Nơi nhận:
+P162: - Như trên;
+P163: - Lưu: VT, TTGPS.
+P164: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P165: (Ký, ghi rõ họ tên, đóng dấu)
+P170: Lã Thành Trung

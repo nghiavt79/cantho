@@ -1,0 +1,171 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu\Tai lieu kem theo\TL02 - Van ban cung cap log, nhat ky, so lieu giam sat.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v cung cấp log hệ thống, nhật ký truy cập và số liệu giám sát tài nguyên
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày …… tháng …… năm 2026
+P11: Kính gửi:
+P12: - Công ty TNHH Công nghệ Tin học Bình Định (đơn vị vận hành thử);
+P13: - Công ty TNHH Chuyển Đổi Số 365 (đơn vị giám sát).
+P15: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026; mục 2 Phụ lục VII Thông tư số 41/2026/TT-BKHCN;
+P16: Tổng Công ty Viễn thông MobiFone cung cấp log hệ thống, nhật ký và số liệu giám sát phục vụ vận hành thử và giám sát chất lượng dịch vụ như sau:
+P17: 1. Danh mục log, nhật ký, thời hạn lưu và quyền xem
+P18: STT
+P19: Loại dữ liệu
+P20: Nội dung ghi nhận
+P21: Nơi lưu, cách tra cứu
+P22: Thời hạn lưu
+P23: Quyền xem, hình thức cung cấp
+P24: 1
+P25: Log hệ thống ứng dụng
+P26: Lỗi, cảnh báo, sự kiện khởi động, dừng ứng dụng; lỗi kết nối các dịch vụ tích hợp (thư điện tử, SMS, ký số)
+P27: Thư mục logs trên máy chủ ứng dụng, mỗi ngày một tệp app-nămthángngày.log
+P28: 180 ngày; tệp quá hạn tự xóa
+P29: Quản trị hệ thống nhà cung cấp; bản trích theo khoảng thời gian gửi đơn vị giám sát trong 01 ngày làm việc khi có yêu cầu
+P30: 2
+P31: Nhật ký truy cập web
+P32: Thời điểm, địa chỉ truy cập, địa chỉ IP, mã kết quả, thời gian xử lý
+P33: Nhật ký máy chủ web IIS
+P34: 90 ngày
+P35: Bản trích khi có yêu cầu
+P36: 3
+P37: Nhật ký đăng nhập, thao tác quản trị
+P38: Đăng nhập, đăng xuất, đăng nhập không thành công; thêm, sửa, xóa, duyệt; khóa tài khoản, phân quyền, thay đổi tham số; người thực hiện, thời điểm, IP
+P39: Cơ sở dữ liệu; CMS › Quản trị hệ thống › Nhật ký (lọc theo thời gian, tài khoản, loại thao tác, IP)
+P40: Suốt thời gian thuê dịch vụ (05 năm); không xóa, sửa được trên giao diện; bàn giao cho Chủ trì thuê khi kết thúc hợp đồng
+P41: Tài khoản gs_theodoi (chỉ xem); xuất Excel khi có yêu cầu
+P42: 4
+P43: Nhật ký tải tệp
+P44: Người tải tệp hồ sơ giao dịch, hợp đồng, giấy tờ xác minh, tệp trao đổi; thời điểm; IP
+P45: CMS › Quản trị hệ thống › Nhật ký, loại "Tải tệp"
+P46: Suốt thời gian thuê dịch vụ (05 năm); không xóa, sửa được trên giao diện; bàn giao cho Chủ trì thuê khi kết thúc hợp đồng
+P47: Tài khoản gs_theodoi (chỉ xem)
+P48: 5
+P49: Nhật ký hồ sơ giao dịch
+P50: Chuyển bước, truy cập, tải tệp, xác nhận NDA, nộp đề xuất, phê duyệt pháp lý, xác nhận OTP của từng hồ sơ
+P51: CMS › Giao dịch › Dự án › Nhật ký hồ sơ
+P52: Cùng thời hạn lưu hồ sơ giao dịch, tối thiểu suốt thời gian thuê dịch vụ
+P53: Quản trị Sàn; tài khoản gs_theodoi (chỉ xem)
+P54: 6
+P55: Nhật ký gửi thư điện tử
+P56: Thời điểm, địa chỉ nhận (che một phần), loại thông báo, trạng thái: Chờ gửi, Đã gửi, Lỗi; số lần gửi lại; nội dung lỗi
+P57: Hàng đợi thông báo trong cơ sở dữ liệu
+P58: 12 tháng
+P59: Bản trích theo khoảng thời gian khi có yêu cầu
+P60: 7
+P61: Nhật ký gửi SMS (mã OTP, thông báo)
+P62: Thời điểm, số điện thoại (che 4 số giữa), loại tin, trạng thái: Thử nghiệm – không gửi, Đã gửi, Lỗi; mã phản hồi của nhà cung cấp dịch vụ SMS. Không lưu giá trị mã OTP
+P63: Hàng đợi thông báo trong cơ sở dữ liệu
+P64: 12 tháng
+P65: Bản trích theo khoảng thời gian khi có yêu cầu
+P66: 8
+P67: Nhật ký ký số
+P68: Hồ sơ, hợp đồng, phiên bản; người ký; phương thức (USB Token, ký số từ xa); chế độ (thử nghiệm, chính thức); thời điểm; mã kiểm tra toàn vẹn của tệp; kết quả ký
+P69: Cơ sở dữ liệu, gắn với hợp đồng; xem tại bước Ký hợp đồng của hồ sơ và Nhật ký hồ sơ
+P70: Cùng thời hạn lưu hợp đồng điện tử, tối thiểu suốt thời gian thuê dịch vụ
+P71: Quản trị Sàn; tài khoản gs_theodoi (chỉ xem); bản trích khi có yêu cầu
+P72: 9
+P73: Nhật ký hợp đồng điện tử
+P74: Tạo dự thảo, chỉnh sửa, lưu phiên bản, phê duyệt hoặc từ chối của 03 bên, khóa phiên bản, tải xuống
+P75: Lịch sử phiên bản tại bước Kiểm tra pháp lý hợp đồng; Nhật ký hồ sơ
+P76: Cùng thời hạn lưu hợp đồng điện tử, tối thiểu suốt thời gian thuê dịch vụ
+P77: Quản trị Sàn; tài khoản gs_theodoi (chỉ xem)
+P78: 10
+P79: Số liệu giám sát tài nguyên, tính sẵn sàng
+P80: CPU, RAM, ổ đĩa (05 phút/lần); tính sẵn sàng, gián đoạn (01 phút/lần); hạn chứng thư SSL; kết quả sao lưu
+P81: Công cụ giám sát, trang quản trị hạ tầng cloud (NCC-02)
+P82: 90 ngày trên công cụ; số liệu tổng hợp trong báo cáo tháng lưu suốt thời gian thuê dịch vụ
+P83: Tài khoản gs_theodoi (chỉ xem); báo cáo hằng tháng
+P84: 11
+P85: Thống kê lượt truy cập
+P86: Lượt xem trang, số người truy cập theo ngày, tháng (không tính CMS, API, bot)
+P87: CMS › Quản trị hệ thống › Thống kê, khối "Lượt truy cập toàn Sàn"
+P88: Suốt thời gian thuê dịch vụ
+P89: Tài khoản gs_theodoi (chỉ xem); số liệu báo cáo Mẫu số 2
+P90: 12
+P91: Thống kê yêu cầu hỗ trợ
+P92: Số yêu cầu, thời gian phản hồi, tỷ lệ phản hồi trong 02 giờ
+P93: CMS › Giao dịch › Yêu cầu Trung tâm tư vấn; xuất Excel
+P94: Suốt thời gian thuê dịch vụ
+P95: Tài khoản gs_theodoi (chỉ xem); xuất Excel
+P97: Thời hạn lưu tính từ thời điểm phát sinh bản ghi. "Suốt thời gian thuê dịch vụ" là 05 năm theo hợp đồng; khi kết thúc hợp đồng, dữ liệu nhật ký trong cơ sở dữ liệu được bàn giao cùng cơ sở dữ liệu cho Chủ trì thuê.
+P98: 2. Trạng thái các kênh tích hợp tại ngày 26/10/2026
+P99: STT
+P100: Kênh
+P101: Trạng thái
+P102: Nhật ký ghi nhận
+P103: Kế hoạch
+P104: 1
+P105: Thư điện tử
+P106: Đã tích hợp; kênh gửi tạm tắt trong thời gian tự kiểm thử
+P107: Mỗi thư một bản ghi (STT 6, mục 1)
+P108: Bật kênh, gửi thử và lưu minh chứng trước ngày 28/10/2026
+P109: 2
+P110: SMS Brandname (mã OTP, thông báo)
+P111: Đã tích hợp, đang ở chế độ thử: ghi nhật ký với trạng thái "Thử nghiệm – không gửi", chưa gửi tin thật
+P112: Mỗi tin một bản ghi (STT 7, mục 1)
+P113: Gửi tin thật và lưu minh chứng sau khi được cấp tài khoản thương hiệu
+P114: 3
+P115: Ký số hợp đồng
+P116: Chế độ thử nghiệm: nhúng chữ ký vào tệp PDF, tạo mã kiểm tra toàn vẹn, ghi nhật ký ký số; chưa dùng chứng thư số của tổ chức chứng thực
+P117: Mỗi lần ký một bản ghi (STT 8, mục 1)
+P118: Kết nối dịch vụ ký số của tổ chức chứng thực trong đợt 2
+P119: 4
+P120: Hợp đồng điện tử
+P121: Hoạt động: lập dự thảo, lưu phiên bản, phê duyệt 03 bên, khóa phiên bản, tra cứu
+P122: Lịch sử phiên bản, Nhật ký hồ sơ (STT 9, mục 1)
+P123: —
+P125: 3. Minh chứng tra cứu kèm theo văn bản
+P126: Nhà cung cấp gửi kèm văn bản này các bản trích, ảnh chụp tra cứu thực tế trên hệ thống (đã che thông tin cá nhân) như sau:
+P127: STT
+P128: Minh chứng
+P129: Cách lấy
+P130: Ngày trích xuất
+P131: 1
+P132: Ảnh chụp danh sách nhật ký đăng nhập không thành công trong 01 ngày
+P133: CMS › Quản trị hệ thống › Nhật ký, lọc loại thao tác "Đăng nhập không thành công"
+P134: ……/……/2026
+P135: 2
+P136: Ảnh chụp nhật ký tải tệp của một hồ sơ giao dịch
+P137: CMS › Quản trị hệ thống › Nhật ký, lọc loại "Tải tệp"
+P138: ……/……/2026
+P139: 3
+P140: Bản xuất Nhật ký hồ sơ của hồ sơ mẫu đã thực hiện đủ 14 bước
+P141: CMS › Giao dịch › Dự án › Nhật ký hồ sơ
+P142: ……/……/2026
+P143: 4
+P144: Bản trích log ứng dụng 01 ngày
+P145: Tệp app-nămthángngày.log trên máy chủ ứng dụng
+P146: ……/……/2026
+P147: 5
+P148: Bản trích nhật ký gửi thư điện tử, SMS (gồm trạng thái từng bản ghi)
+P149: Hàng đợi thông báo trong cơ sở dữ liệu
+P150: ……/……/2026
+P151: 6
+P152: Bản trích nhật ký ký số và lịch sử phiên bản hợp đồng của hồ sơ mẫu
+P153: Bước Ký hợp đồng, Kiểm tra pháp lý hợp đồng của hồ sơ mẫu
+P154: ……/……/2026
+P155: 7
+P156: Báo cáo tính sẵn sàng, tài nguyên máy chủ 07 ngày gần nhất
+P157: Công cụ giám sát, trang quản trị hạ tầng cloud
+P158: ……/……/2026
+P160: Mỗi bản ghi nhật ký gồm tối thiểu: thời điểm (ngày, giờ, phút, giây), tài khoản hoặc hệ thống thực hiện, loại thao tác, đối tượng tác động, kết quả, địa chỉ IP (đối với thao tác của người dùng). Log ứng dụng ghi theo dòng: thời điểm – mức (thông tin, cảnh báo, lỗi) – nguồn phát sinh – nội dung.
+P161: 4. Thống nhất với văn bản cung cấp tài khoản giám sát (NCC-02)
+P162: Số liệu giám sát, chu kỳ giám sát (01 phút/lần đối với tính sẵn sàng, 05 phút/lần đối với tài nguyên máy chủ), thời hạn lưu và tài khoản xem gs_theodoi tại văn bản này thống nhất với Văn bản cung cấp tài khoản xem công cụ giám sát (NCC-02).
+P163: Dữ liệu cung cấp có thể chứa thông tin cá nhân của người sử dụng (tên đăng nhập, địa chỉ IP, địa chỉ thư điện tử, số điện thoại). Đơn vị nhận chỉ sử dụng cho mục đích vận hành thử, giám sát chất lượng dịch vụ và bảo mật theo quy định về bảo vệ dữ liệu cá nhân.
+P164: Nơi nhận:
+P165: - Như trên;
+P166: - Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ (để biết);
+P167: - Lưu: VT, TTGPS.
+P168: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P169: (Ký, ghi rõ họ tên, đóng dấu)
+P173: Lã Thành Trung
+PART word/header1.xml
+PART word/footer1.xml
+PART word/header2.xml
+PART word/footer2.xml

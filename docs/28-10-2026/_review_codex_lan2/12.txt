@@ -1,0 +1,1397 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu\Tai lieu kem theo\TL06 - Muc 01a - HDSD nguoi su dung San.docx
+PART word/document.xml
+P1: TRUNG TÂM ỨNG DỤNG TIẾN BỘ KHOA HỌC VÀ CÔNG NGHỆ THÀNH PHỐ CẦN THƠ
+P2: Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P3: MỤC 01a – PHỤ LỤC PL-05
+P4: TÀI LIỆU HƯỚNG DẪN SỬ DỤNG
+P5: DÀNH CHO NGƯỜI SỬ DỤNG SÀN
+P6: (Người mua · Nhà cung cấp · Chuyên gia tư vấn)
+P7: Hệ thống
+P8: Sàn giao dịch công nghệ Cần Thơ – https://mekongx.vn
+P9: Phiên bản tài liệu
+P10: 2.2
+P11: Ngày cập nhật
+P12: 26/10/2026
+P13: Đối tượng sử dụng
+P14: Khách truy cập, người mua, nhà cung cấp, chuyên gia tư vấn
+P15: Đơn vị lập
+P16: Tổng Công ty Viễn thông MobiFone (MobiFone Cần Thơ)
+P17: Người lập
+P18: ………………………………
+P19: Người kiểm tra
+P20: ………………………………
+P21: Người phê duyệt
+P22: ………………………………
+P23: Cần Thơ, tháng 10/2026
+P24: THÔNG TIN TÀI LIỆU
+P25: Phiên bản
+P26: Ngày
+P27: Nội dung thay đổi
+P28: Người thực hiện
+P29: 1.0
+P30: 25/10/2026
+P31: Tạo mới tài liệu
+P32: MobiFone Cần Thơ
+P33: 2.1
+P34: 26/10/2026
+P35: Bổ sung hình ảnh, thao tác từng bước cho quy trình 14 bước; tách hướng dẫn quản trị CMS sang Mục 01b
+P36: MobiFone Cần Thơ
+P37: 2.2
+P38: 26/10/2026
+P39: Chỉnh sửa theo góp ý của đơn vị giám sát: đối chiếu 14 bước với thanh tiến trình, sửa bước 10, làm rõ bước ký hợp đồng, phân biệt ký số và xác nhận OTP, chuyển trạng thái chức năng sang Phụ lục B, thống nhất thuật ngữ
+P40: MobiFone Cần Thơ
+P42: MỤC LỤC
+P43: 1. Giới thiệu và quy ước5
+P44: 1.1. Mục đích và phạm vi5
+P45: 1.2. Đối tượng và cách tra cứu nhanh5
+P46: 1.3. Quy ước trình bày5
+P47: 1.4. Phiên bản phần mềm áp dụng6
+P48: 1.5. Yêu cầu sử dụng6
+P49: 2. Hướng dẫn chung cho mọi người dùng7
+P50: 2.1. Truy cập trang chủ và tìm kiếm7
+P51: 2.2. Xem chi tiết sản phẩm9
+P52: 2.3. Đăng ký tài khoản10
+P53: 2.4. Đăng nhập, đăng xuất11
+P54: 2.5. Quên mật khẩu11
+P55: 2.6. Hồ sơ tài khoản và xác thực OTP11
+P56: 2.7. Đổi mật khẩu14
+P57: 2.8. Không gian làm việc (Dashboard)15
+P58: 2.9. Sự kiện, câu hỏi thường gặp, bản tin16
+P59: 3. Hướng dẫn cho người mua18
+P60: 3.1. Chọn đúng luồng yêu cầu18
+P61: 3.2. Tạo hồ sơ giao dịch – gửi yêu cầu chuyển giao công nghệ18
+P62: 3.3. Theo dõi trạng thái hồ sơ giao dịch21
+P63: 3.4. Yêu cầu Trung tâm tư vấn hỗ trợ23
+P64: 3.5. Đặt mua, quan tâm trực tiếp và sản phẩm quan tâm24
+P65: 3.6. Tin nhắn và gọi video24
+P66: 3.7. Đăng nhu cầu tìm mua công nghệ25
+P67: 4. Quy trình giao dịch chuyển giao công nghệ27
+P68: 4.1. Tổng quan quy trình 14 bước27
+P69: 4.2. Bảng tóm tắt trách nhiệm từng bước29
+P70: 4.3. Hướng dẫn chi tiết từng bước31
+P71: 4.4. Quản lý thành viên hồ sơ51
+P72: 5. Hướng dẫn cho nhà cung cấp52
+P73: 5.1. Khai báo hồ sơ nhà cung cấp52
+P74: 5.2. Đăng sản phẩm và gửi duyệt55
+P75: 5.3. Theo dõi trạng thái, chỉnh sửa khi bị trả về61
+P76: 5.4. Tham gia yêu cầu báo giá (RFQ) và nộp hồ sơ đề xuất61
+P77: 5.5. Xử lý yêu cầu khách gửi trực tiếp65
+P78: 5.6. Bài viết của nhà cung cấp65
+P79: 5.7. Gói gian hàng, hạng nhà cung cấp và thống kê66
+P80: 6. Hướng dẫn cho chuyên gia tư vấn67
+P81: 6.1. Đăng ký hồ sơ chuyên gia67
+P82: 6.2. Tiếp nhận phân công68
+P83: 6.3. Đánh giá hồ sơ đề xuất (bước 4)68
+P84: 6.4. Kiểm tra pháp lý và cập nhật kết quả (bước 6, 13)69
+P85: 7. Xử lý lỗi thường gặp70
+P86: Phụ lục A. Đối chiếu chức năng với E-HSMT72
+P87: Phụ lục B. Kết quả tự kiểm tra chức năng khi lập tài liệu73
+P90: 1. Giới thiệu và quy ước
+P91: 1.1. Mục đích và phạm vi
+P92: Tài liệu hướng dẫn người sử dụng tự thực hiện các nghiệp vụ trên Trang web Sàn giao dịch công nghệ Cần Thơ (địa chỉ https://mekongx.vn): tìm kiếm công nghệ, tạo và theo dõi hồ sơ giao dịch chuyển giao công nghệ, đăng và quản lý sản phẩm, tham gia báo giá, đánh giá hồ sơ đề xuất.
+P93: Nội dung dành cho cán bộ quản trị (duyệt sản phẩm, quản lý doanh nghiệp, phân quyền, báo cáo...) được tách sang tài liệu Mục 01b – Hướng dẫn cán bộ quản trị CMS. Bản tóm tắt theo từng nhóm người dùng phục vụ đào tạo xem tại Mục 01c – Hướng dẫn nhanh theo nhóm người dùng. Nội dung kỹ thuật chuyên sâu (tài liệu API, sao lưu, cấu hình máy chủ, cấu hình ký số, SMS) thuộc tài liệu vận hành kỹ thuật.
+P94: 1.2. Đối tượng và cách tra cứu nhanh
+P95: Bảng 1. Tra cứu nhanh theo nhóm người dùng
+P96: Bạn là
+P97: Đọc các mục
+P98: Nghiệp vụ chính
+P99: Mọi người dùng
+P100: 2
+P101: Tìm kiếm, đăng ký, đăng nhập, hồ sơ tài khoản, xác thực OTP, đổi mật khẩu
+P102: Người mua (bên có nhu cầu)
+P103: 3, 4
+P104: Tạo hồ sơ giao dịch, gửi yêu cầu, theo dõi trạng thái, xử lý các bước tiếp theo
+P105: Nhà cung cấp (bên bán)
+P106: 5, 4
+P107: Khai báo hồ sơ, đăng sản phẩm, gửi duyệt, sửa khi bị trả về, tham gia báo giá, xử lý yêu cầu
+P108: Chuyên gia tư vấn
+P109: 6, 4
+P110: Tiếp nhận phân công, đánh giá hồ sơ đề xuất, phê duyệt pháp lý, cập nhật kết quả
+P111: Gặp sự cố
+P112: 7
+P113: Không đăng nhập được, không nhận OTP, không tải được tệp, không đủ quyền…
+P115: 1.3. Quy ước trình bày
+P116: Tên menu, màn hình và nút thao tác được ghi in đậm, đúng như chữ hiển thị trên phần mềm, ví dụ: menu Hồ sơ giao dịch của tôi, nút Gửi yêu cầu.
+P117: Đường đi tới màn hình được ghi bằng dấu ›, ví dụ: Ảnh đại diện (góc phải trên) › Dashboard › Hồ sơ tài khoản.
+P118: Trường có dấu sao (*) là trường bắt buộc; bỏ trống thì hệ thống không cho lưu/gửi.
+P119: Trên mỗi hình, các số đỏ trong vòng tròn và khung đỏ chỉ vị trí cần thao tác; số trên hình trùng với số trong bảng chú thích ngay dưới hình.
+P120: Thông tin cá nhân trên ảnh (họ tên, tên đăng nhập, email, số điện thoại, ảnh giấy tờ) đã được thay bằng dữ liệu mẫu như “Nguyễn Văn A”, “nguoidung@example.com” hoặc ghi “(đã che)”.
+P121: Ảnh minh họa bước 2 và các bước 7 – 14 của quy trình giao dịch được chụp trên hồ sơ mẫu đã thực hiện đủ 14 bước.
+P122: Mỗi nghiệp vụ được trình bày theo cùng một khung: Điều kiện thực hiện → Truy cập chức năng → Nhập thông tin → Thực hiện → Kiểm tra kết quả → Xử lý khi không thành công.
+P123: 1.4. Phiên bản phần mềm áp dụng
+P124: Tài liệu lập trên phiên bản phần mềm đang vận hành tại https://mekongx.vn (cập nhật ngày 26/10/2026). Khi phần mềm thay đổi chức năng, tài liệu được cập nhật theo quy trình quản lý thay đổi, phiên bản (NCC-04).
+P126: Kết quả tự kiểm tra từng chức năng khi lập tài liệu, phạm vi chức năng triển khai theo đợt và các nội dung còn phải hoàn thiện được tổng hợp tại Phụ lục B. Kết quả tại phụ lục là kết quả tự kiểm tra của nhà cung cấp, không thay thế kết quả vận hành thử và nghiệm thu.
+P127: 1.5. Yêu cầu sử dụng
+P128: Máy tính hoặc điện thoại có kết nối Internet; trình duyệt Chrome, Edge, Firefox hoặc Safari phiên bản mới.
+P129: Địa chỉ truy cập: https://mekongx.vn (tiếng Anh: https://mekongx.vn/en).
+P130: Để tạo hồ sơ giao dịch, đăng sản phẩm, nhắn tin: cần có tài khoản và đăng nhập.
+P131: Để nhận mã OTP: số điện thoại và email trong hồ sơ tài khoản phải đúng và đang sử dụng.
+P132: 2. Hướng dẫn chung cho mọi người dùng
+P133: 2.1. Truy cập trang chủ và tìm kiếm
+P134: Điều kiện: không cần đăng nhập.
+P136: Hình 1. Trang chủ – menu chính và khối tìm kiếm
+P137: 1
+P138: Menu Sản phẩm: xem danh sách công nghệ, thiết bị, sản phẩm trí tuệ.
+P139: 2
+P140: Biểu tượng tài khoản: đăng nhập, đăng ký; sau khi đăng nhập là menu tài khoản.
+P141: 3
+P142: Chọn nhóm cần tìm: Công nghệ, Thiết bị, SP Trí tuệ, OCOP, Dịch vụ, Chuyên gia.
+P143: 4
+P144: Ô nhập từ khóa; biểu tượng micro để tìm bằng giọng nói.
+P145: 5
+P146: Chọn lĩnh vực (mặc định Tất cả lĩnh vực).
+P147: 6
+P148: Nút Tìm kiếm.
+P150: Mở trình duyệt, nhập địa chỉ https://mekongx.vn.
+P151: Tại khối tìm kiếm, chọn nhóm cần tìm (số 3 trên Hình 1).
+P152: Nhập từ khóa vào ô tìm kiếm (số 4), ví dụ “sấy nông sản”. Có thể bấm một Tìm kiếm phổ biến ngay bên dưới để tìm nhanh.
+P153: Muốn tìm bằng giọng nói: bấm biểu tượng micro trong ô tìm kiếm, cho phép trình duyệt dùng micro, nói từ khóa.
+P154: Chỉ hỗ trợ trên Chrome và Edge.
+P155: Chọn lĩnh vực (số 5) nếu muốn thu hẹp kết quả, bấm Tìm kiếm (số 6).
+P156: Kiểm tra kết quả: danh sách sản phẩm phù hợp hiện ra; bấm vào tên sản phẩm để xem chi tiết.
+P158: Hình 2. Trang Sản phẩm – lọc theo nhóm và hình thức trưng bày
+P159: 1
+P160: Lọc theo nhóm: Tất cả, Công nghệ, Thiết bị, Sản phẩm trí tuệ (số trong ngoặc là số sản phẩm).
+P161: 2
+P162: Lọc theo hình thức: Mọi hình thức, Trực tuyến, Trưng bày tại Sàn.
+P163: 3
+P164: Nút Gửi yêu cầu tư vấn khi cần Trung tâm hỗ trợ tìm công nghệ.
+P166: Không tìm thấy kết quả?
+P167: Thử từ khóa ngắn hơn, không dấu hoặc từ đồng nghĩa; chọn lại Tất cả lĩnh vực.
+P168: Bấm Gửi yêu cầu tư vấn (Hình 2, số 3) hoặc đăng nhu cầu tại Tìm mua (Mục 3.7) để Trung tâm hỗ trợ kết nối.
+P170: 2.2. Xem chi tiết sản phẩm
+P172: Hình 3. Trang chi tiết sản phẩm
+P173: 1
+P174: Nút Liên hệ báo giá: tạo hồ sơ giao dịch chuyển giao (xem Mục 3.2).
+P175: 2
+P176: Các thẻ thông tin: Tổng quan, Thông số kỹ thuật, Ứng dụng, Chuyển giao, Tài liệu, Đánh giá.
+P177: 3
+P178: Nút Quan tâm: lưu sản phẩm vào danh sách Sản phẩm quan tâm.
+P180: Bấm lần lượt các thẻ (số 2) để xem mô tả, thông số, phương thức chuyển giao, tài liệu kèm theo.
+P181: Bấm Quan tâm để lưu; bấm lại (Bỏ quan tâm) để bỏ lưu. Cần đăng nhập.
+P182: Các nút chia sẻ (Facebook, Zalo, LinkedIn, X), In mã QR, Báo cáo vi phạm nằm ngay dưới khối thông tin.
+P183: Bình luận: nhập nội dung ở ô Bình luận cuối trang, bấm Gửi bình luận (cần đăng nhập); tự xóa được bình luận của mình.
+P184: 2.3. Đăng ký tài khoản
+P186: Hình 4. Hộp đăng nhập – liên kết Quên mật khẩu và Đăng ký ngay
+P187: 1
+P188: Ô Tên đăng nhập.
+P189: 2
+P190: Ô Mật khẩu.
+P191: 3
+P192: Liên kết Quên mật khẩu?
+P193: 4
+P194: Nút Đăng nhập.
+P195: 5
+P196: Liên kết Đăng ký ngay để tạo tài khoản mới.
+P198: Bấm biểu tượng tài khoản ở góc phải trên trang chủ (Hình 1, số 2).
+P199: Trong hộp Đăng nhập, bấm Đăng ký ngay (Hình 4, số 5).
+P200: Nhập đầy đủ các trường có dấu *, đặt mật khẩu theo quy tắc ở Mục 2.7.
+P201: Đọc và đánh dấu ô đồng ý điều khoản xử lý dữ liệu cá nhân (bắt buộc). Hệ thống lưu thời điểm và phiên bản điều khoản đã đồng ý.
+P202: Bấm nút đăng ký để hoàn tất.
+P203: Kiểm tra kết quả: hệ thống báo đăng ký thành công; đăng nhập bằng tài khoản vừa tạo, vào Hồ sơ tài khoản để hoàn thiện thông tin và xác thực số điện thoại, email (Mục 2.6).
+P204: Không đăng ký được?
+P205: Tên đăng nhập hoặc email đã tồn tại: dùng chức năng Quên mật khẩu? để lấy lại tài khoản cũ.
+P206: Thông báo đỏ dưới trường nhập: sửa đúng định dạng (email, mật khẩu) rồi bấm lại.
+P208: 2.4. Đăng nhập, đăng xuất
+P209: Bấm biểu tượng tài khoản ở góc phải trên (Hình 1, số 2).
+P210: Nhập Tên đăng nhập và Mật khẩu (Hình 4, số 1–2). Đánh dấu Ghi nhớ đăng nhập nếu dùng máy cá nhân.
+P211: Bấm Đăng nhập (số 4).
+P212: Kiểm tra kết quả: biểu tượng tài khoản đổi thành ảnh đại diện; bấm vào để mở menu Dashboard, Dự án của tôi, Tin nhắn, Thông tin cá nhân, Đổi mật khẩu.
+P213: Đăng xuất: mở menu tài khoản hoặc menu bên trái của Dashboard, bấm Đăng xuất.
+P214: Lưu ý bảo mật
+P215: Nhập sai mật khẩu nhiều lần, tài khoản bị tạm khóa trong một thời gian; chờ hết thời gian hoặc dùng Quên mật khẩu?.
+P216: Không dùng Ghi nhớ đăng nhập trên máy dùng chung; luôn Đăng xuất khi rời máy.
+P218: 2.5. Quên mật khẩu
+P219: Tại hộp Đăng nhập, bấm Quên mật khẩu? (Hình 4, số 3).
+P220: Nhập email hoặc tên đăng nhập đã đăng ký, bấm gửi yêu cầu.
+P221: Mở hộp thư email, bấm liên kết đặt lại mật khẩu. Liên kết có hiệu lực 30 phút và chỉ dùng một lần.
+P222: Nhập mật khẩu mới hai lần, lưu lại, rồi đăng nhập bằng mật khẩu mới.
+P223: Không nhận được email đặt lại mật khẩu?
+P224: Kiểm tra thư mục Spam/Quảng cáo; chờ 2–3 phút rồi gửi lại.
+P225: Liên kết hết hạn (quá 30 phút) hoặc đã dùng: thực hiện lại từ bước 1.
+P226: Không còn dùng email đã đăng ký: liên hệ Ban quản lý Sàn (hotline +84 292 3907 037, email trungtamungdung@cantho.gov.vn) để được đặt lại.
+P228: 2.6. Hồ sơ tài khoản và xác thực OTP
+P229: Đường đi: Ảnh đại diện › Dashboard › menu trái Hồ sơ tài khoản.
+P231: Hình 5. Hồ sơ tài khoản – thông tin cơ bản
+P232: 1
+P233: Họ và tên * (bắt buộc). Tên đăng nhập không sửa được.
+P234: 2
+P235: Loại tài khoản: Cá nhân hoặc Doanh nghiệp.
+P236: 3
+P237: Nút Lưu thay đổi.
+P239: Sửa Họ và tên, Email (bắt buộc), chọn Loại tài khoản.
+P240: Bấm Lưu thay đổi; kiểm tra thông báo lưu thành công và tên mới hiển thị ở menu trái.
+P242: Hình 6. Khối Xác thực tài khoản và Tài liệu xác minh
+P243: 1
+P244: Nút Xác thực số điện thoại.
+P245: 2
+P246: Nút Xác thực email.
+P247: 3
+P248: Nút Thay thế để tải lại ảnh CCCD/CMND.
+P250: a) Xác thực số điện thoại
+P251: Bấm Xác thực số điện thoại (Hình 6, số 1).
+P252: Nhập số điện thoại, bấm Lưu SĐT, sau đó bấm Gửi mã OTP qua SMS.
+P253: Nhập mã 6 số nhận qua tin nhắn, bấm Xác nhận.
+P254: Kiểm tra: nhãn Chưa xác thực đổi thành đã xác thực.
+P255: b) Xác thực email
+P256: Bấm Xác thực email (số 2), bấm Gửi mã OTP xác thực Email.
+P257: Mở email, nhập mã 6 số, bấm Xác nhận.
+P258: c) Tải tài liệu xác minh (CCCD/CMND)
+P259: Tại Tài liệu xác minh, chọn tệp CCCD / CMND Mặt trước và Mặt sau.
+P260: Định dạng JPG, PNG hoặc PDF, tối đa 5 MB mỗi tệp.
+P261: Sau khi tải, trạng thái là Chờ xem xét; bấm Xem tài liệu để kiểm tra, Thay thế để tải lại.
+P262: Không nhận được OTP?
+P263: Kiểm tra số điện thoại/email nhập đúng, điện thoại có sóng và không chặn tin nhắn thương hiệu.
+P264: Chờ 1–2 phút rồi bấm gửi lại; không bấm liên tục nhiều lần.
+P265: Mã chỉ có hiệu lực trong thời gian ngắn; nhập mã mới nhất.
+P266: Vẫn không nhận được: gửi Yêu cầu Trung tâm tư vấn (Mục 3.4) hoặc gọi hotline.
+P268: 2.7. Đổi mật khẩu
+P269: Đường đi: Dashboard › menu trái Bảo mật & mật khẩu.
+P271: Hình 7. Màn hình Bảo mật & mật khẩu
+P272: 1
+P273: Mật khẩu hiện tại.
+P274: 2
+P275: Mật khẩu mới (tối thiểu 8 ký tự).
+P276: 3
+P277: Xác nhận mật khẩu (nhập lại mật khẩu mới).
+P278: 4
+P279: Nút Cập nhật mật khẩu.
+P281: Nhập mật khẩu hiện tại, mật khẩu mới và xác nhận (bấm biểu tượng con mắt để xem ký tự đã nhập).
+P282: Bấm Cập nhật mật khẩu.
+P283: Kiểm tra: hệ thống báo thành công; phiên làm việc hiện tại không bị đăng xuất; lần đăng nhập sau dùng mật khẩu mới.
+P284: Quy tắc mật khẩu
+P285: Ít nhất 8 ký tự, gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt.
+P286: Báo lỗi “mật khẩu hiện tại không đúng”: nhập lại; quên mật khẩu hiện tại thì đăng xuất và dùng Quên mật khẩu?.
+P288: 2.8. Không gian làm việc (Dashboard)
+P290: Hình 8. Dashboard – Tổng quan sau khi đăng nhập
+P291: 1
+P292: Menu trái: Hồ sơ giao dịch của tôi, Yêu cầu đặt mua của tôi, Sản phẩm quan tâm, Tin nhắn, Hồ sơ tài khoản, Bảo mật & mật khẩu, các mục Dịch vụ của tôi (nhà cung cấp, chuyên gia).
+P293: 2
+P294: Ô thống kê Chờ tôi xử lý: số hồ sơ đang chờ bạn thao tác.
+P295: 3
+P296: Nút Xem chi tiết để mở hồ sơ.
+P298: Ô Chờ tôi xử lý là nơi cần xem đầu tiên mỗi lần đăng nhập. Chuông thông báo ở thanh trên cùng báo khi hồ sơ chuyển bước; email thông báo cũng được gửi tới các bên.
+P299: 2.9. Sự kiện, câu hỏi thường gặp, bản tin
+P301: Hình 9. Trang Tin sự kiện
+P302: Đăng ký tham gia sự kiện: mở tin sự kiện, điền biểu mẫu đăng ký (họ tên, email), gửi. Hệ thống gửi email xác nhận kèm vé có mã QR để điểm danh tại sự kiện.
+P303: Quan tâm, nhắc lịch: bấm quan tâm hoặc đăng ký nhắc lịch bằng email/số điện thoại; hệ thống tự nhắc trước giờ diễn ra.
+P304: Xem trực tuyến: nếu sự kiện có phát trực tiếp, bấm Xem phát trực tiếp trong khối thông tin sự kiện.
+P305: Câu hỏi thường gặp: liên kết ở chân trang; tra cứu theo nhóm hoặc gõ từ khóa vào ô tìm câu hỏi (Hình 10).
+P306: Đăng ký nhận bản tin: bấm Đăng ký nhận bản tin ở chân trang, điền họ tên, email, lĩnh vực quan tâm.
+P308: Hình 10. Trang Câu hỏi thường gặp
+P309: 3. Hướng dẫn cho người mua
+P310: 3.1. Chọn đúng luồng yêu cầu
+P311: Nhu cầu
+P312: Dùng chức năng
+P313: Kết quả
+P314: Mua/nhận chuyển giao công nghệ, thiết bị, tài sản trí tuệ cần báo giá, đàm phán, ký hợp đồng
+P315: Liên hệ báo giá trên trang sản phẩm (Mục 3.2)
+P316: Hồ sơ giao dịch nhiều bước (Mục 4)
+P317: Mua nhanh sản phẩm OCOP, thiết bị cho phép liên hệ trực tiếp
+P318: Gửi yêu cầu đặt mua / quan tâm (Mục 3.5)
+P319: Yêu cầu gửi thẳng nhà cung cấp, không tạo hồ sơ nhiều bước
+P320: Chưa tìm thấy sản phẩm phù hợp
+P321: Tìm mua › Đăng nhu cầu tìm mua (Mục 3.7)
+P322: Nhu cầu được Sàn rà soát và công bố để nhà cung cấp phản hồi
+P323: Chưa rõ nên chọn luồng nào
+P324: Gửi yêu cầu tư vấn hoặc Yêu cầu Trung tâm tư vấn (Mục 3.4)
+P325: Cán bộ Sàn liên hệ, tư vấn
+P327: 3.2. Tạo hồ sơ giao dịch – gửi yêu cầu chuyển giao công nghệ
+P328: Điều kiện: đã đăng nhập. Nên hoàn thiện hồ sơ tài khoản và xác thực số điện thoại trước (Mục 2.6).
+P329: Cách 1 – từ một sản phẩm cụ thể: mở trang chi tiết sản phẩm, bấm Liên hệ báo giá (Hình 3, số 1); hệ thống tự điền tên công nghệ và lĩnh vực. Cách 2 – chưa chọn sản phẩm: vào Hồ sơ giao dịch của tôi, bấm Đăng yêu cầu chuyển giao công nghệ (Hình 13, số 1).
+P331: Hình 11. Biểu mẫu Gửi yêu cầu chuyển giao công nghệ – phần 01 Thông tin người liên hệ
+P332: 1
+P333: Họ và tên * – lấy từ hồ sơ tài khoản, có thể sửa.
+P334: 2
+P335: Số điện thoại * – số liên hệ chính.
+P336: 3
+P337: Email * – lấy từ hồ sơ tài khoản.
+P338: 4
+P339: Tên công nghệ cần tìm * – tự điền khi đi từ trang sản phẩm.
+P342: Hình 12. Biểu mẫu Gửi yêu cầu chuyển giao công nghệ – phần 02, 03 và nút gửi
+P343: 1
+P344: Lĩnh vực: chọn từ danh sách.
+P345: 2
+P346: Mô tả chi tiết nhu cầu * – tối đa 2.000 ký tự.
+P347: 3
+P348: Ô xác nhận đồng ý để Trung tâm liên hệ hỗ trợ (bắt buộc).
+P349: 4
+P350: Nút Gửi yêu cầu.
+P352: Kiểm tra và bổ sung phần 01 Thông tin người liên hệ:
+P353: Bắt buộc: Họ và tên, Số điện thoại, Email.
+P354: Không bắt buộc: Đơn vị/Công ty, Chức vụ, Địa chỉ.
+P355: Nhập phần 02 Thông tin nhu cầu công nghệ:
+P356: Tên công nghệ cần tìm * và Mô tả chi tiết nhu cầu * (quy mô, công suất, yêu cầu kỹ thuật, thời gian mong muốn).
+P357: Lĩnh vực, Ngân sách dự kiến (hoặc đánh dấu Trao đổi khi kết nối).
+P358: Đánh dấu ô xác nhận ở phần 03 Xác nhận thông tin.
+P359: Bấm Gửi yêu cầu.
+P360: Kiểm tra kết quả: hệ thống báo gửi thành công và tạo hồ sơ giao dịch có mã dạng PJ-năm tháng ngày giờ phút giây; bạn là Bên mua (Buyer). Hồ sơ xuất hiện trong Hồ sơ giao dịch của tôi; cán bộ Sàn nhận được thông báo để tiếp nhận.
+P361: Gửi không thành công?
+P362: Trường bắt buộc còn trống hoặc sai định dạng (email, số điện thoại): hệ thống tô đỏ trường lỗi; sửa rồi bấm lại.
+P363: Chưa đánh dấu ô xác nhận ở phần 03.
+P364: Mô tả vượt 2.000 ký tự: rút gọn, đưa chi tiết vào tài liệu đính kèm ở bước sau.
+P365: Phiên đăng nhập hết hạn: đăng nhập lại; nội dung đã nhập có thể bị mất, nên soạn mô tả dài ở Word trước rồi dán vào.
+P367: 3.3. Theo dõi trạng thái hồ sơ giao dịch
+P368: Đường đi: Dashboard › Hồ sơ giao dịch của tôi.
+P370: Hình 13. Danh sách hồ sơ giao dịch của tôi
+P371: 1
+P372: Nút Đăng yêu cầu chuyển giao công nghệ (tạo hồ sơ mới).
+P373: 2
+P374: Cột Bước hiện tại (ví dụ “Bước 2/6”); cột Vai trò cho biết bạn là Buyer (bên mua), Seller (bên bán) hay Consultant (tư vấn).
+P375: 3
+P376: Nút Xem mở chi tiết hồ sơ.
+P379: Hình 14. Chi tiết hồ sơ – thanh tiến trình giao dịch
+P380: 1
+P381: Nút Thành viên hồ sơ: xem các bên tham gia, thêm chuyên gia tư vấn (Mục 4.4).
+P382: 2
+P383: Nút Yêu cầu Trung tâm tư vấn (Mục 3.4).
+P384: 3
+P385: Tiến độ tổng thể (%) và số bước đã hoàn thành.
+P386: 4
+P387: Bước đang xử lý (vòng tròn xanh đậm). Bước đã xong có dấu ✓, bấm vào để xem lại nội dung.
+P389: Bước có dấu ✓: đã hoàn thành. Bước tô đậm: đang xử lý. Bước mờ: chưa tới lượt. Bước ghi (Không áp dụng): được bỏ qua (ví dụ NDA khi sản phẩm không yêu cầu bảo mật).
+P390: Nội dung của bước đang xử lý hiển thị ngay dưới thanh tiến trình, kèm các nút thao tác của vai trò bạn.
+P391: Mỗi lần hồ sơ chuyển bước, các bên nhận thông báo qua chuông trên web và email.
+P392: 3.4. Yêu cầu Trung tâm tư vấn hỗ trợ
+P394: Hình 15. Hộp Yêu cầu Trung tâm tư vấn
+P395: 1
+P396: Nội dung cần hỗ trợ: Hỗ trợ sử dụng hệ thống hoặc Tư vấn giao dịch/chuyển giao (khi chọn tư vấn, chọn tiếp loại: tìm nhà cung cấp, đánh giá hồ sơ đề xuất, đàm phán, kiểm tra pháp lý hợp đồng, hợp đồng điện tử, khác).
+P397: 2
+P398: Tiêu đề ngắn gọn.
+P399: 3
+P400: Bước cần hỗ trợ trong hồ sơ.
+P401: 4
+P402: Nút Gửi yêu cầu.
+P404: Mở chi tiết hồ sơ, bấm Yêu cầu Trung tâm tư vấn (Hình 14, số 2).
+P405: Chọn nội dung cần hỗ trợ, nhập tiêu đề, chọn bước, mô tả vướng mắc.
+P406: Bấm Gửi yêu cầu.
+P407: Kiểm tra: một cuộc trò chuyện mới với cán bộ Sàn xuất hiện trong Tin nhắn; cán bộ phản hồi tại đây (mục tiêu phản hồi trong 02 giờ làm việc).
+P408: 3.5. Đặt mua, quan tâm trực tiếp và sản phẩm quan tâm
+P410: Hình 16. Yêu cầu đặt mua / quan tâm của tôi (chưa có yêu cầu)
+P411: Trên trang sản phẩm OCOP hoặc thiết bị cho phép liên hệ trực tiếp, bấm Gửi yêu cầu đặt mua / quan tâm.
+P412: Nhập số lượng, thông tin liên hệ, địa chỉ giao hàng, ghi chú; gửi yêu cầu.
+P413: Theo dõi tại Dashboard › Yêu cầu đặt mua của tôi (Hình 16, số 1). Khi chưa có yêu cầu, bấm Xem sản phẩm OCOP (số 2) để chọn sản phẩm.
+P414: Hủy yêu cầu: chỉ hủy được khi yêu cầu còn ở trạng thái mới gửi.
+P415: Việc giao hàng, thanh toán do hai bên thống nhất trực tiếp; Sàn ghi nhận yêu cầu và kết nối hai bên. Danh sách sản phẩm đã bấm Quan tâm xem tại Sản phẩm quan tâm.
+P416: 3.6. Tin nhắn và gọi video
+P418: Hình 17. Màn hình trò chuyện
+P419: 1
+P420: Nút Gọi video: tạo phòng họp trực tuyến, gửi lời mời vào cuộc trò chuyện.
+P421: 2
+P422: Nút đính kèm: gửi ảnh, PDF, Word, Excel, PowerPoint (tối đa 10 MB).
+P423: 3
+P424: Ô Nhập tin nhắn...
+P425: 4
+P426: Nút Gửi.
+P428: Vào Dashboard › Tin nhắn, chọn cuộc trò chuyện.
+P429: Nhập nội dung, bấm Gửi; đính kèm tệp bằng nút kẹp giấy.
+P430: Cần trao đổi trực tiếp: bấm Gọi video; phòng họp mở ở tab mới, bên kia bấm đường dẫn mời để tham gia.
+P431: Lưu ý
+P432: Tệp gửi trong trò chuyện không công khai, chỉ người trong cuộc trò chuyện và cán bộ quản trị mở được; mỗi lần tải được ghi nhật ký.
+P433: Không gửi mật khẩu, mã OTP qua tin nhắn.
+P435: 3.7. Đăng nhu cầu tìm mua công nghệ
+P437: Hình 18. Trang Tìm mua công nghệ
+P438: 1
+P439: Nút Đăng nhu cầu tìm mua.
+P440: 2
+P441: Ô tìm trong các nhu cầu đã đăng.
+P442: 3
+P443: Nút Tìm kiếm.
+P446: Hình 19. Phiếu Gửi nhu cầu tìm mua công nghệ
+P447: 1
+P448: Họ và tên *, Số điện thoại *, Email.
+P449: 2
+P450: Xác thực *: nhập kết quả phép tính.
+P451: 3
+P452: Mô tả nhu cầu *.
+P453: 4
+P454: Nút Gửi yêu cầu.
+P456: Vào menu Tìm mua, bấm Đăng nhu cầu tìm mua.
+P457: Nhập các trường có dấu *, trả lời phép tính xác thực.
+P458: Bấm Gửi yêu cầu.
+P459: Kiểm tra: hệ thống báo đã gửi. Ban quản lý Sàn rà soát, chuẩn hóa trước khi công bố; nhà cung cấp phù hợp phản hồi, bình luận dưới tin.
+P460: 4. Quy trình giao dịch chuyển giao công nghệ
+P461: 4.1. Tổng quan quy trình 14 bước
+P462: Hồ sơ giao dịch thực hiện tuần tự; bước sau chỉ mở khi bước trước hoàn thành. Bước 2 (NDA) chỉ áp dụng khi sản phẩm yêu cầu bảo mật; nếu không áp dụng, hệ thống ghi (Không áp dụng) và mở bước 3 ngay sau bước 1. Mỗi bước ghi nhật ký (ai thao tác, lúc nào, từ địa chỉ IP nào) và gửi thông báo cho các bên. Cán bộ Sàn theo dõi, hỗ trợ, không thao tác thay các bên.
+P463: Bảng 2. Quy trình giao dịch 14 bước
+P464: Bước
+P465: Nội dung
+P466: Ai thao tác
+P467: Kết quả
+P468: 1
+P469: Yêu cầu chuyển giao công nghệ
+P470: Bên mua tạo; cán bộ Sàn tiếp nhận
+P471: Phiếu yêu cầu, hồ sơ giao dịch (mã PJ-…)
+P472: 2
+P473: Thỏa thuận bảo mật (NDA)
+P474: Bên mua, bên bán
+P475: NDA đã ký
+P476: 3
+P477: Yêu cầu báo giá (RFQ), mời nhà cung cấp
+P478: Bên mua; chuyên gia tư vấn hỗ trợ
+P479: RFQ, thư mời
+P480: 4
+P481: Nộp và đánh giá hồ sơ đề xuất
+P482: Bên bán nộp; bên mua, chuyên gia chấm
+P483: Hồ sơ đề xuất, bảng điểm, bên bán được chọn
+P484: 5
+P485: Đàm phán thương mại
+P486: Bên mua, bên bán
+P487: Biên bản thương lượng được hai bên xác nhận
+P488: 6
+P489: Kiểm tra pháp lý hợp đồng
+P490: Bên mua, bên bán, chuyên gia tư vấn (phê duyệt 3 bên)
+P491: Dự thảo hợp đồng được duyệt
+P492: 7
+P493: Ký hợp đồng điện tử
+P494: Bên mua, bên bán
+P495: Hợp đồng điện tử có chữ ký số của các bên
+P496: 8
+P497: Xác nhận tạm ứng
+P498: Bên mua, bên bán
+P499: Xác nhận tạm ứng
+P500: 9
+P501: Thử nghiệm (pilot)
+P502: Bên bán thực hiện; bên mua xác nhận
+P503: Kết quả thử nghiệm
+P504: 10
+P505: Bàn giao, triển khai
+P506: Bên bán bàn giao; bên mua xác nhận
+P507: Xác nhận đã nhận bàn giao, đánh giá của bên mua
+P508: 11
+P509: Đào tạo, chuyển giao vận hành
+P510: Bên bán
+P511: Biên bản đào tạo
+P512: 12
+P513: Bàn giao hồ sơ kỹ thuật
+P514: Bên bán
+P515: Danh mục hồ sơ kỹ thuật
+P516: 13
+P517: Nghiệm thu
+P518: Bên mua, bên bán, chuyên gia tư vấn
+P519: Biên bản nghiệm thu
+P520: 14
+P521: Thanh lý hợp đồng
+P522: Bên mua, bên bán
+P523: Biên bản thanh lý
+P525: Cách đọc thanh tiến trình trên màn hình
+P526: Quy trình nghiệp vụ gồm 14 bước. Trên màn hình, bước 5 Đàm phán thương mại và bước 6 Kiểm tra pháp lý hợp đồng nằm chung một nút, vì vậy thanh tiến trình có 13 nút và bộ đếm hiển thị “…/13 bước”.
+P527: Khi sản phẩm không yêu cầu NDA, nút Thỏa thuận bảo mật (NDA) ghi (Không áp dụng) và không được tính; bộ đếm hiển thị “…/12 bước”.
+P528: Màn hình ký hợp đồng có tiêu đề “Bước 6: Ký hợp đồng”, tương ứng bước 7 của quy trình; từ bước 8 đến bước 14, tiêu đề màn hình ghi đúng số bước của quy trình.
+P529: Hồ sơ tạo trước tháng 10/2026 hiển thị thanh tiến trình rút gọn 6 bước (đến Ký hợp đồng).
+P530: Bảng 3. Đối chiếu bước quy trình với nút trên thanh tiến trình
+P531: Bước quy trình
+P532: Nút trên thanh tiến trình
+P533: Thứ tự nút
+P534: Ghi chú
+P535: 1
+P536: Yêu cầu chuyển giao công nghệ
+P537: 1
+P538: —
+P539: 2
+P540: Thỏa thuận bảo mật (NDA)
+P541: 2
+P542: Ghi (Không áp dụng), không tính vào bộ đếm khi sản phẩm không yêu cầu NDA
+P543: 3
+P544: Yêu cầu báo giá (RFQ)
+P545: 3
+P546: —
+P547: 4
+P548: Nộp hồ sơ đề xuất
+P549: 4
+P550: —
+P551: 5 và 6
+P552: Đàm phán thương mại / Kiểm tra pháp lý hợp đồng
+P553: 5
+P554: Một nút gồm hai khối: Đàm phán thương mại (bước 5), Kiểm tra pháp lý hợp đồng (bước 6)
+P555: 7
+P556: Ký hợp đồng
+P557: 6
+P558: Tiêu đề màn hình: “Bước 6: Ký hợp đồng”
+P559: 8
+P560: Xác nhận tạm ứng
+P561: 7
+P562: Từ bước này, tiêu đề màn hình ghi đúng số bước quy trình
+P563: 9
+P564: Thử nghiệm Pilot
+P565: 8
+P566: —
+P567: 10
+P568: Bàn giao & triển khai thiết bị
+P569: 9
+P570: —
+P571: 11
+P572: Đào tạo & chuyển giao vận hành
+P573: 10
+P574: —
+P575: 12
+P576: Bàn giao hồ sơ kỹ thuật
+P577: 11
+P578: —
+P579: 13
+P580: Nghiệm thu
+P581: 12
+P582: —
+P583: 14
+P584: Thanh lý hợp đồng
+P585: 13
+P586: Hoàn tất: bộ đếm 13/13 (hoặc 12/12 khi không áp dụng NDA), tiến độ 100%
+P589: Hình 20. Thanh tiến trình của hồ sơ đã hoàn tất 14 bước
+P590: 1
+P591: Bước đầu tiên – Yêu cầu chuyển giao công nghệ; bấm vào từng nút để mở nội dung bước.
+P592: 2
+P593: Nút gộp Đàm phán thương mại / Kiểm tra pháp lý hợp đồng (bước 5 và 6).
+P594: 3
+P595: Bước cuối – Thanh lý hợp đồng.
+P596: 4
+P597: Số bước đã hoàn thành và phần trăm tiến độ.
+P599: Phân biệt ký số và xác nhận bằng OTP
+P600: Ký số (bước 7 – Ký hợp đồng): dùng chứng thư số do tổ chức cung cấp dịch vụ chứng thực chữ ký số cấp cho bên ký, thực hiện bằng USB Token hoặc ký số từ xa. Chữ ký số được nhúng vào tệp PDF hợp đồng kèm mã kiểm tra toàn vẹn.
+P601: Xác nhận bằng OTP (bước 5 – Đàm phán thương mại, bước 13 – Nghiệm thu): nhập mã dùng một lần do Sàn gửi qua SMS hoặc email để xác nhận chủ tài khoản đồng ý với nội dung. Đây là thao tác xác nhận trên Sàn, không phải chữ ký số.
+P602: Khi ký số từ xa, mã xác thực do tổ chức chứng thực gửi chỉ dùng để kích hoạt chứng thư số; kết quả vẫn là chữ ký số.
+P603: Xác nhận NDA ở bước 2 là thao tác đồng ý điều khoản trên Sàn, không phải ký số.
+P606: 4.2. Bảng tóm tắt trách nhiệm từng bước
+P607: Bảng 4. Ai làm gì, đính kèm gì, khi nào chuyển bước
+P608: Bước
+P609: Ai thao tác / màn hình
+P610: Nhập thông tin
+P611: Đính kèm
+P612: Điều kiện chuyển bước
+P613: 1
+P614: Bên mua – biểu mẫu Gửi yêu cầu chuyển giao công nghệ
+P615: Người liên hệ, tên công nghệ, lĩnh vực, ngân sách, mô tả nhu cầu
+P616: Không bắt buộc
+P617: Gửi thành công; cán bộ Sàn tiếp nhận
+P618: 2
+P619: Bên mua, bên bán – bước Thỏa thuận bảo mật (NDA)
+P620: Xác nhận nội dung NDA
+P621: NDA (nếu ký bằng tệp)
+P622: Các bên đã ký NDA hoặc bước không áp dụng
+P623: 3
+P624: Bên mua – bước Yêu cầu báo giá (RFQ)
+P625: Hạn chót nộp hồ sơ, yêu cầu kỹ thuật, tiêu chuẩn nghiệm thu
+P626: Không bắt buộc
+P627: RFQ đã tạo, đã mời ≥ 1 nhà cung cấp; bên mua bấm Tiếp tục bước 4
+P628: 4
+P629: Bên bán nộp; chuyên gia chấm; bên mua chọn – Bảng so sánh báo giá
+P630: Giá, thời gian thực hiện; điểm, nhận xét
+P631: Hồ sơ năng lực, giải pháp kỹ thuật, báo giá
+P632: Có ít nhất 1 hồ sơ Đã chọn
+P633: 5
+P634: Bên mua, bên bán – Đàm phán thương mại
+P635: Giá chốt, điều khoản thanh toán, hình thức ký
+P636: Biên bản thương lượng
+P637: Hai bên xác nhận (bằng OTP hoặc tải lên biên bản đã ký) – Hoàn tất thương lượng
+P638: 6
+P639: Ba bên – Kiểm tra pháp lý hợp đồng
+P640: Chỉnh sửa dự thảo; phê duyệt/từ chối
+P641: Dự thảo hợp đồng; CCCD hai mặt
+P642: Cả 3 bên Đã duyệt
+P643: 7
+P644: Bên mua, bên bán – Ký hợp đồng
+P645: Chứng thư số (USB Token hoặc ký số từ xa)
+P646: —
+P647: Đủ chữ ký số của bên mua và bên bán; hợp đồng được khóa phiên bản
+P648: 8
+P649: Bên mua nhập; bên bán xác nhận – bước Xác nhận Tạm ứng
+P650: Số tiền tạm ứng *, ngày chuyển *
+P651: Chứng từ chuyển tiền (PDF/JPG/PNG)
+P652: Bật Bên bán đã nhận tiền tạm ứng; bấm Tiếp tục bước 9
+P653: 9
+P654: Bên bán nhập; bên mua kiểm tra – bước Thử nghiệm Pilot
+P655: Mô tả *, kết quả thử nghiệm *, vấn đề phát sinh, giải pháp, ngày bắt đầu/kết thúc
+P656: File kết quả
+P657: Bật Thử nghiệm đạt yêu cầu
+P658: 10
+P659: Bên bán bàn giao; bên mua xác nhận – bước Bàn giao & triển khai thiết bị
+P660: Xác nhận đã nhận bàn giao, đánh giá (1–5 sao), nhận xét
+P661: —
+P662: Bên mua bật ô xác nhận đã nhận bàn giao (số 1, Hình 33)
+P663: 11
+P664: Bên bán nhập – bước Đào tạo & Chuyển giao Vận hành
+P665: Nội dung đào tạo *, số người, số giờ, ngày bắt đầu/kết thúc
+P666: Tài liệu đào tạo, video hướng dẫn
+P667: Bật Đã hoàn thành đào tạo
+P668: 12
+P669: Bên bán nhập; bên mua xác nhận – bước Bàn giao Hồ sơ Kỹ thuật
+P670: Source Code, Database (URL hoặc mô tả), ghi chú, ngày bàn giao
+P671: Tài liệu kỹ thuật, hướng dẫn sử dụng, bảo trì
+P672: Bật Đã bàn giao đầy đủ hồ sơ
+P673: 13
+P674: Bên mua, bên bán; chuyên gia theo dõi – bước Nghiệm thu
+P675: Ngày nghiệm thu *, thành phần, kết luận, vấn đề tồn đọng
+P676: —
+P677: Hai bên xác nhận biên bản bằng OTP (Gửi OTP & Ký xác nhận)
+P678: 14
+P679: Bên mua, bên bán – bước Thanh lý
+P680: Giá trị thanh toán còn lại, số hóa đơn
+P681: File hóa đơn
+P682: Bật Đã chuyển tiền và Hợp đồng đã đóng; hồ sơ Đã hoàn tất
+P683: Mở biểu mẫu nhập liệu của bước 8 đến bước 14: mở hồ sơ, bấm nút của bước trên thanh tiến trình, bấm Chỉnh sửa ở góc phải tiêu đề bước; nhập xong bấm Cập nhật để lưu, sau đó bấm Tiếp tục bước … để chuyển bước.
+P685: 4.3. Hướng dẫn chi tiết từng bước
+P686: Bước 1 – Yêu cầu chuyển giao công nghệ (Bên mua)
+P687: Màn hình: biểu mẫu Gửi yêu cầu chuyển giao công nghệ (Mục 3.2). Sau khi gửi, nội dung bước 1 hiển thị trong chi tiết hồ sơ.
+P689: Hình 21. Bước 1 trong chi tiết hồ sơ
+P690: 1
+P691: Bấm vào bước trên thanh tiến trình để xem lại nội dung.
+P692: 2
+P693: Tiêu đề bước và thông tin đã gửi.
+P694: 3
+P695: Nút Chỉnh sửa để sửa thông tin yêu cầu.
+P696: 4
+P697: Nút Tiếp tục bước 3 (hoặc bước 2 nếu có NDA).
+P699: Kết quả: trạng thái Đã hoàn thành; hồ sơ chuyển sang bước 2 (NDA) hoặc bước 3 (RFQ).
+P700: Nếu cần sửa: bấm Chỉnh sửa, cập nhật, lưu lại.
+P701: Bước 2 – Thỏa thuận bảo mật (NDA) (Bên mua, bên bán)
+P702: Khi nào áp dụng: sản phẩm được nhà cung cấp đánh dấu Yêu cầu ký thỏa thuận bảo mật (NDA) trước khi trao đổi chi tiết (Mục 5.2). Nếu không, bước hiển thị (Không áp dụng).
+P703: Bên mua – trong hồ sơ giao dịch:
+P704: Mở hồ sơ, bấm nút Thỏa thuận bảo mật (NDA) trên thanh tiến trình.
+P705: Kiểm tra tên Bên A (Bên Mua), Bên B (Bên Bán) và đọc các điều khoản (Hình 22).
+P706: Đánh dấu ô Đồng ý, bấm Xác nhận đồng ý NDA.
+P707: Kiểm tra: khung Đã đồng ý các điều khoản hiển thị ngày giờ và người xác nhận; bấm Tiếp tục bước 3.
+P709: Hình 22. Bước 2 – Thỏa thuận bảo mật (NDA) phía bên mua
+P710: 1
+P711: Tên Bên A (Bên Mua) và Bên B (Bên Bán) lấy từ hồ sơ.
+P712: 2
+P713: Các điều khoản bảo mật bên mua cam kết.
+P714: 3
+P715: Kết quả: Đã đồng ý các điều khoản, kèm thời điểm và người xác nhận.
+P716: 4
+P717: Nút Tiếp tục bước 3.
+P719: Bên bán (nhà cung cấp được mời) – từ trang Lời mời tham gia (Mục 5.4):
+P720: Bấm Ký NDA trên thẻ lời mời; màn hình Ký thỏa thuận bảo mật (NDA) mở ra (Hình 23).
+P721: Đọc nội dung thỏa thuận, đánh dấu ô Tôi đã đọc và đồng ý với các điều khoản trong thỏa thuận bảo mật này.
+P722: Bấm Ký thỏa thuận.
+P723: Kiểm tra: thông báo “Bạn đã ký NDA thành công”; thẻ lời mời đổi trạng thái Chờ phản hồi, xuất hiện nút Chấp nhận & xem chi tiết.
+P725: Hình 23. Bước 2 – màn hình Ký thỏa thuận bảo mật (NDA) phía bên bán
+P726: 1
+P727: Tên dự án và Hạn chót nộp hồ sơ.
+P728: 2
+P729: Nội dung Thỏa thuận bảo mật thông tin.
+P730: 3
+P731: Ô xác nhận đã đọc và đồng ý (bắt buộc, chưa đánh dấu thì nút Ký bị khóa).
+P732: 4
+P733: Nút Ký thỏa thuận; bấm Hủy để quay lại.
+P735: Điều kiện chuyển bước: các bên đã ký NDA. Bên bán chỉ xem được thông tin chi tiết và nộp đề xuất sau khi ký NDA.
+P736: Nút Ký thỏa thuận bị khóa: đánh dấu ô xác nhận đã đọc và đồng ý (số 3, Hình 23); vẫn không thực hiện được thì xem Mục 7.
+P737: Bước 3 – Yêu cầu báo giá RFQ (Bên mua)
+P739: Hình 24. Bước 3 – biểu mẫu Tạo Yêu cầu Báo giá (RFQ)
+P740: 1
+P741: Hạn chót nộp hồ sơ * – ngày cuối nhà cung cấp được nộp báo giá. Mã RFQ do hệ thống tự sinh.
+P742: 2
+P743: Yêu cầu kỹ thuật * – thông số, tiêu chuẩn cần đáp ứng.
+P744: 3
+P745: Tiêu chuẩn nghiệm thu – không bắt buộc nhưng nên nhập để làm căn cứ nghiệm thu (bước 13).
+P746: 4
+P747: Ô xác nhận thông tin chính xác, đầy đủ * (bắt buộc).
+P748: 5
+P749: Nút Tạo Yêu cầu Báo giá.
+P751: Mở hồ sơ, tại bước Yêu cầu báo giá (RFQ) nhập hạn chót, yêu cầu kỹ thuật, tiêu chuẩn nghiệm thu.
+P752: Đánh dấu ô xác nhận, bấm Tạo Yêu cầu Báo giá.
+P753: Chọn mời nhà cung cấp từ danh sách Nhà cung ứng phù hợp. Không thấy nhà cung cấp phù hợp: gửi Yêu cầu Trung tâm tư vấn, chọn loại “Tìm kiếm, lựa chọn nhà cung cấp”.
+P754: Kiểm tra: bảng Nhà cung ứng đã được mời hiển thị nhà cung cấp, ngày mời, trạng thái (ví dụ Đã gửi báo giá).
+P755: Khi đã có báo giá, bấm Tiếp tục bước 4.
+P757: Hình 25. Bước 3 – RFQ đã tạo và danh sách nhà cung ứng đã mời
+P758: 1
+P759: Bước RFQ trên thanh tiến trình.
+P760: 2
+P761: Thông tin RFQ: mã, yêu cầu kỹ thuật, tiêu chuẩn nghiệm thu.
+P762: 3
+P763: Hạn chót nộp hồ sơ.
+P764: 4
+P765: Danh sách nhà cung ứng đã được mời và trạng thái.
+P767: Không tạo được RFQ?
+P768: Chưa nhập trường bắt buộc hoặc chưa đánh dấu ô xác nhận.
+P769: Hạn chót phải là ngày trong tương lai.
+P770: Bước trước (NDA) chưa hoàn thành nên bước 3 chưa mở.
+P772: Bước 4 – Nộp và đánh giá hồ sơ đề xuất
+P773: Bên bán (nộp): xem Mục 5.4. Chuyên gia (chấm): xem Mục 6.3. Bên mua (chọn): thực hiện như sau.
+P775: Hình 26. Bước 4 – Bảng so sánh báo giá
+P776: 1
+P777: Bước Nộp hồ sơ đề xuất trên thanh tiến trình.
+P778: 2
+P779: Bảng so sánh báo giá: tên nhà cung ứng, giá, thời gian, hồ sơ (Giải pháp, Hồ sơ).
+P780: 3
+P781: Cột Điểm TB – điểm trung bình do chuyên gia/bên mua chấm.
+P782: 4
+P783: Cột Nhận xét của tư vấn.
+P784: 5
+P785: Nút Tiếp tục bước 5.
+P787: Bấm Giải pháp và Hồ sơ để tải, xem hồ sơ đề xuất của từng nhà cung cấp.
+P788: Xem điểm trung bình, nhận xét của chuyên gia; nếu cần, gửi Yêu cầu Trung tâm tư vấn loại “Đánh giá hồ sơ đề xuất”.
+P789: Tại cột Thao tác, chọn nhà cung cấp; dòng được chọn hiển thị nhãn Đã chọn.
+P790: Bấm Tiếp tục bước 5.
+P791: Bước 5 – Đàm phán thương mại (Bên mua, bên bán)
+P793: Hình 27. Bước 5 – Đàm phán thương mại và trạng thái chữ ký
+P794: 1
+P795: Trạng thái: Chờ ký xác nhận › Hoàn tất thương lượng.
+P796: 2
+P797: Giá chốt cuối cùng, Điều khoản thanh toán.
+P798: 3
+P799: Hình thức ký: OTP hoặc Upload file; Biên bản thương lượng (tệp).
+P800: 4
+P801: Trạng thái chữ ký: mỗi bên đã xác nhận hay chưa, kèm thời điểm.
+P803: Hai bên trao đổi qua Tin nhắn/Gọi video, thống nhất giá, điều khoản thanh toán, tiêu chuẩn kỹ thuật.
+P804: Một bên nhập Giá chốt cuối cùng, Điều khoản thanh toán, chọn Hình thức ký, đính kèm Biên bản thương lượng (nếu có).
+P805: Từng bên xác nhận: với hình thức OTP, nhập mã Sàn gửi tới điện thoại rồi bấm Xác nhận OTP; với hình thức Upload file, tải lên biên bản thương lượng đã ký.
+P806: Kiểm tra: Trạng thái chữ ký hiện “đã ký” cho cả hai bên, nhãn Hoàn tất thương lượng; khối Kiểm tra pháp lý hợp đồng mở ra.
+P807: Bước 6 – Kiểm tra pháp lý hợp đồng (3 bên)
+P809: Hình 28. Kiểm tra pháp lý hợp đồng – dự thảo và phê duyệt 3 bên
+P810: 1
+P811: Khối Kiểm tra pháp lý hợp đồng; nhãn trạng thái dự thảo (Bản nháp).
+P812: 2
+P813: Nút Chỉnh sửa dự thảo trực tiếp (định dạng chữ, căn lề; bấm Lưu thay đổi).
+P814: 3
+P815: Phê duyệt (3 bên): Buyer, Seller, Tư vấn – nút ✓ (duyệt) và ✗ (từ chối).
+P816: 4
+P817: Upload lại ảnh CCCD mặt trước/mặt sau của bên ký.
+P818: 5
+P819: Lịch sử phiên bản (Bản nháp, Lưu trữ).
+P822: Hình 29. Các nút quản lý phiên bản dự thảo
+P823: 1
+P824: Upload phiên bản mới – tải tệp dự thảo đã sửa.
+P825: 2
+P826: Tạo lại từ template hệ thống – tạo dự thảo từ mẫu và nội dung đã thống nhất.
+P827: 3
+P828: Quay lại bước trước khi cần đàm phán lại.
+P830: Hệ thống tự tạo dự thảo hợp đồng từ nội dung đã thống nhất ở bước 5.
+P831: Các bên đọc dự thảo; sửa trực tiếp bằng Chỉnh sửa hoặc tải tệp bằng Upload phiên bản mới. Mỗi lần lưu tạo một phiên bản mới; phiên bản cũ chuyển Lưu trữ.
+P832: Mỗi bên kiểm tra và tải đủ CCCD mặt trước, mặt sau (nút Upload cả 2 mặt / Upload lại).
+P833: Từng bên bấm ✓ để duyệt; nếu không đồng ý bấm ✗, nhập lý do, bấm Xác nhận từ chối.
+P834: Kiểm tra: cả 3 bên hiện Đã duyệt kèm thời điểm; hồ sơ chuyển sang bước Ký hợp đồng.
+P835: Không duyệt được?
+P836: Chưa tải CCCD hoặc ảnh không rõ: tải lại đủ hai mặt (JPG/PNG/PDF ≤ 5 MB).
+P837: Một bên đã bấm ✗: đọc lý do, sửa dự thảo, lưu phiên bản mới; các bên duyệt lại.
+P838: Chưa có chuyên gia tư vấn trong hồ sơ: bên mua thêm tư vấn tại Thành viên hồ sơ hoặc nhờ cán bộ Sàn phân công.
+P840: Bước 7 – Ký hợp đồng điện tử (Bên mua, bên bán)
+P841: Màn hình: nút Ký hợp đồng trên thanh tiến trình (tiêu đề màn hình “Bước 6: Ký hợp đồng”, xem Bảng 3). Hợp đồng được ký bằng chữ ký số của bên mua và bên bán sau khi dự thảo đã được 3 bên duyệt ở bước 6.
+P842: Phạm vi áp dụng ở phiên bản bàn giao đợt 1: chức năng ký vận hành ở chế độ thử nghiệm – hệ thống nhúng chữ ký vào tệp PDF, tạo mã kiểm tra toàn vẹn và ghi nhật ký ký số, nhưng chưa sử dụng chứng thư số của tổ chức chứng thực. Ký bằng chứng thư số có giá trị pháp lý áp dụng sau khi Sàn kết nối dịch vụ ký số của tổ chức chứng thực (đợt 2).
+P844: Hình 30. Bước 7 – màn hình Ký hợp đồng điện tử phía bên mua
+P845: 1
+P846: Tải TechExchange LocalSigner – phần mềm cần chạy trên máy tính khi ký bằng USB Token.
+P847: 2
+P848: Thông tin hợp đồng: tiêu đề, phiên bản, trạng thái; khung Tính toàn vẹn hiển thị mã kiểm tra sau khi ký.
+P849: 3
+P850: Thông báo pháp lý – đánh dấu Tôi xác nhận đã đọc và đồng ý với điều khoản pháp lý trên trước khi ký.
+P851: 4
+P852: Nút Đọc USB Token & Ký của bên mua.
+P853: 5
+P854: Khung của bên bán: hiển thị “Đang chờ … ký” cho tới khi bên bán ký xong.
+P856: Khi hợp đồng sẵn sàng, mở hồ sơ, bấm nút Ký hợp đồng; đọc Nội dung hợp đồng và đánh dấu ô xác nhận pháp lý.
+P857: Chọn phương thức ký số theo cấu hình của Sàn:
+P858: Ký số từ xa: chứng thư số lưu tại tổ chức chứng thực; bên ký nhập mã xác thực do tổ chức chứng thực gửi tới điện thoại đã đăng ký để kích hoạt chữ ký số.
+P859: Ký bằng USB Token: cắm USB Token chứa chứng thư số, chạy phần mềm ký (số 1, Hình 30) và trình điều khiển của nhà cung cấp chứng thư số, bấm Đọc USB Token & Ký, nhập mã PIN khi được hỏi.
+P860: Kiểm tra: hệ thống nhúng chữ ký vào tệp PDF, lưu mã kiểm tra toàn vẹn và nhật ký ký số; hợp đồng đã ký được khóa phiên bản, tải về được để lưu trữ.
+P861: Không ký được hợp đồng?
+P862: Không nhận mã xác thực khi ký số từ xa: kiểm tra số điện thoại đã đăng ký với tổ chức chứng thực; chờ 1–2 phút rồi gửi lại.
+P863: Máy không nhận USB Token: cài trình điều khiển, phần mềm ký của nhà cung cấp chứng thư số; dùng trình duyệt Chrome hoặc Edge.
+P864: Chứng thư số hết hạn hoặc bị thu hồi: liên hệ tổ chức chứng thực.
+P865: Hợp đồng chưa đủ 3 bên duyệt ở bước 6 thì chưa ký được.
+P867: Bước 8 – Xác nhận tạm ứng (Bên mua, bên bán)
+P868: Bên mua ghi nhận khoản tạm ứng đã chuyển; bên bán xác nhận đã nhận tiền.
+P870: Hình 31. Bước 8 – biểu mẫu Xác nhận Tạm ứng
+P871: 1
+P872: Số tiền tạm ứng (VNĐ) * – nhập số, hệ thống tự thêm dấu phân cách.
+P873: 2
+P874: Ngày chuyển * – ngày chuyển khoản.
+P875: 3
+P876: Chứng từ chuyển tiền – PDF, JPG, PNG, tối đa 10 MB.
+P877: 4
+P878: Bên bán đã nhận tiền tạm ứng – bên bán bật khi đã nhận tiền.
+P879: 5
+P880: Nút Cập nhật để lưu; Hủy để bỏ thay đổi.
+P881: 6
+P882: Nút Tiếp tục bước 9.
+P884: Bên mua nhập số tiền, ngày chuyển, đính kèm chứng từ, bấm Cập nhật.
+P885: Bên bán mở bước 8, kiểm tra số tiền, bật Bên bán đã nhận tiền tạm ứng, bấm Cập nhật.
+P886: Bấm Tiếp tục bước 9.
+P887: Kiểm tra: màn hình bước 8 hiển thị số tiền, ngày chuyển, tệp chứng từ và nhãn Đã xác nhận.
+P888: Không lưu được?
+P889: Chưa nhập Số tiền tạm ứng hoặc Ngày chuyển.
+P890: Tệp chứng từ sai định dạng hoặc lớn hơn 10 MB.
+P891: Bước 9 – Thử nghiệm (pilot) (Bên bán thực hiện, bên mua xác nhận)
+P892: Bên bán chạy thử, ghi kết quả; bên mua đối chiếu với cam kết.
+P894: Hình 32. Bước 9 – biểu mẫu Thử nghiệm Pilot
+P895: 1
+P896: Mô tả thử nghiệm * – phạm vi, địa điểm, cách thử.
+P897: 2
+P898: Kết quả thử nghiệm * – số liệu đo được, đối chiếu tiêu chuẩn.
+P899: 3
+P900: Vấn đề phát sinh và Giải pháp khắc phục.
+P901: 4
+P902: Ngày bắt đầu, Ngày kết thúc thử nghiệm.
+P903: 5
+P904: Thử nghiệm đạt yêu cầu – bật khi bên mua chấp nhận kết quả.
+P905: 6
+P906: File kết quả – biên bản, ảnh, số liệu (PDF, Word, Excel, ảnh; tối đa 10 MB).
+P907: 7
+P908: Nút Cập nhật.
+P910: Bên bán nhập mô tả, kết quả, vấn đề và giải pháp, ngày thử nghiệm; đính kèm File kết quả; bấm Cập nhật.
+P911: Bên mua xem kết quả; nếu đạt, bật Thử nghiệm đạt yêu cầu, bấm Cập nhật. Chưa đạt: trao đổi qua Tin nhắn, bên bán thử lại và cập nhật.
+P912: Bấm Tiếp tục bước 10.
+P913: Kiểm tra: bước 9 hiển thị nhãn Đạt yêu cầu và tệp kết quả.
+P914: Bước 10 – Bàn giao, triển khai thiết bị (Bên bán bàn giao, bên mua xác nhận)
+P915: Bên bán vận chuyển, lắp đặt, thiết lập thiết bị hoặc hệ thống tại địa điểm của bên mua theo hợp đồng; bên mua kiểm tra và xác nhận đã nhận bàn giao. Việc đào tạo vận hành được xác nhận riêng ở bước 11.
+P917: Hình 33. Bước 10 – biểu mẫu Bàn giao & triển khai thiết bị
+P918: 1
+P919: Ô gạt xác nhận bên mua đã nhận bàn giao: thiết bị, hệ thống đã lắp đặt và vận hành theo hợp đồng.
+P920: 2
+P921: Đánh giá (1–5 sao) chất lượng bàn giao.
+P922: 3
+P923: Nhận xét của bên mua.
+P924: 4
+P925: Nút Cập nhật.
+P927: Bên mua kiểm tra tại hiện trường theo hợp đồng: số lượng, chủng loại, lắp đặt, chạy thử.
+P928: Khi đạt yêu cầu, bên mua bật ô xác nhận (số 1), chọn số sao, nhập nhận xét, bấm Cập nhật. Chưa đạt: không bật ô xác nhận, trao đổi qua Tin nhắn để bên bán khắc phục.
+P929: Bấm Tiếp tục bước 11.
+P930: Kiểm tra: bước 10 hiển thị trạng thái đã xác nhận bàn giao, số sao đánh giá và nhận xét.
+P931: Bước 11 – Đào tạo, chuyển giao vận hành (Bên bán)
+P932: Bên bán ghi nhận nội dung và kết quả đào tạo cho nhân sự bên mua.
+P934: Hình 34. Bước 11 – biểu mẫu Đào tạo & Chuyển giao Vận hành
+P935: 1
+P936: Nội dung đào tạo * – các chuyên đề đã đào tạo.
+P937: 2
+P938: Số người tham gia, Số giờ đào tạo.
+P939: 3
+P940: Đã hoàn thành đào tạo và ngày bắt đầu, kết thúc.
+P941: 4
+P942: Tài liệu đào tạo, Video hướng dẫn (tệp đính kèm).
+P943: 5
+P944: Nút Cập nhật.
+P946: Bên bán nhập nội dung, số người, số giờ, thời gian đào tạo; đính kèm tài liệu, video; bấm Cập nhật.
+P947: Sau khi đào tạo xong, bật Đã hoàn thành đào tạo, bấm Cập nhật.
+P948: Bấm Tiếp tục bước 12.
+P949: Kiểm tra: bước 11 hiển thị số người, số giờ, tệp đính kèm và nhãn Đã hoàn thành.
+P950: Bước 12 – Bàn giao hồ sơ kỹ thuật (Bên bán)
+P951: Bên bán bàn giao bản vẽ, thông số, tài liệu vận hành, bảo trì.
+P953: Hình 35. Bước 12 – biểu mẫu Bàn giao Hồ sơ Kỹ thuật
+P954: 1
+P955: Source Code, Database – đường dẫn hoặc mô tả (nếu công nghệ có phần mềm).
+P956: 2
+P957: Tệp Tài liệu kỹ thuật, Tài liệu hướng dẫn SD, Tài liệu bảo trì.
+P958: 3
+P959: Ghi chú, Ngày bàn giao.
+P960: 4
+P961: Đã bàn giao đầy đủ hồ sơ – bật khi đủ danh mục theo hợp đồng.
+P962: 5
+P963: Nút Cập nhật.
+P965: Bên bán tải lên các tệp hồ sơ kỹ thuật, nhập ghi chú, ngày bàn giao; bấm Cập nhật.
+P966: Bên mua kiểm tra danh mục; khi đủ, bật Đã bàn giao đầy đủ hồ sơ, bấm Cập nhật.
+P967: Bấm Tiếp tục bước 13.
+P968: Kiểm tra: bước 12 liệt kê tên các tệp đã bàn giao và nhãn Đã bàn giao đầy đủ.
+P969: Bước 13 – Nghiệm thu (Bên mua, bên bán; chuyên gia theo dõi)
+P970: Hai bên lập biên bản nghiệm thu, đối chiếu Tiêu chuẩn nghiệm thu đã nêu ở RFQ (bước 3), rồi xác nhận biên bản bằng OTP.
+P972: Hình 36. Bước 13 – biểu mẫu Nghiệm thu
+P973: 1
+P974: Ngày nghiệm thu *.
+P975: 2
+P976: Thành phần tham gia – đại diện các bên, tư vấn giám sát.
+P977: 3
+P978: Kết luận nghiệm thu – đạt/không đạt, căn cứ.
+P979: 4
+P980: Vấn đề tồn đọng (nếu có).
+P981: 5
+P982: Nút Cập nhật.
+P984: Bên mua (hoặc bên bán) nhập ngày, thành phần, kết luận, tồn đọng; bấm Cập nhật.
+P985: Tại khối Ký xác nhận nghiệm thu, mỗi bên bấm Gửi OTP & Ký xác nhận; mã OTP gửi tới email/số điện thoại của tài khoản (Hình 37).
+P986: Nhập mã 6 số vào ô Nhập mã OTP, bấm Xác nhận & Ký. Chưa nhận mã: chờ hết thời gian đếm ngược rồi bấm Gửi lại.
+P987: Khi cả hai bên đã ký, bấm Tiếp tục bước 14.
+P989: Hình 37. Bước 13 – xác nhận biên bản nghiệm thu bằng OTP
+P990: 1
+P991: Khối ký của bên mua (Bên A).
+P992: 2
+P993: Ô Nhập mã OTP (6 số) và nút Gửi lại; bên dưới hiển thị thời gian hiệu lực còn lại.
+P994: 3
+P995: Nút Xác nhận & Ký.
+P996: 4
+P997: Khối ký của bên bán (Bên B) – hiển thị trạng thái chờ hoặc đã ký.
+P1000: Hình 38. Bước 13 – biên bản nghiệm thu đã được hai bên xác nhận
+P1001: 1
+P1002: Nội dung biên bản đã lưu.
+P1003: 2
+P1004: Thông báo Biên bản nghiệm thu đã được ký đầy đủ!
+P1005: 3
+P1006: Bên A đã ký.
+P1007: 4
+P1008: Bên B đã ký.
+P1009: 5
+P1010: Nút Tiếp tục bước 14.
+P1012: Kiểm tra: dòng Biên bản nghiệm thu đã được ký đầy đủ! và tên hai bên đã ký (Hình 38). Sau khi ký đủ, biên bản bị khóa, không còn nút Chỉnh sửa.
+P1013: Không ký được?
+P1014: Mã OTP sai hoặc hết hạn (đếm ngược dưới ô nhập): bấm Gửi lại, nhập mã mới nhất.
+P1015: Không nhận được email/SMS: kiểm tra email, số điện thoại trong Hồ sơ tài khoản; xem Mục 7.
+P1016: Bước 14 – Thanh lý hợp đồng (Bên mua, bên bán)
+P1017: Hoàn tất nghĩa vụ tài chính còn lại và đóng hợp đồng.
+P1019: Hình 39. Bước 14 – biểu mẫu Thanh lý
+P1020: 1
+P1021: Giá trị thanh toán còn lại (VNĐ).
+P1022: 2
+P1023: Số hóa đơn.
+P1024: 3
+P1025: File hóa đơn.
+P1026: 4
+P1027: Đã chuyển tiền – bật khi đã thanh toán phần còn lại.
+P1028: 5
+P1029: Hợp đồng đã đóng – bật để kết thúc hợp đồng.
+P1030: 6
+P1031: Nút Cập nhật.
+P1033: Bên mua nhập giá trị còn lại, số hóa đơn, đính kèm hóa đơn; bật Đã chuyển tiền sau khi thanh toán.
+P1034: Hai bên đối chiếu; bật Hợp đồng đã đóng, bấm Cập nhật.
+P1035: Kiểm tra: hồ sơ hiển thị Đã hoàn tất; thanh tiến trình đạt 100% với thông báo Quy trình giao dịch đã hoàn tất; hồ sơ trong Hồ sơ giao dịch của tôi có trạng thái hoàn thành.
+P1036: 4.4. Quản lý thành viên hồ sơ
+P1038: Hình 40. Hộp Quản lý thành viên hồ sơ
+P1039: 1
+P1040: Danh sách thành viên: họ tên, email, vai trò (Buyer, Seller, Consultant).
+P1041: 2
+P1042: Chọn Consultant: gõ tên để tìm chuyên gia tư vấn.
+P1043: 3
+P1044: Nút Thêm Consultant.
+P1046: Mở hồ sơ, bấm Thành viên hồ sơ.
+P1047: Gõ tên chuyên gia vào ô Chọn Consultant, chọn đúng người.
+P1048: Bấm Thêm Consultant; kiểm tra người được thêm xuất hiện trong danh sách với vai trò Consultant.
+P1049: 5. Hướng dẫn cho nhà cung cấp
+P1050: 5.1. Khai báo hồ sơ nhà cung cấp
+P1051: Điều kiện: đã đăng nhập. Đường đi: Dashboard › Dịch vụ của tôi › Hồ sơ nhà cung ứng. Hồ sơ phải được Ban quản trị duyệt trước khi công bố và được đăng bán.
+P1053: Hình 41. Cập nhật hồ sơ nhà cung ứng – thẻ I. Thông tin định danh
+P1054: 1
+P1055: Menu Hồ sơ nhà cung ứng.
+P1056: 2
+P1057: Bốn thẻ: I. Thông tin định danh, II. Năng lực & Lĩnh vực, III. Dịch vụ & Sản phẩm, IV. Hồ sơ & Media. Nhãn góc phải là trạng thái hồ sơ (ví dụ Nháp).
+P1058: 3
+P1059: 1. Tên đơn vị *.
+P1060: 4
+P1061: 3. Loại hình tổ chức *.
+P1064: Hình 42. Thông tin liên hệ, nhận chuyển khoản và người đại diện
+P1065: 1
+P1066: Thông tin nhận chuyển khoản (số tài khoản, ngân hàng, chủ tài khoản) – chỉ khai khi bán sản phẩm đặt mua trực tiếp; bỏ trống nếu chưa cần.
+P1067: 2
+P1068: 5. Người đại diện pháp luật * và Chức vụ *.
+P1071: Hình 43. Thẻ IV. Hồ sơ & Media và nút Cập nhật hồ sơ
+P1072: 1
+P1073: Thẻ IV. Hồ sơ & Media.
+P1074: 2
+P1075: Logo đơn vị, ảnh trụ sở/hoạt động, video giới thiệu.
+P1076: 3
+P1077: Giấy phép hoạt động KH&CN / Chứng chỉ chất lượng (PDF, ảnh) – tài liệu xác thực pháp lý.
+P1078: 4
+P1079: Nút Cập nhật hồ sơ.
+P1081: Thẻ I: nhập Tên đơn vị *, tên viết tắt, chọn Loại hình tổ chức *; thông tin liên hệ: Địa chỉ *, Điện thoại *, Email *, website, mã số thuế; Người đại diện pháp luật *, Chức vụ *.
+P1082: Thẻ II: chọn Lĩnh vực hoạt động chính * (tối đa 03); nhập Chức năng nhiệm vụ / Giá trị cốt lõi * (tối đa 300 chữ).
+P1083: Thẻ III: chọn Dịch vụ khoa học và công nghệ *; mô tả sản phẩm, kết quả nghiên cứu chủ lực.
+P1084: Thẻ IV: tải logo, ảnh, giấy phép/chứng chỉ; nhập từ khóa tìm kiếm (cách nhau dấu phẩy).
+P1085: Bấm Cập nhật hồ sơ.
+P1086: Kiểm tra: hệ thống báo lưu thành công; hồ sơ chờ Ban quản trị duyệt. Khi được duyệt, hồ sơ hiển thị công khai và bạn được đăng sản phẩm.
+P1087: Không lưu được?
+P1088: Thông báo “Chỉ được chọn tối đa 3 lĩnh vực”: bỏ bớt lĩnh vực.
+P1089: Trường * còn trống ở thẻ khác: chuyển lần lượt các thẻ I–IV để kiểm tra trường tô đỏ.
+P1090: Tệp tải lên quá dung lượng hoặc sai định dạng: dùng PDF/JPG/PNG, giảm dung lượng.
+P1092: 5.2. Đăng sản phẩm và gửi duyệt
+P1093: Đường đi: Dashboard › Công nghệ & thiết bị.
+P1095: Hình 44. Quản lý Sản phẩm / Công nghệ
+P1096: 1
+P1097: Menu Công nghệ & thiết bị.
+P1098: 2
+P1099: Nút Thêm mới.
+P1100: 3
+P1101: Lọc theo Trạng thái: Chờ duyệt, Đang duyệt, Đã duyệt, Từ chối; lọc theo Loại.
+P1102: 4
+P1103: Cột Trạng thái của từng sản phẩm.
+P1104: 5
+P1105: Hạn mức gói gian hàng: số sản phẩm đã đăng / tối đa (Mục 5.7).
+P1108: Hình 45. Chọn loại sản phẩm khi Thêm mới
+P1109: Bấm Thêm mới, chọn loại: Công nghệ, Thiết bị hoặc Sở hữu trí tuệ.
+P1110: Nhập lần lượt 7 thẻ của biểu mẫu (Bảng dưới); bấm Tiếp theo để sang thẻ kế tiếp, Quay lại để về thẻ trước.
+P1111: Tại thẻ cuối, bấm Gửi đăng ký.
+P1112: Kiểm tra: sản phẩm xuất hiện trong danh sách với trạng thái Chờ duyệt. Sản phẩm chỉ hiển thị công khai khi Ban quản trị Xuất bản.
+P1113: Bảng 5. Các thẻ của biểu mẫu Đăng ký Công nghệ mới
+P1114: Thẻ
+P1115: Trường bắt buộc (*)
+P1116: Ghi chú
+P1117: I. Chủ sở hữu
+P1118: Tên nhà cung ứng/đơn vị chủ sở hữu, Loại hình
+P1119: Thông tin liên hệ tự điền từ hồ sơ nhà cung cấp
+P1120: II. Định danh
+P1121: Tên công nghệ/quy trình, Ảnh đại diện, Xuất xứ
+P1122: Tình trạng pháp lý & SHTT (số bằng, ngày cấp); ô Yêu cầu ký NDA và nội dung NDA
+P1123: III. Mô tả
+P1124: Bối cảnh & vấn đề giải quyết, Nguyên lý vận hành & sơ đồ quy trình, Thông số kỹ thuật chủ yếu
+P1125: Ưu điểm nổi bật
+P1126: IV. TRL
+P1127: Chọn mức sẵn sàng công nghệ TRL 1–9
+P1129: V. Ứng dụng
+P1130: Lĩnh vực ứng dụng, Đối tượng khách hàng mục tiêu
+P1131: Hiệu quả kinh tế – xã hội
+P1132: VI. Chuyển giao
+P1133: Hình thức chuyển giao, Giá bán dự kiến
+P1134: Chi phí phát sinh khác, bảo hành & hỗ trợ kỹ thuật
+P1135: VII. Chứng nhận
+P1136: —
+P1137: ISO/CE/HACCP, phiếu kiểm nghiệm; video (YouTube/tệp), brochure (tệp/URL)
+P1140: Hình 46. Thẻ I. Chủ sở hữu
+P1141: 1
+P1142: Thẻ I. Chủ sở hữu.
+P1143: 2
+P1144: Tên nhà cung ứng / đơn vị chủ sở hữu *.
+P1145: 3
+P1146: Loại hình *.
+P1147: 4
+P1148: Nút Tiếp theo.
+P1151: Hình 47. Thẻ II. Định danh – tên, ảnh, xuất xứ, NDA
+P1152: 1
+P1153: Tên công nghệ / quy trình *.
+P1154: 2
+P1155: Ảnh đại diện *: dán URL hoặc bấm Upload.
+P1156: 3
+P1157: Xuất xứ *.
+P1158: 4
+P1159: Ô Yêu cầu ký thỏa thuận bảo mật (NDA) trước khi trao đổi chi tiết – đánh dấu nếu thông tin cần bảo mật; khi đó hồ sơ giao dịch có bước 2 NDA.
+P1162: Hình 48. Thẻ III. Mô tả chi tiết giải pháp
+P1164: Hình 49. Thẻ VI. Phương thức chuyển giao & Giá
+P1165: 1
+P1166: Thẻ VI. Chuyển giao.
+P1167: 2
+P1168: Hình thức chuyển giao * (chọn một hoặc nhiều).
+P1169: 3
+P1170: Giá bán dự kiến *.
+P1173: Hình 50. Thẻ VII. Chứng nhận & Tài liệu số và nút Gửi đăng ký
+P1174: 1
+P1175: Thẻ VII. Chứng nhận.
+P1176: 2
+P1177: Chứng nhận chất lượng.
+P1178: 3
+P1179: Dữ liệu đa phương tiện: video vận hành, brochure/catalogue.
+P1180: 4
+P1181: Nút Gửi đăng ký.
+P1183: Không gửi được đăng ký?
+P1184: Trường * ở thẻ khác còn trống: chuyển lại từng thẻ để kiểm tra.
+P1185: Chưa có hồ sơ nhà cung cấp được duyệt: danh sách Tên nhà cung ứng trống – hoàn thành Mục 5.1 trước.
+P1186: Đã đạt hạn mức gói gian hàng: liên hệ Sàn để nâng gói (Mục 5.7).
+P1188: 5.3. Theo dõi trạng thái, chỉnh sửa khi bị trả về
+P1189: Trạng thái hiển thị
+P1190: Ý nghĩa
+P1191: Việc cần làm
+P1192: Chờ duyệt
+P1193: Đã gửi, chờ Ban quản trị xem
+P1194: Chờ; có thể sửa nếu phát hiện sai
+P1195: Đang duyệt
+P1196: Ban quản trị đang kiểm tra
+P1197: Không sửa trong lúc này
+P1198: Đã duyệt
+P1199: Đã xuất bản, hiển thị công khai
+P1200: Theo dõi lượt xem, liên hệ, giao dịch
+P1201: Từ chối (bị trả về)
+P1202: Nội dung chưa đạt, cần sửa
+P1203: Sửa theo góp ý rồi gửi lại
+P1205: Tại Công nghệ & thiết bị, lọc Trạng thái = Từ chối để xem sản phẩm bị trả về.
+P1206: Đọc lý do trả về trong thông báo/Tin nhắn từ cán bộ Sàn; chưa rõ lý do thì nhắn hỏi qua Tin nhắn hoặc gửi yêu cầu hỗ trợ.
+P1207: Bấm biểu tượng Chỉnh sửa (bút) ở cột Thao tác, sửa nội dung theo góp ý.
+P1208: Bấm Gửi đăng ký để gửi lại; trạng thái trở về Chờ duyệt. Mỗi lần sửa hệ thống lưu một phiên bản.
+P1209: Lưu ý
+P1210: Sản phẩm đã duyệt nếu sửa sẽ quay về chờ duyệt trước khi hiển thị bản mới.
+P1211: Biểu tượng thùng rác (Xóa) xóa sản phẩm; chỉ xóa khi chắc chắn không còn giao dịch liên quan.
+P1213: 5.4. Tham gia yêu cầu báo giá (RFQ) và nộp hồ sơ đề xuất
+P1214: Khi bên mua mời, bạn nhận thông báo (chuông, email). Mở trang Lời mời tham gia: menu tài khoản › mục Giao dịch › Lời mời tham gia (hiển thị khi tài khoản có hồ sơ nhà cung cấp và có lời mời đang chờ), hoặc bấm vào thông báo.
+P1216: Hình 51. Thẻ lời mời báo giá trên trang Lời mời tham gia
+P1217: 1
+P1218: Trạng thái lời mời: Chưa ký NDA, Chờ phản hồi, Đã gửi báo giá…
+P1219: 2
+P1220: Mã RFQ và ngày mời.
+P1221: 3
+P1222: Hạn nộp hồ sơ và số ngày còn lại.
+P1223: 4
+P1224: Nút thao tác: Ký NDA / Chấp nhận & xem chi tiết / Từ chối.
+P1226: Nếu thẻ ghi Chưa ký NDA: bấm Ký NDA và ký theo Hình 23 (Mục 4.3, bước 2).
+P1227: Bấm Chấp nhận & xem chi tiết để nhận lời mời; trang chi tiết dự án mở ra (Hình 52). Không tham gia: bấm Từ chối, nhập lý do.
+P1228: Đọc Mô tả yêu cầu của RFQ và Hạn chót nộp hồ sơ.
+P1229: Bấm Gửi báo giá; nhập biểu mẫu (Hình 53): tệp Giải pháp kỹ thuật *, Báo giá sơ bộ (VNĐ), Thời gian triển khai *, tệp Hồ sơ năng lực *.
+P1230: Bấm Gửi báo giá.
+P1232: Hình 52. Trang chi tiết dự án được mời (sau khi đã gửi báo giá)
+P1233: 1
+P1234: Hạn chót nộp hồ sơ và Trạng thái lời mời.
+P1235: 2
+P1236: Quy trình tham gia 4 bước: Ký NDA › Chấp nhận tham gia › Gửi báo giá › Được chọn.
+P1237: 3
+P1238: Yêu cầu báo giá (RFQ) – yêu cầu kỹ thuật bên mua đưa ra.
+P1239: 4
+P1240: Nút Gửi báo giá (trước khi gửi) hoặc Xem báo giá của tôi (sau khi gửi).
+P1243: Hình 53. Biểu mẫu Gửi báo giá (hồ sơ đề xuất)
+P1244: 1
+P1245: Giải pháp kỹ thuật * – tệp PDF, DOC, DOCX, tối đa 10 MB.
+P1246: 2
+P1247: Báo giá sơ bộ (VNĐ) – để trống nếu chưa có giá cụ thể.
+P1248: 3
+P1249: Thời gian triển khai * – thời gian dự kiến hoàn thành.
+P1250: 4
+P1251: Hồ sơ năng lực * – tệp PDF, DOC, DOCX, tối đa 10 MB.
+P1252: 5
+P1253: Nút Gửi báo giá.
+P1255: Kiểm tra: ô Gửi báo giá trong Quy trình tham gia chuyển Đã gửi, trạng thái lời mời Đã gửi báo giá; hồ sơ của bạn xuất hiện trong bảng so sánh báo giá của bên mua và trong danh sách chấm điểm của chuyên gia. Khi bên mua chọn, ô Được chọn chuyển trạng thái và hồ sơ giao dịch hiển thị trong Hồ sơ giao dịch của tôi.
+P1256: Không nộp được?
+P1257: Đã quá Hạn chót nộp hồ sơ: hệ thống không cho gửi; liên hệ bên mua/cán bộ Sàn nếu cần gia hạn.
+P1258: Chưa ký NDA hoặc chưa được mời vào hồ sơ.
+P1259: Tệp quá dung lượng: nén hoặc tách tệp.
+P1260: 5.5. Xử lý yêu cầu khách gửi trực tiếp
+P1262: Hình 54. Yêu cầu khách gửi (chưa có yêu cầu)
+P1263: Vào Dashboard › Yêu cầu khách gửi.
+P1264: Mở yêu cầu đặt mua/quan tâm, liên hệ khách để thống nhất giao hàng, thanh toán.
+P1265: Cập nhật trạng thái: Xác nhận (đã tiếp nhận) › Hoàn tất (đã xử lý xong; nhập giá trị đơn và tình trạng thanh toán) hoặc Hủy (không thể xử lý/khách không tiếp tục).
+P1266: Khi bấm hoàn tất mà chưa nhập giá trị đơn, hệ thống tạm tính bằng giá tham khảo × số lượng; nên nhập giá trị thực để báo cáo của Sàn chính xác.
+P1267: 5.6. Bài viết của nhà cung cấp
+P1269: Hình 55. Bài viết của tôi
+P1271: Hình 56. Viết bài mới
+P1272: 1
+P1273: Tiêu đề *; Tóm tắt; Nội dung * (văn bản thuần, để một dòng trống giữa các đoạn).
+P1274: 2
+P1275: Nút Lưu nháp.
+P1276: 3
+P1277: Nút Gửi duyệt.
+P1279: Vào Bài viết của tôi, bấm Viết bài mới.
+P1280: Nhập tiêu đề, tóm tắt, nội dung.
+P1281: Bấm Lưu nháp để lưu tạm hoặc Gửi duyệt để gửi Sàn.
+P1282: Sàn bổ sung ảnh, định dạng rồi xuất bản; bài bị trả về thì sửa và gửi duyệt lại.
+P1283: Thuê gian hàng sự kiện: mở tin sự kiện có mục Gian hàng tại sự kiện, xem loại gian hàng, giá, dịch vụ đi kèm; bấm Đăng ký thuê gian hàng, chờ Sàn duyệt.
+P1284: 5.7. Gói gian hàng, hạng nhà cung cấp và thống kê
+P1285: Đầu danh sách sản phẩm hiển thị số sản phẩm đã đăng / hạn mức gói gian hàng (ví dụ “1 / 5 sản phẩm (chưa có gói)”) và ngày hết hạn gói; liên hệ Sàn khi cần nâng gói.
+P1286: Hạng nhà cung cấp (Vàng, Bạc, Thành viên) xét theo tiêu chí do Sàn thiết lập; huy hiệu hạng hiển thị tại trang gian hàng.
+P1287: Các cột Lượt xem, Liên hệ, Giao dịch cho từng sản phẩm, kèm tổng số ở đầu bảng.
+P1288: 6. Hướng dẫn cho chuyên gia tư vấn
+P1289: 6.1. Đăng ký hồ sơ chuyên gia
+P1290: Đường đi: Dashboard › Dịch vụ của tôi › Hồ sơ chuyên gia.
+P1292: Hình 57. Cập nhật hồ sơ Nhà tư vấn / Chuyên gia
+P1293: 1
+P1294: Bốn thẻ: I. Thông tin cá nhân, II. Đào tạo & Công tác, III. Nghiên cứu & Công bố, IV. Dịch vụ & Hồ sơ.
+P1295: 2
+P1296: 1. Họ và tên *.
+P1297: 3
+P1298: 2. Học hàm / Học vị *.
+P1299: 4
+P1300: 4. Cơ quan công tác * và Chức vụ *.
+P1301: 5
+P1302: Nút Cập nhật hồ sơ.
+P1304: Thẻ I: họ tên, học hàm/học vị, địa chỉ *, điện thoại *, cơ quan công tác *, chức vụ *, ảnh đại diện.
+P1305: Thẻ II: quá trình đào tạo *, quá trình công tác *, hiệp hội khoa học.
+P1306: Thẻ III: lĩnh vực nghiên cứu * (tối đa 03), công bố khoa học *, mã ORCID, sáng chế, đề tài/dự án.
+P1307: Thẻ IV: dịch vụ tư vấn cung cấp, hồ sơ đính kèm.
+P1308: Bấm Cập nhật hồ sơ; hồ sơ được duyệt trước khi hiển thị trong Mạng lưới chuyên gia.
+P1309: 6.2. Tiếp nhận phân công
+P1310: Chuyên gia được thêm vào hồ sơ giao dịch bởi cán bộ Sàn (CMS › Dự án › Thêm nhà tư vấn) hoặc bên mua (Thành viên hồ sơ › Thêm Consultant).
+P1311: Bạn nhận thông báo; hồ sơ xuất hiện trong Hồ sơ giao dịch của tôi với vai trò Consultant (Hình 58).
+P1312: Mở hồ sơ, xem bước đang xử lý; trao đổi với các bên qua Tin nhắn.
+P1314: Hình 58. Hồ sơ được phân công trong Hồ sơ giao dịch của tôi (tài khoản chuyên gia)
+P1315: 1
+P1316: Mã hồ sơ và tên hồ sơ.
+P1317: 2
+P1318: Vai trò của bạn trong hồ sơ (hiển thị Consultant – chuyên gia tư vấn).
+P1319: 3
+P1320: Nút Xem để mở hồ sơ.
+P1322: 6.3. Đánh giá hồ sơ đề xuất (bước 4)
+P1323: Mở hồ sơ › nút Nộp hồ sơ đề xuất (bước 4); mục Đánh giá báo giá liệt kê từng hồ sơ báo giá đã nộp (Hình 59).
+P1324: Bấm Tải giải pháp kỹ thuật, Tải hồ sơ năng lực để xem tài liệu của nhà cung cấp.
+P1325: Chấm 4 tiêu chí bằng cách bấm số sao (thang 10): Điểm kỹ thuật, Điểm giá, Điểm tiến độ, Điểm tổng thể.
+P1326: Nhập Nhận xét, bấm Lưu đánh giá.
+P1328: Hình 59. Chuyên gia chấm điểm hồ sơ báo giá (bước 4)
+P1329: 1
+P1330: Thông tin hồ sơ báo giá: nhà cung ứng, giá, thời gian.
+P1331: 2
+P1332: Nút tải Giải pháp kỹ thuật, Hồ sơ năng lực.
+P1333: 3
+P1334: Thang sao chấm điểm (bấm sao thứ n = n điểm); có 4 tiêu chí.
+P1335: 4
+P1336: Ô Nhận xét.
+P1337: 5
+P1338: Nút Lưu đánh giá.
+P1340: Kiểm tra: thông báo lưu thành công; số điểm hiển thị dưới từng tiêu chí; bên mua thấy Điểm TB và Nhận xét của tư vấn trong bảng so sánh báo giá (Hình 26). Có thể chấm lại trước khi bên mua chọn nhà cung cấp.
+P1341: 6.4. Kiểm tra pháp lý và cập nhật kết quả (bước 6, 13)
+P1342: Tại khối Kiểm tra pháp lý hợp đồng (Hình 28), đọc dự thảo; góp ý trực tiếp bằng Chỉnh sửa hoặc qua Tin nhắn.
+P1343: Ở dòng Tư vấn (Tư vấn) của khối Phê duyệt (3 bên), bấm ✓ để duyệt hoặc ✗ để từ chối kèm lý do.
+P1344: Ở bước 13 Nghiệm thu, mở biên bản, đối chiếu kết quả với Tiêu chuẩn nghiệm thu trong RFQ; góp ý cho các bên qua Tin nhắn trước khi bên mua, bên bán xác nhận biên bản bằng OTP (Hình 37).
+P1345: 7. Xử lý lỗi thường gặp
+P1346: Bảng 6. Lỗi thường gặp và cách xử lý
+P1347: Hiện tượng
+P1348: Nguyên nhân thường gặp
+P1349: Cách xử lý
+P1350: Không đăng nhập được
+P1351: Sai tên đăng nhập/mật khẩu; bật Caps Lock; tài khoản tạm khóa do nhập sai nhiều lần; tài khoản bị khóa
+P1352: Kiểm tra Caps Lock, gõ lại; dùng Quên mật khẩu?; chờ hết thời gian tạm khóa; tài khoản bị khóa thì liên hệ Ban quản lý Sàn để biết lý do
+P1353: Không nhận được OTP (SMS/email)
+P1354: Sai số điện thoại/email; điện thoại chặn tin thương hiệu; thư vào Spam; gửi lại quá nhanh
+P1355: Kiểm tra lại số/email ở Hồ sơ tài khoản; xem thư mục Spam; chờ 1–2 phút rồi gửi lại; vẫn lỗi thì gọi hotline
+P1356: Mã OTP báo không đúng/hết hạn
+P1357: Nhập mã cũ; quá thời gian hiệu lực
+P1358: Bấm gửi mã mới, nhập mã mới nhất
+P1359: Không tải được tệp lên
+P1360: Sai định dạng; vượt dung lượng (giấy tờ ≤ 5 MB, tệp chat ≤ 10 MB); mạng chập chờn
+P1361: Đổi sang PDF/JPG/PNG/Word/Excel; nén, giảm dung lượng; thử lại hoặc đổi trình duyệt
+P1362: Không thấy chức năng/menu
+P1363: Chưa đăng nhập; tài khoản chưa có vai trò tương ứng (chưa có hồ sơ nhà cung cấp/chuyên gia được duyệt); màn hình nhỏ làm menu thu gọn
+P1364: Đăng nhập; hoàn thành hồ sơ ở Mục 5.1/6.1 và chờ duyệt; trên điện thoại bấm biểu tượng ☰ để mở menu
+P1365: Báo “Không có quyền truy cập”
+P1366: Mở hồ sơ mà bạn không phải thành viên; đường dẫn từ người khác
+P1367: Đề nghị bên mua thêm bạn vào Thành viên hồ sơ hoặc liên hệ cán bộ Sàn
+P1368: Không gửi được yêu cầu
+P1369: Trường * còn trống; chưa đánh dấu ô xác nhận; sai phép tính xác thực; phiên đăng nhập hết hạn
+P1370: Xem trường tô đỏ, bổ sung; đánh dấu ô xác nhận; đăng nhập lại
+P1371: Không chuyển được sang bước tiếp theo
+P1372: Bước hiện tại chưa đủ điều kiện (chưa ký, chưa chọn nhà cung cấp, chưa đủ 3 bên duyệt)
+P1373: Đối chiếu cột Điều kiện chuyển bước ở Bảng 3; gửi Yêu cầu Trung tâm tư vấn
+P1374: Không ký được hợp đồng
+P1375: Chưa đủ phê duyệt bước 6; không nhận OTP ký số; USB Token chưa cài trình điều khiển; chứng thư hết hạn
+P1376: Hoàn tất bước 6; xem Mục 4.3 bước 7; liên hệ tổ chức chứng thực
+P1377: Không nộp được hồ sơ đề xuất
+P1378: Quá hạn chót; chưa ký NDA; chưa được mời
+P1379: Liên hệ bên mua/cán bộ Sàn
+P1380: Sản phẩm không hiển thị ngoài trang
+P1381: Còn Chờ duyệt hoặc Từ chối; hết hiệu lực
+P1382: Theo dõi trạng thái ở Công nghệ & thiết bị; sửa và gửi lại
+P1383: Trang hiển thị lỗi, trắng trang
+P1384: Bộ nhớ đệm trình duyệt; mạng
+P1385: Tải lại trang (Ctrl+F5); thử trình duyệt khác; báo hotline kèm ảnh chụp màn hình và thời điểm lỗi
+P1387: Kênh hỗ trợ: Hotline Trung tâm +84 292 3907 037 · Email trungtamungdung@cantho.gov.vn · Thời gian tiếp nhận: Thứ 2 – Thứ 6, 7:30–11:30, 13:30–17:00 · Hoặc dùng Yêu cầu Trung tâm tư vấn trong hồ sơ. Khi báo lỗi, gửi kèm: tên đăng nhập, mã hồ sơ (nếu có), thời điểm, ảnh chụp màn hình thông báo lỗi.
+P1388: Phụ lục A. Đối chiếu chức năng với E-HSMT
+P1389: Chức năng
+P1390: Mục E-HSMT
+P1391: Đối tượng
+P1392: Hướng dẫn tại
+P1393: Trang chủ, tin nổi bật, banner
+P1394: B.1.1, B.1.3, B.1.5
+P1395: Khách
+P1396: Mục 2.1
+P1397: Danh sách sản phẩm, bộ lọc, nhóm trưng bày
+P1398: B.1.4, A.3.1
+P1399: Khách
+P1400: Mục 2.1, 2.2
+P1401: Quan tâm, bình luận, đánh giá, chia sẻ, mã QR
+P1402: B.3.3, B.3.5, C.3, C.5
+P1403: Người mua
+P1404: Mục 2.2, 3.5
+P1405: Tìm kiếm thông minh, giọng nói
+P1406: C.9, C.10
+P1407: Mọi người dùng
+P1408: Mục 2.1
+P1409: Quên mật khẩu, đăng ký, dữ liệu cá nhân
+P1410: A.1.1
+P1411: Mọi người dùng
+P1412: Mục 2.3–2.7
+P1413: Phiên bản tiếng Anh
+P1414: C.8
+P1415: Mọi người dùng
+P1416: Mục 1.5; tài liệu 01b
+P1417: Sự kiện: đăng ký, nhắc lịch, gian hàng
+P1418: A.4.1 – A.4.5, B.1.6
+P1419: Người dùng
+P1420: Mục 2.9, 5.6; tài liệu 01b
+P1421: Hồ sơ giao dịch, quy trình 14 bước
+P1422: Nhóm 4, nhóm 6
+P1423: Các bên
+P1424: Mục 3.2, 3.3, 4
+P1425: Tin nhắn, gọi video
+P1426: C.7, A.2.10, A.5.3
+P1427: Người dùng
+P1428: Mục 3.6
+P1429: Tin tìm mua công nghệ
+P1430: B.3.1, B.3.2
+P1431: Người mua
+P1432: Mục 3.7
+P1433: Hồ sơ nhà cung cấp, hồ sơ pháp lý
+P1434: A.2.2, B.2.2
+P1435: Nhà cung cấp
+P1436: Mục 5.1
+P1437: Đăng sản phẩm; lịch sử chỉnh sửa
+P1438: A.2.6, A.2.7, A.3.2, B.2.5, A.8.3
+P1439: Nhà cung cấp
+P1440: Mục 5.2, 5.3
+P1441: Gói gian hàng, hạng nhà cung cấp
+P1442: A.2.3, A.2.4, B.2.1
+P1443: Nhà cung cấp
+P1444: Mục 5.7
+P1445: RFQ, hồ sơ đề xuất, báo giá
+P1446: B.2.4
+P1447: Nhà cung cấp
+P1448: Mục 4.3, 5.4
+P1449: Bài viết nhà cung cấp
+P1450: A.2.8
+P1451: Nhà cung cấp
+P1452: Mục 5.6
+P1453: Ký số, hợp đồng điện tử
+P1454: C.4
+P1455: Các bên
+P1456: Mục 4.3 (bước 5–7)
+P1457: Chức năng quản trị (duyệt, phân quyền, báo cáo, thu chi…)
+P1458: A.1.2, A.1.3, A.3.3–A.8.5
+P1459: Quản trị
+P1460: Tài liệu 01b
+P1462: Phụ lục B. Kết quả tự kiểm tra chức năng khi lập tài liệu
+P1463: Phụ lục ghi kết quả tự kiểm tra của nhà cung cấp khi lập tài liệu, trên phiên bản phần mềm ngày 26/10/2026 với tài khoản và dữ liệu thử. Kết quả này dùng để quản lý tình trạng tài liệu, không thay thế kết quả vận hành thử của đơn vị vận hành thử và nghiệm thu của Chủ trì thuê.
+P1464: Nhóm
+P1465: Chức năng (mục)
+P1466: Cách kiểm tra
+P1467: Kết quả
+P1468: Nội dung cần hoàn thiện
+P1469: Chung
+P1470: Tìm kiếm, chi tiết sản phẩm, đăng ký, đăng nhập, quên mật khẩu, hồ sơ tài khoản, đổi mật khẩu (2.1 – 2.8)
+P1471: Thao tác bằng tài khoản thử
+P1472: Thao tác được
+P1473: —
+P1474: Chung
+P1475: Xác thực số điện thoại, email bằng OTP (2.6)
+P1476: Thao tác bằng tài khoản thử
+P1477: Giao diện thao tác được
+P1478: OTP qua email: kiểm tra lại khi bật kênh thư (trước 28/10/2026). OTP qua SMS: kênh SMS đang chạy chế độ thử, chưa gửi tin thật
+P1479: Chung
+P1480: Sự kiện, câu hỏi thường gặp, bản tin, tiếng Anh (2.9)
+P1481: Thao tác bằng tài khoản thử
+P1482: Thao tác được
+P1483: Email xác nhận, nhắc lịch: kiểm tra lại khi bật kênh thư
+P1484: Người mua
+P1485: Gửi yêu cầu chuyển giao, theo dõi hồ sơ, yêu cầu tư vấn, đặt mua, tin nhắn, gọi video, tìm mua (3.2 – 3.7)
+P1486: Thao tác bằng tài khoản thử
+P1487: Thao tác được
+P1488: —
+P1489: Giao dịch
+P1490: Bước 1 – 6: yêu cầu, NDA, RFQ, hồ sơ đề xuất, đàm phán, kiểm tra pháp lý (4.3)
+P1491: Hồ sơ mẫu đã thực hiện đủ 14 bước; hồ sơ không áp dụng NDA
+P1492: Thao tác được
+P1493: —
+P1494: Giao dịch
+P1495: Bước 7: ký hợp đồng điện tử (4.3)
+P1496: Hồ sơ mẫu đã thực hiện đủ 14 bước
+P1497: Thao tác được ở chế độ thử nghiệm (nhúng chữ ký vào PDF, mã toàn vẹn, nhật ký ký số)
+P1498: Ký bằng chứng thư số của tổ chức chứng thực: kiểm tra khi kết nối dịch vụ ký số (đợt 2), chụp bổ sung hình
+P1499: Giao dịch
+P1500: Bước 8 – 14: tạm ứng, thử nghiệm, bàn giao, đào tạo, hồ sơ kỹ thuật, nghiệm thu, thanh lý (4.3)
+P1501: Hồ sơ mẫu đã thực hiện đủ 14 bước
+P1502: Thao tác được
+P1503: Bước 10: nhãn ô gạt xác nhận trên màn hình đang ghi “Đã hoàn thành đào tạo vận hành”; sửa nhãn thành nội dung xác nhận bàn giao và chụp lại Hình 33
+P1504: Giao dịch
+P1505: Thành viên hồ sơ (4.4)
+P1506: Hồ sơ mẫu đã thực hiện đủ 14 bước
+P1507: Thao tác được
+P1508: —
+P1509: Nhà cung cấp
+P1510: Hồ sơ nhà cung cấp, đăng sản phẩm, gửi duyệt, sửa khi bị trả về, yêu cầu khách gửi, bài viết, gói gian hàng (5.1 – 5.7)
+P1511: Thao tác bằng tài khoản thử
+P1512: Thao tác được
+P1513: —
+P1514: Nhà cung cấp
+P1515: Lời mời tham gia RFQ, nộp hồ sơ đề xuất (5.4)
+P1516: Hồ sơ mẫu đã thực hiện đủ 14 bước
+P1517: Thao tác được
+P1518: —
+P1519: Chuyên gia
+P1520: Hồ sơ chuyên gia, tiếp nhận phân công, chấm điểm hồ sơ đề xuất, phê duyệt pháp lý (6.1 – 6.4)
+P1521: Hồ sơ mẫu đã thực hiện đủ 14 bước
+P1522: Thao tác được
+P1523: —
+P1524: Triển lãm số
+P1525: Tham quan thực tế ảo VR360
+P1526: —
+P1527: Chưa có trên phiên bản đợt 1
+P1528: Bổ sung hướng dẫn khi bàn giao đợt 2
+PART word/footer1.xml
+P1: Trang 73 / 73
+PART word/header1.xml
+PART word/header2.xml
+P1: HDSD người sử dụng Sàn giao dịch công nghệ Cần Thơ – Phiên bản 2.2
+PART word/footer2.xml
+PART word/header3.xml
+PART word/footer3.xml

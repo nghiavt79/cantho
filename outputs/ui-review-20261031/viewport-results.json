@@ -1,0 +1,310 @@
+[
+  {
+    "docWidth": 305,
+    "dots": {
+      "dotTop": 316.62451171875,
+      "overlap": true,
+      "searchTop": 301.62451171875
+    },
+    "height": 8825,
+    "rows": [
+      {
+        "display": "flex",
+        "item": 97,
+        "sw": 3406,
+        "w": 279
+      },
+      {
+        "display": "flex",
+        "item": 97,
+        "sw": 904,
+        "w": 279
+      }
+    ],
+    "titles": [
+      {
+        "h": 66,
+        "sh": 68,
+        "text": "Sàn Giao Dịch Công Nghệ Cần Thơ",
+        "w": 281
+      },
+      {
+        "h": 87,
+        "sh": 88,
+        "text": "Bạn cần tư vấn giải pháp công nghệ phù hợp?",
+        "w": 241
+      },
+      {
+        "h": 79,
+        "sh": 79,
+        "text": "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ",
+        "w": 157
+      }
+    ],
+    "w": 320
+  },
+  {
+    "docWidth": 360,
+    "dots": {
+      "dotTop": 316.625,
+      "overlap": true,
+      "searchTop": 301.625
+    },
+    "height": 8426,
+    "rows": [
+      {
+        "display": "flex",
+        "item": 120,
+        "sw": 4125,
+        "w": 334
+      },
+      {
+        "display": "flex",
+        "item": 120,
+        "sw": 1090,
+        "w": 334
+      }
+    ],
+    "titles": [
+      {
+        "h": 66,
+        "sh": 68,
+        "text": "Sàn Giao Dịch Công Nghệ Cần Thơ",
+        "w": 336
+      },
+      {
+        "h": 59,
+        "sh": 60,
+        "text": "Bạn cần tư vấn giải pháp công nghệ phù hợp?",
+        "w": 296
+      },
+      {
+        "h": 59,
+        "sh": 59,
+        "text": "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ",
+        "w": 212
+      }
+    ],
+    "w": 375
+  },
+  {
+    "docWidth": 375,
+    "dots": {
+      "dotTop": 316.62451171875,
+      "overlap": true,
+      "searchTop": 301.62451171875
+    },
+    "height": 8369,
+    "rows": [
+      {
+        "display": "flex",
+        "item": 127,
+        "sw": 4323,
+        "w": 350
+      },
+      {
+        "display": "flex",
+        "item": 127,
+        "sw": 1141,
+        "w": 350
+      }
+    ],
+    "titles": [
+      {
+        "h": 66,
+        "sh": 68,
+        "text": "Sàn Giao Dịch Công Nghệ Cần Thơ",
+        "w": 351
+      },
+      {
+        "h": 59,
+        "sh": 61,
+        "text": "Bạn cần tư vấn giải pháp công nghệ phù hợp?",
+        "w": 311
+      },
+      {
+        "h": 40,
+        "sh": 40,
+        "text": "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ",
+        "w": 227
+      }
+    ],
+    "w": 390
+  },
+  {
+    "docWidth": 415,
+    "dots": {
+      "dotTop": 293.37451171875,
+      "overlap": true,
+      "searchTop": 278.37451171875
+    },
+    "height": 8317,
+    "rows": [
+      {
+        "display": "flex",
+        "item": 144,
+        "sw": 4844,
+        "w": 390
+      },
+      {
+        "display": "flex",
+        "item": 144,
+        "sw": 1275,
+        "w": 390
+      }
+    ],
+    "titles": [
+      {
+        "h": 66,
+        "sh": 68,
+        "text": "Sàn Giao Dịch Công Nghệ Cần Thơ",
+        "w": 391
+      },
+      {
+        "h": 60,
+        "sh": 61,
+        "text": "Bạn cần tư vấn giải pháp công nghệ phù hợp?",
+        "w": 351
+      },
+      {
+        "h": 40,
+        "sh": 40,
+        "text": "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ",
+        "w": 267
+      }
+    ],
+    "w": 430
+  },
+  {
+    "docWidth": 753,
+    "dots": {
+      "dotTop": 323.012451171875,
+      "overlap": false,
+      "searchTop": 356.012451171875
+    },
+    "height": 4858,
+    "rows": [
+      {
+        "display": "grid",
+        "item": 69,
+        "sw": 650,
+        "w": 650
+      },
+      {
+        "display": "grid",
+        "item": 69,
+        "sw": 650,
+        "w": 650
+      }
+    ],
+    "titles": [
+      {
+        "h": 35,
+        "sh": 37,
+        "text": "Sàn Giao Dịch Công Nghệ Cần Thơ",
+        "w": 640
+      },
+      {
+        "h": 67,
+        "sh": 69,
+        "text": "Bạn cần tư vấn giải pháp công nghệ phù hợp?",
+        "w": 411
+      },
+      {
+        "h": 59,
+        "sh": 59,
+        "text": "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ",
+        "w": 203
+      }
+    ],
+    "w": 768
+  },
+  {
+    "docWidth": 1009,
+    "dots": {
+      "dotTop": 273.112548828125,
+      "overlap": false,
+      "searchTop": 306.112548828125
+    },
+    "height": 4304,
+    "rows": [
+      {
+        "display": "grid",
+        "item": 99,
+        "sw": 890,
+        "w": 890
+      },
+      {
+        "display": "grid",
+        "item": 99,
+        "sw": 890,
+        "w": 890
+      }
+    ],
+    "titles": [
+      {
+        "h": 35,
+        "sh": 37,
+        "text": "Sàn Giao Dịch Công Nghệ Cần Thơ",
+        "w": 640
+      },
+      {
+        "h": 73,
+        "sh": 75,
+        "text": "Bạn cần tư vấn giải pháp công nghệ phù hợp?",
+        "w": 605
+      },
+      {
+        "h": 40,
+        "sh": 40,
+        "text": "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ",
+        "w": 323
+      }
+    ],
+    "w": 1024
+  },
+  {
+    "docWidth": 1425,
+    "dots": {
+      "dotTop": 357.89990234375,
+      "overlap": false,
+      "searchTop": 390.89990234375
+    },
+    "height": 3522,
+    "rows": [
+      {
+        "display": "grid",
+        "item": 144,
+        "sw": 1250,
+        "w": 1250
+      },
+      {
+        "display": "grid",
+        "item": 144,
+        "sw": 1250,
+        "w": 1250
+      }
+    ],
+    "titles": [
+      {
+        "h": 35,
+        "sh": 37,
+        "text": "Sàn Giao Dịch Công Nghệ Cần Thơ",
+        "w": 640
+      },
+      {
+        "h": 38,
+        "sh": 40,
+        "text": "Bạn cần tư vấn giải pháp công nghệ phù hợp?",
+        "w": 668
+      },
+      {
+        "h": 40,
+        "sh": 40,
+        "text": "TRUNG TÂM ỨNG DỤNG TIẾN BỘ KH&CN TP. CẦN THƠ",
+        "w": 266
+      }
+    ],
+    "w": 1440
+  }
+]

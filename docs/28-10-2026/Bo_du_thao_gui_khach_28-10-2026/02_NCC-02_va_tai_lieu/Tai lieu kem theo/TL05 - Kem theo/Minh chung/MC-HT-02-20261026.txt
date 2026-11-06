@@ -1,0 +1,8 @@
+Mã minh chứng: MC-HT-02-20261026
+Ca kiểm thử: TC-HT-02 Trang quản trị khi chưa đăng nhập
+Thời điểm (UTC+7): 26/10/2026 08:39:01
+Máy thực hiện: máy tính kết nối Internet, công cụ curl 8.11.0, openssl
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+HTTP/1.1 302 Found
+Location: https://mekongx.vn/dang-nhap?ReturnUrl=%2Fcms

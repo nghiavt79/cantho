@@ -1,0 +1,107 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-03 Thong bao san sang van hanh thu lan 1, tai khoan thu, du lieu mau.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v thông báo sẵn sàng vận hành thử lần 1; cung cấp tài khoản thử, dữ liệu mẫu
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày 26 tháng 10 năm 2026
+P11: Kính gửi:
+P12: - Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ;
+P13: - Công ty TNHH Công nghệ Tin học Bình Định (đơn vị vận hành thử);
+P14: - Công ty TNHH Chuyển Đổi Số 365 (đơn vị giám sát).
+P16: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone về việc thực hiện Gói thầu số 04: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ; Kế hoạch triển khai chi tiết kèm Công văn số 2815/MBF.CT-KDGPS ngày 22/10/2026 (cập nhật ngày 25/10/2026); Văn bản đề xuất chỉ số, ngưỡng chất lượng dịch vụ; cung cấp tài khoản quyền xem giám sát và tài liệu dịch vụ (NCC-02) ngày 26/10/2026,
+P17: Tổng Công ty Viễn thông MobiFone thông báo trang web Sàn giao dịch công nghệ Cần Thơ tại địa chỉ https://mekongx.vn đã hoàn thành thiết lập, tự kiểm tra nội bộ và sẵn sàng vận hành thử lần 1 từ 08 giờ ngày 27/10/2026, cụ thể như sau:
+P18: 1. Tình trạng sẵn sàng
+P19: STT
+P20: Nội dung
+P21: Tình trạng
+P22: Căn cứ
+P23: 1
+P24: Hệ thống, tên miền, chứng thư SSL
+P25: Hoạt động tại https://mekongx.vn; chứng thư SSL hiệu lực đến 24/01/2027; chỉ chấp nhận giao thức mã hóa TLS 1.2, TLS 1.3
+P26: Minh chứng MC-HT-04, MC-HT-05 ngày 26/10/2026
+P27: 2
+P28: Chức năng phần mềm (12 nhóm chức năng)
+P29: Đã tự kiểm thử từ ngày 22/10 đến ngày 25/10/2026
+P30: NCC-02, Tài liệu số 01, 05
+P31: 3
+P32: Tài liệu hướng dẫn sử dụng, quy trình vận hành, đặc tả API
+P33: Đã gửi kèm NCC-02
+P34: NCC-02, Tài liệu số 03, 06 – 11
+P35: 4
+P36: Công cụ giám sát, quyền xem
+P37: Đã cấp tài khoản quyền xem gs_theodoi cho đơn vị giám sát
+P38: NCC-02, mục 1, mục 4
+P39: 5
+P40: Tồn tại đã biết
+P41: 11 tồn tại; tồn tại 1 – 5 xử lý trong vận hành thử lần 1, trước nghiệm thu đợt 1
+P42: NCC-02, Tài liệu số 04, mục III
+P44: 2. Tài khoản thử
+P45: STT
+P46: Tài khoản
+P47: Đơn vị sử dụng
+P48: Vai trò
+P49: Phạm vi sử dụng trong vận hành thử
+P50: 1
+P51: ttud_admin
+P52: Chủ trì thuê
+P53: Quản trị Sàn
+P54: CMS: duyệt hồ sơ, sản phẩm; cấu hình; theo dõi giao dịch; báo cáo
+P55: 2
+P56: ttud_bientap
+P57: Chủ trì thuê
+P58: Biên tập nội dung
+P59: CMS: tin bài, sự kiện, trang thông tin
+P60: 3
+P61: vht_admin
+P62: Đơn vị vận hành thử
+P63: Quản trị (kiểm thử CMS)
+P64: Các chức năng quản trị CMS theo kịch bản vận hành thử
+P65: 4
+P66: vht_buyer01, vht_buyer02
+P67: Đơn vị vận hành thử
+P68: Người mua công nghệ
+P69: Tìm kiếm, gửi nhu cầu, yêu cầu báo giá, quy trình giao dịch phía bên mua
+P70: 5
+P71: vht_seller01, vht_seller02
+P72: Đơn vị vận hành thử
+P73: Người bán (nhà cung ứng)
+P74: Hồ sơ nhà cung ứng, đăng công nghệ, thiết bị, báo giá, quy trình giao dịch phía bên bán
+P75: 6
+P76: vht_expert01
+P77: Đơn vị vận hành thử
+P78: Chuyên gia, tư vấn
+P79: Hồ sơ chuyên gia, tiếp nhận và trả lời yêu cầu tư vấn
+P80: 7
+P81: gs_theodoi
+P82: Đơn vị giám sát
+P83: Theo dõi (chỉ xem)
+P84: Nhật ký hệ thống, thống kê, yêu cầu hỗ trợ (NCC-02, mục 1)
+P85: 8
+P86: ncc_hotro
+P87: Nhà cung cấp dịch vụ
+P88: Hỗ trợ người dùng
+P89: Tiếp nhận, phản hồi yêu cầu hỗ trợ trong vận hành thử
+P91: Các tài khoản trên đã tạo trên hệ thống, đang hoạt động (các tài khoản vht_* tạo ngày 25/10/2026); tài khoản gs_theodoi đã cấp theo NCC-02.
+P92: Mật khẩu ban đầu được gửi riêng cho người được từng đơn vị cử sử dụng, không ghi trong văn bản này; người sử dụng đổi mật khẩu ở lần đăng nhập đầu tiên và không chia sẻ tài khoản. Mọi thao tác của tài khoản thử được ghi nhật ký hệ thống. Đơn vị vận hành thử cần thêm tài khoản theo kịch bản thì thông báo cho đầu mối tại mục 5.
+P93: 3. Dữ liệu mẫu
+P94: - Dữ liệu công nghệ, thiết bị: …… bản ghi đã xuất bản; nhà cung ứng: …… hồ sơ; chuyên gia, tư vấn: …… hồ sơ; tin bài, sự kiện: …… bài (số liệu tại ngày 26/10/2026);
+P95: - Hồ sơ giao dịch mẫu mã PRJ-CATSACH-2026, đã đi đủ 14 bước quy trình giao dịch, dùng để xem trình tự, biểu mẫu từng bước;
+P96: - Dữ liệu do đơn vị vận hành thử tạo trong quá trình vận hành thử được ghi nhận theo tài khoản thử; sau vận hành thử, nhà cung cấp xóa hoặc giữ lại theo ý kiến của Chủ trì thuê.
+P97: 4. Quyền xem công cụ giám sát
+P98: Đơn vị giám sát dùng tài khoản gs_theodoi theo dõi tính sẵn sàng, tài nguyên máy chủ, nhật ký hệ thống, thống kê và yêu cầu hỗ trợ trong suốt thời gian vận hành thử; chu kỳ giám sát, ngưỡng cảnh báo theo NCC-02 mục 1, mục 2. Tài khoản chỉ có quyền xem, thao tác ghi bị từ chối và được ghi nhật ký.
+P99: 5. Đầu mối hỗ trợ trong vận hành thử
+P100: - Đầu mối chung: Bà Trần Thị Hồng Vân – Phó Giám đốc Trung tâm Kinh doanh Giải pháp số, MobiFone Cần Thơ; điện thoại 0908199093; thư điện tử van.tthihong@mobifone.vn;
+P101: - Đầu mối kỹ thuật: Bà Nguyễn Thị Dung – Trưởng nhóm kỹ thuật; điện thoại ……………; thư điện tử ……………;
+P102: - Thời gian phản hồi yêu cầu hỗ trợ ≤ 02 giờ trong giờ hành chính; lỗi phát sinh được ghi vào Biên bản ghi nhận lỗi (VHT-04) và khắc phục theo thời hạn: lỗi nghiêm trọng ≤ 08 giờ, lỗi khác ≤ 24 giờ.
+P103: Tổng Công ty Viễn thông MobiFone trân trọng đề nghị Quý đơn vị phối hợp tổ chức vận hành thử lần 1 theo kế hoạch./.
+P104: Nơi nhận:
+P105: - Như trên;
+P106: - Lưu: VT, TTGPS.
+P107: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P108: (Ký, ghi rõ họ tên, đóng dấu)
+P113: Lã Thành Trung

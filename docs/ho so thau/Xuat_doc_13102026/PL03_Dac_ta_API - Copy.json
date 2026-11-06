@@ -1,0 +1,1293 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API Sàn giao dịch công nghệ thành phố Cần Thơ",
+    "description": "Đặc tả các API hiện có của phiên bản đề xuất (cập nhật ngày 13/10/2026). Xác thực bằng phiên đăng nhập; các API ghi dữ liệu được đánh dấu yêu cầu thêm mã chống giả mạo yêu cầu. Các giao diện tích hợp thuộc phạm vi cung cấp (kết nối Sàn giao dịch KH&CN Việt Nam, API cho sàn khác) tiếp tục được hoàn thiện, tài liệu hóa và bàn giao theo tiến độ triển khai tại Mục 8 đề xuất kỹ thuật.",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/ai-chat/suggestions": {
+      "get": {
+        "tags": [
+          "AiChat"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {}
+        ],
+        "description": "Không yêu cầu đăng nhập."
+      }
+    },
+    "/api/ai-chat/history": {
+      "get": {
+        "tags": [
+          "AiChat"
+        ],
+        "parameters": [
+          {
+            "name": "sessionKey",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatHistoryItem"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatHistoryItem"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatHistoryItem"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {},
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Không bắt buộc đăng nhập; nếu có phiên đăng nhập thì trả dữ liệu theo người dùng."
+      }
+    },
+    "/api/ai-chat/message": {
+      "post": {
+        "tags": [
+          "AiChat"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatMessageRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatMessageRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatMessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatMessageResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatMessageResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatMessageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Lỗi xử lý phía máy chủ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "antiforgery": []
+          },
+          {
+            "cookieAuth": [],
+            "antiforgery": []
+          }
+        ],
+        "description": "Không bắt buộc đăng nhập; nếu có phiên đăng nhập thì trả dữ liệu theo người dùng. Yêu cầu mã chống giả mạo yêu cầu."
+      }
+    },
+    "/api/ai-chat/submit-feedback": {
+      "post": {
+        "tags": [
+          "AiChat"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatFeedbackRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatFeedbackRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatFeedbackRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatFeedbackResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatFeedbackResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TechExchangeApp.Models.AiChatFeedbackResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Lỗi xử lý phía máy chủ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "antiforgery": []
+          },
+          {
+            "cookieAuth": [],
+            "antiforgery": []
+          }
+        ],
+        "description": "Không bắt buộc đăng nhập; nếu có phiên đăng nhập thì trả dữ liệu theo người dùng. Yêu cầu mã chống giả mạo yêu cầu."
+      }
+    },
+    "/api/AISuggestion/suggest": {
+      "post": {
+        "tags": [
+          "AISuggestion"
+        ],
+        "summary": "Suggests suppliers based on AI semantic matching.",
+        "requestBody": {
+          "description": "The suggestion request containing the query text",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.ViewModel.SuggestRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.ViewModel.SuggestRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.ViewModel.SuggestRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Vượt giới hạn tần suất gọi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Lỗi xử lý phía máy chủ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {}
+        ],
+        "description": "Không yêu cầu đăng nhập."
+      }
+    },
+    "/api/chat/start": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.ChatStartRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.ChatStartRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.ChatStartRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Không tìm thấy tài nguyên",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/chat/{id}/send": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.ChatSendRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.ChatSendRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.ChatSendRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/chat/unread-count": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {},
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Không bắt buộc đăng nhập; nếu có phiên đăng nhập thì trả dữ liệu theo người dùng."
+      }
+    },
+    "/api/chat/{id}/messages": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "afterId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Không tìm thấy tài nguyên",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/entity/{entityType}/{entityId}/summary": {
+      "get": {
+        "tags": [
+          "EntityAction"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {}
+        ],
+        "description": "Không yêu cầu đăng nhập."
+      }
+    },
+    "/api/entity/{entityType}/{entityId}/rating/save": {
+      "post": {
+        "tags": [
+          "EntityAction"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Interfaces.SaveRatingRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Interfaces.SaveRatingRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Interfaces.SaveRatingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/entity/{entityType}/{entityId}/view/increase": {
+      "post": {
+        "tags": [
+          "EntityAction"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {},
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Không bắt buộc đăng nhập; nếu có phiên đăng nhập thì trả dữ liệu theo người dùng."
+      }
+    },
+    "/api/entity/{entityType}/{entityId}/ratings": {
+      "get": {
+        "tags": [
+          "EntityAction"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {}
+        ],
+        "description": "Không yêu cầu đăng nhập."
+      }
+    },
+    "/api/home/analytics": {
+      "get": {
+        "tags": [
+          "HomeAnalyticsApi"
+        ],
+        "summary": "Returns full analytics JSON (5-min cached).",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {}
+        ],
+        "description": "Không yêu cầu đăng nhập."
+      }
+    },
+    "/api/notifications/latest": {
+      "get": {
+        "tags": [
+          "NotificationApi"
+        ],
+        "parameters": [
+          {
+            "name": "take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/notifications/unread-count": {
+      "get": {
+        "tags": [
+          "NotificationApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/notifications/mark-read/{id}": {
+      "post": {
+        "tags": [
+          "NotificationApi"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Không tìm thấy tài nguyên",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/notifications/mark-all-read": {
+      "post": {
+        "tags": [
+          "NotificationApi"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập."
+      }
+    },
+    "/api/support/start": {
+      "post": {
+        "tags": [
+          "Support"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.SupportStartRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.SupportStartRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TechExchangeApp.Controllers.SupportStartRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Dữ liệu đầu vào không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Không có quyền truy cập tài nguyên",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Không tìm thấy tài nguyên",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": [],
+            "antiforgery": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập. Yêu cầu mã chống giả mạo yêu cầu."
+      }
+    },
+    "/api/chat/{id}/video-call": {
+      "post": {
+        "tags": [
+          "VideoCall"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Chưa đăng nhập hoặc phiên hết hạn (trả 401 với yêu cầu JSON/AJAX)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Không tìm thấy tài nguyên",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookieAuth": [],
+            "antiforgery": []
+          }
+        ],
+        "description": "Bắt buộc đăng nhập. Yêu cầu mã chống giả mạo yêu cầu."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TechExchangeApp.Controllers.ChatSendRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Controllers.ChatStartRequest": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Controllers.SupportStartRequest": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stepNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "requestType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "serviceType": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supportContextCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Interfaces.SaveRatingRequest": {
+        "type": "object",
+        "properties": {
+          "stars": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Models.AiChatFeedbackRequest": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "maxLength": 255,
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "maxLength": 50,
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "maxLength": 2000,
+            "type": "string",
+            "nullable": true
+          },
+          "sessionKey": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Models.AiChatFeedbackResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Models.AiChatHistoryItem": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Models.AiChatMessageRequest": {
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "sessionKey": {
+            "maxLength": 100,
+            "type": "string",
+            "nullable": true
+          },
+          "actionId": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Stable id of a chatbox quick-action button (see AiQuickActions), if this message\r\nwas sent by clicking one rather than typed. Null for free-typed messages.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Models.AiChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "sessionKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TechExchangeApp.Models.AiKnowledgeItem"
+            },
+            "nullable": true
+          },
+          "needsContactInfo": {
+            "type": "boolean"
+          },
+          "mode": {
+            "type": "string",
+            "description": "How this reply was produced: \"browse\", \"search\", or \"action\".",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.Models.AiKnowledgeItem": {
+        "type": "object",
+        "properties": {
+          "sourceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TechExchangeApp.ViewModel.SuggestRequest": {
+        "required": [
+          "input"
+        ],
+        "type": "object",
+        "properties": {
+          "input": {
+            "maxLength": 2000,
+            "minLength": 0,
+            "type": "string",
+            "description": "The buyer's technology request query"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request model for AI supplier suggestion endpoint."
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Cấu trúc lỗi chung; một số API trả thêm trường success=false.",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string",
+            "description": "Thông báo lỗi"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "TechExchangeApp.Identity",
+        "description": "Phiên đăng nhập của người dùng (cookie HttpOnly, Secure) cấp sau khi đăng nhập tại /dang-nhap."
+      },
+      "antiforgery": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "RequestVerificationToken",
+        "description": "Mã chống giả mạo yêu cầu (CSRF) lấy từ trang web của Sàn; bắt buộc với các API ghi dữ liệu được đánh dấu."
+      }
+    }
+  }
+}

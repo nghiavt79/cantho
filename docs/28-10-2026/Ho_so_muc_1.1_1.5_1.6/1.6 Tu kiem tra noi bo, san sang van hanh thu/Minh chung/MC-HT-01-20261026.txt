@@ -1,0 +1,19 @@
+Mã minh chứng: MC-HT-01-20261026
+Ca kiểm thử: TC-HT-01 Thời gian tải trang (04 trang x 03 lần, khung giờ sáng)
+Thời điểm (UTC+7): 26/10/2026 08:39:48
+Công cụ: curl 8.11.0 trên máy tính kết nối Internet
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+Trang | Lần | HTTP | Thời gian (giây) | Kích thước (byte)
+/ | 1 | 200 | 1.613075 | 104832
+/ | 2 | 200 | 1.567944 | 104832
+/ | 3 | 200 | 1.673968 | 104832
+/dang-nhap | 1 | 200 | 1.242461 | 49127
+/dang-nhap | 2 | 200 | 1.461851 | 49127
+/dang-nhap | 3 | 200 | 1.240794 | 49127
+/san-pham | 1 | 200 | 1.420194 | 72965
+/san-pham | 2 | 200 | 1.557928 | 72965
+/san-pham | 3 | 200 | 1.475604 | 72965
+/tin-su-kien | 1 | 200 | 1.456438 | 84132
+/tin-su-kien | 2 | 200 | 1.556507 | 84132
+/tin-su-kien | 3 | 200 | 1.564482 | 84132

@@ -1,0 +1,127 @@
+D:\2026\CanTho\docs\28-10-2026\BienBanKiemTra\3a- Bien ban ghi nhan loi van hanh thu lan 1.docx
+PART word/document.xml
+P4: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P5: Độc lập - Tự do - Hạnh phúc
+P6: ───────────────
+P7: Cần Thơ, ngày …… tháng 10 năm 2026
+P9: BIÊN BẢN GHI NHẬN LỖI
+P10: TRONG TỰ KIỂM THỬ VÀ VẬN HÀNH THỬ LẦN 1
+P11: Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P12: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone thực hiện Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ;
+P13: Căn cứ Quy trình vận hành, xử lý sự cố, hỗ trợ, sao lưu, quản lý thay đổi (NCC-14); Biên bản tự kiểm thử chức năng phần mềm đợt 1 ngày 25/10/2026; Biên bản kiểm tra, giám sát vận hành thử lần 1 số GS-02/BBKT/CDS365;
+P14: Hôm nay, ngày …… tháng 10 năm 2026, tại Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và trực tuyến trên hệ thống https://mekongx.vn, các bên gồm:
+P15: Thành phần:
+P16: 1. Nhà cung cấp dịch vụ – Tổng Công ty Viễn thông MobiFone (MobiFone Cần Thơ): Ông/Bà Lê Phước Trung – Kiểm thử (QA/QC); Ông/Bà Nguyễn Thị Dung – Trưởng nhóm kỹ thuật; Ông/Bà Nguyễn Nhĩ Thái – Kỹ sư triển khai.
+P17: 2. Đơn vị vận hành thử – Công ty TNHH Công nghệ Tin học Bình Định: Ông/Bà ……………………, chức vụ ……………………
+P18: 3. Đơn vị giám sát – Công ty TNHH Chuyển Đổi Số 365: Ông Trần Gia Bảo – Giám sát viên.
+P19: Thống nhất ghi nhận các lỗi, tồn tại phát sinh từ ngày 22/10/2026 đến ngày 27/10/2026 như sau:
+P20: 1. Danh sách lỗi
+P21: Mã
+P22: Chức năng, thành phần
+P23: Mô tả lỗi
+P24: Cách tái hiện
+P25: Mức độ
+P26: Nguồn phát hiện, ngày
+P27: Hạn khắc phục
+P28: L01
+P29: API-05 gợi ý nhà cung cấp (C.10 Chatbot AI)
+P30: API gợi ý nhà cung cấp trả mã lỗi 500; trợ lý tư vấn không hiển thị gợi ý nhà cung cấp
+P31: Mở trợ lý tư vấn, nhập nhu cầu có lĩnh vực, yêu cầu gợi ý nhà cung cấp
+P32: Cao
+P33: Tự kiểm thử, 25/10/2026
+P34: 26/10/2026
+P35: L02
+P36: API-06, API-07, API-11, API-17, API-18
+P37: Chưa kiểm tra mã chống giả mạo yêu cầu phía máy chủ đối với các API ghi dữ liệu
+P38: Gửi yêu cầu ghi dữ liệu không kèm mã chống giả mạo
+P39: Trung bình
+P40: Rà soát Đặc tả API PL-03, 25/10/2026
+P41: 28/10/2026
+P42: L03
+P43: API thông báo
+P44: Khi chưa đăng nhập, API trả trang HTML hoặc chuyển hướng 302 thay vì lỗi JSON mã 401
+P45: Gọi API thông báo khi chưa đăng nhập hoặc phiên đã hết hạn
+P46: Thấp
+P47: Rà soát Đặc tả API PL-03, 25/10/2026
+P48: 28/10/2026
+P49: L04
+P50: 10 API ghi dữ liệu; API-18
+P51: Chưa có kết quả kiểm thử luồng ghi dữ liệu thành công, chưa lưu ảnh chụp, nhật ký; API-18 chưa có kết quả kiểm thử riêng
+P52: —
+P53: Trung bình
+P54: Đơn vị giám sát (GS-02), 27/10/2026
+P55: 10 giờ 28/10/2026
+P56: L05
+P57: Thông báo qua thư điện tử (A.1.4, A.4.5, A.8.4)
+P58: Kênh gửi thư điện tử của hệ thống đang tắt; thông báo, nhắc lịch, mã OTP qua thư điện tử không được gửi
+P59: Thực hiện thao tác có phát sinh thông báo, kiểm tra hộp thư người nhận
+P60: Trung bình
+P61: Tự kiểm thử, 25/10/2026
+P62: 17 giờ 27/10/2026
+P63: L06
+P64: Bước 10 quy trình giao dịch (A.2.5)
+P65: Ô gạt xác nhận bàn giao, triển khai thiết bị hiển thị nhãn "Đã hoàn thành đào tạo vận hành", không đúng nghiệp vụ của bước 10
+P66: Mở hồ sơ giao dịch, bước 10, bấm Chỉnh sửa
+P67: Thấp
+P68: Rà soát tài liệu HDSD theo góp ý của đơn vị giám sát, 26/10/2026
+P69: 30/10/2026
+P70: L07
+P71: Trang kiểm tra tình trạng hệ thống /health
+P72: Trang công khai trả về tình trạng chi tiết từng thành phần (cơ sở dữ liệu, ổ đĩa, hàng đợi thông báo)
+P73: Truy cập https://mekongx.vn/health từ mạng bên ngoài
+P74: Trung bình
+P75: Rà soát NCC-06 theo góp ý của đơn vị giám sát, 26/10/2026
+P76: 28/10/2026
+P77: L08
+P78: CMS – Cấu hình nhanh sản phẩm (A.2.6)
+P79: Không có ô ghi lý do khi chọn Trả về; nhà cung cấp không xem được lý do trên hệ thống
+P80: CMS › Sản phẩm & Đối tác › Công nghệ › Cấu hình › Trả về
+P81: Thấp
+P82: Rà soát tài liệu HDSD Mục 01b, 26/10/2026
+P83: 06/11/2026
+P84: L09
+P85: Tên miền mekongx.vn – IPv6
+P86: Tên miền chưa có bản ghi AAAA
+P87: Tra cứu bản ghi AAAA của tên miền
+P88: Thấp
+P89: Đơn vị giám sát (GS-02), 27/10/2026
+P90: 09/11/2026
+P91: L10
+P92: Chứng thư SSL
+P93: Chứng thư thời hạn 90 ngày, chưa có minh chứng thiết lập gia hạn tự động
+P94: Xem cấu hình gia hạn trên máy chủ
+P95: Thấp
+P96: Đơn vị giám sát (GS-02), 27/10/2026
+P97: 27/10/2026
+P99: 2. Tổng hợp
+P100: Mức độ
+P101: Số lỗi
+P102: Mã lỗi
+P103: Cao
+P104: 01
+P105: L01
+P106: Trung bình
+P107: 04
+P108: L02, L04, L05, L07
+P109: Thấp
+P110: 05
+P111: L03, L06, L08, L09, L10
+P112: Cộng
+P113: 10
+P116: Theo phân loại tại NCC-14, các lỗi trên thuộc loại thông thường (một chức năng lỗi, dịch vụ vẫn hoạt động); không phát sinh sự cố nghiêm trọng (dừng dịch vụ, mất hoặc lộ lọt dữ liệu, tấn công mạng) trong thời gian ghi nhận.
+P117: 3. Yêu cầu
+P118: Nhà cung cấp khắc phục các lỗi theo thời hạn tại mục 1; kết quả khắc phục, kiểm tra lại được ghi tại Biên bản khắc phục lỗi. Lỗi không khắc phục được trước nghiệm thu đợt 1 phải nêu rõ lý do và thời hạn mới.
+P119: Biên bản lập thành 03 (ba) bản, mỗi bên giữ 01 (một) bản./.
+P120: ĐẠI DIỆN
+P121: NHÀ CUNG CẤP DỊCH VỤ
+P122: (Ký, ghi rõ họ tên)
+P127: Nguyễn Thị Dung
+P128: ĐẠI DIỆN
+P129: ĐƠN VỊ VẬN HÀNH THỬ
+P130: (Ký, ghi rõ họ tên)
+P135: ……………………
+P136: ĐẠI DIỆN
+P137: ĐƠN VỊ GIÁM SÁT
+P138: (Ký, ghi rõ họ tên)
+P143: Trần Gia Bảo
+PART word/footer1.xml

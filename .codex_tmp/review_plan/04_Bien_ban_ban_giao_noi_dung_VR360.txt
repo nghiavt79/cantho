@@ -1,0 +1,43 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN BÀN GIAO
+Nội dung tham quan thực tế ảo VR360
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+I. Danh sách 10 điểm cảnh quay dựng mới
+TT | Tên điểm cảnh | Vị trí tại Sàn | Ngày chụp | Trạng thái
+1 |  |  |  | Chưa hoàn tất
+2 |  |  |  | Chưa hoàn tất
+3 |  |  |  | Chưa hoàn tất
+4 |  |  |  | Chưa hoàn tất
+5 |  |  |  | Chưa hoàn tất
+6 |  |  |  | Chưa hoàn tất
+7 |  |  |  | Chưa hoàn tất
+8 |  |  |  | Chưa hoàn tất
+9 |  |  |  | Chưa hoàn tất
+10 |  |  |  | Chưa hoàn tất
+
+II. Kiểm tra chất lượng
+TT | Tiêu chí | Kết quả | Trạng thái
+1 | Xoay 360°, chuyển cảnh giữa các điểm |  | Chưa hoàn tất
+2 | Chạy trên trình duyệt máy tính và điện thoại, không cần cài phần mềm |  | Chưa hoàn tất
+3 | Có nút “Tham quan VR360” trên giao diện Sàn |  | Chưa hoàn tất
+4 | Bàn giao nội dung gốc (ảnh toàn cảnh, tệp tour) cho Chủ trì thuê |  | Chưa hoàn tất
+
+Kết luận
+Nội dung VR360 gồm …… /10 điểm cảnh quay đã hoàn thành và được tích hợp trên Sàn.
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

@@ -1,0 +1,21 @@
+Mã minh chứng: MC-KT-28-20261026
+Ca kiểm thử: KT-28 API-21 báo cáo giao tin SMS từ IP ngoài danh sách
+Thời điểm (UTC+7): 26/10/2026 08:40:24
+Công cụ: curl 8.11.0 trên máy tính kết nối Internet
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+Yêu cầu: GET /api/sms/dlr
+
+HTTP/1.1 403 Forbidden
+Transfer-Encoding: chunked
+Content-Type: application/problem+json; charset=utf-8
+Server: Microsoft-IIS/10.0
+Strict-Transport-Security: max-age=2592000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+Date: Mon, 26 Oct 2026 08:36:03 GMT
+
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.4","title":"Forbidden","status":403,"traceId":"00-ef04f3207cff8b59e23e6307d41453aa-ee0e8b72853df40c-00"}
