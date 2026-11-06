@@ -394,3 +394,148 @@ TechExchangeApp/.agents/
 *.7z
 *.xlsx
 CSDL demo/
+
+# File nghi co mat khau, tai khoan, ma bam hoac qua lon (07/11/2026): khong dua len repo
+/.codex_tmp/econtract-spec-text.txt
+/.codex_tmp/ncc14_20261026/26.10.2026 - Bieu mau NCC TT41 - Ban day du.zip
+/.codex_tmp/ncc14_20261026/26.10.2026 - Ho so muc 1.1, 1.5, 1.6 - Ke hoach trien khai chi tiet.zip
+/.codex_tmp/ncc14_20261026/Ho_so_muc_1.1_1.5_1.6_26102026.zip
+/.codex_tmp/review_20261021/19.10_Dự thảo HĐ Gói 4_Sàn GD.txt
+/.codex_tmp/review_plan/02_Du_thao_Cong_van_de_nghi_Bo_KHCN_cap_tai_khoan_ket_noi.txt
+/.codex_tmp/review_plan/requirements.txt
+/TechExchangeApp/Scripts/create-9-practice-accounts-teamduy.sql
+/Trienlam-main.zip
+/deploy-mekongx-2026-10-31.zip
+/docs/04-11-2026/03.11.2026 - Bao cao kiem tra chuoi nghiep vu loi truoc VHT lan 2 - V7.docx
+/docs/05-11-2026/Thong bao ket qua khac phuc loi L2 - cap nhat L2-11.docx
+/docs/05-11-2026/Thong bao ket qua khac phuc loi L2.docx
+/docs/1.5 Tai lieu HDSD.zip
+/docs/27-10-2026/Bien ban tu kiem thu chuc nang phan mem dot 1.docx
+/docs/27-10-2026/BienBanKiemTra/1 - 26.10.2026 - GS-02 Bien ban kiem tra ha tang thue va chat luong dich vu - V5.docx
+/docs/27-10-2026/BienBanKiemTra/2 - Cong van cung cap tai khoan quyen xem giam sat va tai lieu - 26.10.2026.docx
+/docs/27-10-2026/BienBanKiemTra/Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/27-10-2026/BienBanKiemTra/NCC-06 Van ban cung cap tai khoan xem cong cu giam sat.docx
+/docs/27-10-2026/NCC-06 Cong van cung cap tai khoan quyen xem giam sat va tai lieu lien quan.docx
+/docs/28-10-2026/28.10.2026 - Ho so NCC theo Checklist V8 (du thao).zip
+/docs/28-10-2026/BienBanKiemTra/1 - 26.10.2026 - GS-02 Bien ban kiem tra ha tang thue va chat luong dich vu - V5.docx
+/docs/28-10-2026/BienBanKiemTra/2 - Cong van cung cap tai khoan quyen xem giam sat va tai lieu - 26.10.2026.docx
+/docs/28-10-2026/BienBanKiemTra/Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/28-10-2026/BienBanKiemTra/NCC-06 Van ban cung cap tai khoan xem cong cu giam sat.docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026.zip
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/01_Van_ban_du_thao/GS-02 Bien ban kiem tra ha tang thue va chat luong dich vu (du thao).docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/01_Van_ban_du_thao/NCC-03 Thong bao san sang van hanh thu lan 1, tai khoan thu, du lieu mau.docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/01_Van_ban_du_thao/NCC-06 Nhat ky he thong, so lieu giam sat lan 1 va ket qua khac phuc ton tai.docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/02_NCC-02_va_tai_lieu/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu.docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/02_NCC-02_va_tai_lieu/Tai lieu kem theo/TL05 - Bien ban tu kiem thu chuc nang phan mem dot 1.docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/02_NCC-02_va_tai_lieu/Tai lieu kem theo/TL05 - Kem theo/Kich ban kiem thu chi tiet.docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/02_NCC-02_va_tai_lieu/Tai lieu kem theo/TL07 - Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/28-10-2026/Bo_du_thao_gui_khach_28-10-2026/02_NCC-02_va_tai_lieu/Tai lieu kem theo/TL11 - Muc 02 - Dac ta co so du lieu - PL04.docx
+/docs/28-10-2026/Ho_so_NCC/1 - 26.10.2026 - GS-02 Bien ban kiem tra ha tang thue va chat luong dich vu - V5.docx
+/docs/28-10-2026/Ho_so_NCC/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu.zip
+/docs/28-10-2026/Ho_so_NCC/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu.docx
+/docs/28-10-2026/Ho_so_NCC/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Bien ban tu kiem thu chuc nang phan mem dot 1.docx
+/docs/28-10-2026/Ho_so_NCC/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Kich ban kiem thu chi tiet.docx
+/docs/28-10-2026/Ho_so_NCC/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL07 - Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/28-10-2026/Ho_so_NCC/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL11 - Muc 02 - Dac ta co so du lieu - PL04.docx
+/docs/28-10-2026/Ho_so_NCC/NCC-03 Thong bao san sang van hanh thu lan 1, tai khoan thu, du lieu mau.docx
+/docs/28-10-2026/Ho_so_NCC/NCC-06 Nhat ky he thong, so lieu giam sat lan 1 va ket qua khac phuc ton tai.docx
+/docs/28-10-2026/Ho_so_muc_1.1_1.5_1.6/1.1 Khoi tao ha tang, cong cu giam sat/NCC-06 Van ban cung cap tai khoan xem cong cu giam sat.docx
+/docs/28-10-2026/Ho_so_muc_1.1_1.5_1.6/1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh/Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/28-10-2026/Ho_so_muc_1.1_1.5_1.6/1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh/Muc 02 - Dac ta co so du lieu - PL04.docx
+/docs/28-10-2026/Ho_so_muc_1.1_1.5_1.6/1.6 Tu kiem tra noi bo, san sang van hanh thu/1.6 Tu kiem tra noi bo, san sang van hanh thu.zip
+/docs/28-10-2026/Ho_so_muc_1.1_1.5_1.6/1.6 Tu kiem tra noi bo, san sang van hanh thu/Bien ban tu kiem thu chuc nang phan mem dot 1.docx
+/docs/28-10-2026/Ho_so_muc_1.1_1.5_1.6/1.6 Tu kiem tra noi bo, san sang van hanh thu/Kich ban kiem thu chi tiet.docx
+/docs/28-10-2026/NCC-06 Cong van cung cap tai khoan quyen xem giam sat va tai lieu lien quan-Chi-Quyen.docx
+/docs/28-10-2026/_review_codex/01.txt
+/docs/28-10-2026/_review_codex/07.txt
+/docs/28-10-2026/_review_codex/12.txt
+/docs/28-10-2026/_review_codex/22.txt
+/docs/28-10-2026/_review_codex/25.txt
+/docs/28-10-2026/_review_codex/29.txt
+/docs/28-10-2026/_review_codex/30.txt
+/docs/28-10-2026/_review_codex/37.txt
+/docs/28-10-2026/_review_codex/39.txt
+/docs/28-10-2026/_review_codex/43.txt
+/docs/28-10-2026/_review_codex/44.txt
+/docs/28-10-2026/_review_codex/diffs.txt
+/docs/28-10-2026/_review_codex_lan2/00.txt
+/docs/28-10-2026/_review_codex_lan2/11.txt
+/docs/28-10-2026/_review_codex_lan2/13.txt
+/docs/28-10-2026/_review_codex_lan2/17.txt
+/docs/28-10-2026/_review_codex_lan2/18.txt
+/docs/28-10-2026/_scripts/mk_ncc02.py
+/docs/BaoCao_DapUng_TieuChuan_KyThuat_SanGDCN_CanTho_06072026.html
+/docs/Can sua.zip
+/docs/Ho_so_muc_1.1_1.5_1.6.zip
+/docs/Ho_so_muc_1.1_1.5_1.6/1.1 Khoi tao ha tang, cong cu giam sat/NCC-06 Van ban cung cap tai khoan xem cong cu giam sat.docx
+/docs/Ho_so_muc_1.1_1.5_1.6/1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh/Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/Ho_so_muc_1.1_1.5_1.6/1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh/Muc 02 - Dac ta co so du lieu - PL04.docx
+/docs/Ho_so_muc_1.1_1.5_1.6/1.6 Tu kiem tra noi bo, san sang van hanh thu/1.6 Tu kiem tra noi bo, san sang van hanh thu.zip
+/docs/Ho_so_muc_1.1_1.5_1.6/1.6 Tu kiem tra noi bo, san sang van hanh thu/Bien ban tu kiem thu chuc nang phan mem dot 1.docx
+/docs/Ho_so_muc_1.1_1.5_1.6/1.6 Tu kiem tra noi bo, san sang van hanh thu/Kich ban kiem thu chi tiet.docx
+/docs/Ho_so_muc_1.1_1.5_1.6/26.10.2026 - Ho so kiem thu noi bo.zip
+/docs/Ho_so_muc_1.1_1.5_1.6/Ho_so_1.6_cap_nhat_26102026.zip
+/docs/Ho_so_muc_1.1_1.5_1.6/Ho_so_muc_1.1_1.5_1.6.zip
+/docs/Ho_so_muc_1.1_1.5_1.6/_scripts/kb2_data.py
+/docs/Ho_so_muc_1.1_1.5_1.6/_scripts/kb2_kichban.py
+/docs/Ho_so_muc_1.1_1.5_1.6/_scripts/kb_data.py
+/docs/KeHoach_Test_EContract.md
+/docs/KichBan_DaoTao_SanGiaoDichCongNghe.docx
+/docs/KichBan_Test_EContract_TaiKhoanVHT.md
+/docs/PHAN_7_ho_so_ky_thuat_VTISC_V1.1.2_da_sua.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.2.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.0.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.1.3.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.1.4.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.2.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.6.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.7.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.8.docx
+/docs/PHẦN 7 - hồ sơ kỹ thuật - VTISC V1.9.docx
+/docs/REPORT_TrungTamTuVan_TuSupport.md
+/docs/TEST_PLAN_QuyTrinh_GiaoDich_CongNghe_OCOP.md
+/docs/TaiKhoan_ThucHanh_TeamDuy.md
+/docs/ho so ky thuat mau/CTO_HSKT_20251124.docx
+/docs/ho so thau/04.10.2026_Phần 2 _v3 - sua 19h04.docx
+/docs/ho so thau/04.10.2026_Phần 2 _v3.docx
+/docs/ho so thau/Bo_sung_chuc_nang_truoc_demo.md
+/docs/ho so thau/Ke_hoach_chuc_nang_con_thieu_15102026.md
+/docs/ho so thau/Phần 2.docx
+/docs/ho so thau/Phu_luc/PL05_Huong_dan_su_dung.docx
+/docs/ho so thau/Phu_luc/Phu_luc.zip
+/docs/ho so thau/Phu_luc/Phu_luc_13102026V1.3.zip
+/docs/ho so thau/Phần 2 - Hoan chinh 02.10 17h16.docx
+/docs/ho so thau/Phần 2 - Nghia gop y.docx
+/docs/ho so thau/Xuat_doc_13102026/PL05_Huong_dan_su_dung.doc
+/docs/ho so thau/Xuat_doc_13102026/PhuLuc_13102026.zip
+/docs/hop dong dien tu/API_USB_TOKEN.zip
+/docs/hop dong dien tu/Dac_ta_tich_hop_API_USB_Token_eContract.docx
+/docs/hop dong/19.10_Dự thảo HĐ Gói 4_Sàn GD.docx
+/docs/ke hoach thi cong, van hanh/26.10.2026 - Bieu mau NCC TT41 - Ban day du.zip
+/docs/ke hoach thi cong, van hanh/26.10.2026 - Ho so muc 1.1, 1.5, 1.6 - Ke hoach trien khai chi tiet.zip
+/docs/ke hoach thi cong, van hanh/Bieu_mau_NCC_TT41/1_Bieu_mau_day_du/Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/ke hoach thi cong, van hanh/Bieu_mau_NCC_TT41/1_Bieu_mau_day_du/Muc 02 - Dac ta co so du lieu - PL04.docx
+/docs/ke hoach thi cong, van hanh/Bieu_mau_NCC_TT41/1_Bieu_mau_day_du/NCC-06 Van ban cung cap tai khoan xem cong cu giam sat.docx
+/docs/ke hoach thi cong, van hanh/Bieu_mau_NCC_TT41/2_Bieu_mau_rut_gon/25.10.2026 - Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/ke hoach thi cong, van hanh/Bieu_mau_NCC_TT41/2_Bieu_mau_rut_gon/25.10.2026 - Muc 02 - Dac ta co so du lieu - PL04.docx
+/docs/ke hoach thi cong, van hanh/Chương V. YCKT.pdf
+/docs/ke hoach thi cong, van hanh/Ho_so_muc_1.1_1.5_1.6/1.1 Khoi tao ha tang, cong cu giam sat/NCC-06 Van ban cung cap tai khoan xem cong cu giam sat.docx
+/docs/ke hoach thi cong, van hanh/Ho_so_muc_1.1_1.5_1.6/1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh/Muc 01b - HDSD can bo quan tri CMS.docx
+/docs/ke hoach thi cong, van hanh/Ho_so_muc_1.1_1.5_1.6/1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh/Muc 02 - Dac ta co so du lieu - PL04.docx
+/docs/ke hoach thi cong, van hanh/Ho_so_muc_1.1_1.5_1.6_26102026.zip
+/docs/ke hoach thi cong, van hanh/Ho_so_nghiem_thu_dot1/01_Bien_ban_nghiem_thu_khoi_luong_dot1.docx
+/docs/ke hoach thi cong, van hanh/Ho_so_nghiem_thu_dot1_theo_mau.zip
+/docs/ke hoach thi cong, van hanh/Tin_nhan_gui_MobiFone_25102026.md
+/docs/ke hoach thi cong, van hanh/_ban_cu/Bo_ho_so_trien_khai/02_Du_thao_Cong_van_de_nghi_Bo_KHCN_cap_tai_khoan_ket_noi.docx
+/docs/ke hoach thi cong, van hanh/_ban_cu/Ke_hoach_trien_khai_van_hanh_thu_T10_2026_gui_MobiFone.zip
+/docs/ke hoach thi cong, van hanh/_scripts/pl3.json
+/docs/yeu cau mobi/To trinh phe duyet nhiem vu thiet lap, van hanh trang web SGDCNCT.signed.signed.pdf
+/docs/yeu cau mobi/yeu cau mobi.zip
+/error Report/Report_fixed_mekongx.docx
+/error Report/TT1-pendtest sàn.docx
+/tmp/contract-test-qa/goi4-export/HopDong_Goi4_SanGDCN_CanTho.doc
+/tmp/contract-test-qa/goi4-export/HopDong_Goi4_SanGDCN_CanTho.docx
+/tmp/contract-test-qa/goi4-export/HopDong_Goi4_SanGDCN_CanTho.html
+/tmp/contract-test-qa/goi4-export/HopDong_Goi4_SanGDCN_CanTho.pdf
+/tools/build_chapter7_docx.py
+/tools/build_customer_flow_docx.py
