@@ -14,13 +14,18 @@ namespace TechExchangeApp.Services
         private readonly AppDbContext _context;
         private const int MergedNegotiationStep = 5;
         private const int LegalReviewStep = 6;
-        private const int DashboardTotalDisplaySteps = 6;
         private const string MergedStepName = "Đàm phán thương mại / Kiểm tra pháp lý hợp đồng";
+        private readonly TechExchangeApp.Configuration.WorkflowOptions _workflowOptions;
 
-        public DashboardService(AppDbContext context)
+        public DashboardService(AppDbContext context,
+            Microsoft.Extensions.Options.IOptions<TechExchangeApp.Configuration.WorkflowOptions> workflowOptions)
         {
             _context = context;
+            _workflowOptions = workflowOptions.Value;
         }
+
+        // Theo Workflow:VisibleStepCount như trang chi tiết hồ sơ
+        private int DashboardTotalDisplaySteps => _workflowOptions.EffectiveVisibleStepCount;
 
         public async Task<UserDashboardVm> GetDashboardForUserAsync(string userId)
         {
@@ -120,7 +125,8 @@ namespace TechExchangeApp.Services
                     .Where(s => s.DisplayStepNumber <= DashboardTotalDisplaySteps)
                     .ToList();
                 var totalDisplaySteps = DashboardTotalDisplaySteps;
-                var completedSteps = Math.Min(dashboardSteps.Count(s => s.StatusId == 2), totalDisplaySteps);
+                var completedSteps = Math.Min(
+                    steps.Count(s => _workflowOptions.IsStepVisible(s.StepNumber) && s.StatusId == 2), totalDisplaySteps);
                 if (currentStepNumber >= totalDisplaySteps && currentStepStatus != "NotStarted")
                 {
                     completedSteps = totalDisplaySteps;
@@ -181,10 +187,10 @@ namespace TechExchangeApp.Services
             };
         }
 
-        private static List<DisplayStep> BuildDisplaySteps(List<StepDto> steps)
+        private List<DisplayStep> BuildDisplaySteps(List<StepDto> steps)
         {
             return steps
-                .Where(s => s.StepNumber != LegalReviewStep)
+                .Where(s => s.StepNumber != LegalReviewStep && _workflowOptions.IsStepVisible(s.StepNumber))
                 .Select(s =>
                 {
                     var statusId = s.StatusId;
@@ -201,7 +207,7 @@ namespace TechExchangeApp.Services
 
                     return new DisplayStep
                     {
-                        DisplayStepNumber = s.StepNumber > LegalReviewStep ? s.StepNumber - 1 : s.StepNumber,
+                        DisplayStepNumber = s.StepNumber,
                         StepName = stepName,
                         StatusId = statusId
                     };
