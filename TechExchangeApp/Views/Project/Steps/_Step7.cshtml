@@ -1038,7 +1038,10 @@
 
         try {
             // ─── Step 3: Lấy PDF hash từ server ───
-            const hashResp = await fetch(`/Signing/ContractHash?contractId=${s7_contractId}`, {
+            const certQs = `&certSerial=${encodeURIComponent(_usbState[role].certSerial || '')}`
+                + `&certSubject=${encodeURIComponent(_usbState[role].certSubject || '')}`
+                + `&certIssuer=${encodeURIComponent(_usbState[role].certIssuer || '')}`;
+            const hashResp = await fetch(`/Signing/ContractHash?contractId=${s7_contractId}${certQs}`, {
                 credentials: 'same-origin'   // đảm bảo cookie auth được gửi kèm
             });
 

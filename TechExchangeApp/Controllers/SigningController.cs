@@ -358,7 +358,7 @@ namespace TechExchangeApp.Controllers
 
         // ─── GET /Signing/ContractHash?contractId=  (get PDF hash for USB Token) ──
         [HttpGet]
-        public async Task<IActionResult> ContractHash(int contractId)
+        public async Task<IActionResult> ContractHash(int contractId, string? certSubject = null, string? certIssuer = null, string? certSerial = null)
         {
             try
             {
@@ -397,6 +397,28 @@ namespace TechExchangeApp.Controllers
 
                 if (pdfBytes.Length == 0)
                     return Json(new { success = false, message = "Không có nội dung hợp đồng để tạo hash." });
+
+                // Bên mua/bán: chuẩn bị ô chữ ký số trong PDF, trả mã băm phần cần ký
+                var userId = GetUserId();
+                var proj   = await _context.Projects.FindAsync(contract.ProjectId);
+                int role   = proj?.CreatedBy == userId ? 1 : proj?.SelectedSellerId == userId ? 2 : 0;
+                if (role != 0 && !string.IsNullOrEmpty(certSerial))
+                {
+                    var source = (!string.IsNullOrEmpty(contract.SignedFilePath) && System.IO.File.Exists(contract.SignedFilePath))
+                        ? contract.SignedFilePath
+                        : contract.OriginalFilePath!;
+                    var prepared = await _pdfSigner.PrepareDeferredAsync(source, role, contract.Id, contract.ProjectId,
+                        certSubject ?? "", certIssuer ?? "", certSerial);
+                    return Json(new
+                    {
+                        success    = true,
+                        contractId,
+                        hashBase64 = Convert.ToBase64String(prepared.Digest),
+                        hashHex    = Convert.ToHexString(prepared.Digest).ToLowerInvariant(),
+                        algorithm  = "SHA-256",
+                        pdfSource  = "prepared"
+                    });
+                }
 
                 // SHA-256 hash
                 using var sha256 = System.Security.Cryptography.SHA256.Create();
@@ -554,8 +576,27 @@ namespace TechExchangeApp.Controllers
                         await System.IO.File.WriteAllBytesAsync(Path.Combine(sigDir, certFileName), certBytes);
                     }
 
+                    // Ký số nhúng: đã chuẩn bị ô chữ ký ở ContractHash → nhúng chữ ký vào PDF
+                    if (certBytes != null && System.IO.File.Exists(Path.Combine(_env.WebRootPath, "uploads", "contracts",
+                            $"proj_{contract.ProjectId}", "signed", $"pending_{contract.Id}_{role}.pdf")))
+                    {
+                        signedPath = await _pdfSigner.CompleteDeferredAsync(contract.Id, role, contract.ProjectId, sigBytes, certBytes);
+                        if (signedPath == null)
+                        {
+                            _context.ContractSignatureRequests.Remove(req);
+                            await _context.SaveChangesAsync();
+                            return Json(new { success = false, message = "Chữ ký không khớp với hợp đồng hoặc chứng thư số. Vui lòng ký lại." });
+                        }
+
+                        contract.SignedFilePath = signedPath;
+                        contract.SignedFileName = Path.GetFileName(signedPath);
+                        using var shaE = System.Security.Cryptography.SHA256.Create();
+                        contract.Sha256Signed = BitConverter.ToString(shaE.ComputeHash(await System.IO.File.ReadAllBytesAsync(signedPath))).Replace("-", "").ToLowerInvariant();
+                    }
                     // Embed visible signature panel into PDF
                     // Ưu tiên dùng SignedFilePath (bên kia đã ký trước) để cả 2 chữ ký cùng 1 file
+                    else
+                    {
                     var sourcePdf = (!string.IsNullOrEmpty(contract.SignedFilePath) &&
                                      System.IO.File.Exists(contract.SignedFilePath))
                         ? contract.SignedFilePath    // Bên thứ 2 ký: chồng lên file đã có chữ ký bên 1
@@ -588,6 +629,7 @@ namespace TechExchangeApp.Controllers
                         {
                             _logger.LogError(pdfEx, "PDF signature embedding failed — signature still recorded");
                         }
+                    }
                     }
                 }
                 // Legacy flow: pre-signed PDF
