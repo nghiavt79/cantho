@@ -1,0 +1,151 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu\Tai lieu kem theo\TL01 - Danh muc chuc nang, thong so hieu nang, phuong an mo rong.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v cung cấp danh mục chức năng đã xây dựng, thông số hiệu năng thiết kế và phương án mở rộng
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày …… tháng …… năm 2026
+P11: Kính gửi:
+P12: - Công ty TNHH Công nghệ Tin học Bình Định (đơn vị vận hành thử);
+P13: - Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ.
+P15: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026; mục 2, mục 4 Phụ lục VII Thông tư số 41/2026/TT-BKHCN; Chương V Hồ sơ mời thầu;
+P16: Tổng Công ty Viễn thông MobiFone cung cấp thông tin phục vụ xây dựng tình huống, kịch bản vận hành thử như sau:
+P17: 1. Danh mục chức năng đã xây dựng (đối chiếu 12 nhóm chức năng tại Chương V Hồ sơ mời thầu)
+P18: STT
+P19: Nhóm chức năng
+P20: Chức năng chính đã xây dựng
+P21: Kết quả tự kiểm thử (22 – 25/10/2026)
+P22: Đường dẫn, màn hình kiểm tra
+P23: 1
+P24: Quản trị hệ thống
+P25: Người dùng, vai trò, phân quyền; xác thực 2 lớp cho CMS; tham số hệ thống; nhật ký đăng nhập, thao tác; thông báo
+P26: Đạt 5/5 chức năng
+P27: CMS › Quản trị hệ thống › Người dùng, Nhóm quyền, Phân quyền, Nhật ký, Tham số hệ thống
+P28: 2
+P29: Quản lý tổ chức, doanh nghiệp và thành viên
+P30: Nhà cung ứng, tổ chức tư vấn, chuyên gia; đăng ký, xác minh hồ sơ; phân hạng nhà cung cấp; gian hàng
+P31: Đạt 8/8 chức năng
+P32: Website: Dashboard › Dịch vụ của tôi › Hồ sơ nhà cung ứng, Hồ sơ chuyên gia
+P33: CMS › Sản phẩm & Đối tác › Nhà cung ứng, Nhà tư vấn, Phân hạng nhà cung cấp, Gói gian hàng
+P34: 3
+P35: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P36: Hồ sơ công nghệ, thiết bị, tài sản trí tuệ; hình ảnh, video, tài liệu; lịch sử phiên bản; cảnh báo trùng lặp, quá hạn
+P37: Đạt 8/8 chức năng
+P38: Website: menu Sản phẩm; Dashboard › Công nghệ & thiết bị
+P39: CMS › Sản phẩm & Đối tác › Công nghệ, Thiết bị, Sản phẩm trí tuệ, Cảnh báo sản phẩm
+P40: 4
+P41: Quản lý kết nối cung – cầu công nghệ
+P42: Nhu cầu công nghệ; quy trình giao dịch 14 bước (thỏa thuận bảo mật, yêu cầu báo giá, đề xuất, đàm phán, hợp đồng, chuyển giao, nghiệm thu, thanh lý); yêu cầu hỗ trợ, tư vấn
+P43: Đạt 10/10 chức năng; quy trình 14 bước kiểm thử xuyên suốt trên hồ sơ có và không áp dụng NDA
+P44: Website: menu Tìm mua; Dashboard › Hồ sơ giao dịch của tôi
+P45: CMS › Giao dịch › Dự án, Phiếu yêu cầu, Yêu cầu Trung tâm tư vấn
+P46: 5
+P47: Quản lý sự kiện, hội thảo và triển lãm
+P48: Sự kiện, hội thảo; đăng ký tham gia; nhắc lịch; thống kê lượt xem, đăng ký
+P49: Đạt 6/6 chức năng
+P50: Website: Tin sự kiện
+P51: CMS › Nội dung website › Sự kiện
+P52: 6
+P53: Cổng thông tin điện tử
+P54: Tin tức, thông báo, văn bản; tìm kiếm toàn văn; giao diện tiếng Việt, tiếng Anh; hỏi đáp
+P55: Đạt 14/14 chức năng
+P56: https://mekongx.vn; https://mekongx.vn/en
+P57: CMS › Nội dung website
+P58: 7
+P59: Không gian triển lãm số
+P60: Phòng trưng bày, vị trí trưng bày sản phẩm
+P61: Đạt 2/2 chức năng của đợt 1. Tham quan thực tế ảo VR360 thuộc phạm vi đợt 2, chưa kiểm thử
+P62: CMS › Sản phẩm & Đối tác › Phòng trưng bày
+P63: Website: Sản phẩm, lọc "Trưng bày tại Sàn"
+P64: 8
+P65: Ứng dụng AI
+P66: Trợ lý tư vấn, tìm kiếm ngữ nghĩa, gợi ý công nghệ, nhà cung cấp
+P67: Đạt 2/2 chức năng; dịch vụ gợi ý nhà cung cấp (API-05) phát sinh lỗi, khắc phục và kiểm thử lại ngày 26/10/2026
+P68: Website: ô tìm kiếm trang chủ, trợ lý tư vấn
+P69: 9
+P70: Tích hợp và chia sẻ dữ liệu
+P71: Thư điện tử, SMS Brandname, chữ ký số, hợp đồng điện tử, trao đổi trực tuyến, gọi video; API mở có tài liệu đặc tả
+P72: - Thư điện tử: đã tích hợp; bật kênh, gửi thử trước 28/10/2026
+P73: - SMS Brandname: đã tích hợp, chạy ở chế độ thử (ghi nhật ký, chưa gửi tin thật)
+P74: - Hợp đồng điện tử: đạt (lập, lưu, khóa phiên bản, tra cứu)
+P75: - Ký số: đạt ở chế độ thử nghiệm; ký bằng chứng thư số của tổ chức chứng thực thuộc đợt 2
+P76: - Trao đổi trực tuyến, gọi video: đạt
+P77: - API mở: có đặc tả (PL-03)
+P78: Dashboard › Tin nhắn; hồ sơ giao dịch › Ký hợp đồng
+P79: Nhật ký gửi thông báo (NCC-02, Tài liệu số 02)
+P80: https://mekongx.vn/swagger (đăng nhập quản trị)
+P81: 10
+P82: Quản trị dữ liệu và an toàn thông tin
+P83: Sao lưu, phục hồi tự động; phân quyền; giới hạn tần suất, tạm khóa khi đăng nhập sai; nhật ký tải tệp
+P84: Đạt 1/1 chức năng (nhật ký thao tác); sao lưu, phục hồi theo NCC-04
+P85: CMS › Quản trị hệ thống › Nhật ký
+P86: NCC-04 Mục V
+P87: 11
+P88: Hạ tầng và vận hành dịch vụ
+P89: Trang tình trạng hệ thống; log hệ thống theo ngày; thống kê thời gian phản hồi hỗ trợ
+P90: Không có chức năng phần mềm; hạ tầng nghiệm thu theo khối lượng hạ tầng (Phụ lục 5)
+P91: https://mekongx.vn/health; công cụ giám sát (NCC-02)
+P92: 12
+P93: Báo cáo và thống kê
+P94: Thống kê hoạt động Sàn, lượt truy cập toàn Sàn; xuất Excel, PDF
+P95: Đạt 3/3 chức năng
+P96: CMS › Giao dịch › Báo cáo giao dịch, Thu chi
+P97: CMS › Quản trị hệ thống › Thống kê
+P99: Kết quả tự kiểm thử của nhà cung cấp theo Biên bản tự kiểm thử chức năng phần mềm đợt 1 ngày 25/10/2026; chi tiết từng chức năng (mã, mô tả, kết quả) tại Phụ lục A của biên bản và Phụ lục 02 Biên bản nghiệm thu khối lượng đợt 1. Việc xác nhận đạt vận hành thử thuộc đơn vị vận hành thử.
+P100: 2. Thông số hiệu năng thiết kế
+P101: STT
+P102: Thông số
+P103: Thiết kế
+P104: Phương pháp đo trong vận hành thử
+P105: Kết quả đo
+P106: 1
+P107: Hạ tầng máy chủ
+P108: 02 máy chủ cloud, mỗi máy: CPU Intel Xeon Gold 6330, 8 core, RAM 32 GB, SSD 500 GB, 01 IP; có snapshot, sao lưu, giám sát, mở rộng tài nguyên, IPv4/IPv6 (Phụ lục hợp đồng)
+P109: Đối chiếu cấu hình trên trang quản trị hạ tầng cloud
+P110: Theo biên bản bàn giao hạ tầng
+P111: 2
+P112: Phân bổ vai trò máy chủ
+P113: Máy chủ 1: ứng dụng web (IIS, ASP.NET Core 8), tệp tải lên; máy chủ 2: cơ sở dữ liệu SQL Server. Bản sao lưu, snapshot đặt ở kho sao lưu của hạ tầng cloud, tách biệt hai máy chủ; hai máy dự phòng cho nhau khi có sự cố
+P114: Kiểm tra cấu hình
+P115: —
+P116: 3
+P117: Nền tảng phần mềm
+P118: ASP.NET Core 8; SQL Server; Windows Server; máy chủ web IIS
+P119: —
+P120: —
+P121: 4
+P122: Biện pháp bảo đảm hiệu năng
+P123: Bộ nhớ đệm trang chủ; nén dữ liệu trả về; bộ nhớ đệm tệp tĩnh 30 ngày; chỉ mục cơ sở dữ liệu cho các danh sách lớn
+P124: —
+P125: —
+P126: 5
+P127: Thời gian tải trang chính
+P128: ≤ 03 giây
+P129: Đo thời gian tải hoàn tất 04 trang (trang chủ, đăng nhập, danh sách công nghệ, danh sách nhà cung ứng) trên trình duyệt Chrome, xóa bộ nhớ đệm trước khi đo; mỗi trang đo 03 lần tại 03 khung giờ
+P130: 1,0 – 1,9 giây (nhà cung cấp tự đo 02 lần ngày 25/10/2026); kết quả chính thức ghi trong báo cáo vận hành thử
+P131: 6
+P132: Số người dùng đồng thời
+P133: ≥ 200 người dùng; tỷ lệ lỗi dưới 1%
+P134: Kiểm thử tải: mô phỏng 200 người dùng đồng thời thực hiện xem trang chủ, tìm kiếm, xem chi tiết sản phẩm, đăng nhập trong 15 phút; đạt khi tỷ lệ lỗi dưới 1% và thời gian tải trang chính ≤ 03 giây
+P135: Thực hiện trong vận hành thử lần 2; kết quả ghi trong báo cáo vận hành thử
+P137: 3. Phương án mở rộng
+P138: - Ngưỡng xem xét mở rộng: cảnh báo tài nguyên theo NCC-02 (CPU trên 80%, RAM trên 85% liên tục 15 phút; ổ đĩa trên 80%) lặp lại trong 05 ngày làm việc liên tiếp, hoặc mức sử dụng CPU, RAM trung bình trong giờ cao điểm của tháng vượt 70%, hoặc thời gian tải trang chính vượt 02 giây;
+P139: - Mở rộng theo chiều dọc: tăng CPU, RAM, dung lượng ổ đĩa của máy chủ trên nền tảng điện toán đám mây; thực hiện ngoài giờ cao điểm, thông báo trước theo quy trình quản lý thay đổi (NCC-04);
+P140: - Mở rộng theo chiều ngang: bổ sung máy chủ ứng dụng và cân bằng tải khi số người dùng đồng thời tăng; máy chủ cơ sở dữ liệu tiếp tục tách riêng;
+P141: - Mở rộng dung lượng lưu trữ tệp tải lên, bản sao lưu theo mức tăng dữ liệu thực tế, bảo đảm dung lượng trống tối thiểu 20%;
+P142: - Thời gian thực hiện mở rộng: 05 ngày làm việc kể từ khi Chủ trì thuê thống nhất.
+P143: Nơi nhận:
+P144: - Như trên;
+P145: - Đơn vị giám sát (Công ty TNHH Chuyển Đổi Số 365);
+P146: - Lưu: VT, TTGPS.
+P147: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P148: (Ký, ghi rõ họ tên, đóng dấu)
+P152: Lã Thành Trung
+PART word/header1.xml
+PART word/footer1.xml
+PART word/header2.xml
+PART word/footer2.xml

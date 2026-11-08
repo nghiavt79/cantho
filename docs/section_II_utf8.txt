@@ -1,0 +1,96 @@
+Dịch vụ phải có cơ chế giám sát, ghi nhật ký, sao lưu, khôi phục, hỗ trợ người dùng, bảo trì, bảo hành và báo cáo chất lượng dịch vụ trong suốt thời gian thuê.
+
+II. DANH MỤC QUY CHUẨN KỸ THUẬT, TIÊU CHUẨN ĐƯỢC ÁP DỤNG
+Các quy chuẩn, tiêu chuẩn và yêu cầu kỹ thuật nêu tại Mục này được lựa chọn nhằm bảo đảm dịch vụ có khả năng vận hành trong môi trường cơ quan nhà nước, đáp ứng yêu cầu về kết nối, chia sẻ dữ liệu, an toàn thông tin, bảo vệ dữ liệu cá nhân, giao dịch điện tử, hạ tầng và chất lượng dịch vụ. Đối với từng nhóm nội dung, tài liệu đồng thời xác định căn cứ pháp lý và văn bản tham chiếu tương ứng để làm cơ sở xây dựng yêu cầu kỹ thuật, đánh giá khả năng đáp ứng và tổ chức nghiệm thu.
+Việc tổng hợp theo nhóm quy chuẩn, tiêu chuẩn và yêu cầu kỹ thuật giúp bảo đảm tính mở, không chỉ định sản phẩm hoặc công nghệ cụ thể, tạo điều kiện cho các phương án kỹ thuật tương đương cùng tham gia, đồng thời vẫn bảo đảm Chủ đầu tư có đủ căn cứ kiểm tra, đánh giá và nghiệm thu chất lượng dịch vụ.
+STT
+Nhóm quy chuẩn, tiêu chuẩn/yêu cầu kỹ thuật
+Nội dung áp dụng
+Căn cứ pháp lý, văn bản tham chiếu
+Mức áp dụng
+1
+Tiêu chuẩn kỹ thuật ứng dụng CNTT
+Các tiêu chuẩn về web, dữ liệu, trao đổi thông tin, mã hóa, định dạng và khả năng tương thích.
+Thông tư 39/2017/TT-BTTTT và văn bản sửa đổi, thay thế nếu có.
+Bắt buộc theo phạm vi
+2
+Kiến trúc và chuyển đổi số
+Nguyên tắc kiến trúc, thiết kế hệ thống số, tính mở, khả năng tích hợp và mở rộng.
+Luật Chuyển đổi số số 148/2025/QH15; Nghị định 224/2026/NĐ-CP và quy định hướng dẫn hiện hành.
+Bắt buộc theo phạm vi
+3
+Kết nối, chia sẻ dữ liệu
+Quản lý kết nối, chia sẻ, khai thác dữ liệu giữa các hệ thống.
+Nghị định 47/2020/NĐ-CP về quản lý, kết nối và chia sẻ dữ liệu số của cơ quan nhà nước.
+Áp dụng khi kết nối
+4
+Giao diện lập trình ứng dụng (API) và tích hợp
+API có xác thực, phân quyền, định dạng dữ liệu, truy vết, tài liệu đặc tả và xử lý lỗi.
+Nghị định 47/2020/NĐ-CP; Thông tư 39/2017/TT-BTTTT; quy định kiến trúc và kết nối hiện hành.
+Áp dụng khi tích hợp
+5
+An toàn hệ thống thông tin theo cấp độ
+Xác định cấp độ, phương án bảo đảm an toàn thông tin, kiểm tra và giám sát.
+Nghị định 85/2016/NĐ-CP; Thông tư 12/2022/TT-BTTTT và văn bản hướng dẫn liên quan.
+Bắt buộc
+6
+An ninh mạng
+Bảo vệ hệ thống, dữ liệu và hoạt động trên không gian mạng.
+Luật An ninh mạng số 116/2025/QH15 và văn bản hướng dẫn thi hành.
+Bắt buộc
+7
+Bảo vệ dữ liệu cá nhân
+Thu thập, xử lý, lưu trữ, chia sẻ, bảo vệ quyền của chủ thể dữ liệu.
+Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15; Nghị định 356/2025/NĐ-CP.
+Bắt buộc
+8
+Giao dịch điện tử và chữ ký điện tử
+Hợp đồng điện tử, thông điệp dữ liệu, chữ ký điện tử, dịch vụ tin cậy và lưu trữ hồ sơ điện tử.
+Luật Giao dịch điện tử số 20/2023/QH15; Nghị định 23/2025/NĐ-CP.
+Theo phạm vi triển khai
+9
+Truy cập web và truyền dữ liệu bảo mật
+Mã hóa đường truyền, chứng thư số, phiên truy cập, tên miền và giao thức bảo mật.
+Thông tư 39/2017/TT-BTTTT; quy định về an toàn thông tin hiện hành.
+Bắt buộc
+10
+Dữ liệu, tiếng Việt và định dạng trao đổi
+Unicode tiếng Việt, dữ liệu có cấu trúc, định dạng phổ biến, xuất/nhập dữ liệu.
+Thông tư 39/2017/TT-BTTTT và tiêu chuẩn kỹ thuật hiện hành.
+Bắt buộc
+11
+Tài liệu và hồ sơ điện tử
+PDF, văn bản, bảng tính, ảnh, video, hồ sơ điện tử và tài liệu lưu trữ liên quan.
+Luật Giao dịch điện tử số 20/2023/QH15; tiêu chuẩn kỹ thuật hiện hành.
+Theo phạm vi triển khai
+12
+IPv6
+Sẵn sàng IPv4/IPv6, tên miền, truy cập bảo mật và kết nối khi hạ tầng đáp ứng.
+Thông tư 39/2017/TT-BTTTT và yêu cầu hạ tầng hiện hành.
+Theo yêu cầu hạ tầng
+13
+Hạ tầng và cung cấp dịch vụ CNTT
+Tài nguyên tính toán, lưu trữ, mở rộng, sao lưu, khôi phục, giám sát và bàn giao dữ liệu.
+Luật Chuyển đổi số số 148/2025/QH15; Nghị định 224/2026/NĐ-CP; Nghị định 45/2026/NĐ-CP về quản lý đầu tư ứng dụng công nghệ thông tin sử dụng nguồn vốn ngân sách nhà nước; Thông tư 18/2024/TT-BTTTT về lập và quản lý chi phí đầu tư ứng dụng CNTT, thuê dịch vụ CNTT sử dụng nguồn vốn ngân sách nhà nước; văn bản sửa đổi, bổ sung hoặc thay thế nếu có.
+Bắt buộc
+14
+Chất lượng dịch vụ
+Tính sẵn sàng, thời gian phản hồi, thời gian khắc phục, mức chất lượng dịch vụ (SLA) và báo cáo vận hành.
+Nghị định 224/2026/NĐ-CP; Nghị định 45/2026/NĐ-CP; Thông tư 16/2024/TT-BTTTT về triển khai, giám sát triển khai, nghiệm thu, xác định yêu cầu chất lượng dịch vụ và nội dung đặc thù của hợp đồng thuê dịch vụ CNTT theo yêu cầu riêng; hồ sơ mời thầu/hồ sơ yêu cầu, hợp đồng cung cấp dịch vụ, mức chất lượng dịch vụ (SLA) và các tiêu chí chất lượng được cấp có thẩm quyền phê duyệt.
+Bắt buộc
+15
+Nhật ký, giám sát và ứng cứu sự cố
+Nhật ký truy cập, thao tác, tích hợp, cảnh báo, truy vết sự cố và báo cáo xử lý.
+Nghị định 85/2016/NĐ-CP; Thông tư 12/2022/TT-BTTTT; Thông tư 16/2024/TT-BTTTT; quy định an toàn thông tin hiện hành.
+Bắt buộc
+16
+Khoa học, công nghệ, đổi mới sáng tạo và chuyển giao công nghệ
+Quản lý thông tin công nghệ, hoạt động kết nối cung - cầu, giao dịch, hợp đồng và chuyển giao công nghệ.
+Luật Khoa học, công nghệ và đổi mới sáng tạo số 93/2025/QH15; Luật số 115/2025/QH15 sửa đổi, bổ sung một số điều của Luật Chuyển giao công nghệ; Nghị định 101/2026/NĐ-CP quy định chi tiết một số điều và biện pháp hướng dẫn thi hành Luật Chuyển giao công nghệ.
+Bắt buộc theo phạm vi
+17
+Thương mại điện tử và giao dịch trên nền tảng số
+Giỏ hàng, đơn hàng, báo giá, hợp đồng, giao dịch giữa người mua và nhà cung cấp khi hệ thống phát sinh hoạt động thuộc phạm vi điều chỉnh của pháp luật thương mại điện tử.
+Luật Thương mại điện tử số 122/2025/QH15 và văn bản hướng dẫn thi hành.
+Áp dụng khi phát sinh
+

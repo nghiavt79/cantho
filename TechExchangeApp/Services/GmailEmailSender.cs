@@ -23,7 +23,7 @@ namespace TechExchangeApp.Services
             var port        = await _params.GetIntAsync(ParameterKeys.SmtpPort, 587);
             var email       = await _params.GetRequiredAsync(ParameterKeys.SmtpEmail);
             var password    = await _params.GetRequiredAsync(ParameterKeys.SmtpPassword);
-            var displayName = await _params.GetAsync(ParameterKeys.SmtpDisplayName) ?? "TechPort";
+            var displayName = await _params.GetAsync(ParameterKeys.SmtpDisplayName) ?? "Sàn giao dịch công nghệ Cần Thơ";
             var maxRetry    = await _params.GetIntAsync(ParameterKeys.SmtpMaxRetry, 3);
             var retryDelay  = await _params.GetIntAsync(ParameterKeys.SmtpRetryDelaySeconds, 5);
             var skipCert    = await _params.GetBoolAsync(ParameterKeys.SmtpSkipCertCheck, false);

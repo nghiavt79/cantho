@@ -1,0 +1,27 @@
+Mã minh chứng: MC-HT-03-20261027-2
+Nội dung: Trang tình trạng hệ thống /health SAU khi cập nhật bản sửa VHT-02 (gói 27/10/2026)
+Thời điểm (UTC+7): 27/10/2026 09:22:04
+Máy thực hiện: máy tính kết nối Internet, công cụ curl
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+Yêu cầu: GET /health
+
+HTTP/1.1 200 OK
+Cache-Control: no-store
+Pragma: no-cache
+Transfer-Encoding: chunked
+Content-Type: application/json; charset=utf-8
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Server: Microsoft-IIS/10.0
+Strict-Transport-Security: max-age=2592000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+Date: Tue, 27 Oct 2026 02:17:40 GMT
+
+{"status":"Healthy"}
+
+Yêu cầu: GET /cms (chưa đăng nhập)
+HTTP 302 -> https://mekongx.vn/dang-nhap?ReturnUrl=%2Fcms

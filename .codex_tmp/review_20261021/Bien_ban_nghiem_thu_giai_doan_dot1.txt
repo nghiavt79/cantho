@@ -1,0 +1,84 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN NGHIỆM THU GIAI ĐOẠN
+Đợt 1 – làm căn cứ thanh toán lần 1
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Căn cứ kết quả kiểm tra, vận hành thử thực tế của các bên;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+Hai bên tiến hành kiểm tra, nghiệm thu khối lượng công việc đợt 1 như sau:
+I. Nội dung kiểm tra
+TT | Nội dung | Kết quả
+1 | Hạ tầng 02 máy chủ cloud: CPU Intel Xeon Gold 6330 hoặc tương đương, tối thiểu 8 lõi, 32 GB RAM, 500 GB SSD, 01 IP; IPv4/IPv6; sao lưu, giám sát; dữ liệu đặt tại Việt Nam | Đạt
+2 | Bản quyền: Windows Server 2025 Standard 16 lõi kèm User CAL; SQL Server 2025 Standard kèm User CAL. Số chứng từ: …………………… | Đạt
+3 | Cài đặt ứng dụng trên máy chủ cloud; tên miền, chứng thư bảo mật, tường lửa | Đạt
+4 | Cấu hình danh mục, tham số, quy trình giao dịch 14 bước; tài khoản quản trị, phân quyền; sao lưu tự động hằng ngày, giám sát | Đạt
+5 | Dữ liệu khởi tạo (đã đối chiếu nguồn, quyền sử dụng): hồ sơ công nghệ …… ; chuyên gia …… ; nhà cung ứng …… ; tin bài …… | Đạt
+6 | Dịch vụ tích hợp đã kích hoạt và kết nối: SMS, thư điện tử (60 địa chỉ), token ký số, hợp đồng điện tử; trợ lý AI | Đạt
+7 | VR360: 10 điểm cảnh quay dựng mới; xoay 360°, chuyển cảnh; chạy trên máy tính, điện thoại; nút “Tham quan VR360”; đã bàn giao nội dung | Đạt
+8 | Chức năng phần mềm theo Phụ lục 3: 60 chức năng nhóm A, B, C đạt kiểm thử (chi tiết tại Bảng xác định giá trị khối lượng đợt 1) | Đạt
+9 | Kiểm thử nội bộ, rà soát lỗ hổng, phục hồi thử bản sao lưu | Đạt
+10 | Đào tạo nhóm quản trị, nhóm nghiệp vụ (…… học viên, danh sách kèm theo); bàn giao tài liệu hướng dẫn sử dụng, tài liệu quản trị | Đạt
+11 | Dự thảo hồ sơ đề xuất cấp độ và phương án an toàn thông tin cấp độ 2 | Đạt
+
+II. Kết quả vận hành thử
+Thời gian: từ ngày ……/10/2026 đến ngày ……/10/2026, theo kịch bản nghiệm thu tại phần V Chương V Hồ sơ mời thầu.
+Bước | Nội dung | Kết quả
+1 | Đăng ký nhà cung cấp | Đạt
+2 | Duyệt hồ sơ nhà cung cấp | Đạt
+3 | Đăng sản phẩm | Đạt
+4 | Đăng nhu cầu công nghệ | Đạt
+5 | Mời báo giá, nộp đề xuất | Đạt
+6 | Trao đổi trực tuyến | Đạt
+7 | Lập hợp đồng điện tử | Đạt
+8 | Ký số | Đạt
+9 | Thông báo qua email, SMS | Đạt
+10 | Tra cứu nhật ký | Đạt
+
+Lỗi phát sinh: …… lỗi; đã khắc phục: …… lỗi; còn tồn tại: ……………………
+III. Giá trị nghiệm thu đợt 1
+Mục | Hạng mục | Đợt 1 (đồng, sau thuế) | Tỷ lệ
+1.1 | Thiết lập trang web Sàn giao dịch công nghệ Cần Thơ | 890.782.295 | 75%
+1.2 | Cài đặt, cấu hình, hướng dẫn sử dụng, vận hành, bảo hành, bảo trì, hỗ trợ kỹ thuật 05 năm | 447.020.320 | 80%
+1.3 | Bản quyền Windows Server, SQL Server | 157.290.000 | 100%
+1.4 | Giải pháp tích hợp: VR360, SMS, thư điện tử, token ký số, hợp đồng điện tử | 133.344.602 | 100%
+2 | Thuê hạ tầng máy chủ cloud | 693.000.000 | 100%
+ | Cộng (85% giá hợp đồng) | 2.321.437.217 | 
+
+Chi tiết tại Bảng xác định giá trị khối lượng đợt 1 kèm theo.
+IV. Phần chuyển đợt 2
+- Mục 1.1 (25%): kết nối Sàn giao dịch KH&CN Việt Nam và các sàn khác; gọi video; kiểm thử toàn bộ, nghiệm thu đưa vào vận hành;
+- Mục 1.2 (20%): vận hành chính thức, bảo hành, bảo trì, hỗ trợ kỹ thuật 05 năm; nghiệm thu, bàn giao hồ sơ.
+Kết luận
+Hai bên thống nhất nghiệm thu khối lượng công việc đợt 1 với giá trị …………………… đồng, làm căn cứ thanh toán lần 1 theo Điều 5 hợp đồng.
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)
+
+DANH SÁCH HỌC VIÊN
+(Kèm theo Biên bản nghiệm thu giai đoạn đợt 1)
+TT | Họ và tên | Đơn vị | Chức vụ | Nhóm | Ký tên
+1 |  |  |  |  | 
+2 |  |  |  |  | 
+3 |  |  |  |  | 
+4 |  |  |  |  | 
+5 |  |  |  |  | 
+6 |  |  |  |  | 
+7 |  |  |  |  | 
+8 |  |  |  |  | 
+9 |  |  |  |  | 
+10 |  |  |  |  | 
+11 |  |  |  |  | 
+12 |  |  |  |  | 
+13 |  |  |  |  | 
+14 |  |  |  |  | 
+15 |  |  |  |  | 

@@ -1,0 +1,33 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN KIỂM TRA
+Kết nối các dịch vụ tích hợp
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+TT | Dịch vụ | Nội dung kiểm tra | Kết quả | Trạng thái
+1 | Thư điện tử | 60 hộp thư theo tên miền, 25 GB, 05 nhóm thư; hệ thống tự gửi thư, ghi trạng thái, tự gửi lại khi lỗi |  | Chưa hoàn tất
+2 | SMS Brandname | Gửi mã xác thực, thông báo; ghi trạng thái chờ gửi/đã gửi/lỗi; tự gửi lại; bật/tắt kênh. Ghi rõ: thương hiệu tạm / chính thức |  | Chưa hoàn tất
+3 | Chữ ký số | Tạo hợp đồng → gửi yêu cầu ký → các bên ký → nhúng chữ ký vào tệp PDF → kiểm tra toàn vẹn → tải tệp đã ký → tra cứu nhật ký. Ghi rõ: USB Token / ký từ xa |  | Chưa hoàn tất
+4 | Hợp đồng điện tử | Khởi tạo → dự thảo → gửi các bên → ký → hoàn thành → tra cứu → lưu trữ → kiểm tra nhật ký |  | Chưa hoàn tất
+5 | Trợ lý AI | Hỏi đáp dựa trên dữ liệu Sàn; tìm kiếm thông minh, bằng giọng nói; gợi ý nhà cung cấp; bật/tắt; tự chuyển về tìm kiếm thông thường khi gián đoạn |  | Chưa hoàn tất
+6 | VR360 | Nút “Tham quan VR360” mở được tour trên máy tính, điện thoại |  | Chưa hoàn tất
+7 | Sàn KH&CN Việt Nam | Lấy mã xác thực, đăng ký gian hàng, gửi sản phẩm chào bán, tin chào mua (khi Bộ KH&CN cấp tài khoản) |  | Chưa hoàn tất
+8 | Công cụ kết nối mở | Tài liệu đặc tả kết nối; xác thực; nhật ký trao đổi |  | Chưa hoàn tất
+
+Kết luận
+Các kết nối đạt yêu cầu: ……/8. Các kết nối chưa hoàn tất và thời hạn hoàn thành: ……………………………………
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

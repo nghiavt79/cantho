@@ -1,0 +1,206 @@
+[
+  {
+    "heads": [
+      "Giới thiệu chung",
+      "GIỚI THIỆU SÀN GIAO DỊCH CÔNG NGHỆ THÀNH PHỐ CẦN THƠ"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "- Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/gioi-thieu-chung-3",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Sản phẩm Công nghệ, Thiết bị & Tài sản trí tuệ",
+      "Bạn chưa tìm thấy công nghệ, thiết bị hoặc giải pháp phù hợp trên Sàn?",
+      "Bạn cần hỗ trợ chuyển giao công nghệ?"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "Sản phẩm - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/san-pham",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Dịch vụ tư vấn khoa học, công nghệ và đổi mới sáng tạo"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "Dịch vụ tư vấn khoa học công nghệ - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/dich-vu-tu-van",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Dịch vụ tư vấn khoa học, công nghệ và đổi mới sáng tạo"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "Dịch vụ tư vấn khoa học công nghệ - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/dich-vu-tu-van/truy-xuat-nguon-goc-29",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Tin sự kiện",
+      "CASTA đồng hành nâng cao kỹ năng ứng dụng AI cho chính quyền cơ sở"
+    ],
+    "outside": [
+      {
+        "cl": "news-featured__card",
+        "tag": "A",
+        "w": 240
+      },
+      {
+        "cl": "news-featured__card-img",
+        "tag": "DIV",
+        "w": 130
+      },
+      {
+        "cl": "",
+        "tag": "IMG",
+        "w": 130
+      },
+      {
+        "cl": "news-featured__card-body",
+        "tag": "DIV",
+        "w": 70
+      },
+      {
+        "cl": "news-featured__card-date",
+        "tag": "SPAN",
+        "w": 55
+      }
+    ],
+    "sw": 360,
+    "title": "Tin sự kiện - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/tin-su-kien",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Sản phẩm OCOP & Truy xuất nguồn gốc",
+      "Sản phẩm OCOP nổi bật"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "Góc trưng bày Sản phẩm OCOP & Truy xuất nguồn gốc - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/ocop",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Liên hệ với chúng tôi",
+      "Trung tâm Ứng dụng Tiến bộ Khoa học và Công nghệ Cần Thơ",
+      "Gửi yêu cầu tư vấn",
+      "Vị trí của chúng tôi"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "Liên hệ - Trung tâm Ứng dụng Tiến bộ KH&CN Cần Thơ - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/lien-he",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Câu hỏi thường gặp",
+      "Người mua",
+      "Nhà cung cấp",
+      "Sự kiện"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "Câu hỏi thường gặp - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/hoi-dap",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Chuyên gia tư vấn",
+      "Đội ngũ chuyên gia"
+    ],
+    "outside": [],
+    "sw": 360,
+    "title": "Chuyên gia tư vấn - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/chuyen-gia",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Công nghệ & Giải pháp ứng dụng",
+      "Công nghệ mới cập nhật",
+      "Điện, điện tử, công nghệ thông tin",
+      "Vật liệu và luyện kim"
+    ],
+    "outside": [
+      {
+        "cl": "tech-card",
+        "tag": "ARTICLE",
+        "w": 286
+      },
+      {
+        "cl": "tech-card__image",
+        "tag": "A",
+        "w": 285
+      },
+      {
+        "cl": "",
+        "tag": "IMG",
+        "w": 285
+      },
+      {
+        "cl": "tech-card__body",
+        "tag": "DIV",
+        "w": 285
+      },
+      {
+        "cl": "tech-card__badge",
+        "tag": "SPAN",
+        "w": 95
+      }
+    ],
+    "sw": 360,
+    "title": "Công nghệ - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/cong-nghe",
+    "w": 375
+  },
+  {
+    "heads": [
+      "Kết quả tìm kiếm: \"cong nghe\"",
+      "Không tìm thấy công nghệ, thiết bị hoặc giải pháp phù hợp?"
+    ],
+    "outside": [
+      {
+        "cl": "se-filter-pill ",
+        "tag": "A",
+        "w": 128
+      },
+      {
+        "cl": "se-filter-pill ",
+        "tag": "A",
+        "w": 86
+      },
+      {
+        "cl": "bi bi-patch-check",
+        "tag": "I",
+        "w": 13
+      },
+      {
+        "cl": "se-filter-pill ",
+        "tag": "A",
+        "w": 131
+      },
+      {
+        "cl": "bi bi-building",
+        "tag": "I",
+        "w": 13
+      }
+    ],
+    "sw": 360,
+    "title": "Tìm kiếm: cong nghe - Sàn Giao dịch Công nghệ Thành phố Cần Thơ",
+    "url": "/Search",
+    "w": 375
+  }
+]

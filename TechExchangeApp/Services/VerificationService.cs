@@ -39,7 +39,7 @@ namespace TechExchangeApp.Services
             var otp = GenerateOtp();
             await SaveOtpAsync(userId, 1, otp);
 
-            var subject = "[TechPort] Xác thực địa chỉ Email của bạn";
+            var subject = "[Sàn giao dịch công nghệ Cần Thơ] Xác thực địa chỉ Email của bạn";
             var body = BuildOtpEmailBody(user.FullName ?? user.UserName!, otp, "Email");
             await _email.SendAsync(user.Email, subject, body, isHtml: true);
 
@@ -56,7 +56,7 @@ namespace TechExchangeApp.Services
             var otp = GenerateOtp();
             await SaveOtpAsync(userId, 2, otp);
 
-            await _sms.SendAsync(user.PhoneNumber, $"[TechPort] Mã OTP xác thực SĐT của bạn: {otp}. Có hiệu lực {_otp.PhoneOtpExpiryMinutes} phút.");
+            await _sms.SendAsync(user.PhoneNumber, $"[Sàn GDCN Cần Thơ] Mã OTP xác thực SĐT của bạn: {otp}. Có hiệu lực {_otp.PhoneOtpExpiryMinutes} phút.");
             _logger.LogInformation("[VerifyPhone] OTP {Otp} sent to {Phone}", otp, user.PhoneNumber);
             return true;
         }
@@ -234,7 +234,7 @@ namespace TechExchangeApp.Services
         return $@"
 <div style='font-family:Arial,sans-serif;max-width:480px;margin:auto;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden'>
   <div style='background:#1a73e8;padding:20px;text-align:center'>
-    <h2 style='color:white;margin:0'>TechPort – Xác thực tài khoản</h2>
+    <h2 style='color:white;margin:0'>Sàn giao dịch công nghệ Cần Thơ – Xác thực tài khoản</h2>
   </div>
   <div style='padding:24px'>
     <p>Xin chào <strong>{name}</strong>,</p>

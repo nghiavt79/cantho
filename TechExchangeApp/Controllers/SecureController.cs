@@ -96,11 +96,11 @@ namespace TechExchangeApp.Controllers
             if (string.IsNullOrEmpty(to))
                 return Content("Usage: /Secure/TestEmail?to=recipient@email.com");
 
-            var subject = "[TechPort] Test Email - SMTP Config OK";
+            var subject = "[Sàn giao dịch công nghệ Cần Thơ] Test Email - SMTP Config OK";
             var body    = $@"
 <div style='font-family:Arial,sans-serif;max-width:480px;margin:auto;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden'>
   <div style='background:#1a73e8;padding:20px;text-align:center'>
-    <h2 style='color:white;margin:0'>TechPort – Test Email</h2>
+    <h2 style='color:white;margin:0'>Sàn giao dịch công nghệ Cần Thơ – Test Email</h2>
   </div>
   <div style='padding:24px'>
     <p>✅ SMTP configuration is working correctly.</p>
@@ -108,7 +108,7 @@ namespace TechExchangeApp.Controllers
     <p><strong>Sent to:</strong> {to}</p>
     <p><strong>Sent by:</strong> {User.Identity?.Name}</p>
     <hr style='border:none;border-top:1px solid #e0e0e0;margin:20px 0'/>
-    <p style='color:#888;font-size:12px'>This is an automated test email from TechPort admin tools.</p>
+    <p style='color:#888;font-size:12px'>This is an automated test email from Sàn giao dịch công nghệ Cần Thơ admin tools.</p>
   </div>
 </div>";
 

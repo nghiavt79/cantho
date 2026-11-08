@@ -1,0 +1,33 @@
+Mã minh chứng: MC-HT-11-20261028
+Nội dung: Thời gian tải hoàn tất trang chính trên trình duyệt Chrome (04 trang x 03 lần) – khung giờ 1
+Thời điểm (UTC+7): 28/10/2026 04:01:16 – 04:02:02
+Máy thực hiện: máy tính kết nối Internet; trình duyệt Google Chrome 156.0.8078.48, chế độ không giao diện; cửa sổ 1366 x 768
+Điều kiện: mỗi lần đo mở hồ sơ trình duyệt mới (không bộ nhớ đệm, không cookie, không đăng nhập)
+Cách đo: Navigation Timing của trình duyệt – thời điểm kết thúc sự kiện load (tải xong trang và toàn bộ tài nguyên)
+Ngưỡng (NCC-02 mục 2, Tài liệu số 01): ≤ 03 giây/trang; xem xét mở rộng khi vượt 02 giây
+------------------------------------------------------------
+Trang | Đường dẫn | Lần | Giờ | HTTP | Byte đầu (giây) | DOM sẵn sàng (giây) | Tải hoàn tất (giây) | Số tài nguyên | Dung lượng (KB)
+Trang chủ | / | 1 | 04:01:16 | 200 | 0.73 | 2.03 | 3.91 | 86 | 8570
+Trang chủ | / | 2 | 04:01:20 | 200 | 0.76 | 2.07 | 3.98 | 86 | 8570
+Trang chủ | / | 3 | 04:01:24 | 200 | 0.73 | 1.94 | 3.84 | 86 | 8570
+Đăng nhập | /dang-nhap | 1 | 04:01:28 | 200 | 0.76 | 1.82 | 2.83 | 30 | 336
+Đăng nhập | /dang-nhap | 2 | 04:01:31 | 200 | 0.77 | 1.84 | 2.82 | 30 | 333
+Đăng nhập | /dang-nhap | 3 | 04:01:34 | 200 | 0.76 | 1.80 | 2.81 | 30 | 336
+Danh sách công nghệ | /cong-nghe | 1 | 04:01:37 | 200 | 0.85 | 3.03 | 12.74 | 67 | 1080
+Danh sách công nghệ | /cong-nghe | 2 | 04:01:50 | 200 | 0.86 | 2.38 | 3.26 | 66 | 1080
+Danh sách công nghệ | /cong-nghe | 3 | 04:01:53 | 200 | 0.82 | 2.15 | 2.96 | 66 | 1080
+Danh sách nhà cung ứng | /nha-cung-ung | 1 | 04:01:56 | 200 | 0.80 | 1.88 | 2.68 | 32 | 413
+Danh sách nhà cung ứng | /nha-cung-ung | 2 | 04:01:59 | 200 | 0.77 | 1.96 | 2.83 | 32 | 413
+Danh sách nhà cung ứng | /nha-cung-ung | 3 | 04:02:02 | 200 | 0.76 | 1.82 | 2.57 | 32 | 413
+------------------------------------------------------------
+Tổng hợp (tải hoàn tất, giây):
+  Trang chủ: 3.84 – 3.98; trung bình 3.91; Không đạt ngưỡng ≤ 03 giây
+  Đăng nhập: 2.81 – 2.83; trung bình 2.82; Đạt ngưỡng ≤ 03 giây
+  Danh sách công nghệ: 2.96 – 12.74; trung bình 6.32; Không đạt ngưỡng ≤ 03 giây
+  Danh sách nhà cung ứng: 2.57 – 2.83; trung bình 2.69; Đạt ngưỡng ≤ 03 giây
+Ghi chú:
+  - Trang chủ không đạt ở cả 03 lần (3,84 – 3,98 giây). Dung lượng tải 8,5 MB; tài nguyên kết thúc muộn nhất là ảnh nền
+    /Uploads/2026/07/26/DJI_20260511142312_0062_D.jpg (1.634 KB) và ảnh logo khách hàng /image/logo-khach-hang/21-khach-hang.jpeg
+    (1.160 KB), 22-khach-hang.png (817 KB) chưa được tối ưu dung lượng.
+  - Danh sách công nghệ lần 1: 12,74 giây (một lần chậm bất thường); lần 2, 3: 3,26 và 2,96 giây.
+  - Khung giờ 2, 3 (giờ hành chính, giờ cao điểm) đo bổ sung theo cùng phương pháp.

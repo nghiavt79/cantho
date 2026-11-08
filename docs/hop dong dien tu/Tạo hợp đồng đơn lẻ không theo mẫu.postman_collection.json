@@ -1,0 +1,73 @@
+{
+  "info": {
+    "_postman_id": "1cb7883d-91e0-48a0-9843-3307f5f56763",
+    "name": "Tạo hợp đồng đơn lẻ không theo mẫu",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25260385"
+  },
+  "item": [
+    {
+      "name": "Tạo hợp đồng đơn lẻ không theo mẫu",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_1c9g}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file_contract",
+              "type": "file",
+              "src": [
+                "postman-cloud:///1f1d0f36-f260-48f0-9aed-d734c255931c"
+              ]
+            },
+            {
+              "key": "jsonRequest",
+              "value": "{\n  \"contract\": {\n    \"name\": \"KD-CHECK API DLKTM TOA DO X OKY 3006 02\",\n    \"notes\": \"Ghi chú 3006 01\",\n    \"refs\": [],\n    \"contract_no\": \"CNTT11\",\n    \"sign_time\": \"2026-11-24T00:00:00Z\",\n    \"type_id\": 538,\n    \"is_template\": false,\n    \"ceca_push\": 0,\n    \"contract_expire_time\": \"2026-12-24T00:00:00Z\",\n    \"isAllowFirstHandleEdit\": false,\n    \"address_cc\": []\n  },\n  \"participants\": [\n    {\n      \"name\": \"Trung tâm công nghệ thông tin MobiFone\",\n      \"type\": 1,\n      \"ordering\": 2,\n      \"recipients\": [\n        {\n          \"name\": \"pth\",\n          \"email\": \"kiemtra1@gmail.com\",\n          \"phone\": \"\",\n          \"role\": 2,\n          \"ordering\": 1,\n          \"status\": 0,\n          \"locale\": \"vi\",\n          \"sign_type\": [\n            {\n              \"id\": null\n            }\n          ],\n          \"card_id\": \"\",\n          \"is_otp\": 0,\n          \"login_by\": \"email\"\n        },\n        {\n          \"name\": \"pth1\",\n          \"email\": \"nguoiky1@gmail.com\",\n          \"phone\": \"\",\n          \"role\": 3,\n          \"ordering\": 1,\n          \"status\": 0,\n          \"locale\": \"vi\",\n          \"sign_type\": [\n            {\n              \"id\": 2,\n              \"name\": \"Ký số bằng USB token\",\n              \"is_otp\": false\n            }\n          ],\n          \"card_id\": \"123123123\",\n          \"is_otp\": 0,\n          \"login_by\": \"email\"\n        }\n      ],\n      \"hideFlow\": false,\n      \"status\": 1\n    },\n    {\n      \"name\": \"DT ABCD 2906\",\n      \"type\": 3,\n      \"ordering\": 1,\n      \"recipients\": [\n        {\n          \"name\": \"CN-PTH\",\n          \"email\": \"\",\n          \"phone\": \"0191929120\",\n          \"role\": 3,\n          \"ordering\": 1,\n          \"status\": 0,\n          \"locale\": \"en\",\n          \"sign_type\": [\n            {\n              \"id\": 1,\n              \"name\": \"Ký ảnh và OTP\",\n              \"is_otp\": null\n            }\n          ],\n          \"card_id\": \"\",\n          \"is_otp\": 0,\n          \"login_by\": \"phone\"\n        }\n      ],\n      \"hideFlow\": false,\n      \"status\": 1\n    }\n  ],\n  \"fields\": [\n    {\n      \"name\": \"Số hợp đồng\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 4,\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 135.0,\n      \"height\": 28.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 382.0,\n      \"coordinate_y\": 159.0\n    },\n    {\n      \"name\": \"Họ và tên bên A\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"Phạm Thị Hương\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 180.0,\n      \"height\": 24.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 202.0,\n      \"coordinate_y\": 407.0\n    },\n    {\n      \"name\": \"MST bên A\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"012345678901\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 180.0,\n      \"height\": 24.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 206.0,\n      \"coordinate_y\": 367.0\n    },\n    {\n      \"name\": \"Địa chỉ bên A\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"Tòa nhà MobiFone, Hà Nội\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 300.0,\n      \"height\": 24.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 366.0,\n      \"coordinate_y\": 324.0\n    },\n    {\n      \"name\": \"Chức vụ bên A\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"Chuyên viên\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 180.0,\n      \"height\": 24.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 179.0,\n      \"coordinate_y\": 433.0\n    },\n    {\n      \"name\": \"Mã số thuế bên B\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"0100686209-999\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 180.0,\n      \"height\": 24.0,\n      \"required\": 0,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 204.0,\n      \"coordinate_y\": 534.0\n    },\n    {\n      \"name\": \"Ghi chú bên B\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"Ghi chú bổ sung tại trang 1\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 300.0,\n      \"height\": 40.0,\n      \"required\": 0,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 293.0,\n      \"coordinate_y\": 628.0\n    },\n    {\n      \"name\": \"Người đại diện bên B\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"Nguyễn Văn A\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 220.0,\n      \"height\": 24.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 211.0,\n      \"coordinate_y\": 568.0\n    },\n    {\n      \"name\": \"Chức vụ người đại diện bên B\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"Giám đốc\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 220.0,\n      \"height\": 24.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 173.0,\n      \"coordinate_y\": 595.0\n    },\n    {\n      \"name\": \"Địa chỉ bên B\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 1,\n      \"value\": \"Số 1 đường ABC, Hà Nội\",\n      \"font\": \"Times New Roman\",\n      \"page\": 1,\n      \"width\": 350.0,\n      \"height\": 24.0,\n      \"required\": 0,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 366.0,\n      \"coordinate_y\": 491.0\n    },\n\n    {\n      \"name\": \"CN-PTH\",\n      \"email_or_phone\": \"0191929120\",\n      \"type\": 2,\n      \"font\": \"Times New Roman\",\n      \"page\": 3,\n      \"width\": 180.0,\n      \"height\": 66.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 338.0,\n      \"coordinate_y\": 2360.0\n    },\n    {\n      \"name\": \"pth1\",\n      \"email_or_phone\": \"nguoiky1@gmail.com\",\n      \"type\": 3,\n      \"font\": \"Times New Roman\",\n      \"page\": 3,\n      \"width\": 180.0,\n      \"height\": 66.0,\n      \"required\": 1,\n      \"status\": 0,\n      \"font_size\": 13,\n      \"coordinate_x\": 120.0,\n      \"coordinate_y\": 2360.0\n    }\n  ]\n}",
+              "type": "text"
+            },
+            {
+              "key": "attached_files",
+              "type": "file",
+              "src": []
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://econtractdev.mobifone.ai/service/api/v1/tp/contracts/create",
+          "protocol": "https",
+          "host": [
+            "econtractdev",
+            "mobifone",
+            "ai"
+          ],
+          "path": [
+            "service",
+            "api",
+            "v1",
+            "tp",
+            "contracts",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "json_web_token_0sdl",
+      "secret": true
+    }
+  ]
+}

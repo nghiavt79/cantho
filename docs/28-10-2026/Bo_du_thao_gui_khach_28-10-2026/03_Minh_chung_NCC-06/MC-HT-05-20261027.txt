@@ -1,0 +1,10 @@
+Mã minh chứng: MC-HT-05-20261027
+Nội dung: Giao thức mã hóa
+Thời điểm (UTC+7): 27/10/2026 09:03:45
+Máy thực hiện: máy tính kết nối Internet, công cụ curl, openssl
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+-tls1: TỪ CHỐI
+-tls1_1: TỪ CHỐI
+-tls1_2: CHẤP NHẬN (New, TLSv1.2, Cipher is ECDHE-RSA-AES256-GCM-SHA384)
+-tls1_3: CHẤP NHẬN (New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384)

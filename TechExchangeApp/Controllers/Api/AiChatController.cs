@@ -51,7 +51,8 @@ namespace TechExchangeApp.Controllers.Api
             try
             {
                 var userId = int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var uid) ? uid : (int?)null;
-                var response = await _chatService.ReplyAsync(request, userId, cancellationToken);
+                var viewedProductIds = AiViewedProducts.Read(HttpContext.Session);
+                var response = await _chatService.ReplyAsync(request, userId, viewedProductIds, cancellationToken);
                 return Ok(response);
             }
             catch (Exception ex)

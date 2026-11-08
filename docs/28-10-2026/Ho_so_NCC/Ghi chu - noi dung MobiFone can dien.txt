@@ -1,0 +1,55 @@
+GHI CHÚ – NỘI DUNG MOBIFONE CẦN ĐIỀN, XÁC NHẬN
+(Bộ hồ sơ nhà thầu theo Checklist V8 – ngày 28/10/2026)
+
+Các ô đang để "……" cần số liệu, chứng từ thật của MobiFone. Không ước lượng.
+Phần của đơn vị vận hành thử, đơn vị giám sát, Chủ trì thuê để nguyên cho các bên tự ghi.
+
+I. NCC-02 (văn bản đã gửi chị Quyên, đổi mã, bổ sung)
+   - Số công văn.
+   - Mục 2 bảng hạ tầng (giữ như bản đã gửi): IP nội bộ, CPU, RAM, SSD thực tế của MC-01, MC-02.
+   - Người nhận tài khoản (ông Nguyễn Minh Tuyển): điện thoại, thư điện tử.
+   - Bảng "chỉ số đề xuất" (mục 2): sẵn sàng giữ đúng hợp đồng 99,5%/tháng; các ngưỡng còn lại lấy từ
+     Tài liệu số 01 (≤ 03 giây, ≥ 200 người dùng, mở rộng 05 ngày làm việc) và Tài liệu số 03 (RPO ≤ 06 giờ,
+     RTO ≤ 08 giờ). Đổi con số nào thì báo để sửa đồng bộ Tài liệu số 01, 03.
+   - Tài liệu số 03 (NCC-04): ghi người phê duyệt (đang để "………………").
+   - Tệp zip NCC-02 ... .zip đã đóng gói đủ 11 tài liệu kèm theo và minh chứng kiểm thử.
+
+II. NCC-03 (thông báo sẵn sàng vận hành thử, ghi ngày 26/10/2026)
+   - Số công văn.
+   - Mục 3: số bản ghi công nghệ, thiết bị đã xuất bản; số hồ sơ nhà cung ứng; chuyên gia; tin bài, sự kiện
+     trên mekongx.vn tại ngày 26/10/2026.
+   - Mục 3: hồ sơ giao dịch mẫu PRJ-CATSACH-2026 đã xác nhận có trên máy chủ (CMS › Quản lý dự án, Bước 14).
+   - Mục 2: đã xác nhận đủ 10 tài khoản thử có trên máy chủ (vht_* tạo 25/10/2026).
+   - Mục 5: điện thoại, thư điện tử bà Nguyễn Thị Dung (hồ sơ hiện có chưa ghi thông tin này).
+
+III. VHT-04 / NCC-05 (biên bản ghi nhận lỗi, biên bản khắc phục lỗi lần 1)
+   - Đã thêm Chủ trì thuê là bên thứ 4 và mục "Xác nhận của Chủ trì thuê" (theo checklist: 4 bên ký).
+   - Họ tên, chức vụ đại diện đơn vị vận hành thử (ghi chú 27/10: ông Ngô Nguyên Giản) và đại diện Chủ trì thuê.
+   - NCC-05 đã điền ngày hoàn thành, minh chứng: L01, L02, L03 (26/10), L07 (27/10).
+     L02 đã xác nhận đủ 05/05 API (API-18 đo ngày 28/10/2026, MC-KT-38-20261028-vht_buyer01).
+     Còn điền: nguyên nhân L01; L04 (luồng ghi thành công 10 API); L05 (thư điện tử); L06 (nhãn bước 10);
+     L08 (ô lý do Trả về); L09 (IPv6); L10 (gia hạn SSL tự động); dòng Tổng hợp.
+   - Cột "Đánh giá" để đơn vị vận hành thử, đơn vị giám sát đánh dấu.
+
+IV. NCC-06 (nhật ký hệ thống, số liệu giám sát lần 1 – gộp NCC-06a)
+   - Mục 1: giờ kết thúc kỳ vận hành thử lần 1; tỷ lệ sẵn sàng, số lần và tổng thời gian gián đoạn (Uptime Kuma);
+     CPU, RAM cao nhất MC-01, MC-02; ổ đĩa MC-02; số lần sao lưu thành công/lỗi; số cảnh báo, sự cố nghiêm trọng.
+   - Mục 2: số liệu nhật ký đến hết vận hành thử lần 1 (hiện có số liệu 26/10 – 27/10 theo MC-HT-10-20261027).
+   - Mục 4 – tồn tại 1: ảnh chụp tác vụ gia hạn tự động chứng thư SSL, nhật ký lần gia hạn thử.
+   - Mục 4 – tồn tại 2: số, ngày chứng từ bản quyền Windows Server, SQL Server.
+   - Mục 4 – tồn tại 4: ảnh, nhật ký luồng ghi thành công 10 API (API-18 đã đo đạt 28/10).
+   - Phụ lục xác nhận kết quả khắc phục tồn tại 1 – 5 (nội dung NCC-06a): 4 bên ký, Chủ trì thuê xác nhận.
+   - Mục 4 – tồn tại 5: bật kênh thư điện tử trên mekongx.vn, gửi thử (chuyển bước, nhắc lịch, OTP),
+     nhật ký gửi thư trạng thái "Đã gửi". Phần mềm đã hỗ trợ cổng 465 từ bản 26/10.
+   - Cột "Tình trạng" các tồn tại 1, 2, 4, 5 sau khi có minh chứng.
+
+V. GS-02, NCC-08 (chỉ đổi mã tham chiếu, nội dung khác giữ nguyên)
+   - GS-02: dòng 2.3, 2.4 đã sửa theo thực tế chỉ có sao lưu (không sử dụng snapshot); yêu cầu "bản sao lưu tách biệt"
+     ở dòng 2.4 cần đơn vị giám sát thống nhất vì hiện bản sao lưu lưu tại máy chủ, tải về định kỳ.
+   - NCC-08: câu mở đầu dẫn kết quả được xác nhận tại NCC-05 và Phụ lục NCC-06 (ngày ……); chỉ phát hành khi các văn bản này đã ký.
+   - GS-02: NCC-06 → NCC-02; NCC-11 → NCC-02, Tài liệu số 01; NCC-12 → NCC-02, Tài liệu số 02; NCC-14 → NCC-04.
+   - NCC-08 Phụ lục 4: ghi mã NCC-02, NCC-03, VHT-04, NCC-05, NCC-06. Các ô "……" giữ như bản trước
+     (số công văn, ngày nghiệm thu, chứng từ).
+
+VI. Lưu ý chung
+   - Các tài liệu kèm theo vẫn giữ tiêu đề công văn của bản 26/10 (Số: ……/MBF-CT-GPS); chỉ đổi mã tham chiếu bên trong.

@@ -1,0 +1,22 @@
+Mã minh chứng: MC-KT-06-20261026
+Ca kiểm thử: KT-06 API-05 thiếu input (ẩn danh)
+Thời điểm (UTC+7): 26/10/2026 08:40:07
+Công cụ: curl 8.11.0 trên máy tính kết nối Internet
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+Yêu cầu: POST /api/AISuggestion/suggest
+Thân: {}
+
+HTTP/1.1 400 Bad Request
+Transfer-Encoding: chunked
+Content-Type: application/problem+json; charset=utf-8
+Server: Microsoft-IIS/10.0
+Strict-Transport-Security: max-age=2592000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+Date: Mon, 26 Oct 2026 08:35:45 GMT
+
+{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"Input":["Input is required"]},"traceId":"00-95b8155e229b807e47c1c865f38a57b8-3068fde856ac4b48-00"}

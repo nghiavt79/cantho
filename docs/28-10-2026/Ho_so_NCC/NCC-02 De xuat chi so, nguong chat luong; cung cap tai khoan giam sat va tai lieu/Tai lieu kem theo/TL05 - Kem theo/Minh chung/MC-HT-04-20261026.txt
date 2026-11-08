@@ -1,0 +1,10 @@
+Mã minh chứng: MC-HT-04-20261026
+Ca kiểm thử: TC-HT-04 Chứng thư SSL
+Thời điểm (UTC+7): 26/10/2026 08:39:03
+Máy thực hiện: máy tính kết nối Internet, công cụ curl 8.11.0, openssl
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+subject=CN=mekongx.vn
+issuer=C=US, O=Let's Encrypt, CN=YR1
+notBefore=Oct 26 04:26:08 2026 GMT
+notAfter=Jan 24 04:26:07 2027 GMT

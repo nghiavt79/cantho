@@ -1,0 +1,773 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-08 Cong van de nghi nghiem thu dot 1 (du thao).docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v đề nghị nghiệm thu đợt 1 Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày …… tháng …… năm 2026
+P11: Kính gửi: Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ.
+P12: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone thực hiện Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ;
+P13: Căn cứ Thông tư số 41/2026/TT-BKHCN ngày 01/7/2026 của Bộ trưởng Bộ Khoa học và Công nghệ;
+P14: Căn cứ Biên bản kiểm tra, giám sát vận hành thử lần 1 số GS-02/BBKT/CDS365 ngày 28/10/2026; Báo cáo kết quả vận hành thử lần 1 số …… ngày …… của Công ty TNHH Công nghệ Tin học Bình Định; Biên bản khắc phục lỗi vận hành thử lần 1 (NCC-05) ngày ……,
+P15: Tổng Công ty Viễn thông MobiFone (MobiFone Cần Thơ) đã hoàn thành khối lượng thiết lập dịch vụ đợt 1, vận hành thử lần 1 và khắc phục các tồn tại theo yêu cầu của đơn vị giám sát. Tổng Công ty Viễn thông MobiFone kính đề nghị Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ xem xét, tổ chức nghiệm thu đợt 1 với các nội dung sau:
+P16: 1. Danh mục đề nghị nghiệm thu đợt 1
+P17: - Khối lượng thiết lập dịch vụ, bản quyền phần mềm, giải pháp tích hợp, thuê hạ tầng: Phụ lục 1; thuyết minh cơ sở xác định khối lượng mục thiết lập trang web và mục cài đặt, hướng dẫn, vận hành: Phụ lục 2;
+P18: - Chức năng phần mềm: 60/63 chức năng theo Phụ lục 3 hợp đồng (phần A: 37/37; phần B: 15/16; phần C: 08/10): Phụ lục 3;
+P19: - Hồ sơ nghiệm thu kèm theo: Phụ lục 4.
+P20: 2. Nội dung chuyển nghiệm thu đợt 2
+P21: - Chức năng B.1.2 và C.1 (tham quan thực tế ảo VR360), C.2 (tích hợp với sàn giao dịch khác), phần gọi video của C.7; giải pháp thực tế ảo VR360 (10 điểm cảnh quay dựng mới);
+P22: - Ký số hợp đồng bằng chứng thư số của tổ chức chứng thực (đợt 1 vận hành ở chế độ thử nghiệm); kiểm thử tải 200 người dùng đồng thời (vận hành thử lần 2); bổ sung bản ghi IPv6 (AAAA);
+P23: - Các gói dịch vụ tích hợp chưa có đủ chứng từ cung cấp, kích hoạt tại thời điểm nghiệm thu đợt 1 (nêu tại cột Ghi chú Phụ lục 1).
+P24: 3. Đề nghị các bên đánh giá
+P25: Kính đề nghị đơn vị giám sát và chủ đầu tư cho ý kiến vào cột "Ý kiến đơn vị giám sát", "Ý kiến chủ đầu tư" tại Phụ lục 1 và Phụ lục 3, gửi lại nhà cung cấp trước ngày …… tháng …… năm 2026 để hoàn thiện hồ sơ trước buổi nghiệm thu. Thời gian, địa điểm nghiệm thu dự kiến: …… giờ, ngày …… tháng …… năm 2026, tại Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ.
+P26: Tổng Công ty Viễn thông MobiFone trân trọng đề nghị./.
+P27: Nơi nhận:
+P28: - Như trên;
+P29: - Công ty TNHH Chuyển Đổi Số 365 (đơn vị giám sát);
+P30: - Công ty TNHH Công nghệ Tin học Bình Định (đơn vị vận hành thử);
+P31: - Lưu: VT, TTGPS.
+P32: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P33: (Ký, ghi rõ họ tên, đóng dấu)
+P38: Lã Thành Trung
+P40: PHỤ LỤC 1. DANH MỤC KHỐI LƯỢNG ĐỀ NGHỊ NGHIỆM THU ĐỢT 1
+P41: (Kèm theo Công văn số ……/MBF-CT-GPS ngày ……/……/2026 của Tổng Công ty Viễn thông MobiFone)
+P42: STT
+P43: Mục PL4
+P44: Hạng mục
+P45: ĐVT
+P46: KL theo hợp đồng
+P47: KL đề nghị nghiệm thu đợt 1
+P48: Hồ sơ, minh chứng
+P49: Ghi chú
+P50: Ý kiến đơn vị giám sát
+P51: Ý kiến chủ đầu tư
+P52: 1
+P53: ……
+P54: Thiết lập trang web Sàn giao dịch công nghệ Cần Thơ
+P55: Gói
+P56: 1
+P57: 0,75
+P58: Báo cáo kết quả vận hành thử lần 1; Phụ lục 3; biên bản ghi nhận, khắc phục lỗi
+P59: Thuyết minh tại Phụ lục 2
+P60: ☐ Đồng ý
+P61: ☐ Không đồng ý
+P62: ……………
+P63: ☐ Đồng ý
+P64: ☐ Không đồng ý
+P65: ……………
+P66: 2
+P67: ……
+P68: Cài đặt, cấu hình, hướng dẫn sử dụng, vận hành, bảo hành, bảo trì và hỗ trợ kỹ thuật trong thời gian 05 năm
+P69: Gói
+P70: 1
+P71: 0,80
+P72: Tài liệu HDSD Mục 01a, 01b, 01c; quy trình NCC-04; biên bản đào tạo (29/10 – 06/11/2026)
+P73: Thuyết minh tại Phụ lục 2
+P74: ☐ Đồng ý
+P75: ☐ Không đồng ý
+P76: ……………
+P77: ☐ Đồng ý
+P78: ☐ Không đồng ý
+P79: ……………
+P80: 3
+P81: ……
+P82: Windows Server 2025 Standard – 16 Core License Pack
+P83: ……
+P84: ……
+P85: Toàn bộ
+P86: Chứng từ bản quyền
+P88: ☐ Đồng ý
+P89: ☐ Không đồng ý
+P90: ……………
+P91: ☐ Đồng ý
+P92: ☐ Không đồng ý
+P93: ……………
+P94: 4
+P95: ……
+P96: Windows Server 2025 – 1 User CAL
+P97: ……
+P98: ……
+P99: Toàn bộ
+P100: Chứng từ bản quyền
+P102: ☐ Đồng ý
+P103: ☐ Không đồng ý
+P104: ……………
+P105: ☐ Đồng ý
+P106: ☐ Không đồng ý
+P107: ……………
+P108: 5
+P109: ……
+P110: SQL Server 2025 Standard edition Perpetual 1 Server License
+P111: ……
+P112: ……
+P113: Toàn bộ
+P114: Chứng từ bản quyền
+P116: ☐ Đồng ý
+P117: ☐ Không đồng ý
+P118: ……………
+P119: ☐ Đồng ý
+P120: ☐ Không đồng ý
+P121: ……………
+P122: 6
+P123: ……
+P124: SQL Server 2025 – 1 User CAL
+P125: ……
+P126: ……
+P127: Toàn bộ
+P128: Chứng từ bản quyền
+P130: ☐ Đồng ý
+P131: ☐ Không đồng ý
+P132: ……………
+P133: ☐ Đồng ý
+P134: ☐ Không đồng ý
+P135: ……………
+P136: 7
+P137: ……
+P138: Giải pháp thực tế ảo VR360 (10 điểm cảnh quay dựng mới)
+P139: Gói
+P140: 1
+P141: 0
+P142: —
+P143: Nghiệm thu đợt 2
+P146: 8
+P147: ……
+P148: Giải pháp tin nhắn thương hiệu (05 năm, mỗi năm 3.600 SMS)
+P149: Gói
+P150: 1
+P151: 1
+P152: Hợp đồng, tài khoản thương hiệu; kết quả gửi tin thật
+P153: Chưa có chứng từ tại ngày nghiệm thu thì chuyển đợt 2
+P154: ☐ Đồng ý
+P155: ☐ Không đồng ý
+P156: ……………
+P157: ☐ Đồng ý
+P158: ☐ Không đồng ý
+P159: ……………
+P160: 9
+P161: ……
+P162: Email Hosting gói 3 – 60 tháng (60 địa chỉ, 25 GB, 05 Mail List)
+P163: Gói
+P164: 1
+P165: 1
+P166: Chứng từ kích hoạt; danh sách địa chỉ; kết quả gửi thử
+P168: ☐ Đồng ý
+P169: ☐ Không đồng ý
+P170: ……………
+P171: ☐ Đồng ý
+P172: ☐ Không đồng ý
+P173: ……………
+P174: 10
+P175: ……
+P176: Gói combo TOKEN cho khách hàng doanh nghiệp (03 năm, miễn phí thêm 02 năm)
+P177: Gói
+P178: ……
+P179: ……
+P180: Chứng từ cấp thiết bị lưu khóa, chứng thư số
+P181: Chưa có chứng từ tại ngày nghiệm thu thì chuyển đợt 2
+P182: ☐ Đồng ý
+P183: ☐ Không đồng ý
+P184: ……………
+P185: ☐ Đồng ý
+P186: ☐ Không đồng ý
+P187: ……………
+P188: 11
+P189: ……
+P190: Gói eContract 10.000 tài liệu
+P191: Gói
+P192: 1
+P193: 1
+P194: Hợp đồng, tài khoản dịch vụ hợp đồng điện tử
+P195: Chưa có chứng từ tại ngày nghiệm thu thì chuyển đợt 2
+P196: ☐ Đồng ý
+P197: ☐ Không đồng ý
+P198: ……………
+P199: ☐ Đồng ý
+P200: ☐ Không đồng ý
+P201: ……………
+P202: 12
+P203: ……
+P204: Gói SMS 5.000 tin nhắn
+P205: Gói
+P206: 1
+P207: 1
+P208: Chứng từ cấp gói tin nhắn
+P209: Chưa có chứng từ tại ngày nghiệm thu thì chuyển đợt 2
+P210: ☐ Đồng ý
+P211: ☐ Không đồng ý
+P212: ……………
+P213: ☐ Đồng ý
+P214: ☐ Không đồng ý
+P215: ……………
+P216: 13
+P217: ……
+P218: Thuê hạ tầng máy chủ (cloud) phục vụ cài đặt, vận hành và lưu trữ dữ liệu (02 máy chủ)
+P219: Tháng
+P220: ……
+P221: …… tháng (từ ngày bàn giao hạ tầng đến ngày nghiệm thu)
+P222: Biên bản bàn giao hạ tầng; văn bản xác nhận vị trí trung tâm dữ liệu; kết quả kiểm tra mục 2 phần IV GS-02
+P224: ☐ Đồng ý
+P225: ☐ Không đồng ý
+P226: ……………
+P227: ☐ Đồng ý
+P228: ☐ Không đồng ý
+P229: ……………
+P231: Ghi chú: cột "Mục PL4" ghi theo số thứ tự tại Phụ lục 4 hợp đồng; khối lượng ghi theo đơn vị tính của hợp đồng (không ghi tỷ lệ phần trăm); giá trị đề nghị thanh toán tính theo đơn giá hợp đồng, làm tròn thống nhất đến đồng.
+P233: PHỤ LỤC 2. THUYẾT MINH CƠ SỞ XÁC ĐỊNH KHỐI LƯỢNG NGHIỆM THU ĐỢT 1
+P234: a) Mục 1 – Thiết lập trang web Sàn giao dịch công nghệ Cần Thơ (đề nghị 0,75)
+P235: Thành phần công việc
+P236: Khối lượng theo hợp đồng
+P237: Đã hoàn thành đợt 1
+P238: Còn lại, chuyển đợt 2
+P239: Chức năng phần mềm (Phụ lục 3 hợp đồng)
+P240: 63 chức năng
+P241: 60 chức năng, đã vận hành thử lần 1
+P242: B.1.2, C.1, C.2; phần gọi video của C.7
+P243: Tích hợp ký số hợp đồng điện tử
+P244: Ký bằng chứng thư số của tổ chức chứng thực
+P245: Ký ở chế độ thử nghiệm (nhúng chữ ký, mã toàn vẹn, nhật ký ký số)
+P246: Kết nối dịch vụ ký số của tổ chức chứng thực
+P247: Gửi thông báo qua SMS
+P248: Gửi tin thật
+P249: Đã tích hợp, chạy chế độ thử
+P250: Gửi tin thật khi có tài khoản thương hiệu
+P251: Vận hành thử, kiểm thử hiệu năng
+P252: Vận hành thử lần 1, lần 2; kiểm thử tải ≥ 200 người dùng đồng thời
+P253: Vận hành thử lần 1
+P254: Vận hành thử lần 2, kiểm thử tải
+P255: Hoàn thiện sau vận hành thử
+P256: Khắc phục toàn bộ lỗi
+P257: Khắc phục lỗi lần 1 theo Biên bản khắc phục lỗi
+P258: Lỗi còn theo dõi (IPv6, các lỗi chưa đạt nếu có)
+P260: Tỷ lệ chức năng đã hoàn thành là 60/63 (95,2%). Nhà cung cấp đề nghị khối lượng 0,75 do còn các thành phần tại cột "Còn lại, chuyển đợt 2". Khối lượng đề nghị không vượt mức thanh toán lần thứ nhất tối đa 85% giá hợp đồng theo nghiệm thu thực tế tại Điều 5 hợp đồng. Đề nghị chủ đầu tư xem xét, quyết định.
+P261: b) Mục 2 – Cài đặt, cấu hình, hướng dẫn sử dụng, vận hành, bảo hành, bảo trì, hỗ trợ kỹ thuật 05 năm (đề nghị 0,80)
+P262: Thành phần công việc
+P263: Đã hoàn thành đợt 1
+P264: Còn lại
+P265: Cài đặt, cấu hình hệ thống trên hạ tầng thuê
+P266: Hoàn thành
+P267: —
+P268: Tài liệu hướng dẫn sử dụng, quy trình vận hành
+P269: Mục 01a, 01b (phiên bản 2.2), 01c; NCC-04
+P270: Cập nhật khi thay đổi chức năng
+P271: Đào tạo, hướng dẫn sử dụng
+P272: Theo kế hoạch 29/10 – 06/11/2026 (biên bản đào tạo)
+P273: —
+P274: Vận hành, bảo hành, bảo trì, hỗ trợ kỹ thuật
+P275: Từ ngày đưa vào vận hành thử
+P276: Trong thời gian 05 năm thuê dịch vụ
+P278: Đề nghị chủ đầu tư xem xét, quyết định khối lượng nghiệm thu mục 2 trên cơ sở phần việc đã thực hiện nêu trên.
+P280: PHỤ LỤC 3. DANH MỤC CHỨC NĂNG PHẦN MỀM ĐỀ NGHỊ NGHIỆM THU ĐỢT 1
+P281: STT
+P282: Mã
+P283: Chức năng
+P284: Nhóm chức năng
+P285: Kết quả tự kiểm thử
+P286: Kết quả vận hành thử lần 1
+P287: Đánh giá của đơn vị giám sát
+P288: Ý kiến chủ đầu tư
+P289: 1
+P290: A.1.1
+P291: Module xác thực
+P292: Quản trị hệ thống
+P293: Đạt
+P294: ……
+P295: ☐ Đạt ☐ Chưa đạt
+P297: 2
+P298: A.1.2
+P299: Module quản trị người dùng
+P300: Quản trị hệ thống
+P301: Đạt
+P302: ……
+P303: ☐ Đạt ☐ Chưa đạt
+P305: 3
+P306: A.1.3
+P307: Module phân quyền người dùng
+P308: Quản trị hệ thống
+P309: Đạt
+P310: ……
+P311: ☐ Đạt ☐ Chưa đạt
+P313: 4
+P314: A.1.4
+P315: Module thông báo
+P316: Quản trị hệ thống
+P317: Đạt
+P318: ……
+P319: ☐ Đạt ☐ Chưa đạt
+P321: 5
+P322: A.1.5
+P323: Tiện ích
+P324: Quản trị hệ thống
+P325: Đạt
+P326: ……
+P327: ☐ Đạt ☐ Chưa đạt
+P329: 6
+P330: A.2.1
+P331: Danh mục lĩnh vực công nghệ
+P332: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P333: Đạt
+P334: ……
+P335: ☐ Đạt ☐ Chưa đạt
+P337: 7
+P338: A.2.2
+P339: Danh mục nhà cung cấp (người bán)
+P340: Quản lý tổ chức, doanh nghiệp và thành viên
+P341: Đạt
+P342: ……
+P343: ☐ Đạt ☐ Chưa đạt
+P345: 8
+P346: A.2.3
+P347: Quản lý gian hàng nhà cung cấp
+P348: Quản lý tổ chức, doanh nghiệp và thành viên
+P349: Đạt
+P350: ……
+P351: ☐ Đạt ☐ Chưa đạt
+P353: 9
+P354: A.2.4
+P355: Quản lý hạng nhà cung cấp
+P356: Quản lý tổ chức, doanh nghiệp và thành viên
+P357: Đạt
+P358: ……
+P359: ☐ Đạt ☐ Chưa đạt
+P361: 10
+P362: A.2.5
+P363: Quản lý giao dịch của nhà cung cấp
+P364: Quản lý kết nối cung – cầu công nghệ
+P365: Đạt
+P366: ……
+P367: ☐ Đạt ☐ Chưa đạt
+P369: 11
+P370: A.2.6
+P371: Duyệt các chỉnh sửa và thêm mới của sản phẩm
+P372: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P373: Đạt
+P374: ……
+P375: ☐ Đạt ☐ Chưa đạt
+P377: 12
+P378: A.2.7
+P379: Quản lý lịch sử chỉnh sửa các sản phẩm của nhà cung cấp
+P380: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P381: Đạt
+P382: ……
+P383: ☐ Đạt ☐ Chưa đạt
+P385: 13
+P386: A.2.8
+P387: Quản lý các bài viết của nhà cung cấp
+P388: Quản lý tổ chức, doanh nghiệp và thành viên
+P389: Đạt
+P390: ……
+P391: ☐ Đạt ☐ Chưa đạt
+P393: 14
+P394: A.2.9
+P395: Ủy quyền bán hàng cho sàn
+P396: Quản lý tổ chức, doanh nghiệp và thành viên
+P397: Đạt
+P398: ……
+P399: ☐ Đạt ☐ Chưa đạt
+P401: 15
+P402: A.2.10
+P403: Quản lý lịch sử chat
+P404: Quản lý kết nối cung – cầu công nghệ
+P405: Đạt
+P406: ……
+P407: ☐ Đạt ☐ Chưa đạt
+P409: 16
+P410: A.3.1
+P411: Danh mục nhóm sản phẩm
+P412: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P413: Đạt
+P414: ……
+P415: ☐ Đạt ☐ Chưa đạt
+P417: 17
+P418: A.3.2
+P419: Danh mục sản phẩm
+P420: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P421: Đạt
+P422: ……
+P423: ☐ Đạt ☐ Chưa đạt
+P425: 18
+P426: A.3.3
+P427: Danh mục phòng trưng bày
+P428: Không gian triển lãm số
+P429: Đạt
+P430: ……
+P431: ☐ Đạt ☐ Chưa đạt
+P433: 19
+P434: A.3.4
+P435: Danh mục vị trí trưng bày
+P436: Không gian triển lãm số
+P437: Đạt
+P438: ……
+P439: ☐ Đạt ☐ Chưa đạt
+P441: 20
+P442: A.4.1
+P443: Quản lý sự kiện, hội thảo, triển lãm
+P444: Quản lý sự kiện, hội thảo và triển lãm
+P445: Đạt
+P446: ……
+P447: ☐ Đạt ☐ Chưa đạt
+P449: 21
+P450: A.4.2
+P451: Quản lý tin tức, bài đăng.
+P452: Cổng thông tin điện tử
+P453: Đạt
+P454: ……
+P455: ☐ Đạt ☐ Chưa đạt
+P457: 22
+P458: A.4.3
+P459: Cấu hình các gian hàng cho sự kiện giá chi tiết cho từng sự kiện
+P460: Quản lý sự kiện, hội thảo và triển lãm
+P461: Đạt
+P462: ……
+P463: ☐ Đạt ☐ Chưa đạt
+P465: 23
+P466: A.4.4
+P467: Thống kê các số liệu: lượt click, lượt quan tâm
+P468: Quản lý sự kiện, hội thảo và triển lãm
+P469: Đạt
+P470: ……
+P471: ☐ Đạt ☐ Chưa đạt
+P473: 24
+P474: A.4.5
+P475: Nhắc lịch
+P476: Quản lý sự kiện, hội thảo và triển lãm
+P477: Đạt
+P478: ……
+P479: ☐ Đạt ☐ Chưa đạt
+P481: 25
+P482: A.5.1
+P483: Quản lý danh sách người mua
+P484: Quản lý tổ chức, doanh nghiệp và thành viên
+P485: Đạt
+P486: ……
+P487: ☐ Đạt ☐ Chưa đạt
+P489: 26
+P490: A.5.2
+P491: Quản lý lịch sử mua hàng người mua
+P492: Quản lý kết nối cung – cầu công nghệ
+P493: Đạt
+P494: ……
+P495: ☐ Đạt ☐ Chưa đạt
+P497: 27
+P498: A.5.3
+P499: Quản lý lịch sử chat
+P500: Quản lý kết nối cung – cầu công nghệ
+P501: Đạt
+P502: ……
+P503: ☐ Đạt ☐ Chưa đạt
+P505: 28
+P506: A.5.4
+P507: Quản lý lịch sử bình luận
+P508: Cổng thông tin điện tử
+P509: Đạt
+P510: ……
+P511: ☐ Đạt ☐ Chưa đạt
+P513: 29
+P514: A.6.1
+P515: Quản lý thu chi
+P516: Báo cáo và thống kê
+P517: Đạt
+P518: ……
+P519: ☐ Đạt ☐ Chưa đạt
+P521: 30
+P522: A.7.1
+P523: Bình luận
+P524: Cổng thông tin điện tử
+P525: Đạt
+P526: ……
+P527: ☐ Đạt ☐ Chưa đạt
+P529: 31
+P530: A.7.2
+P531: Quản lý thông tin các mẫu đăng ký
+P532: Cổng thông tin điện tử
+P533: Đạt
+P534: ……
+P535: ☐ Đạt ☐ Chưa đạt
+P537: 32
+P538: A.7.3
+P539: Câu hỏi thường gặp FAQ
+P540: Cổng thông tin điện tử
+P541: Đạt
+P542: ……
+P543: ☐ Đạt ☐ Chưa đạt
+P545: 33
+P546: A.8.1
+P547: Báo cáo Giao dịch
+P548: Báo cáo và thống kê
+P549: Đạt
+P550: ……
+P551: ☐ Đạt ☐ Chưa đạt
+P553: 34
+P554: A.8.2
+P555: Cảnh báo các sản phẩm trùng lặp, quá hạn
+P556: Báo cáo và thống kê
+P557: Đạt
+P558: ……
+P559: ☐ Đạt ☐ Chưa đạt
+P561: 35
+P562: A.8.3
+P563: Quản lý Phiên bản Nội dung
+P564: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P565: Đạt
+P566: ……
+P567: ☐ Đạt ☐ Chưa đạt
+P569: 36
+P570: A.8.4
+P571: Thông báo Nhắc lịch
+P572: Quản lý sự kiện, hội thảo và triển lãm
+P573: Đạt
+P574: ……
+P575: ☐ Đạt ☐ Chưa đạt
+P577: 37
+P578: A.8.5
+P579: Lịch sử Thao tác (Log)
+P580: Quản trị dữ liệu và an toàn thông tin
+P581: Đạt
+P582: ……
+P583: ☐ Đạt ☐ Chưa đạt
+P585: 38
+P586: B.1.1
+P587: Giao diện trang chủ
+P588: Cổng thông tin điện tử
+P589: Đạt
+P590: ……
+P591: ☐ Đạt ☐ Chưa đạt
+P593: 39
+P594: B.1.3
+P595: Các thông tin nổi bật
+P596: Cổng thông tin điện tử
+P597: Đạt
+P598: ……
+P599: ☐ Đạt ☐ Chưa đạt
+P601: 40
+P602: B.1.4
+P603: Danh sách sản phẩm
+P604: Cổng thông tin điện tử
+P605: Đạt
+P606: ……
+P607: ☐ Đạt ☐ Chưa đạt
+P609: 41
+P610: B.1.5
+P611: Quản lý Banner
+P612: Cổng thông tin điện tử
+P613: Đạt
+P614: ……
+P615: ☐ Đạt ☐ Chưa đạt
+P617: 42
+P618: B.1.6
+P619: Các mẫu đăng ký nhận thông tin
+P620: Cổng thông tin điện tử
+P621: Đạt
+P622: ……
+P623: ☐ Đạt ☐ Chưa đạt
+P625: 43
+P626: B.2.1
+P627: Quản lý gian hàng người bán
+P628: Quản lý tổ chức, doanh nghiệp và thành viên
+P629: Đạt
+P630: ……
+P631: ☐ Đạt ☐ Chưa đạt
+P633: 44
+P634: B.2.2
+P635: Hồ sơ pháp lý
+P636: Quản lý tổ chức, doanh nghiệp và thành viên
+P637: Đạt
+P638: ……
+P639: ☐ Đạt ☐ Chưa đạt
+P641: 45
+P642: B.2.3
+P643: Quản lý lịch sử giao dịch của người bán
+P644: Quản lý kết nối cung – cầu công nghệ
+P645: Đạt
+P646: ……
+P647: ☐ Đạt ☐ Chưa đạt
+P649: 46
+P650: B.2.4
+P651: Báo giá
+P652: Quản lý kết nối cung – cầu công nghệ
+P653: Đạt
+P654: ……
+P655: ☐ Đạt ☐ Chưa đạt
+P657: 47
+P658: B.2.5
+P659: Quản lý sản phẩm
+P660: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P661: Đạt
+P662: ……
+P663: ☐ Đạt ☐ Chưa đạt
+P665: 48
+P666: B.3.1
+P667: Đăng tin tìm mua sản phẩm
+P668: Quản lý kết nối cung – cầu công nghệ
+P669: Đạt
+P670: ……
+P671: ☐ Đạt ☐ Chưa đạt
+P673: 49
+P674: B.3.2
+P675: Bình luận tin tìm mua
+P676: Cổng thông tin điện tử
+P677: Đạt
+P678: ……
+P679: ☐ Đạt ☐ Chưa đạt
+P681: 50
+P682: B.3.3
+P683: Quan tâm sản phẩm
+P684: Quản lý kết nối cung – cầu công nghệ
+P685: Đạt
+P686: ……
+P687: ☐ Đạt ☐ Chưa đạt
+P689: 51
+P690: B.3.4
+P691: Giỏ hàng sản phẩm
+P692: Quản lý kết nối cung – cầu công nghệ
+P693: Đạt
+P694: ……
+P695: ☐ Đạt ☐ Chưa đạt
+P697: 52
+P698: B.3.5
+P699: Bình luận sản phẩm
+P700: Cổng thông tin điện tử
+P701: Đạt
+P702: ……
+P703: ☐ Đạt ☐ Chưa đạt
+P705: 53
+P706: C.3
+P707: Liên kết với các nền tảng mạng xã hội
+P708: Cổng thông tin điện tử
+P709: Đạt
+P710: ……
+P711: ☐ Đạt ☐ Chưa đạt
+P713: 54
+P714: C.4
+P715: Ký số hợp đồng điện tử
+P716: Tích hợp và chia sẻ dữ liệu
+P717: Đạt (chế độ thử nghiệm)
+P718: ……
+P719: ☐ Đạt ☐ Chưa đạt
+P721: 55
+P722: C.5
+P723: In mã QR cho sản phẩm
+P724: Quản lý công nghệ, thiết bị và sản phẩm KH&CN
+P725: Đạt
+P726: ……
+P727: ☐ Đạt ☐ Chưa đạt
+P729: 56
+P730: C.6
+P731: Phòng họp Ảo/Livestream
+P732: Quản lý sự kiện, hội thảo và triển lãm
+P733: Đạt
+P734: ……
+P735: ☐ Đạt ☐ Chưa đạt
+P737: 57
+P738: C.7
+P739: Liên hệ Trực tiếp (phần chat trực tiếp)
+P740: Quản lý kết nối cung – cầu công nghệ
+P741: Đạt
+P742: ……
+P743: ☐ Đạt ☐ Chưa đạt
+P745: 58
+P746: C.8
+P747: Dịch Anh/Việt
+P748: Cổng thông tin điện tử
+P749: Đạt
+P750: ……
+P751: ☐ Đạt ☐ Chưa đạt
+P753: 59
+P754: C.9
+P755: AI tìm kiếm
+P756: Ứng dụng AI
+P757: Đạt
+P758: ……
+P759: ☐ Đạt ☐ Chưa đạt
+P761: 60
+P762: C.10
+P763: Chatbot AI
+P764: Ứng dụng AI
+P765: Đạt – trừ API-05
+P766: ……
+P767: ☐ Đạt ☐ Chưa đạt
+P770: Chức năng chuyển nghiệm thu đợt 2:
+P771: STT
+P772: Mã
+P773: Chức năng
+P774: Lý do
+P775: 1
+P776: B.1.2
+P777: Tham quan thực tế ảo VR360 (website bán hàng)
+P778: Triển khai cùng giải pháp VR360 đợt 2
+P779: 2
+P780: C.1
+P781: Tham quan thực tế ảo VR360
+P782: Triển khai cùng giải pháp VR360 đợt 2
+P783: 3
+P784: C.2
+P785: Tích hợp với sàn giao dịch khác
+P786: Thực hiện đợt 2
+P787: 4
+P788: C.7 (một phần)
+P789: Gọi video trong liên hệ trực tiếp
+P790: Đợt 1 nghiệm thu phần trò chuyện trực tuyến
+P793: PHỤ LỤC 4. HỒ SƠ NGHIỆM THU ĐỢT 1 KÈM THEO
+P794: STT
+P795: Hồ sơ
+P796: Đơn vị lập
+P797: Tình trạng
+P798: 1
+P799: Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 và các phụ lục
+P800: Chủ đầu tư, nhà cung cấp
+P801: Đã có
+P802: 2
+P803: Biên bản bàn giao hạ tầng; văn bản xác nhận vị trí trung tâm dữ liệu
+P804: Nhà cung cấp
+P805: ……
+P806: 3
+P807: Chứng từ bản quyền Windows Server, SQL Server
+P808: Nhà cung cấp
+P809: ……
+P810: 4
+P811: Chứng từ cung cấp, kích hoạt các gói tích hợp (SMS Brandname, Email Hosting, Token, eContract, gói SMS)
+P812: Nhà cung cấp
+P813: ……
+P814: 5
+P815: Nhật ký hệ thống, số liệu giám sát lần 1 và kết quả khắc phục tồn tại 1 – 5, gồm minh chứng gia hạn tự động chứng thư SSL (NCC-06)
+P816: Nhà cung cấp
+P817: ……
+P818: 6
+P819: Văn bản đề xuất chỉ số, ngưỡng chất lượng dịch vụ; cung cấp tài khoản quyền xem giám sát và tài liệu (NCC-02, ngày 26/10/2026), kèm 11 tài liệu
+P820: Nhà cung cấp
+P821: Đã gửi
+P822: 7
+P823: Tài liệu HDSD Mục 01a, 01b, 01c; Đặc tả API (PL-03); Đặc tả cơ sở dữ liệu (PL-04); Tài liệu mô tả dịch vụ, giải pháp kỹ thuật
+P824: Nhà cung cấp
+P825: Đã gửi
+P826: 8
+P827: Báo cáo tự kiểm tra nội bộ, sẵn sàng vận hành thử lần 1; Biên bản tự kiểm thử chức năng phần mềm đợt 1; Thông báo sẵn sàng vận hành thử lần 1 (NCC-03)
+P828: Nhà cung cấp
+P829: Đã gửi
+P830: 9
+P831: Báo cáo kết quả vận hành thử lần 1
+P832: Đơn vị vận hành thử
+P833: ……
+P834: 10
+P835: Biên bản kiểm tra, giám sát vận hành thử lần 1 (GS-02/BBKT/CDS365)
+P836: Đơn vị giám sát
+P837: ……
+P838: 11
+P839: Biên bản ghi nhận lỗi (VHT-04); Biên bản khắc phục lỗi vận hành thử lần 1 (NCC-05)
+P840: Các bên
+P841: ……
+P842: 12
+P843: Biên bản đào tạo, hướng dẫn sử dụng
+P844: Các bên
+P845: ……
+P846: 13
+P847: Báo cáo của đơn vị giám sát về kết quả giám sát đợt 1
+P848: Đơn vị giám sát
+P849: ……
+PART word/footer1.xml
+PART word/header1.xml
+PART word/header2.xml
+PART word/footer2.xml

@@ -1,0 +1,1015 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_muc_1.1_1.5_1.6\1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh\Muc 02 - Tai lieu mo ta dich vu, giai phap ky thuat, phuong an ket noi.docx
+PART word/document.xml
+P1: ĐỀ XUẤT KỸ THUẬT – GÓI THẦU SỐ 4: THUÊ DỊCH VỤ THIẾT LẬP, VẬN HÀNH TRANG WEB SÀN GIAO DỊCH CÔNG NGHỆ CẦN THƠ
+P2: Căn cứ lập đề xuất
+P3: Đề xuất kỹ thuật được trình bày theo đúng thứ tự 11 tiêu chí tại Mục 3 – Tiêu chuẩn đánh giá về kỹ thuật, Chương III của E-HSMT; mỗi phần dưới đây ứng với một tiêu chí và kết thúc bằng cam kết của Nhà thầu.
+P4: Căn cứ:
+P5: E-HSMT Gói thầu số 4: Chương III – Mục 3 Tiêu chuẩn đánh giá về kỹ thuật; Chương IV – Phạm vi cung cấp; Chương V – Yêu cầu về kỹ thuật.
+P6: Kế hoạch thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ đã được phê duyệt.
+P7: Luật Giao dịch điện tử số 20/2023/QH15; Luật Dữ liệu số 60/2024/QH15; Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15; Luật An ninh mạng số 116/2025/QH15; Luật Chuyển đổi số số 148/2025/QH15.
+P8: Nghị định số 356/2025/NĐ-CP; Nghị định số 224/2026/NĐ-CP; Nghị định số 331/2026/NĐ-CP; Nghị định số 278/2025/NĐ-CP; Thông tư số 39/2017/TT-BTTTT; Quyết định số 37/2026/QĐ-UBND của UBND thành phố Cần Thơ.
+P9: Thuật ngữ: Bên thuê / Chủ trì thuê là Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ; Nhà thầu là đơn vị cung cấp dịch vụ; Hệ thống là Trang web Sàn giao dịch công nghệ Cần Thơ cùng hạ tầng và các dịch vụ tích hợp kèm theo.
+P10: 1. Mức độ hiểu biết về tính chất, mục đích công việc gói thầu (tiêu chí 1a)
+P11: Nhà thầu hiểu Gói thầu số 4 là gói thuê dịch vụ công nghệ số trọn gói trong 05 năm, bao gồm thiết lập, cấu hình, hoàn thiện các chức năng và vận hành hệ thống trong thời gian thuê: Bên thuê trả tiền theo kết quả dịch vụ và mức chất lượng cam kết (SLA), Nhà thầu chịu trách nhiệm toàn bộ phần mềm, hạ tầng, dịch vụ tích hợp, vận hành và an toàn thông tin.
+P12: 1.1. Tính chất và mục đích của công việc
+P13: Tính chất. Gói thầu có ba đặc điểm chi phối cách Nhà thầu tổ chức thực hiện:
+P14: 1. Thuê dịch vụ, đầu mối duy nhất. Nhà thầu cung cấp đồng bộ 01 trang web Sàn giao dịch công nghệ và 01 hệ thống hạ tầng máy chủ (02 máy chủ cloud), kèm bản quyền hệ điều hành, hệ quản trị cơ sở dữ liệu và các dịch vụ tích hợp: VR360 (10 điểm cảnh quay dựng mới), SMS Brandname (3.600 tin/năm), thư điện tử (60 địa chỉ, 25 GB, 05 Mail List), chữ ký số và hợp đồng điện tử (2.000 hợp đồng/năm). Với các dịch vụ mua của nhà cung cấp khác, Nhà thầu vẫn chịu trách nhiệm toàn diện.
+P15: 2. Nghiệp vụ giao dịch công nghệ kéo dài, nhiều chủ thể. Một giao dịch chuyển giao công nghệ đi qua nhiều bước từ quan tâm, bảo mật thông tin, báo giá, đàm phán, ký hợp đồng đến nghiệm thu, thanh lý, với sự tham gia của bên mua, bên bán, chuyên gia tư vấn và cán bộ Sàn. Hệ thống vì vậy phải quản lý theo trạng thái, lưu vết và có ký số, hợp đồng điện tử.
+P16: 3. Kết hợp sàn thực và sàn số. Điểm khác biệt của Sàn Cần Thơ là gắn không gian trưng bày thực tế (phòng, vị trí trưng bày, sự kiện trực tiếp) với tham quan VR360, giao dịch trực tuyến và trợ lý AI trên cùng một nền tảng.
+P17: Mục đích. Dịch vụ nhằm hình thành nền tảng số để: công bố, tra cứu công nghệ, thiết bị, kết quả nghiên cứu; kết nối cung – cầu và hỗ trợ giao dịch, chuyển giao công nghệ; tổ chức sự kiện, triển lãm, xúc tiến; liên thông dữ liệu với Sàn giao dịch khoa học và công nghệ Việt Nam; qua đó khẳng định vai trò Cần Thơ là trung tâm kết nối, chuyển giao công nghệ của vùng Đồng bằng sông Cửu Long.
+P18: 1.2. Phương án tổ chức cung cấp dịch vụ
+P19: Nhà thầu tổ chức cung cấp dịch vụ theo hai giai đoạn, phân rõ trách nhiệm hai bên:
+P20: Giai đoạn thiết lập, vận hành thử và nghiệm thu (22/10–18/11/2026): Hoàn thành thiết lập và tự kiểm tra nội bộ ngày 26/10/2026; bắt đầu vận hành thử lần 1 ngày 27/10/2026, hiệu chỉnh và khắc phục trong ngày 27–28/10/2026; nghiệm thu đợt 1 ngày 28–29/10/2026; đào tạo, hoàn thiện hồ sơ ATTT cấp độ 2, tích hợp trao đổi trực tuyến và VR360 từ ngày 29/10 đến ngày 06/11/2026; vận hành thử lần 2 ngày 09–13/11/2026; nghiệm thu hoàn thành và bàn giao đưa vào sử dụng chính thức ngày 18/11/2026. Chi tiết tại Mục 8.
+P21: Giai đoạn cung cấp dịch vụ trong thời gian thuê 05 năm (18/11/2026–17/11/2031): vận hành, giám sát, sao lưu, bảo trì, cập nhật, hỗ trợ kỹ thuật theo SLA; gửi báo cáo kết quả cung cấp dịch vụ đến địa chỉ email của Chủ đầu tư định kỳ tuần đầu mỗi tháng; chuyển giao toàn bộ thông tin, dữ liệu khi kết thúc thuê và xóa dữ liệu sau chuyển giao theo quy định.
+P22: Nội dung
+P23: Nhà thầu
+P24: Bên thuê
+P25: Phần mềm, hạ tầng, bản quyền
+P26: Cung cấp, cài đặt, vận hành, nâng cấp
+P27: Kiểm tra, nghiệm thu
+P28: Dịch vụ tích hợp (VR360, SMS, email, ký số, hợp đồng điện tử)
+P29: Mua, tích hợp, chịu trách nhiệm chất lượng
+P30: Cung cấp tên thương hiệu, tên miền, hồ sơ đăng ký cần thiết
+P31: Nghiệp vụ, nội dung, tài khoản người dùng
+P32: Cấu hình, điều chỉnh theo yêu cầu
+P33: Quyết định, phê duyệt, quản lý khai thác
+P34: An toàn thông tin
+P35: Lập, thực hiện phương án cấp độ 2
+P36: Phê duyệt cấp độ, giám sát tuân thủ
+P37: Chất lượng dịch vụ
+P38: Duy trì SLA, báo cáo hằng tháng
+P39: Theo dõi, xác nhận
+P41: 1.3. Hiệu quả dự kiến
+P42: Sẵn sàng triển khai: Nhà thầu sử dụng nền tảng hiện có để cấu hình và hoàn thiện theo phạm vi gói thầu. Dữ liệu khởi tạo được kiểm kê, đối chiếu nguồn và quyền sử dụng trước khi nhập; chỉ công bố số lượng hồ sơ công nghệ, thiết bị và chuyên gia khi có biên bản xác nhận tại PL-07. Quy trình giao dịch 14 bước được kiểm thử trọn vòng và lập biên bản tại PL-06 trước khi đưa vào vận hành thử; không dùng dữ liệu mẫu để chứng minh khả năng vận hành với tài khoản dịch vụ thật.
+P43: Hạn chế đầu tư ban đầu: Nhà thầu cung cấp, vận hành hạ tầng, bản quyền và nhân sự kỹ thuật theo hình thức thuê dịch vụ; dữ liệu, sản phẩm hình thành được bàn giao theo hợp đồng; chi phí dự toán được, chia theo năm.
+P44: Giao dịch trên môi trường điện tử: hệ thống hỗ trợ các bước giao dịch từ đăng nhu cầu, báo giá, đàm phán đến lập và ký số hợp đồng điện tử theo phạm vi E-HSMT, giảm thời gian và chi phí đi lại cho doanh nghiệp, viện, trường.
+P45: Liên thông quốc gia: triển khai đồng bộ sản phẩm chào bán, tin chào mua và đăng ký gian hàng địa phương theo tài liệu API, danh mục mã và quyền truy cập được cơ quan quản lý Sàn quốc gia cấp; phạm vi hoàn thành được xác nhận bằng kiểm thử kết nối tại PL-06.
+P46: Dữ liệu thuộc Bên thuê: toàn bộ dữ liệu được bàn giao khi kết thúc hợp đồng theo Mục 7.
+P47: 1.4. Danh mục tài liệu chứng minh kèm theo E-HSDT
+P48: Mã phụ lục
+P49: Tên file hoặc vị trí dẫn chiếu
+P50: Nội dung và thời điểm cung cấp
+P51: —
+P52: Thuyết minh trong Đề xuất kỹ thuật (Mục 3–7)
+P53: Kiến trúc, bảng đáp ứng, ma trận tích hợp, ATTT và thoát dịch vụ; nằm trong bản đề xuất.
+P54: PL-01
+P55: PL01_Nguon_cung_va_cau_hinh_dich_vu.docx
+P56: Nguồn cung, gói cloud, cấu hình, kho sao lưu, email, SMS, AI, họp, CA và hợp đồng điện tử; nộp cùng HSDT.
+P57: PL-02
+P58: PL02_Ban_quyen_va_quyen_su_dung.docx
+P59: Phiên bản, SKU, phạm vi cấp phép Standard; xác nhận quyền cung cấp/sử dụng đủ 05 năm; nộp cùng HSDT. Chứng từ kích hoạt bổ sung trước vận hành thử.
+P60: PL-03
+P61: PL03_Dac_ta_API.docx
+P62: OpenAPI xuất từ phiên bản hiện hành: 20 API JSON hiện có, xác thực, schema và mã lỗi; nộp cùng HSDT. API kết nối Sàn KH&CN Việt Nam và API cho sàn khác bổ sung vào phụ lục khi hoàn thành, trước vận hành thử.
+P63: PL-04
+P64: PL04_Dac_ta_CSDL.docx
+P65: Bảng, trường, khóa, quan hệ, từ điển dữ liệu và phương án xuất/khôi phục; nộp cùng HSDT.
+P66: PL-05
+P67: PL05_Huong_dan_su_dung.docx
+P68: Hướng dẫn sử dụng cho người dùng và cán bộ quản trị, quy trình giao dịch 14 bước, đối chiếu chức năng với E-HSMT; nộp cùng HSDT.
+P69: PL-06
+P70: PL06_Bien_ban_kiem_thu_va_tich_hop.docx
+P71: Bằng chứng hiện trạng, quy trình giao dịch 14 bước, chức năng bổ sung và tích hợp; nộp bằng chứng sẵn có cùng HSDT; bổ sung kết quả môi trường thật trước vận hành thử.
+P72: PL-07
+P73: PL07_Kiem_ke_va_quyen_su_dung_du_lieu.docx
+P74: Nguồn, số lượng, quyền sử dụng, điều kiện công bố dữ liệu khởi tạo; nộp cùng HSDT.
+P75:  Tên file PL-01 đến PL-07 là quy ước đóng gói hồ sơ; chỉ ghi nhận đã nộp khi tài liệu thực tế được đính kèm. [CẦN XÁC NHẬN: MobiFone chốt nguồn cung, thông tin cấp phép và hoàn thiện phụ lục trước khi phát hành hồ sơ].
+P77: 2. Đáp ứng nội dung, phạm vi công việc tại Chương IV, Chương V (tiêu chí 1b)
+P78: Nhà thầu cam kết cung cấp đầy đủ phạm vi dịch vụ tại Chương IV và đáp ứng toàn bộ yêu cầu kỹ thuật tại Chương V của E-HSMT, không loại trừ hạng mục nào.
+P79: Hạng mục
+P80: Khối lượng theo E-HSMT
+P81: Cam kết của Nhà thầu
+P82: Thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P83: 01 hệ thống, 05 năm
+P84: Đáp ứng đủ 12 nhóm chức năng và toàn bộ chức năng chi tiết mục A, B, C; cài đặt, cấu hình, hướng dẫn, vận hành, bảo hành, bảo trì, hỗ trợ kỹ thuật 05 năm
+P85: Bản quyền hệ điều hành máy chủ, hệ quản trị CSDL
+P86: Suốt thời gian thuê
+P87: Windows Server Standard cho 02 máy chủ và SQL Server Standard cho máy chủ CSDL; quyền sử dụng hợp pháp đủ 05 năm, phù hợp số lõi/đối tượng truy cập theo mô hình cấp phép được chọn; nâng cấp trước khi hết hỗ trợ. [CẦN XÁC NHẬN: phiên bản, SKU, mô hình và số lượng giấy phép tại PL-01/PL-02 trước khi nộp HSDT].
+P88: VR360
+P89: 10 điểm cảnh quay dựng mới
+P90: Chụp, dựng mới 10 điểm tại Sàn; tích hợp nút “Tham quan VR360”; chạy trên trình duyệt máy tính và điện thoại; bàn giao nội dung
+P91: SMS Brandname
+P92: 05 năm, 3.600 tin/năm
+P93: Đăng ký thương hiệu của đơn vị, tích hợp qua API, hàng đợi có trạng thái, gửi lại, nhật ký, bật/tắt kênh
+P94: Thư điện tử
+P95: 05 năm, 60 địa chỉ, 25 GB, 05 Mail List
+P96: Thư theo tên miền riêng của đơn vị; gửi thư tự động qua SMTP có hàng đợi, gửi lại khi lỗi; chống thư rác
+P97: Chữ ký số
+P98: 05 năm
+P99: Ký số từ xa qua tổ chức cung cấp dịch vụ chứng thực và USB Token; nhúng chữ ký PDF; kiểm tra toàn vẹn; nhật ký ký số
+P100: Hợp đồng điện tử
+P101: 05 năm, 2.000 hợp đồng/năm
+P102: Dự thảo, phiên bản, phê duyệt và ký nhiều bên, theo dõi trạng thái, nhật ký; giá dự thầu đã bao gồm hạn mức
+P103: Hạ tầng máy chủ cloud
+P104: 02 máy; mỗi máy 08 Cores (Intel Xeon Gold 6330 hoặc tương đương), RAM ≥ 32 GB, SSD ≥ 500 GB, 01 IP
+P105: Đáp ứng bằng hoặc cao hơn cấu hình yêu cầu; dữ liệu và bản sao lưu lưu trữ tại Việt Nam
+P106: Chất lượng dịch vụ (mục 2.2)
+P107: Sẵn sàng ≥ 99,5%/tháng; phản hồi ≤ 2 giờ; khắc phục ≤ 8 giờ / ≤ 24 giờ
+P108: Cam kết đúng các chỉ tiêu; báo cáo SLA hằng tháng (Mục 9, 11)
+P109: Kết nối, tương thích, dữ liệu, ATTT (mục 2.3, 2.4, 2.10, 2.11)
+P110: Theo Chương V
+P111: Thuyết minh tại Mục 5, 6, 7
+P112: Triển khai, đào tạo, nghiệm thu (mục 2.7, 2.10, phần V)
+P113: Theo Chương V
+P114: Thuyết minh tại Mục 3, 8
+P116: Tài liệu chứng minh được quản lý theo mã và tên file tại Mục 1.4. PL-01, PL-02, PL-03, PL-04, PL-05, PL-06 và PL-07 phải được kiểm tra, đính kèm hoặc dẫn chiếu đúng vị trí trong bộ HSDT trước khi nộp; danh mục không thay cho tài liệu thực tế. Chứng từ kích hoạt tài khoản, cấu hình môi trường thật và biên bản vận hành được bổ sung trước vận hành thử; không trì hoãn minh chứng bắt buộc của HSDT đến khi triển khai.
+P117: 3. Giải pháp kỹ thuật, biện pháp tổ chức và kế hoạch triển khai (tiêu chí 2)
+P118: Nhà thầu triển khai hệ thống theo kiến trúc nhiều lớp, mô-đun nghiệp vụ độc lập và lớp tích hợp dùng chung, cài đặt trên 02 máy chủ cloud tại Việt Nam; quy trình đưa vào vận hành gồm 4 bước theo mục 2.7 Chương V.
+P119: 3.1. Giải pháp kỹ thuật
+P120: Kiến trúc hệ thống. Hệ thống tổ chức thành 6 lớp; kiến trúc phân lớp, mô-đun hóa nhằm hạn chế tác động dây chuyền khi cập nhật, nâng cấp hoặc thay thế thành phần.
+P121: Lớp
+P122: Thành phần
+P123: Giải pháp của Nhà thầu
+P124: Truy cập
+P125: Website công khai (tiếng Việt, tiếng Anh), khu tài khoản thành viên, trang quản trị
+P126: Giao diện web tương thích máy tính, máy tính bảng, điện thoại; truy cập qua HTTPS; hỗ trợ IPv4/IPv6
+P127: Ứng dụng nghiệp vụ
+P128: 12 nhóm chức năng; quy trình giao dịch chuyển giao công nghệ 14 bước
+P129: Nền tảng ASP.NET Core 8; mỗi nhóm chức năng là một mô-đun; phân quyền theo vai trò, chức năng và theo từng bước quy trình
+P130: Tích hợp
+P131: Email, SMS, ký số, hợp đồng điện tử, AI, VR360, Sàn KH&CN Việt Nam, API mở
+P132: Mỗi dịch vụ ngoài nối qua một giao diện chuẩn, thay được nhà cung cấp mà không sửa nghiệp vụ lõi; hàng đợi gửi có trạng thái, gửi lại, nhật ký
+P133: Dữ liệu
+P134: CSDL nghiệp vụ tập trung, tệp đính kèm, chỉ mục tìm kiếm
+P135: SQL Server Standard; mã định danh thống nhất; lịch sử phiên bản; xuất JSON, XML, CSV, Excel; phiên bản và cấp phép theo PL-01/PL-02.
+P136: An toàn thông tin
+P137: Xác thực, phân quyền, mã hóa, nhật ký, sao lưu
+P138: Theo phương án cấp độ 2 tại Mục 6
+P139: Hạ tầng, vận hành
+P140: 02 máy chủ cloud, giám sát, sao lưu
+P141: Máy chủ 1: ứng dụng web và dịch vụ nền; máy chủ 2: CSDL. Kho sao lưu độc lập với hai máy chủ và dữ liệu gốc, lưu tại Việt Nam; không đặt bản sao lưu duy nhất trên máy chủ CSDL. Windows Server Standard, SQL Server Standard theo PL-01/PL-02; giám sát và mở rộng tài nguyên trong giá chào.
+P143: Giải pháp cho 12 nhóm chức năng. Nhà thầu tổ chức các mô-đun để cung cấp đủ 12 nhóm chức năng theo hợp đồng: quản trị hệ thống; nhà cung cấp, người mua, tổ chức và chuyên gia; sản phẩm, công nghệ, phòng và vị trí trưng bày; kết nối cung – cầu và quy trình chuyển giao công nghệ 14 bước; sự kiện; cổng thông tin song ngữ; VR360; AI; tích hợp; quản trị dữ liệu và ATTT; hạ tầng; báo cáo thống kê. Mô tả tại Mục 4 là phương án cung cấp và cam kết thực hiện, không thay thế biên bản kiểm chứng hiện trạng. Các chức năng bổ sung phải được kiểm thử tại PL-06 trước vận hành thử.
+P144: Quy trình giao dịch chuyển giao công nghệ 14 bước. Hệ thống cung cấp đủ 14 bước của quy trình chuyển giao công nghệ theo nhóm 6 Chương V, từ yêu cầu chuyển giao đến nghiệm thu và thanh lý hợp đồng; mặc định hiển thị và cho phép thực hiện đủ 14 bước. Không có bước nào bị ẩn hoặc được coi là đã hoàn thành khi chưa thực hiện; mọi bước đều được xử lý và lưu vết đầy đủ. Hệ thống kiểm soát chuyển bước theo điều kiện hoàn thành và quyền theo vai trò: bước sau chỉ mở khi bước trước đã hoàn thành; bước không áp dụng được ghi nhận trạng thái “Không áp dụng”; kết quả thẩm định pháp lý chưa đạt được ghi nhận trạng thái và nhật ký để các bên bổ sung. Mỗi bước có trạng thái Chưa bắt đầu – Đang thực hiện – Hoàn thành, quyền thao tác theo vai trò và được ghi nhật ký chuyển trạng thái, nhật ký truy cập hồ sơ. Bước 2 (NDA) áp dụng khi sản phẩm được đánh dấu yêu cầu bảo mật; khi áp dụng, các bên phải ký NDA mới xem được thông tin từ bước 3; khi không áp dụng, hệ thống ghi “Không áp dụng” và mở bước 3 ngay sau bước 1.
+P145: Bước
+P146: Nội dung
+P147: Vai trò thực hiện
+P148: Chứng từ, kết quả
+P149: 1
+P150: Yêu cầu chuyển giao công nghệ
+P151: Bên mua tạo; cán bộ Sàn tiếp nhận
+P152: Phiếu yêu cầu
+P153: 2
+P154: Thỏa thuận bảo mật (NDA)
+P155: Bên mua, bên bán
+P156: NDA đã ký
+P157: 3
+P158: Yêu cầu báo giá (RFQ), mời nhà cung cấp
+P159: Bên mua, chuyên gia tư vấn
+P160: RFQ, thư mời
+P161: 4
+P162: Nộp và chấm hồ sơ đề xuất
+P163: Bên bán nộp (sau khi nhận lời mời); bên mua, chuyên gia chấm
+P164: Hồ sơ đề xuất, bảng điểm
+P165: 5
+P166: Đàm phán thương mại
+P167: Bên mua, bên bán
+P168: Kết quả đàm phán được xác nhận
+P169: 6
+P170: Kiểm tra pháp lý
+P171: Chuyên gia tư vấn, cán bộ Sàn
+P172: Kết quả thẩm định pháp lý
+P173: 7
+P174: Ký hợp đồng
+P175: Bên mua, bên bán
+P176: Hợp đồng điện tử ký số, nhật ký ký số
+P177: 8
+P178: Xác nhận tạm ứng
+P179: Bên mua, bên bán
+P180: Xác nhận tạm ứng
+P181: 9
+P182: Thử nghiệm (pilot)
+P183: Bên bán thực hiện; bên mua xác nhận
+P184: Kết quả thử nghiệm
+P185: 10
+P186: Bàn giao, triển khai
+P187: Bên bán, bên mua
+P188: Biên bản bàn giao
+P189: 11
+P190: Đào tạo, chuyển giao vận hành
+P191: Bên bán
+P192: Biên bản đào tạo
+P193: 12
+P194: Bàn giao hồ sơ kỹ thuật
+P195: Bên bán
+P196: Danh mục hồ sơ kỹ thuật
+P197: 13
+P198: Nghiệm thu
+P199: Bên mua, bên bán, chuyên gia tư vấn
+P200: Biên bản nghiệm thu
+P201: 14
+P202: Thanh lý hợp đồng
+P203: Bên mua, bên bán
+P204: Biên bản thanh lý, đóng hợp đồng
+P206: Mỗi lần chuyển bước, hệ thống gửi thông báo cho các bên liên quan qua email và trên web. Cán bộ Sàn theo dõi tiến độ toàn bộ giao dịch, thành viên tham gia và nhật ký từng bước.
+P207: Quản lý tổ chức, chuyên gia, tư vấn viên.
+P208: Tổ chức: hồ sơ nhà cung cấp được phân loại theo loại hình: viện, trung tâm nghiên cứu; trường đại học; doanh nghiệp KH&CN; doanh nghiệp sản xuất; tổ chức trung gian, tư vấn. Quản trị viên thẩm định hồ sơ pháp lý, phê duyệt, phân hạng, bật/tắt gian hàng trước khi công bố.
+P209: Tư vấn viên và dịch vụ tư vấn: tổ chức, cá nhân đăng ký làm tư vấn viên trực tuyến; quản trị viên duyệt; cổng thông tin công bố hồ sơ tư vấn viên và các dịch vụ tư vấn công nghệ của Sàn; chuyên gia tư vấn được phân công tham gia từng giao dịch.
+P210: Chuyên gia: danh bạ chuyên gia công khai, tra cứu theo lĩnh vực; hồ sơ chuyên gia, tư vấn viên được quản trị viên thêm, sửa, xóa, duyệt và xuất Excel trên trang quản trị; AI gợi ý chuyên gia phù hợp với nhu cầu.
+P211: Nhà đầu tư: tham gia Sàn bằng tài khoản thành viên với vai trò bên mua: đăng nhu cầu công nghệ, mời báo giá, theo dõi giao dịch. Hồ sơ viện/trường, chuyên gia và tư vấn viên quản lý thông tin định danh, lĩnh vực, năng lực, tài liệu và trạng thái duyệt; dịch vụ tư vấn có đơn vị cung cấp, mô tả, lĩnh vực và đầu mối liên hệ. Phạm vi dữ liệu công khai được Bên thuê phê duyệt.
+P212: Nguyên tắc AI. AI chỉ hỗ trợ tra cứu, tư vấn, gợi ý; trả lời dựa trên dữ liệu của Sàn; không tự sửa hoặc phê duyệt dữ liệu nghiệp vụ; quản trị viên bật/tắt được; khi dịch vụ AI gián đoạn, hệ thống tự chuyển về tìm kiếm toàn văn.
+P213: Báo cáo và dashboard: số liệu lấy từ đơn hàng, hồ sơ giao dịch, chứng từ thu chi, hồ sơ thành viên và nhật ký sự kiện; chỉ tiêu gồm số giao dịch theo trạng thái, doanh thu/thu chi được xác nhận, nhà cung cấp/người mua, sản phẩm và hoạt động sự kiện. Kỳ ngày, tháng, quý, năm hoặc khoảng ngày; lọc theo đơn vị/lĩnh vực và thời điểm chốt. Xuất Excel/PDF, biểu đồ và dashboard theo phân quyền; người bán/người mua chỉ xem dữ liệu của mình, cán bộ Sàn xem trong phạm vi được giao. Kiểm thử đối chiếu số liệu tại PL-06.
+P214: 3.2. Biện pháp tổ chức triển khai, cài đặt, cấu hình, tích hợp và đưa vào vận hành thử
+P215: Nhà thầu thành lập Tổ triển khai gồm: 01 Chủ nhiệm dự án (đầu mối làm việc với Bên thuê), 01 Kỹ sư hạ tầng và ATTT, 02 Kỹ sư phần mềm, 01 Kỹ sư tích hợp, 01 Cán bộ kiểm thử và đào tạo; đồng thời bố trí tổ thực hiện VR360 với nhân sự phù hợp khối lượng 10 điểm cảnh.
+P216: 1. Cài đặt, thiết lập và kiểm tra điều kiện sẵn sàng. Khởi tạo 02 máy chủ, cài hệ điều hành, CSDL; cấu hình tên miền, chứng thư SSL, tường lửa; cài ứng dụng; khởi tạo danh mục, tham số, tài khoản quản trị và phân quyền; cấu hình và kiểm tra từng kết nối tích hợp; thiết lập sao lưu, giám sát. Kết quả: biên bản xác nhận đủ điều kiện vận hành thử.
+P217: 2. Vận hành thử. Chạy trên dữ liệu mẫu hoặc dữ liệu được Bên thuê cho phép; chạy bộ kịch bản nghiệm thu tại phần V Chương V; ghi nhận, khắc phục lỗi. Kết quả: báo cáo vận hành thử.
+P218: 3. Đào tạo, chuyển giao. Đào tạo riêng nhóm quản trị và nhóm nghiệp vụ; bàn giao tài liệu hướng dẫn sử dụng, tài liệu quản trị; cấp tài khoản thực hành. Kết quả: biên bản đào tạo, danh sách học viên.
+P219: 4. Nghiệm thu, đưa vào vận hành chính thức. Nghiệm thu theo bộ kịch bản kiểm thử; bàn giao hồ sơ ATTT cấp độ 2. Kết quả: biên bản nghiệm thu.
+P220: Kịch bản nghiệm thu Nhà thầu cam kết chạy trọn vòng: đăng ký nhà cung cấp → duyệt → đăng sản phẩm → đăng nhu cầu công nghệ → mời báo giá, nộp đề xuất → trao đổi trực tuyến → lập hợp đồng điện tử → ký số → thông báo email/SMS → nhật ký. Ngoài kịch bản bắt buộc tại phần V Chương V, Nhà thầu chạy kịch bản đầy đủ quy trình 14 bước (có và không có NDA), kiểm tra phân quyền, trạng thái và nhật ký từng bước; kết quả ghi tại PL-06.
+P221: 3.3. Tiến độ và kế hoạch thực hiện
+P222: Mục tiêu kiểm thử hiệu năng đề xuất, cần đội thực hiện xác nhận trước khi chốt HSDT: 200 người dùng đồng thời, thời gian phản hồi p95 không quá 3 giây cho tra cứu/danh sách thông thường, tỷ lệ lỗi dưới 1% trong 30 phút tải ổn định. Dữ liệu đo tải là dữ liệu sinh giả lập (khoảng 10.000 sản phẩm, 2.000 chuyên gia, 5.000 hồ sơ giao dịch), chỉ dùng cho kiểm thử, không phải quy mô dữ liệu đầu vào của Bên thuê. Kiểm thử đọc/ghi theo kịch bản tại PL-06; đo riêng AI, ký số, tải tệp và dịch vụ ngoài, không bỏ các phép đo này khỏi báo cáo. Khi chưa đạt, tối ưu truy vấn/chỉ mục, bộ nhớ đệm và mở rộng CPU/RAM/lưu trữ trong phạm vi giá chào, kiểm thử lại trước vận hành thử. [CẦN XÁC NHẬN: kỹ thuật/hạ tầng phê duyệt mục tiêu và tài nguyên tại PL-01].
+P223: Theo kế hoạch thực hiện: Hoàn thành thiết lập và tự kiểm tra nội bộ ngày 26/10/2026; bắt đầu vận hành thử lần 1 ngày 27/10/2026, hiệu chỉnh và khắc phục trong ngày 27–28/10/2026; nghiệm thu đợt 1 ngày 28–29/10/2026; đào tạo, hoàn thiện hồ sơ ATTT cấp độ 2, tích hợp trao đổi trực tuyến và VR360 từ ngày 29/10 đến ngày 06/11/2026; vận hành thử lần 2 ngày 09–13/11/2026; nghiệm thu hoàn thành và bàn giao đưa vào sử dụng chính thức ngày 18/11/2026. Bảng tiến độ chi tiết tại Mục 8.
+P224: 3.4. Biện pháp bảo đảm ATTT và duy trì hoạt động ổn định trong quá trình triển khai
+P225: Tài khoản quản trị máy chủ cấp theo tên người, xác thực 2 lớp; đổi toàn bộ mật khẩu mặc định trước khi mở truy cập.
+P226: Chỉ mở cổng 443 (HTTPS) ra Internet; cổng quản trị giới hạn theo địa chỉ IP của Tổ triển khai.
+P227: Tách môi trường kiểm thử và môi trường vận hành; dữ liệu mẫu không dùng thông tin cá nhân thật.
+P228: Rà soát lỗ hổng trước khi đưa vào vận hành thử; sao lưu toàn bộ trước mỗi lần cập nhật cấu hình.
+P229: Mọi thay đổi trên môi trường vận hành được ghi nhật ký và có phương án khôi phục.
+P230: 3.5. Cam kết
+P231: Nhà thầu cam kết thực hiện đầy đủ giải pháp kỹ thuật, biện pháp tổ chức và tiến độ đã đề xuất tại Mục này và Mục 8.
+P232: 4. Tính đầy đủ của chức năng, nghiệp vụ, hạng mục dịch vụ (tiêu chí 3a)
+P233: Nhà thầu đáp ứng đủ 63 chức năng chi tiết tại mục A, B, C và 12 thành phần dịch vụ tại mục 2.1 Chương V; cột “Giải pháp đáp ứng” mô tả cách hệ thống thực hiện từng yêu cầu.
+P234: Cột “Đáp ứng” thể hiện cam kết cung cấp theo hợp đồng. Từng chức năng được kiểm thử theo kịch bản tại PL-06 trước vận hành thử và nghiệm thu theo phần V Chương V; chức năng chỉ được xác nhận đã có trên môi trường vận hành khi có biên bản kiểm thử.
+P235: 4.1. Thành phần dịch vụ (mục 2.1)
+P236: STT
+P237: Thành phần
+P238: Đáp ứng
+P239: Giải pháp đáp ứng
+P240: 1
+P241: Nền tảng dịch vụ
+P242: Đáp ứng
+P243: Môi trường vận hành ứng dụng, quản trị dữ liệu, phân quyền, giám sát, sao lưu, hỗ trợ người dùng
+P244: 2
+P245: Hạ tầng máy chủ
+P246: Đáp ứng
+P247: 02 máy chủ cloud tại Việt Nam; giám sát tài nguyên, mở rộng khi cần
+P248: 3
+P249: Thư điện tử
+P250: Đáp ứng
+P251: 60 địa chỉ email theo tên miền riêng của đơn vị, dung lượng lưu trữ 25 GB, 05 Mail List theo E-HSMT; thư tự động qua hàng đợi (quên mật khẩu, xác nhận đăng ký, nhắc lịch, thông báo từng bước giao dịch)
+P252: 4
+P253: SMS Brandname
+P254: Đáp ứng
+P255: 3.600 tin/năm; OTP, thông báo, nhắc lịch; trạng thái chờ gửi / đã gửi / lỗi; gửi lại theo số lần cấu hình; bật/tắt kênh (*)
+P256: 5
+P257: VR360
+P258: Đáp ứng
+P259: 10 điểm cảnh quay dựng mới; nút “Tham quan VR360” trên giao diện Sàn (*)
+P260: 6
+P261: Chữ ký số
+P262: Đáp ứng
+P263: Ký số từ xa, USB Token; nhúng chữ ký PDF; kiểm tra mã băm toàn vẹn; nhật ký ký số (*)
+P264: 7
+P265: Hợp đồng điện tử
+P266: Đáp ứng
+P267: Hạn mức đến 2.000 hợp đồng/năm trong 05 năm thuê; khởi tạo, dự thảo, quản lý phiên bản, phê duyệt và ký số nhiều bên, theo dõi trạng thái, tra cứu, lưu trữ, kiểm tra toàn vẹn, nhật ký
+P268: 8
+P269: Thông báo tự động
+P270: Đáp ứng
+P271: Email, SMS và chuông thông báo trên web theo sự kiện, trạng thái giao dịch
+P272: 9
+P273: Tương tác trực tuyến
+P274: Đáp ứng
+P275: Chat; gọi video từ cuộc trò chuyện; liên kết phát trực tiếp theo từng sự kiện (*)
+P276: 10
+P277: AI
+P278: Đáp ứng
+P279: Chatbot, tìm kiếm ngữ nghĩa kết hợp toàn văn, gợi ý công nghệ, nhà cung cấp, chuyên gia
+P280: 11
+P281: Kết nối API
+P282: Đáp ứng
+P283: API JSON có tài liệu OpenAPI (PL-03); kết nối Sàn KH&CN Việt Nam (*)
+P284: 12
+P285: Giám sát, hỗ trợ vận hành
+P286: Đáp ứng
+P287: Giám sát tình trạng hệ thống; sao lưu, phục hồi; phiếu hỗ trợ trên hệ thống
+P289: (*) Các hạng mục phụ thuộc tài khoản, chứng thư, cấu hình và nội dung thực địa được hoàn tất trong giai đoạn thiết lập: SMS Brandname; ký số thật; 10 điểm VR360; dịch vụ họp trực tuyến; kết nối Sàn quốc gia. Chỉ xác nhận đã có hoặc đã vận hành khi có minh chứng PL-06; chế độ mô phỏng, tài khoản thử nghiệm và dữ liệu mẫu không thay cho kiểm thử dịch vụ thật.
+P290: 4.2. Website quản lý (mục A)
+P291: Mục
+P292: Chức năng
+P293: Đáp ứng
+P294: Giải pháp đáp ứng
+P295: A.1.1
+P296: Xác thực
+P297: Đáp ứng
+P298: Đăng nhập, đăng xuất, đổi mật khẩu; quên mật khẩu qua liên kết email hiệu lực 30 phút, dùng 1 lần; hiển thị tài khoản đang đăng nhập
+P299: A.1.2
+P300: Quản trị người dùng
+P301: Đáp ứng
+P302: Khai báo người dùng, thông tin cá nhân, thông tin đăng nhập
+P303: A.1.3
+P304: Phân quyền
+P305: Đáp ứng
+P306: Vai trò; quyền theo từng chức năng và từng bước quy trình
+P307: A.1.4
+P308: Thông báo
+P309: Đáp ứng
+P310: Thông báo, nhắc hẹn qua email
+P311: A.1.5
+P312: Tiện ích
+P313: Đáp ứng
+P314: Giao diện trực quan, bố cục thống nhất; tương thích máy tính và điện thoại
+P315: A.2.1
+P316: Danh mục lĩnh vực công nghệ
+P317: Đáp ứng
+P318: Thêm, sửa, xóa lĩnh vực
+P319: A.2.2
+P320: Danh mục nhà cung cấp
+P321: Đáp ứng
+P322: Đăng ký kèm hồ sơ pháp lý (giấy phép kinh doanh, quyết định thành lập); quản trị viên thẩm định, phê duyệt trước khi cấp quyền bán; phân hạng
+P323: A.2.3
+P324: Gian hàng nhà cung cấp
+P325: Đáp ứng
+P326: Gói gian hàng theo số sản phẩm (5, 10…) có giá và thời hạn; hiển thị hạn mức, chặn đăng vượt gói khi Bên thuê quyết định áp dụng thu phí (bật bằng tham số); bật/tắt gian hàng khi vi phạm
+P327: A.2.4
+P328: Hạng nhà cung cấp
+P329: Đáp ứng
+P330: Thiết lập tiêu chí; gợi ý hạng theo số liệu; gán hạng Vàng, Bạc, Thành viên; huy hiệu tại gian hàng
+P331: A.2.5
+P332: Giao dịch của nhà cung cấp
+P333: Đáp ứng
+P334: Thống kê lượt xem, lượt liên hệ, lượt giao dịch; theo dõi giao dịch từ quan tâm, thương thảo, ký kết đến nghiệm thu
+P335: A.2.6
+P336: Duyệt sản phẩm
+P337: Đáp ứng
+P338: Sản phẩm mới và bản chỉnh sửa chờ duyệt trước khi công bố
+P339: A.2.7
+P340: Lịch sử chỉnh sửa sản phẩm
+P341: Đáp ứng
+P342: Tự động lưu phiên bản mỗi lần sửa; so sánh hai phiên bản, làm nổi trường thay đổi (giá, mô tả, trạng thái pháp lý)
+P343: A.2.8
+P344: Bài viết của nhà cung cấp
+P345: Đáp ứng
+P346: Nhà cung cấp gửi bài, quản trị viên duyệt trước khi đăng
+P347: A.2.9
+P348: Ủy quyền bán hàng cho Sàn
+P349: Đáp ứng
+P350: Sàn đăng sản phẩm thay và gán cho nhà cung cấp
+P351: A.2.10
+P352: Lịch sử chat người bán
+P353: Đáp ứng
+P354: Xem hội thoại theo người bán
+P355: A.3.1
+P356: Nhóm sản phẩm
+P357: Đáp ứng
+P358: Nhóm theo công nghệ; phân loại “Trưng bày tại Sàn” và “Trực tuyến”
+P359: A.3.2
+P360: Danh mục sản phẩm
+P361: Đáp ứng
+P362: Sản phẩm của nhà cung cấp và của Sàn; truy cập nhanh trang sửa và lịch sử chỉnh sửa
+P363: A.3.3
+P364: Phòng trưng bày
+P365: Đáp ứng
+P366: Tạo, sửa, xóa phòng, khu vực triển lãm
+P367: A.3.4
+P368: Vị trí trưng bày
+P369: Đáp ứng
+P370: Vị trí trong từng phòng; gán sản phẩm; xem vị trí trống, đang dùng
+P371: A.4.1
+P372: Sự kiện, hội thảo, triển lãm
+P373: Đáp ứng
+P374: Tên, mô tả, thời gian, địa điểm (thực tế/trực tuyến), banner; danh sách đăng ký, xuất Excel, điểm danh bằng mã QR
+P375: A.4.2
+P376: Tin tức, bài đăng
+P377: Đáp ứng
+P378: Soạn, duyệt, xuất bản tin tức, bài quảng cáo
+P379: A.4.3
+P380: Gian hàng sự kiện
+P381: Đáp ứng
+P382: Mô hình gian hàng (diện tích), giá theo vị trí, dịch vụ đi kèm; đăng ký thuê, duyệt
+P383: A.4.4
+P384: Thống kê sự kiện
+P385: Đáp ứng
+P386: Thống kê riêng lượt nhấp banner, nhấp đường dẫn/trang sự kiện, chia sẻ qua nút chia sẻ của Sàn, lượt xem, quan tâm, nhắc lịch, đăng ký và điểm danh theo ngày/sự kiện. Ghi thời điểm, mã sự kiện, loại hành động; lượt nhấp chia sẻ không được diễn giải thành lượt chia sẻ thành công trên nền tảng ngoài. Kiểm thử tại PL-06.
+P387: A.4.5
+P388: Nhắc lịch
+P389: Đáp ứng
+P390: Mốc nhắc cấu hình theo từng sự kiện (ví dụ 24 giờ trước khi bắt đầu); gửi qua email, SMS, web; thông báo email khi có tin nhắn trao đổi mới
+P391: A.5.1
+P392: Danh sách người mua
+P393: Đáp ứng
+P394: Tìm kiếm, xem hồ sơ và lịch sử; khóa/mở khóa có lý do, đăng xuất ngay phiên đang dùng
+P395: A.5.2
+P396: Lịch sử mua hàng
+P397: Đáp ứng
+P398: Tra cứu theo người mua: mã đơn, ngày đặt, sản phẩm, nhà cung cấp, tổng giá trị, trạng thái thanh toán, giao hàng/hoàn thành; liên kết hồ sơ giao dịch. Tổng tiền đã chi tính theo khoản thanh toán được xác nhận, tách hủy/hoàn tiền; giỏ hàng và đăng ký sự kiện không được tính là đơn đã thanh toán. Kiểm thử tại PL-06.
+P399: A.5.3
+P400: Lịch sử chat người mua
+P401: Đáp ứng
+P402: Đọc toàn bộ hội thoại; tìm từ khóa; gắn cờ vi phạm
+P403: A.5.4
+P404: Lịch sử bình luận
+P405: Đáp ứng
+P406: Danh sách theo người dùng, liên kết trang gốc; sửa, ẩn, xóa
+P407: A.6.1
+P408: Quản lý thu chi
+P409: Đáp ứng
+P410: Tỷ lệ hoa hồng, hoa hồng giao dịch/phí gian hàng, sổ thu chi; báo cáo Excel/PDF và biểu đồ theo kỳ, phân quyền theo Mục 3.1; số liệu từ chứng từ đã xác nhận, tách dự kiến và thực thu.
+P411: A.7.1
+P412: Bình luận
+P413: Đáp ứng
+P414: Bình luận bài viết, gian hàng, sản phẩm
+P415: A.7.2
+P416: Mẫu đăng ký
+P417: Đáp ứng
+P418: Định nghĩa trường, trường bắt buộc; hành động sau gửi (thông báo, chuyển trang, email tự động)
+P419: A.7.3
+P420: FAQ
+P421: Đáp ứng
+P422: Cặp hỏi – đáp, phân nhóm, bật/tắt hiển thị
+P423: A.8.1
+P424: Báo cáo giao dịch
+P425: Đáp ứng
+P426: Báo cáo giao dịch, doanh thu và cảnh báo giao dịch mới; Excel/PDF, biểu đồ/dashboard; nguồn hồ sơ giao dịch và chứng từ đã xác nhận; kỳ ngày/tháng/quý/năm hoặc khoảng ngày, chỉ tiêu và quyền xem theo Mục 3.1. Kiểm thử tại PL-06.
+P427: A.8.2
+P428: Cảnh báo trùng lặp, quá hạn
+P429: Đáp ứng
+P430: Cảnh báo trùng tên, trùng mô tả ngắn và sản phẩm quá hạn cập nhật theo số ngày cấu hình; quét hằng ngày và theo yêu cầu; danh sách cảnh báo có loại, thời điểm và trạng thái xử lý
+P431: A.8.3
+P432: Phiên bản nội dung
+P433: Đáp ứng
+P434: Xem danh sách phiên bản sản phẩm, thời điểm và người cập nhật; so sánh hai phiên bản, làm nổi trường thay đổi
+P435: A.8.4
+P436: Thông báo nhắc lịch
+P437: Đáp ứng
+P438: Email xác nhận kèm vé QR; nhắc lịch tự động
+P439: A.8.5
+P440: Lịch sử thao tác
+P441: Đáp ứng
+P442: Nhật ký đăng, sửa, duyệt, xem, tải tệp và tìm kiếm; nhật ký quy trình, hợp đồng, ký số, truy cập hồ sơ. Tra cứu theo người dùng, thời gian, chức năng; ghi từ khóa tìm kiếm trong phạm vi cần thiết, tránh dữ liệu nhạy cảm. Lưu trong suốt 05 năm thuê theo Mục 6.1; chỉ cấp quyền cán bộ được phân công, ghi vết truy cập/xuất nhật ký. Kiểm thử tại PL-06.
+P444: 4.3. Website bán hàng (mục B)
+P445: Mục
+P446: Chức năng
+P447: Đáp ứng
+P448: Giải pháp đáp ứng
+P449: B.1.1
+P450: Trang chủ
+P451: Đáp ứng
+P452: Giới thiệu, liên hệ, lĩnh vực nổi bật, gian hàng tiêu biểu, tin tức, sự kiện
+P453: B.1.2
+P454: Tham quan VR360
+P455: Đáp ứng
+P456: 10 điểm cảnh quay; xoay 360°, chuyển cảnh; chạy trên trình duyệt; nút “Tham quan VR360”; bàn giao nội dung
+P457: B.1.3
+P458: Thông tin nổi bật
+P459: Đáp ứng
+P460: Tin tức, sự kiện, triển lãm nổi bật
+P461: B.1.4
+P462: Danh sách sản phẩm
+P463: Đáp ứng
+P464: Hiển thị theo quyền truy cập; tra cứu, lọc theo lĩnh vực, nhà cung cấp, trạng thái, nhóm trưng bày thực tế/trực tuyến
+P465: B.1.5
+P466: Banner
+P467: Đáp ứng
+P468: Quản trị cập nhật, thay đổi banner
+P469: B.1.6
+P470: Mẫu đăng ký nhận thông tin
+P471: Đáp ứng
+P472: Đăng ký nhận bản tin; đăng ký tham gia sự kiện
+P473: B.2.1
+P474: Gian hàng người bán
+P475: Đáp ứng
+P476: Trang gian hàng kèm huy hiệu hạng
+P477: B.2.2
+P478: Hồ sơ pháp lý
+P479: Đáp ứng
+P480: Tải lên tài liệu xác thực pháp lý
+P481: B.2.3
+P482: Lịch sử giao dịch người bán
+P483: Đáp ứng
+P484: Lượt xem, lượt liên hệ và số lượt giao dịch theo sản phẩm/nhà cung cấp/khoảng thời gian; tra cứu danh sách đơn đặt hàng và hồ sơ giao dịch liên quan, tách các trạng thái hoàn thành/hủy. Quy định mã giao dịch để chống đếm trùng; tổng hợp và xuất báo cáo. Kiểm thử tại PL-06.
+P485: B.2.4
+P486: Báo giá
+P487: Đáp ứng
+P488: Tạo, lưu báo giá; yêu cầu báo giá và hồ sơ đề xuất
+P489: B.2.5
+P490: Quản lý sản phẩm
+P491: Đáp ứng
+P492: Hình ảnh, video, mô tả, tệp kèm, giá, tình trạng pháp lý (số văn bằng, ngày cấp, thời hạn bảo hộ; quyết định thẩm định của Hội đồng KH&CN đính kèm dạng tệp)
+P493: B.3.1
+P494: Đăng tin tìm mua
+P495: Đáp ứng
+P496: Đăng nhu cầu công nghệ; công khai hoặc chỉ cho nhà cung cấp phù hợp; nhận báo giá, giải pháp
+P497: B.3.2
+P498: Bình luận tin tìm mua
+P499: Đáp ứng
+P500: Bình luận hiển thị ngay dưới tin
+P501: B.3.3
+P502: Quan tâm sản phẩm
+P503: Đáp ứng
+P504: Lưu sản phẩm quan tâm; trang “Sản phẩm quan tâm”
+P505: B.3.4
+P506: Giỏ hàng
+P507: Đáp ứng
+P508: Gộp sản phẩm từ nhiều nhà cung cấp trước khi đặt
+P509: B.3.5
+P510: Bình luận sản phẩm
+P511: Đáp ứng
+P512: Bình luận hiển thị ngay dưới sản phẩm
+P514: 4.4. Tiện ích khác (mục C)
+P515: Mục
+P516: Chức năng
+P517: Đáp ứng
+P518: Giải pháp đáp ứng
+P519: C.1
+P520: Tham quan VR360
+P521: Đáp ứng
+P522: Xem B.1.2
+P523: C.2
+P524: Tích hợp với sàn giao dịch khác
+P525: Đáp ứng
+P526: Triển khai bộ kết nối theo Mục 5.3: gian hàng địa phương, sản phẩm chào bán, tin chào mua, mã định danh, ánh xạ lĩnh vực; kiểm thử bằng tài khoản được cấp. Không xác nhận đang vận hành khi chưa có PL-06; API cho sàn khác được xây dựng, phân quyền bằng khóa API hoặc token và bổ sung tài liệu vào PL-03 trong giai đoạn thiết lập.
+P527: C.3
+P528: Liên kết mạng xã hội
+P529: Đáp ứng
+P530: Nút chia sẻ đường dẫn sản phẩm, bài viết, sự kiện lên mạng xã hội; đánh giá sản phẩm trên Sàn
+P531: C.4
+P532: Ký số hợp đồng điện tử
+P533: Đáp ứng
+P534: Xem 4.1 dòng 6, 7
+P535: C.5
+P536: In mã QR sản phẩm
+P537: Đáp ứng
+P538: Mã QR và nút in nhãn ở trang chi tiết sản phẩm
+P539: C.6
+P540: Phòng họp ảo, livestream
+P541: Đáp ứng
+P542: Liên kết phát trực tiếp (YouTube, Facebook, TikTok) theo sự kiện; phòng họp trực tuyến
+P543: C.7
+P544: Liên hệ trực tiếp
+P545: Đáp ứng
+P546: Chat, gọi video giữa người bán, người mua, Sàn; phòng họp chạy trên máy chủ họp riêng hoặc dịch vụ được Bên thuê chấp thuận
+P547: C.8
+P548: Dịch Anh/Việt
+P549: Đáp ứng
+P550: Giao diện Anh/Việt và quản trị nội dung dịch; các trang, trường dữ liệu thuộc phạm vi dịch được kiểm tra bằng bộ kịch bản song ngữ tại PL-06
+P551: C.9
+P552: AI tìm kiếm
+P553: Đáp ứng
+P554: Tìm sản phẩm, dịch vụ, nhà cung cấp, chuyên gia; gợi ý khi gõ; tìm bằng giọng nói
+P555: C.10
+P556: Chatbot AI
+P557: Đáp ứng
+P558: Gợi ý theo ngành, từ khóa, sản phẩm đã xem; trả lời trên dữ liệu của Sàn; bật/tắt; không sửa dữ liệu nghiệp vụ
+P560: 5. Tính tương thích, khả năng mở rộng, hạn chế phụ thuộc nhà cung cấp; kết nối, liên thông và chia sẻ dữ liệu (tiêu chí 3b)
+P561: Nhà thầu cam kết đủ 5 nội dung của tiêu chí; mọi giao diện kết nối và cấu trúc dữ liệu được tài liệu hóa và bàn giao cho Bên thuê.
+P562: 5.1. Cam kết
+P563: Nội dung tiêu chí
+P564: Cam kết và giải pháp của Nhà thầu
+P565: Tương thích, nâng cấp, mở rộng, tích hợp với hạ tầng, hệ thống khác
+P566: Kiến trúc mô-đun; tài nguyên cloud mở rộng được; chạy trên IPv4 và IPv6; tích hợp qua API REST/JSON hoặc Web Service; sẵn sàng kết nối Cổng thông tin, nền tảng xác thực, hệ thống truy xuất nguồn gốc và các hệ thống của Bộ KH&CN, UBND thành phố khi có yêu cầu
+P567: Tài liệu hóa giao diện, cấu trúc, định dạng dữ liệu
+P568: Tài liệu API theo chuẩn OpenAPI (cấu trúc dữ liệu, xác thực, mã lỗi); tài liệu đặc tả CSDL các bảng nghiệp vụ; ma trận tích hợp (mục 5.2)
+P569: Không hạn chế quyền khai thác, sao lưu, chuyển giao, di chuyển dữ liệu
+P570: Dữ liệu lưu trên hệ quản trị CSDL thông dụng, không mã hóa độc quyền; xuất được JSON, XML, CSV, Excel; Bên thuê có quyền yêu cầu bản sao CSDL bất kỳ lúc nào; chi tiết tại Mục 7
+P571: Kết nối, chia sẻ theo quy định pháp luật, tiêu chuẩn
+P572: Tuân thủ Nghị định 278/2025/NĐ-CP, Thông tư 39/2017/TT-BTTTT; triển khai, phối hợp kiểm thử và duy trì kết nối Sàn KH&CN Việt Nam theo tài liệu kỹ thuật, quyền truy cập và điều kiện do đơn vị quản lý nền tảng cung cấp; có xác thực, phân quyền, nhật ký trên mọi kết nối
+P573: Phối hợp cập nhật khi có thay đổi
+P574: Khi quy định, chuẩn kết nối hoặc API của cơ quan quản lý thay đổi, Nhà thầu cập nhật trong phạm vi dịch vụ thuê, không tính thêm chi phí
+P576: Lớp tích hợp thay thế được. Mỗi dịch vụ bên ngoài (SMS, thư điện tử, ký số, AI, họp trực tuyến) được gọi qua một giao diện chung; khi đổi nhà cung cấp chỉ thay bộ kết nối và tham số cấu hình, không sửa nghiệp vụ lõi. Hệ thống đã có sẵn bộ kết nối ký số từ xa với nhiều tổ chức cung cấp dịch vụ chứng thực (VNPT, FPT, Viettel); kết nối được kích hoạt với tài khoản, chứng thư thật trong giai đoạn thiết lập.
+P578: 5.2. Ma trận tích hợp
+P579: Ma trận sơ bộ dưới đây được Nhà thầu hoàn thiện và bàn giao khi triển khai. Đầu mối chịu trách nhiệm với Bên thuê trong mọi trường hợp là Nhà thầu.
+P580: Hệ thống / dịch vụ
+P581: Chiều dữ liệu
+P582: Phương thức
+P583: Xác thực
+P584: Nhật ký
+P585: Gửi lại
+P586: Xử lý lỗi
+P587: SLA
+P588: Đầu mối chịu trách nhiệm
+P589: Thư điện tử
+P590: Sàn → người dùng
+P591: SMTP qua TLS, hàng đợi
+P592: Tài khoản SMTP riêng
+P593: Trạng thái từng thư
+P594: Tự động theo số lần cấu hình
+P595: Đánh dấu lỗi, cảnh báo quản trị khi hàng đợi ùn
+P596: SLA tổng thể của Nhà thầu (*)
+P597: Nhà thầu (Kỹ sư tích hợp); phối hợp nhà cung cấp thư điện tử
+P598: SMS Brandname
+P599: Sàn → người dùng; trạng thái gửi về Sàn
+P600: API HTTPS, hàng đợi
+P601: Khóa API
+P602: Trạng thái chờ / đã gửi / lỗi
+P603: Tự động theo số lần cấu hình
+P604: Chuyển sang thông báo email/web; bật/tắt kênh
+P605: SLA tổng thể của Nhà thầu (*)
+P606: Nhà thầu (Kỹ sư tích hợp); phối hợp nhà cung cấp SMS
+P607: Chữ ký số từ xa
+P608: Hai chiều: tệp cần ký → CA; chữ ký → Sàn
+P609: API HTTPS của tổ chức chứng thực
+P610: Tài khoản, chứng thư người ký, OTP
+P611: Nhật ký ký số
+P612: Người ký thực hiện lại
+P613: Giữ nguyên trạng thái chờ ký; kiểm tra mã băm
+P614: SLA tổng thể của Nhà thầu (*)
+P615: Nhà thầu (Kỹ sư tích hợp); phối hợp tổ chức chứng thực
+P616: Ký số USB Token
+P617: Máy người ký → Sàn
+P618: Phần mềm ký cài trên máy người dùng
+P619: Chứng thư trên Token, mã PIN
+P620: Nhật ký ký số
+P621: Người ký thực hiện lại
+P622: Kiểm tra chữ ký và mã băm trước khi lưu
+P623: SLA tổng thể của Nhà thầu (*)
+P624: Nhà thầu (Kỹ sư tích hợp); phối hợp tổ chức chứng thực
+P625: Hợp đồng điện tử
+P626: Nội bộ hệ thống
+P627: Mô-đun hợp đồng + ký số
+P628: Phân quyền theo bên tham gia
+P629: Nhật ký thao tác hợp đồng
+P630: —
+P631: Khóa phiên bản đã ký
+P632: SLA tổng thể của Nhà thầu (*)
+P633: Nhà thầu (Kỹ sư phần mềm)
+P634: Dịch vụ AI
+P635: Sàn → AI (câu hỏi, dữ liệu công khai); AI → Sàn (gợi ý)
+P636: API HTTPS
+P637: Khóa API
+P638: Nhật ký truy vấn
+P639: Không
+P640: Chuyển về tìm kiếm toàn văn
+P641: SLA tổng thể của Nhà thầu (*)
+P642: Nhà thầu (Kỹ sư tích hợp); phối hợp nhà cung cấp AI
+P643: VR360
+P644: Sàn → người dùng
+P645: Nhúng trình xem trên web
+P646: Không (nội dung công khai)
+P647: Thống kê truy cập
+P648: —
+P649: Hiển thị thông báo, kiểm tra trong giám sát
+P650: SLA tổng thể của Nhà thầu (*)
+P651: Nhà thầu (Nhóm VR360, Kỹ sư phần mềm)
+P652: Sàn KH&CN Việt Nam
+P653: Hai chiều: sản phẩm chào bán, tin chào mua; mã xác thực
+P654: API, phương thức và định dạng theo đặc tả do cơ quan quản lý Sàn quốc gia cung cấp; đồng bộ khi sản phẩm được duyệt công bố và theo lô để đối soát, gửi lại
+P655: Tài khoản, mã xác thực do Bộ cấp
+P656: Nhật ký đồng bộ từng bản ghi
+P657: Tự động ở lần đồng bộ sau
+P658: Kiểm tra toàn vẹn, chống trùng bản ghi
+P659: SLA tổng thể của Nhà thầu (*)
+P660: Nhà thầu (Kỹ sư tích hợp); phối hợp đơn vị quản lý Sàn quốc gia
+P661: Hệ thống khác (API mở)
+P662: Hai chiều theo yêu cầu
+P663: API REST/JSON, tài liệu OpenAPI
+P664: Khóa API hoặc token
+P665: Nhật ký truy cập API
+P666: Theo thỏa thuận kết nối
+P667: Mã lỗi chuẩn hóa
+P668: SLA tổng thể của Nhà thầu (*)
+P669: Nhà thầu (Kỹ sư tích hợp); phối hợp đơn vị kết nối
+P670: (*) Nhà thầu chịu SLA tổng thể: sẵn sàng ≥ 99,5%/tháng; phản hồi ≤ 02 giờ theo Mục 9; khắc phục nghiêm trọng ≤ 08 giờ, thông thường ≤ 24 giờ. SLA riêng và phạm vi đo của đối tác dẫn chiếu PL-01; không loại trừ sự cố đối tác khỏi trách nhiệm Nhà thầu.
+P672: Đầu mối từng kết nối. Phía Nhà thầu, Kỹ sư tích hợp là đầu mối kỹ thuật cho toàn bộ kết nối trong ma trận; Cán bộ phụ trách dịch vụ chịu trách nhiệm trước Bên thuê về SLA tổng thể, kể cả với dịch vụ mua ngoài. Phía đối tác: bộ phận hỗ trợ kỹ thuật của từng nhà cung cấp dịch vụ (thư điện tử, SMS, chứng thực chữ ký số, AI, hạ tầng cloud) và đơn vị quản lý Sàn giao dịch KH&CN Việt Nam; tên, số điện thoại, email của từng đầu mối được ghi trong ma trận bàn giao khi triển khai. Khi dịch vụ bên ngoài lỗi, Kỹ sư tích hợp phối hợp với đầu mối đối tác; thời gian khắc phục vẫn tính theo cam kết của Nhà thầu tại Mục 9.
+P673: 5.3. Kết nối Sàn giao dịch khoa học và công nghệ Việt Nam
+P674: Nhà thầu triển khai bộ kết nối với Sàn giao dịch KH&CN Việt Nam theo tài liệu và quyền truy cập chính thức được cấp. Phạm vi bộ kết nối hiện có phải được chứng minh tại PL-06 trước khi ghi nhận đã vận hành; không suy ra kết nối sản xuất từ mô tả hoặc thử nghiệm trên dữ liệu mẫu.
+P675: Nội dung
+P676: Hiện trạng
+P677: Phần cần hoàn thiện
+P678: Kế hoạch và minh chứng
+P679: Xác thực, lấy mã truy cập
+P680: Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này.
+P681: Dùng tài khoản do Bộ cấp cho đơn vị
+P682: Kiểm thử xác thực với tài khoản được cấp tại bước 6 Mục 8. Minh chứng: biên bản kiểm thử tại PL-06.
+P683: Đăng ký gian hàng của địa phương
+P684: Chưa có
+P685: Xây dựng theo API của Bộ; thực hiện một lần khi được cấp quyền
+P686: Phát triển theo tài liệu API được cấp, đăng ký khi có quyền. Minh chứng: kết quả đăng ký gian hàng trên Sàn quốc gia, ghi tại PL-06.
+P687: Cung cấp danh sách sản phẩm chào bán
+P688: Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này.
+P689: Thêm đồng bộ ngay khi sản phẩm được duyệt công bố, giữ đồng bộ theo lô định kỳ để bù bản ghi lỗi
+P690: Kiểm thử tạo, cập nhật, gửi lại tại bước 6 Mục 8. Minh chứng: nhật ký đồng bộ và đối soát số bản ghi tại PL-06.
+P691: Cung cấp danh sách tin chào mua
+P692: Chưa có
+P693: Xây dựng theo API của Bộ, cùng cơ chế với sản phẩm
+P694: Phát triển theo tài liệu API được cấp, kiểm thử cùng đợt với sản phẩm. Minh chứng: nhật ký đồng bộ và đối soát tại PL-06.
+P695: Mã định danh thống nhất, chống trùng
+P696: Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này.
+P697: Ghép mã định danh Sàn Cần Thơ với mã do Sàn quốc gia trả về
+P698: Kiểm thử gửi trùng và gửi lại cùng bản ghi. Minh chứng: kết quả kiểm thử chống trùng tại PL-06.
+P699: Ánh xạ danh mục lĩnh vực
+P700: Cần kiểm chứng hiện trạng tại PL-06; chưa xác nhận vận hành thực tế trong bản đề xuất này.
+P701: Lập bảng ánh xạ danh mục lĩnh vực của Sàn Cần Thơ sang bộ mã do Bộ ban hành; Bên thuê xác nhận trước khi áp dụng
+P702: Lập bảng ánh xạ khi nhận danh mục mã của Bộ. Minh chứng: bảng ánh xạ có xác nhận của Bên thuê.
+P703: Nhật ký, xử lý lỗi
+P704: Đã có nhật ký từng lô
+P705: Ghi nhật ký từng bản ghi; bản ghi lỗi tự gửi lại ở lần đồng bộ sau và báo cáo trong báo cáo tháng
+P706: Bổ sung nhật ký từng bản ghi trước vận hành thử. Minh chứng: nhật ký đồng bộ tại PL-06 và báo cáo tháng.
+P708: Điều kiện kết nối: tài khoản, tài liệu API, quyền truy cập và danh mục mã lĩnh vực do cơ quan quản lý Sàn quốc gia cung cấp. Nhà thầu lập đặc tả, phát triển bộ kết nối theo tài liệu được cấp, kiểm thử xác thực, tạo/cập nhật, chống trùng, gửi lại và đối soát; kết quả môi trường thật ghi tại PL-06. Endpoint, quyền truy cập, tần suất và giới hạn API được thống nhất với đơn vị quản lý, không tự coi JSON/XML/CSV đều là định dạng được hỗ trợ.
+P709: 6. Phương án bảo đảm an toàn thông tin, an ninh mạng (tiêu chí 3c)
+P710: Nhà thầu phối hợp Bên thuê xác định cấp độ, lập và bàn giao hồ sơ đề xuất cấp độ cùng phương án bảo đảm ATTT đáp ứng tối thiểu cấp độ 2 theo hồ sơ kế hoạch thuê đã được phê duyệt và quy định hiện hành, trước khi nghiệm thu đưa hệ thống vào vận hành chính thức.
+P711: Căn cứ: Luật An ninh mạng số 116/2025/QH15; Nghị định số 331/2026/NĐ-CP; Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 và Nghị định số 356/2025/NĐ-CP; Quyết định số 37/2026/QĐ-UBND của UBND thành phố Cần Thơ; TCVN 11930:2017 về yêu cầu cơ bản bảo đảm an toàn hệ thống thông tin theo cấp độ và văn bản thay thế (nếu có).
+P712: 6.1. Biện pháp kỹ thuật
+P713: Nhóm biện pháp
+P714: Nội dung thực hiện
+P715: Phân quyền, xác thực
+P716: Phân quyền theo vai trò, chức năng và bước quy trình; mật khẩu lưu dạng băm; xác thực 2 lớp bằng mã OTP cho tài khoản quản trị (bật bắt buộc khi đưa vào vận hành thử); khóa tài khoản vi phạm và đăng xuất ngay phiên đang dùng; quên mật khẩu qua liên kết dùng 1 lần
+P717: Mã hóa
+P718: HTTPS/TLS cho toàn bộ truy cập, bắt buộc HTTPS (HSTS); kết nối tích hợp qua HTTPS; khóa bí mật, mật khẩu dịch vụ không lưu trong mã nguồn
+P719: Bảo vệ ứng dụng
+P720: Chống giả mạo yêu cầu (CSRF); cookie phiên HttpOnly, Secure; tiêu đề bảo mật (CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy); kiểm tra loại và dung lượng tệp tải lên
+P721: Bảo vệ mạng, máy chủ
+P722: Tường lửa chỉ mở cổng cần thiết; quản trị giới hạn IP; CSDL không mở Internet. WAF phát hiện/chặn mẫu tấn công ứng dụng, giới hạn tốc độ và đăng nhập bất thường; giám sát nhật ký, chống mã độc máy chủ và phối hợp chống DDoS của cloud. Sản phẩm, gói bảo vệ, tài nguyên, hạn mức và đầu mối chốt tại PL-01; chi phí nằm trong giá chào; kiểm thử cảnh báo/chặn và ứng cứu trước vận hành thử.
+P723: Nhật ký
+P724: Ghi đăng nhập, quản trị, tìm kiếm, quy trình, hợp đồng, ký số và truy cập hồ sơ; lưu trong suốt 05 năm thuê và bàn giao khi kết thúc. Nhật ký được lưu tập trung, phân quyền riêng, bảo vệ khỏi sửa/xóa trái phép, ghi vết việc truy cập và xuất; chỉ cán bộ được phân công được xem. Chính sách lưu nhật ký độc lập với thời hạn giữ bản sao lưu 30 ngày; rà soát dữ liệu nhạy cảm, dung lượng và nghĩa vụ lưu giữ theo hồ sơ ATTT.
+P725: Sao lưu, phục hồi
+P726: CSDL: sao lưu toàn phần hằng ngày, bổ sung 6 giờ/lần; tệp: hằng ngày. Giữ các điểm phục hồi ít nhất 30 ngày trên kho sao lưu riêng tại Việt Nam, độc lập với máy chủ ứng dụng, máy chủ CSDL và dữ liệu gốc; tài khoản sao lưu riêng, mã hóa, hạn chế quyền xóa. Dung lượng kho tính theo kích thước bản toàn phần, phần tăng thêm/tệp thay đổi trong 30 ngày và dự phòng 20%; mức GB, gói và vị trí được chốt tại PL-01. Kho và lưu lượng sao lưu đã nằm trong giá chào. RPO CSDL ≤ 6 giờ, tệp ≤ 24 giờ; RTO ≤ 8 giờ, đo bằng phục hồi thử trước vận hành và hằng quý. Phục hồi nhất quán CSDL và tệp: sau khi phục hồi CSDL và tệp từ các điểm gần nhất, đối chiếu danh sách tệp đính kèm được CSDL tham chiếu với tệp thực có và lập danh sách tệp thiếu (tệp phát sinh sau lượt sao lưu tệp gần nhất). Hợp đồng và chứng từ ký số được kiểm tra bằng mã băm SHA-256 lưu trong CSDL tại thời điểm ký; chỉ tệp trùng mã băm mới được coi là bản hợp lệ. Tệp thiếu hoặc lệch mã băm được thông báo cho các bên ký và Bên thuê; bản PDF đã ký do các bên lưu giữ chỉ được tiếp nhận lại khi trùng mã băm đã lưu. Kết quả đối chiếu ghi vào biên bản phục hồi.
+P727: Giám sát
+P728: Giám sát liên tục tình trạng website, CSDL, ổ đĩa, CPU, RAM, hàng đợi thông báo, kết quả sao lưu, thời hạn chứng thư SSL; cảnh báo qua email/SMS cho cán bộ trực
+P729: Rà soát lỗ hổng
+P730: Rà soát trước khi đưa vào vận hành và định kỳ 06 tháng/lần; khắc phục lỗ hổng mức cao trong 07 ngày
+P731: Bảo vệ dữ liệu cá nhân
+P732: Thông báo và ghi nhận sự đồng ý xử lý dữ liệu cá nhân khi đăng ký (thời điểm, phiên bản điều khoản); áp dụng chính sách bảo vệ dữ liệu cá nhân do Bên thuê ban hành; phân quyền, bảo mật dữ liệu; tiếp nhận và xử lý yêu cầu của chủ thể dữ liệu theo pháp luật hiện hành; dữ liệu lưu tại Việt Nam
+P734: 6.2. Biện pháp quản lý
+P735: Ban hành quy chế vận hành, quy trình cấp và thu hồi tài khoản; tài khoản cấp theo tên người, không dùng chung.
+P736: Nhân sự vận hành ký cam kết bảo mật; thu hồi quyền ngay khi thay đổi nhân sự.
+P737: Kiểm tra ATTT nội bộ định kỳ và báo cáo Bên thuê.
+P738: Phối hợp với cơ quan chuyên trách ATTT của thành phố khi có yêu cầu kiểm tra, đánh giá.
+P739: 6.3. Ứng cứu sự cố
+P740: 1. Phát hiện: qua cảnh báo giám sát hoặc phản ánh của Bên thuê.
+P741: 2. Phân loại và thông báo Bên thuê trong 02 giờ; sự cố tấn công mạng được báo cáo cơ quan có thẩm quyền theo quy định.
+P742: 3. Ngăn chặn: cô lập thành phần bị ảnh hưởng, khóa tài khoản nghi vấn, giữ nguyên nhật ký.
+P743: 4. Khôi phục: phục hồi từ bản sao lưu sạch gần nhất, kiểm tra toàn vẹn trước khi mở lại dịch vụ.
+P744: 5. Báo cáo: nguyên nhân, thiệt hại, biện pháp phòng ngừa; gửi Bên thuê trong 03 ngày làm việc.
+P745: 7. Quản lý và chuyển giao dữ liệu (tiêu chí 3d)
+P746: Nhà thầu cam kết toàn bộ dữ liệu, thông tin, tài liệu điện tử, cơ sở dữ liệu, hồ sơ nghiệp vụ, nhật ký hệ thống, cấu hình và các sản phẩm, kết quả hình thành từ việc cung cấp dịch vụ theo hợp đồng thuộc quyền quản lý, sử dụng và sở hữu của Bên thuê theo quy định của pháp luật và hợp đồng (mục 2.10 Chương V). Bản quyền các thành phần phần mềm thương mại được cung cấp theo quyền sử dụng hợp pháp tại PL-02. Nhà thầu bảo đảm khả năng trích xuất, sao lưu, bàn giao dữ liệu và phối hợp chuyển đổi sang đơn vị được Bên thuê chỉ định trong thời gian thuê và khi kết thúc hoặc chấm dứt hợp đồng.
+P747: 7.1. Cam kết trong thời gian thuê
+P748: Chỉ xử lý dữ liệu trong phạm vi cần thiết để thực hiện hợp đồng; không sao chép, khai thác, cung cấp dữ liệu cho bên thứ ba khi chưa có chấp thuận của Bên thuê.
+P749: Bảo đảm an toàn, bảo mật, sao lưu, phục hồi theo Mục 6.
+P750: Cung cấp bản sao CSDL hoặc bản trích xuất dữ liệu trong 03 ngày làm việc khi Bên thuê yêu cầu.
+P751: Không dùng định dạng hoặc cơ chế kỹ thuật độc quyền làm hạn chế quyền khai thác dữ liệu của Bên thuê.
+P752: 7.2. Phương án thoát dịch vụ (exit plan)
+P753: Áp dụng khi hết hạn, chấm dứt trước hạn hoặc khi Nhà thầu không còn khả năng cung cấp dịch vụ.
+P754: Nội dung
+P755: Cam kết của Nhà thầu
+P756: Danh mục dữ liệu
+P757: Toàn bộ CSDL nghiệp vụ (tài khoản, nhà cung cấp, sản phẩm, nhu cầu, chuyên gia, giao dịch, hợp đồng, sự kiện, tin bài, bản dịch); tệp đính kèm, hình ảnh, video; hợp đồng đã ký số; nội dung VR360; nhật ký hệ thống; báo cáo
+P758: Định dạng
+P759: Bản sao lưu CSDL nguyên bản; bản xuất CSV/JSON từng bảng; tệp gốc giữ nguyên cấu trúc thư mục; hợp đồng ký số dạng PDF còn nguyên chữ ký
+P760: Tài liệu API, cấu hình
+P761: Tài liệu OpenAPI; đặc tả CSDL; danh mục tham số cấu hình; ma trận tích hợp cập nhật; tài liệu quản trị và hướng dẫn sử dụng
+P762: Tài khoản
+P763: Danh sách tài khoản quản trị; chuyển quyền quản trị tên miền, hộp thư, thương hiệu SMS (thuộc đơn vị) cho Bên thuê hoặc đơn vị tiếp nhận
+P764: Thời gian hỗ trợ chuyển đổi
+P765: Bàn giao trong 15 ngày kể từ khi có yêu cầu; hỗ trợ đơn vị tiếp nhận tối thiểu 30 ngày sau bàn giao; duy trì dịch vụ cũ đến khi hệ thống mới vận hành nếu hợp đồng còn hiệu lực
+P766: Kiểm tra toàn vẹn
+P767: Đối chiếu số bản ghi từng bảng, mã băm tệp; phục hồi thử bản sao lưu trên môi trường của bên tiếp nhận
+P768: Xác nhận bàn giao
+P769: Biên bản bàn giao có danh mục, số lượng, mã băm; Bên thuê ký xác nhận
+P770: Xóa bản sao
+P771: Sau khi Bên thuê xác nhận, xóa toàn bộ bản sao dữ liệu trên hạ tầng của Nhà thầu trong 15 ngày, lập biên bản xóa; trừ dữ liệu phải lưu theo quy định pháp luật
+P773: Nhà thầu không khóa, hạn chế hoặc làm mất khả năng truy cập, khai thác dữ liệu của Bên thuê trong quá trình chuyển giao và sau khi hợp đồng kết thúc hoặc chấm dứt, trừ trường hợp có yêu cầu khác của cơ quan nhà nước có thẩm quyền hoặc được Bên thuê chấp thuận bằng văn bản.
+P774: Hoàn trả kinh phí. Trường hợp hợp đồng chấm dứt trước thời hạn (do thay đổi chủ trương, nhu cầu sử dụng, hoặc do Nhà thầu không còn khả năng cung cấp dịch vụ) mà Bên thuê đã thanh toán cho thời gian dịch vụ chưa được cung cấp, Nhà thầu hoàn trả phần kinh phí tương ứng với thời gian và phạm vi dịch vụ chưa thực hiện, sau khi đối trừ các khoản chi phí, nghĩa vụ tài chính hợp pháp khác (nếu có) theo hợp đồng và quy định của pháp luật (mục 2.9 Chương V).
+P775: 8. Tiến độ cung cấp dịch vụ (tiêu chí 4)
+P776: Nhà thầu thực hiện thiết lập dịch vụ từ ngày 22/10 đến ngày 26/10/2026. Hoàn thành thiết lập và tự kiểm tra nội bộ ngày 26/10/2026; bắt đầu vận hành thử lần 1 ngày 27/10/2026, hiệu chỉnh và khắc phục trong ngày 27–28/10/2026; nghiệm thu đợt 1 ngày 28–29/10/2026; đào tạo, hoàn thiện hồ sơ ATTT cấp độ 2, tích hợp trao đổi trực tuyến và VR360 từ ngày 29/10 đến ngày 06/11/2026; vận hành thử lần 2 ngày 09–13/11/2026; nghiệm thu hoàn thành và bàn giao đưa vào sử dụng chính thức ngày 18/11/2026.
+P777: Hợp đồng có hiệu lực từ ngày 22/10/2026. Thời gian thuê dịch vụ 05 năm bắt đầu ngày 18/11/2026 và kết thúc ngày 17/11/2031. Thanh toán lần 1 trước ngày 30/10/2026 (tối đa 85% giá trị hợp đồng theo kế hoạch); thanh toán lần cuối theo mốc nghiệm thu hoàn thành ngày 18/11/2026 và điều kiện thanh toán của hợp đồng.
+P778: STT
+P779: Công việc
+P780: Thời gian
+P781: Nhân sự thực hiện
+P782: Kết quả đầu ra
+P783: 1
+P784: Họp khởi động; thống nhất kế hoạch, đầu mối, danh mục thông tin Bên thuê cung cấp (tên miền, thương hiệu SMS, danh sách cán bộ)
+P785: 22–26/10/2026
+P786: Chủ nhiệm dự án
+P787: Biên bản họp, kế hoạch chi tiết
+P788: 2
+P789: Khởi tạo 02 máy chủ cloud; cài hệ điều hành, CSDL; tường lửa, chứng thư SSL, tên miền
+P790: 22–26/10/2026
+P791: Kỹ sư hạ tầng và ATTT
+P792: Hạ tầng sẵn sàng, biên bản cấu hình
+P793: 3
+P794: Đăng ký thương hiệu SMS, khởi tạo 60 hộp thư, tài khoản ký số và hợp đồng điện tử
+P795: 26/10/2026
+P796: Kỹ sư tích hợp
+P797: Tài khoản dịch vụ hoạt động
+P798: 4
+P799: Chụp, dựng 10 điểm cảnh quay VR360 tại Sàn
+P800: 29/10–06/11/2026
+P801: Nhóm dựng VR360
+P802: Tour VR360 hoàn chỉnh
+P803: 5
+P804: Cài đặt ứng dụng; khởi tạo dữ liệu ban đầu
+P805: 26/10/2026
+P806: 02 Kỹ sư phần mềm
+P807: Ứng dụng chạy trên môi trường vận hành
+P808: 6
+P809: Cấu hình, kiểm tra tích hợp: email, SMS, ký số, hợp đồng điện tử, AI, Sàn KH&CN Việt Nam; tích hợp VR360
+P810: 26/10/2026 (SMS, thư điện tử, chữ ký số, hợp đồng điện tử, AI); 29/10–06/11/2026 (VR360); kết nối Sàn KH&CN Việt Nam theo kế hoạch tích hợp được thống nhất
+P811: Kỹ sư tích hợp, Kỹ sư phần mềm
+P812: Ma trận tích hợp hoàn thiện, biên bản kiểm tra kết nối
+P813: 7
+P814: Thiết lập danh mục, tham số, tài khoản quản trị, phân quyền; sao lưu, giám sát
+P815: 26/10/2026
+P816: Kỹ sư phần mềm, Kỹ sư hạ tầng và ATTT
+P817: Cấu hình vận hành, lịch sao lưu chạy tự động
+P818: 8
+P819: Kiểm thử nội bộ toàn bộ chức năng; rà soát lỗ hổng; phục hồi thử sao lưu
+P820: 26/10/2026
+P821: Cán bộ kiểm thử, Kỹ sư hạ tầng và ATTT
+P822: Báo cáo kiểm thử, báo cáo rà soát
+P823: 9
+P824: Kiểm tra điều kiện sẵn sàng cùng Bên thuê
+P825: 26/10/2026
+P826: Chủ nhiệm dự án, Tổ triển khai
+P827: Biên bản đủ điều kiện vận hành thử
+P828: 10
+P829: Đưa dịch vụ vào vận hành thử
+P830: 27/10/2026
+P831: Tổ triển khai
+P832: Dịch vụ hoạt động trên Internet
+P833: 11
+P834: Vận hành thử; chạy kịch bản nghiệm thu; khắc phục lỗi
+P835: 27–28/10/2026 (lần 1); 09–13/11/2026 (lần 2)
+P836: Tổ triển khai, cán bộ Bên thuê
+P837: Báo cáo vận hành thử
+P838: 12
+P839: Đào tạo nhóm quản trị và nhóm nghiệp vụ; bàn giao tài liệu
+P840: 29/10–06/11/2026
+P841: Cán bộ kiểm thử và đào tạo
+P842: Biên bản đào tạo, danh sách học viên, tài liệu
+P843: 13
+P844: Hoàn thiện hồ sơ đề xuất cấp độ và phương án ATTT cấp độ 2
+P845: 29/10–06/11/2026
+P846: Kỹ sư hạ tầng và ATTT
+P847: Hồ sơ ATTT bàn giao Bên thuê
+P848: 14
+P849: Nghiệm thu, đưa vào vận hành chính thức
+P850: 28–29/10/2026 (đợt 1); 18/11/2026 (nghiệm thu hoàn thành, bàn giao)
+P851: Chủ nhiệm dự án
+P852: Biên bản nghiệm thu
+P854: Nhân sự Tổ triển khai gồm 06 người và tổ thực hiện VR360 theo mục 3.2. Các việc phụ thuộc Bên thuê (cung cấp tên miền, hồ sơ đăng ký thương hiệu SMS, bố trí cán bộ tham gia vận hành thử và đào tạo) được thống nhất ngay tại buổi khởi động.
+P855: Các việc phụ thuộc bên ngoài và cách bảo đảm tiến độ. Nhà thầu khởi động các thủ tục bên ngoài từ ngày 22/10/2026 và theo dõi hằng ngày, bảo đảm các mốc vận hành thử và nghiệm thu trong kế hoạch thực hiện nêu trên.
+P856: Việc phụ thuộc
+P857: Điều kiện
+P858: Đầu mối phối hợp
+P859: Chuẩn bị sớm, xử lý vướng mắc
+P860: Tài khoản, API Sàn KH&CN Việt Nam
+P861: Văn bản đề nghị của Bên thuê gửi Bộ KH&CN
+P862: Chủ nhiệm dự án; cán bộ đầu mối của Bên thuê
+P863: Nhà thầu soạn sẵn dự thảo văn bản trong ngày 1–2; bộ kết nối hiện có dùng ngay khi có tài khoản; các chức năng mới kiểm thử trên dữ liệu mẫu trước
+P864: Đăng ký thương hiệu SMS Brandname
+P865: Hồ sơ pháp lý, giấy ủy quyền của Bên thuê
+P866: Kỹ sư tích hợp
+P867: Nộp hồ sơ trong ngày 1–3; tích hợp, kiểm thử kênh gửi trước với tên thương hiệu tạm của nhà cung cấp
+P868: Tài khoản, chứng thư số ký từ xa
+P869: Hợp đồng với tổ chức cung cấp dịch vụ chứng thực
+P870: Kỹ sư tích hợp
+P871: Chuẩn bị song song với cài đặt hạ tầng; ký bằng USB Token sẵn sàng ngay
+P872: Tên miền, hộp thư theo tên miền đơn vị
+P873: Bên thuê cung cấp quyền cấu hình tên miền
+P874: Kỹ sư hạ tầng và ATTT
+P875: Thống nhất tại buổi khởi động
+P877: Vướng mắc phát sinh được Chủ nhiệm dự án báo Bên thuê bằng văn bản trong 01 ngày làm việc, kèm đề xuất cách xử lý.
+P878: Kiểm thử mô phỏng, thương hiệu SMS thử và USB Token không thay thế nghiệm thu chức năng SMS Brandname, ký số từ xa hoặc kết nối Sàn quốc gia theo phạm vi hợp đồng. Trước vận hành thử phải kiểm tra tài khoản thật và lập biên bản điều kiện sẵn sàng. Nếu phụ thuộc chưa được giải quyết, Nhà thầu báo ngay Bên thuê và phối hợp cơ quan/nhà cung cấp theo đầu mối đã thống nhất; không tự xác nhận đã hoàn thành, không tự gia hạn các mốc kế hoạch hoặc thu hẹp phạm vi.
+P879: 9. Bảo hành, xử lý sự cố và hỗ trợ kỹ thuật (tiêu chí 5a)
+P880: Nhà thầu bảo hành, hỗ trợ kỹ thuật trong suốt 05 năm thuê, phản hồi yêu cầu trong 02 giờ (giờ hành chính), khắc phục sự cố nghiêm trọng trong 08 giờ và sự cố thông thường trong 24 giờ.
+P881: 9.1. Đầu mối và phương thức tiếp nhận
+P882: Đầu mối: 01 Cán bộ phụ trách dịch vụ (chịu trách nhiệm chung với Bên thuê) và 01 Kỹ sư trực kỹ thuật; họ tên, số điện thoại, email thông báo bằng văn bản khi ký hợp đồng và khi thay đổi.
+P883: Kênh tiếp nhận: phiếu hỗ trợ trên hệ thống (kênh chính); đường dây nóng; thư điện tử hỗ trợ. Yêu cầu qua điện thoại được Kỹ sư trực nhập thành phiếu để theo dõi.
+P884: Theo dõi: mỗi phiếu được phân công người xử lý, theo dõi trạng thái Mới – Đang xử lý – Hoàn thành; Bên thuê xem và xuất báo cáo phiếu bất kỳ lúc nào.
+P885: 9.2. Phân loại và thời gian xử lý
+P886: Mức
+P887: Ví dụ
+P888: Phản hồi
+P889: Khắc phục
+P890: Nghiêm trọng
+P891: Website ngừng hoạt động; mất hoặc sai lệch dữ liệu; bị tấn công
+P892: ≤ 02 giờ; ngoài giờ hành chính xử lý ngay khi có cảnh báo giám sát
+P893: ≤ 08 giờ
+P894: Thông thường
+P895: Một chức năng lỗi nhưng hệ thống vẫn hoạt động; dịch vụ tích hợp gián đoạn
+P896: ≤ 02 giờ
+P897: ≤ 24 giờ
+P898: Yêu cầu hỗ trợ
+P899: Hướng dẫn sử dụng; cấp, khóa tài khoản; điều chỉnh tham số
+P900: ≤ 02 giờ
+P901: Theo kế hoạch thống nhất, tối đa 03 ngày làm việc; không áp dụng thay cho thời hạn khắc phục sự cố
+P903: Trường hợp sự cố nằm ở dịch vụ Nhà thầu mua của nhà cung cấp khác (SMS, thư điện tử, ký số, cloud), Nhà thầu vẫn là đầu mối xử lý và chịu trách nhiệm về thời gian khắc phục.
+P904: 9.3. Quy trình xử lý
+P905: 1. Tiếp nhận, tạo phiếu, xác nhận đã nhận với người báo.
+P906: 2. Phân loại mức độ, phân công kỹ sư; sự cố nghiêm trọng báo ngay Cán bộ phụ trách và Bên thuê.
+P907: 3. Xử lý tạm thời để duy trì dịch vụ (chuyển kênh thông báo, phục hồi từ sao lưu…), sau đó khắc phục triệt để.
+P908: 4. Bên thuê xác nhận kết quả; đóng phiếu.
+P909: 5. Sự cố nghiêm trọng: báo cáo nguyên nhân và biện pháp phòng ngừa trong 03 ngày làm việc.
+P910: 9.4. Trách nhiệm các bên
+P911: Nhà thầu
+P912: Bên thuê
+P913: Bố trí đầu mối, kỹ sư trực; tiếp nhận qua đủ các kênh
+P914: Cử cán bộ đầu mối phía Bên thuê
+P915: Xử lý đúng thời hạn, kể cả dịch vụ mua ngoài
+P916: Mô tả sự cố, cung cấp thông tin cần thiết
+P917: Báo cáo xử lý, lưu lịch sử sự cố
+P918: Xác nhận kết quả xử lý
+P919: Khắc phục lỗi phần mềm, hạ tầng và các dịch vụ thuộc phạm vi cung cấp trong suốt thời gian thuê theo SLA; chi phí thuộc giá dự thầu
+P920: Phê duyệt việc dừng dịch vụ có kế hoạch khi cần
+P922: 10. Bảo trì, cập nhật và điều chỉnh (tiêu chí 5b)
+P923: Nhà thầu thực hiện bảo trì định kỳ và cập nhật, điều chỉnh theo yêu cầu trong phạm vi dịch vụ thuê, không tính thêm chi phí; mọi thay đổi trên môi trường vận hành đều có sao lưu trước và phương án khôi phục.
+P924: 10.1. Nội dung và tần suất
+P925: Nội dung
+P926: Tần suất / thời hạn
+P927: Bản vá lỗi phần mềm ứng dụng
+P928: Theo mức sự cố tại Mục 9; tổng hợp phát hành hằng tháng
+P929: Cập nhật bảo mật hệ điều hành, CSDL, nền tảng ứng dụng
+P930: Hằng tháng; bản vá khẩn cấp trong 07 ngày kể từ khi nhà sản xuất công bố
+P931: Nâng cấp phiên bản nền tảng khi hết hỗ trợ
+P932: Trước khi phiên bản đang dùng hết hạn hỗ trợ của nhà sản xuất
+P933: Điều chỉnh cấu hình, danh mục, biểu mẫu, báo cáo, phân quyền, tham số vận hành
+P934: Theo yêu cầu của Bên thuê, tối đa 03 ngày làm việc
+P935: Cập nhật kết nối, tích hợp khi cơ quan quản lý hoặc nhà cung cấp dịch vụ thay đổi giao diện
+P936: Trước ngày thay đổi có hiệu lực, hoặc theo thời hạn cơ quan quản lý yêu cầu
+P937: Cập nhật theo thay đổi quy định pháp luật, tiêu chuẩn, ATTT
+P938: Theo thời hạn của văn bản
+P939: Kiểm tra phục hồi sao lưu
+P940: Hằng quý, có biên bản
+P941: Bảo trì định kỳ hạ tầng (xoay vòng nhật ký kỹ thuật của máy chủ và ứng dụng, tối ưu CSDL, kiểm tra dung lượng, gia hạn chứng thư SSL). Nhật ký đăng nhập, quản trị, quy trình, hợp đồng, ký số và truy cập hồ sơ tại Mục 6.1 không thuộc đối tượng xoay vòng và không bị xóa trong thời hạn lưu 05 năm.
+P942: Hằng tháng
+P944: 10.2. Quy trình thực hiện thay đổi
+P945: 1. Lập kế hoạch: nội dung, thời điểm, ảnh hưởng, phương án khôi phục.
+P946: 2. Thông báo Bên thuê tối thiểu 03 ngày làm việc trước đợt bảo trì có dừng dịch vụ; bảo trì thực hiện ngoài giờ hành chính.
+P947: 3. Thử nghiệm trên môi trường kiểm thử.
+P948: 4. Sao lưu toàn bộ trước khi áp dụng.
+P949: 5. Áp dụng, kiểm tra sau thay đổi; lỗi thì khôi phục về trạng thái trước.
+P950: 6. Ghi nhật ký thay đổi, cập nhật tài liệu liên quan, báo cáo trong báo cáo tháng.
+P951: Yêu cầu bổ sung chức năng mới hoặc mở rộng quy mô ngoài phạm vi hợp đồng được xử lý theo quy định về hợp đồng, không làm gián đoạn dịch vụ đang khai thác.
+P952: 10.3. Hướng dẫn, đào tạo bổ sung trong thời gian thuê
+P953: Ngoài đào tạo ban đầu tại Mục 8, Nhà thầu hướng dẫn, đào tạo bổ sung trong suốt 05 năm, không tính thêm chi phí trong phạm vi dịch vụ thuê:
+P954: Trường hợp
+P955: Hình thức
+P956: Thời hạn
+P957: Tài liệu
+P958: Thay đổi chức năng, giao diện sau cập nhật
+P959: Hướng dẫn trực tuyến cho nhóm liên quan
+P960: Trước hoặc ngay khi áp dụng thay đổi
+P961: Cập nhật hướng dẫn sử dụng trên trang hướng dẫn của Sàn và tài liệu quản trị
+P962: Thay đổi quy trình nghiệp vụ theo yêu cầu của Bên thuê
+P963: Buổi đào tạo cho nhóm nghiệp vụ
+P964: Trong 05 ngày làm việc kể từ khi áp dụng
+P965: Tài liệu quy trình cập nhật
+P966: Thay đổi nhân sự của Bên thuê, hoặc Bên thuê có nhu cầu
+P967: Đào tạo lại nhóm quản trị hoặc nghiệp vụ
+P968: Theo lịch thống nhất, tối đa 10 ngày làm việc kể từ khi có yêu cầu
+P969: Bộ tài liệu theo phiên bản đang vận hành
+P971: Cán bộ kiểm thử và đào tạo chịu trách nhiệm cập nhật tài liệu; mọi buổi đào tạo bổ sung có biên bản và được nêu trong báo cáo tháng.
+P972: 11. Vận hành, quản trị dịch vụ (tiêu chí 5c)
+P973: Nhà thầu duy trì dịch vụ với tính sẵn sàng từ 99,5%/tháng trong suốt 05 năm, giám sát liên tục và báo cáo SLA hằng tháng cho Bên thuê.
+P974: 11.1. Nhân sự và đầu mối kỹ thuật giai đoạn vận hành
+P975: Vai trò
+P976: Số lượng
+P977: Nhiệm vụ
+P978: Cán bộ phụ trách dịch vụ
+P979: 01
+P980: Đầu mối với Bên thuê; theo dõi SLA; báo cáo tháng
+P981: Kỹ sư vận hành hạ tầng và ATTT
+P982: 01
+P983: Giám sát, sao lưu, vá bảo mật, ứng cứu sự cố
+P984: Kỹ sư phần mềm
+P985: 01
+P986: Sửa lỗi, điều chỉnh cấu hình, tích hợp
+P987: Kỹ sư trực hỗ trợ
+P988: 01
+P989: Tiếp nhận, hướng dẫn người dùng, xử lý phiếu hỗ trợ
+P991: 11.2. Quản trị tài khoản, phân quyền, cấu hình
+P992: Bên thuê giữ tài khoản quản trị nghiệp vụ cao nhất; Nhà thầu chỉ giữ tài khoản quản trị kỹ thuật, cấp theo tên người, xác thực 2 lớp.
+P993: Cấp, thay đổi, thu hồi quyền theo yêu cầu bằng văn bản hoặc phiếu hỗ trợ của Bên thuê; rà soát tài khoản không hoạt động hằng quý.
+P994: Tham số vận hành quản lý tập trung; mọi thay đổi cấu hình được ghi nhật ký.
+P995: 11.3. Giám sát hiệu năng và ATTT
+P996: Đối tượng giám sát
+P997: Ngưỡng cảnh báo
+P998: Hành động
+P999: Tính sẵn sàng website
+P1000: Không truy cập được 02 lần kiểm tra liên tiếp (mỗi 1 phút)
+P1001: Cảnh báo email/SMS cho Kỹ sư trực; xử lý theo mức nghiêm trọng
+P1002: CPU, RAM máy chủ
+P1003: Trên 85% kéo dài 15 phút
+P1004: Kiểm tra nguyên nhân; mở rộng tài nguyên khi cần
+P1005: Dung lượng ổ đĩa
+P1006: Còn dưới 15%
+P1007: Xóa tệp tạm, xoay vòng nhật ký kỹ thuật hoặc mở rộng; không xóa nhật ký phải lưu theo Mục 6.1
+P1008: CSDL, hàng đợi thông báo
+P1009: CSDL không phản hồi; hàng đợi tồn đọng
+P1010: Khắc phục, chuyển kênh thông báo
+P1011: Kết quả sao lưu
+P1012: Một lần sao lưu không thành công
+P1013: Sao lưu lại ngay trong ngày
+P1014: Chứng thư SSL
+P1015: Còn dưới 30 ngày
+P1016: Gia hạn
+P1017: Dấu hiệu tấn công (đăng nhập sai nhiều lần, truy cập bất thường)
+P1018: Theo quy tắc tường lửa và nhật ký
+P1019: Chặn nguồn, xử lý theo mục 6.3
+P1021: 11.4. Cam kết SLA và báo cáo
+P1022: Tỷ lệ sẵn sàng tính theo công thức tại mục 2.2 Chương V:
+P1023: Tỷ lệ sẵn sàng (%) = (Tổng thời gian cung cấp – Thời gian gián đoạn tính SLA) / Tổng thời gian cung cấp × 100%
+P1024: Nguồn số liệu: công cụ giám sát tính sẵn sàng kiểm tra từ bên ngoài hệ thống, mỗi 1 phút.
+P1025: Loại trừ: chỉ thời gian bảo trì theo kế hoạch đã được thông báo trước và thống nhất với Bên thuê (mục 2.2 Chương V).
+P1026: Báo cáo kết quả cung cấp dịch vụ gửi đến địa chỉ email của Bên thuê định kỳ tuần đầu mỗi tháng: tỷ lệ sẵn sàng; danh sách sự cố và thời gian xử lý; số phiếu hỗ trợ theo trạng thái; kết quả sao lưu và kiểm tra phục hồi; các cập nhật đã thực hiện; tình hình sử dụng hạn mức SMS, hợp đồng điện tử.
+P1027: Lịch sử sự cố được lưu trong suốt thời gian thuê và bàn giao khi kết thúc hợp đồng.
+P1028: 12. Cam kết chung của Nhà thầu
+P1029: Nhà thầu cam kết:
+P1030: 1. Cung cấp đầy đủ phạm vi dịch vụ tại Chương IV và đáp ứng toàn bộ yêu cầu kỹ thuật tại Chương V của E-HSMT.
+P1031: 2. Thực hiện đúng giải pháp kỹ thuật, biện pháp tổ chức và kế hoạch: Hoàn thành thiết lập và tự kiểm tra nội bộ ngày 26/10/2026; bắt đầu vận hành thử lần 1 ngày 27/10/2026, hiệu chỉnh và khắc phục trong ngày 27–28/10/2026; nghiệm thu đợt 1 ngày 28–29/10/2026; đào tạo, hoàn thiện hồ sơ ATTT cấp độ 2, tích hợp trao đổi trực tuyến và VR360 từ ngày 29/10 đến ngày 06/11/2026; vận hành thử lần 2 ngày 09–13/11/2026; nghiệm thu hoàn thành và bàn giao đưa vào sử dụng chính thức ngày 18/11/2026. Cung cấp dịch vụ trong thời gian thuê từ ngày 18/11/2026 đến ngày 17/11/2031.
+P1032: 3. Bảo đảm tương thích, mở rộng, tài liệu hóa đầy đủ giao diện và dữ liệu; không hạn chế quyền khai thác, sao lưu, chuyển giao, di chuyển dữ liệu của Bên thuê.
+P1033: 4. Bảo đảm an toàn thông tin theo cấp độ 2 và bàn giao hồ sơ trước khi nghiệm thu.
+P1034: 5. Toàn bộ dữ liệu, thông tin, tài liệu, cấu hình và sản phẩm, kết quả hình thành theo hợp đồng thuộc quyền quản lý, sử dụng và sở hữu của Bên thuê; thực hiện đúng phương án thoát dịch vụ.
+P1035: 6. Duy trì chất lượng dịch vụ theo SLA; bảo hành, bảo trì, hỗ trợ kỹ thuật trong suốt 05 năm thuê.
+P1036: 7. Chuẩn bị đầy đủ môi trường, tài khoản, dữ liệu mẫu để Demo hệ thống khi Chủ đầu tư yêu cầu, trong phạm vi Chương V và các nội dung đã cam kết tại đề xuất này.

@@ -1,0 +1,21 @@
+Mã minh chứng: MC-HT-06-20261026
+Ca kiểm thử: TC-HT-06 IPv6
+Thời điểm (UTC+7): 26/10/2026 08:39:17
+Máy thực hiện: máy tính kết nối Internet, công cụ curl 8.11.0, openssl
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+nslookup -type=AAAA mekongx.vn 8.8.8.8
+Server:  dns.google
+Address:  8.8.8.8
+
+Name:    mekongx.vn
+
+
+nslookup -type=A mekongx.vn 8.8.8.8
+Non-authoritative answer:
+Server:  dns.google
+Address:  8.8.8.8
+
+Name:    mekongx.vn
+Address:  103.156.3.5
+

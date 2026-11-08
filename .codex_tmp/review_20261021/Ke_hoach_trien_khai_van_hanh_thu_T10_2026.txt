@@ -1,0 +1,58 @@
+KẾ HOẠCH TRIỂN KHAI, VẬN HÀNH THỬ
+BẢO ĐẢM HOÀN THÀNH 85% KHỐI LƯỢNG TRONG THÁNG 10/2026
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+1. Mục tiêu và căn cứ
+Theo dự thảo hợp đồng, thanh toán lần 1 trước ngày 30/10/2026 tối đa 85% giá hợp đồng, căn cứ biên bản nghiệm thu giai đoạn và bảng xác định giá trị khối lượng. Giá trị nghiệm thu đợt 1 tại Phụ lục 5 là 2.321.437.218 đồng (85% giá hợp đồng 2.730.119.729 đồng). Kế hoạch này bố trí công việc để đến ngày 30/10/2026 hoàn thành toàn bộ khối lượng đợt 1, gồm cả VR360; phần còn lại hoàn thành trong tháng 11/2026.
+Căn cứ: dự thảo hợp đồng Gói thầu số 4 (Điều 5, Phụ lục 3, 4, 5); Chương V Hồ sơ mời thầu (mục 2.7, phần V); hồ sơ đề xuất kỹ thuật của MobiFone (Mục 3.2, Mục 8).
+2. Điều kiện thực hiện
+MobiFone sử dụng nền tảng phần mềm sẵn có để cài đặt, cấu hình và hoàn thiện theo phạm vi gói thầu, nhờ đó rút ngắn thời gian triển khai so với tiến độ 30 ngày. Dữ liệu khởi tạo được kiểm kê, đối chiếu nguồn và quyền sử dụng trước khi nhập; số lượng chính thức được chốt tại biên bản xác nhận dữ liệu khởi tạo. Tháng 10 tập trung vào cài đặt trên hạ tầng của gói thầu, cấu hình, tích hợp, quay dựng VR360, vận hành thử và đào tạo.
+Điều kiện cần bảo đảm trong tháng 10: bàn giao 02 máy chủ cloud; chứng từ bản quyền Windows Server Standard, SQL Server Standard; kích hoạt các gói dịch vụ tích hợp (SMS, thư điện tử, ký số, hợp đồng điện tử); hoàn thành 10 điểm cảnh VR360.
+3. Tiến độ chi tiết
+TT | Công việc | Thời gian | Thực hiện | Kết quả
+1 | Họp thống nhất kế hoạch, đầu mối; Chủ trì thuê cung cấp tên miền, hồ sơ đăng ký thương hiệu SMS, danh sách cán bộ; gửi văn bản đề nghị Bộ KH&CN cấp tài khoản kết nối | 20/10 | MobiFone, Chủ trì thuê | Biên bản họp, kế hoạch chi tiết
+2 | Bàn giao 02 máy chủ cloud; cài đặt, kích hoạt bản quyền Windows Server Standard và SQL Server Standard; tường lửa, chứng thư bảo mật, tên miền | 20 – 24/10 | MobiFone | Biên bản bàn giao hạ tầng, chứng từ bản quyền
+3 | VR360: chốt 10 điểm cảnh; quay chụp tại Sàn; dựng tour; gắn nút “Tham quan VR360”, kiểm tra trên máy tính, điện thoại; bàn giao nội dung | Chụp 22 – 23/10
+Dựng 24 – 28/10
+Bàn giao 29 – 30/10 | MobiFone | Tour VR360 hoàn chỉnh trên Sàn
+4 | Kiểm kê, đối chiếu dữ liệu khởi tạo trên môi trường hiện có; cài đặt ứng dụng, chuyển dữ liệu sang máy chủ cloud khi được bàn giao | 20 – 21/10
+25 – 26/10 | MobiFone | Ứng dụng chạy trên máy chủ cloud
+5 | Cấu hình danh mục, tham số, tài khoản quản trị, phân quyền; sao lưu tự động, giám sát | 20 – 21/10 | MobiFone | Cấu hình vận hành, lịch sao lưu chạy tự động
+6 | Kích hoạt gói SMS, thư điện tử, token ký số, hợp đồng điện tử; kết nối với hệ thống cùng trợ lý AI | 20 – 24/10 | MobiFone | Biên bản kiểm tra kết nối
+7 | Kiểm thử nội bộ toàn bộ chức năng; rà soát an toàn thông tin; phục hồi thử bản sao lưu | 21 – 22/10 | MobiFone | Báo cáo kiểm thử, báo cáo rà soát
+8 | Kiểm tra điều kiện sẵn sàng cùng Chủ trì thuê; đưa dịch vụ vào vận hành thử | 23/10 | MobiFone, Chủ trì thuê | Biên bản đủ điều kiện vận hành thử
+9 | Vận hành thử: chạy trọn kịch bản nghiệm thu (đăng ký nhà cung cấp → duyệt → đăng sản phẩm → đăng nhu cầu → mời báo giá, nộp đề xuất → trao đổi trực tuyến → lập hợp đồng điện tử → ký số → thông báo email/SMS → nhật ký); ghi nhận, khắc phục lỗi | 23 – 30/10
+(từ 27/10 trên máy chủ cloud) | MobiFone, cán bộ Chủ trì thuê | Báo cáo kết quả vận hành thử
+10 | Đào tạo nhóm quản trị và nhóm nghiệp vụ; bàn giao tài liệu hướng dẫn, tài khoản thực hành | 27 – 28/10 | MobiFone | Biên bản đào tạo, danh sách học viên
+11 | Lập dự thảo hồ sơ đề xuất cấp độ và phương án an toàn thông tin cấp độ 2 | 23 – 30/10 | MobiFone | Dự thảo hồ sơ gửi Chủ trì thuê
+12 | Nghiệm thu giai đoạn; lập bảng xác định giá trị khối lượng đợt 1 | 30/10 | MobiFone, Chủ trì thuê | Biên bản nghiệm thu giai đoạn
+
+4. Giá trị nghiệm thu đợt 1 (theo Phụ lục 5 dự thảo hợp đồng)
+Đơn vị: đồng, đã gồm thuế. Danh mục công việc chi tiết của mục 1.1, 1.2 tại file kèm theo “Bảng xác định giá trị khối lượng đợt 1”.
+Mục | Hạng mục | Giá hợp đồng | Đợt 1 | Tỷ lệ
+1.1 | Thiết lập trang web Sàn (60 chức năng nhóm A, B, C đạt kiểm thử, gồm VR360 trên giao diện) | 1.187.709.727 | 890.782.295 | 75%
+1.2 | Cài đặt, cấu hình, tích hợp, dữ liệu khởi tạo, hướng dẫn sử dụng, đào tạo, vận hành thử | 558.775.400 | 447.020.320 | 80%
+1.3 | Bản quyền Windows Server, SQL Server | 157.290.000 | 157.290.000 | 100%
+1.4.1 | VR360 – 10 điểm cảnh quay dựng mới | 45.000.000 | 45.000.000 | 100%
+1.4.2 – 1.4.6 | Gói SMS, thư điện tử, token ký số, hợp đồng điện tử | 88.344.602 | 88.344.602 | 100%
+2 | Hạ tầng máy chủ cloud | 693.000.000 | 693.000.000 | 100%
+ | Cộng | 2.730.119.729 | 2.321.437.217 | 85%
+
+Phần còn lại (đợt 2, 408.682.512 đồng, 15%): 25% mục 1.1 (kết nối Sàn giao dịch KH&CN Việt Nam và các sàn khác; gọi video; kiểm thử toàn bộ và nghiệm thu đưa vào vận hành) và 20% mục 1.2 (vận hành chính thức, bảo hành, bảo trì, hỗ trợ kỹ thuật 05 năm; nghiệm thu, bàn giao hồ sơ). Phụ lục 5 ghi tổng đợt 1 là 2.321.437.218 đồng, lệch 1 đồng do làm tròn.
+5. Hồ sơ nghiệm thu giai đoạn, thanh toán lần 1 (dự kiến hoàn tất 30/10/2026)
+- Biên bản nghiệm thu giai đoạn (gồm kết quả kiểm tra hạ tầng, bản quyền, cài đặt, dịch vụ tích hợp, VR360, vận hành thử, đào tạo);
+- Bảng xác định giá trị khối lượng đợt 1;
+- Kèm theo: chứng từ bản quyền, chứng từ kích hoạt gói dịch vụ, danh sách học viên, tài liệu hướng dẫn sử dụng.
+6. Việc cần Chủ trì thuê phối hợp
+- Ngày 20/10: cung cấp quyền cấu hình tên miền, hồ sơ pháp lý đăng ký thương hiệu SMS; ký văn bản đề nghị Bộ KH&CN cấp tài khoản kết nối (MobiFone soạn sẵn dự thảo).
+- Ngày 22 – 23/10: thống nhất 10 điểm cảnh; bố trí người dẫn và mặt bằng để quay chụp VR360 tại Sàn.
+- Ngày 23 – 30/10: cử cán bộ tham gia vận hành thử; ngày 27 – 28/10 cử học viên dự đào tạo.
+- Ngày 30/10: tham gia nghiệm thu giai đoạn.
+7. Rủi ro và cách xử lý
+Rủi ro | Cách xử lý
+Máy chủ cloud, bản quyền chưa bàn giao kịp 24/10 | Vận hành thử tiếp tục trên môi trường hiện có để không chậm mốc 30/10. Hạ tầng và bản quyền chiếm 850.290.000 đồng của đợt 1, chỉ nghiệm thu được khi có máy chủ và chứng từ bản quyền; MobiFone cần chốt ngày bàn giao.
+VR360 không kịp dựng xong 28/10 | Quay chụp ngay 22 – 23/10; dựng song song nhiều điểm; trường hợp chậm, đưa trước các điểm đã dựng và hoàn tất trước 30/10.
+Phát sinh lỗi trong quá trình vận hành thử | Sao lưu trước mỗi lần cập nhật; lỗi được khắc phục trong ngày, không gián đoạn khai thác.
+Thương hiệu SMS, chứng thư ký số từ xa chưa được cấp | Gói dịch vụ kích hoạt trong tháng 10; vận hành thử bằng thương hiệu tạm và USB Token trong thời gian chờ cấp.
+Bộ KH&CN chưa cấp tài khoản kết nối | Bộ kết nối đã sẵn sàng; kết nối ngay khi có tài khoản; thuộc khối lượng đợt 2.
+
+Vướng mắc phát sinh được MobiFone báo Chủ trì thuê trong 01 ngày làm việc, kèm đề xuất cách xử lý.

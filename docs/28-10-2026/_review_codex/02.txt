@@ -1,0 +1,93 @@
+D:\2026\CanTho\docs\28-10-2026\BienBanKiemTra\2 - Cong van cung cap tai khoan quyen xem giam sat va tai lieu - 26.10.2026.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v cung cấp tài khoản quyền xem giám sát và các tài liệu phục vụ vận hành thử, giám sát
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày 26 tháng 10 năm 2026
+P11: Kính gửi:
+P12: - Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ;
+P13: - Công ty TNHH Chuyển Đổi Số 365 (đơn vị giám sát);
+P14: - Công ty TNHH Công nghệ Tin học Bình Định (đơn vị vận hành thử).
+P15: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone thực hiện Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ;
+P16: Căn cứ điểm a khoản 3 Điều 15, mục 2 Phụ lục VII Thông tư số 41/2026/TT-BKHCN ngày 01/7/2026 của Bộ trưởng Bộ Khoa học và Công nghệ;
+P17: Căn cứ Kế hoạch giám sát số 106/KH-CDS365 ngày 23/10/2026 của Công ty TNHH Chuyển Đổi Số 365,
+P18: Tổng Công ty Viễn thông MobiFone (MobiFone Cần Thơ) cung cấp tài khoản quyền xem giám sát và các tài liệu phục vụ vận hành thử, giám sát chất lượng dịch vụ như sau:
+P19: 1. Tài khoản quyền xem giám sát
+P20: STT
+P21: Công cụ
+P22: Địa chỉ truy cập
+P23: Tài khoản
+P24: Quyền
+P25: 1
+P26: Công cụ giám sát tính sẵn sàng (Uptime Kuma)
+P27: Gửi riêng cùng mật khẩu
+P28: gs_theodoi
+P29: Chỉ xem
+P30: 2
+P31: Trang quản trị hạ tầng cloud MobiFone
+P32: Gửi riêng cùng mật khẩu
+P33: gs_theodoi
+P34: Chỉ xem
+P35: 3
+P36: CMS – Nhật ký, Thống kê, Yêu cầu hỗ trợ
+P37: https://mekongx.vn/cms
+P38: gs_theodoi
+P39: Chỉ xem
+P41: Chi tiết nội dung theo dõi, chu kỳ giám sát (01 phút/lần đối với tính sẵn sàng, 05 phút/lần đối với tài nguyên máy chủ), ngưỡng cảnh báo và thời hạn lưu dữ liệu tại tài liệu số 1 mục 2 dưới đây. Mật khẩu và địa chỉ truy cập công cụ giám sát được gửi riêng cho người được đơn vị giám sát cử nhận tài khoản qua kênh bảo mật; người nhận đổi mật khẩu ở lần đăng nhập đầu tiên, không chia sẻ tài khoản.
+P42: 2. Tài liệu gửi kèm
+P43: STT
+P44: Tài liệu
+P45: Ký hiệu, phiên bản
+P46: Ghi chú
+P47: 1
+P48: Văn bản cung cấp tài khoản xem công cụ giám sát (chu kỳ giám sát, ngưỡng cảnh báo, bảo mật trang /health)
+P49: NCC-06
+P51: 2
+P52: Danh mục chức năng đã xây dựng, thông số hiệu năng, phương án mở rộng
+P53: NCC-11
+P55: 3
+P56: Văn bản cung cấp log, nhật ký, số liệu giám sát (danh mục nhật ký, thời hạn lưu, quyền xem)
+P57: NCC-12
+P58: Kèm bản trích minh chứng tra cứu
+P59: 4
+P60: Quy trình vận hành, xử lý sự cố, hỗ trợ người dùng, sao lưu, quản lý thay đổi
+P61: NCC-14, phiên bản 2.0
+P63: 5
+P64: Báo cáo tự kiểm tra nội bộ, sẵn sàng vận hành thử lần 1
+P67: 6
+P68: Biên bản tự kiểm thử chức năng phần mềm đợt 1
+P69: Ngày 25/10/2026
+P71: 7
+P72: Tài liệu hướng dẫn sử dụng cho người sử dụng Sàn
+P73: Mục 01a, phiên bản 2.2
+P75: 8
+P76: Tài liệu hướng dẫn sử dụng cho cán bộ quản trị CMS
+P77: Mục 01b, phiên bản 2.2
+P79: 9
+P80: Hướng dẫn nhanh theo nhóm người dùng (phục vụ đào tạo)
+P81: Mục 01c, phiên bản 1.0
+P83: 10
+P84: Đặc tả API kết nối, liên thông, chia sẻ dữ liệu
+P85: Mục 02 – PL-03
+P87: 11
+P88: Đặc tả cơ sở dữ liệu
+P89: Mục 02 – PL-04
+P91: 12
+P92: Tài liệu mô tả dịch vụ, giải pháp kỹ thuật, phương án kết nối
+P93: Mục 02
+P96: 3. Đầu mối liên hệ
+P97: Đầu mối kỹ thuật của nhà cung cấp: Ông/Bà ……………………, điện thoại ……………………, thư điện tử ……………………. Đề nghị đơn vị giám sát cử người nhận tài khoản và thông báo họ tên, chức vụ, điện thoại, thư điện tử để nhà cung cấp gửi thông tin đăng nhập.
+P98: Tổng Công ty Viễn thông MobiFone trân trọng đề nghị Quý đơn vị phối hợp./.
+P99: Nơi nhận:
+P100: - Như trên;
+P101: - Lưu: VT, TTGPS.
+P102: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P103: (Ký, ghi rõ họ tên, đóng dấu)
+P108: Lã Thành Trung
+PART word/footer1.xml
+P1: 1

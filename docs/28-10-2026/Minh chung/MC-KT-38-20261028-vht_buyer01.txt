@@ -1,0 +1,25 @@
+Mã minh chứng: MC-KT-38-20261028-vht_buyer01
+Ca kiểm thử: KT-38 – kiểm tra riêng API-18 (mã chống giả mạo phía máy chủ, L-02)
+Ngày: 28/10/2026
+Tài khoản: vht_buyer01 (đã đăng nhập, trang Dashboard hiển thị "Người mua 01 – Vận hành thử"; phiên xác nhận bằng
+           GET /api/notifications/unread-count trả {"count":0})
+Môi trường: https://mekongx.vn, trình duyệt Chrome (Chromium), gọi từ trang https://mekongx.vn/Dashboard
+------------------------------------------------------------
+Yêu cầu: POST /api/notifications/mark-all-read
+Thân: (không có)
+
+Lần 1 – không gửi mã chống giả mạo (RequestVerificationToken)
+  Thời điểm: 04:04:06
+  Kết quả: HTTP 400
+  Nội dung: {"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"Bad Request","status":400,"traceId":"00-2189b91f799bdb274264dc7452c7b706-d809f5706835ca82-00"}
+  Mong đợi: 400 (thiếu mã chống giả mạo) → Khớp
+
+Lần 2 – có gửi mã chống giả mạo lấy từ thẻ meta __RequestVerificationToken của trang
+  Thời điểm: 04:04:06
+  Kết quả: HTTP 200
+  Nội dung: {"marked":0}
+  Mong đợi: qua lớp kiểm tra mã, thực hiện đánh dấu đã đọc → Khớp (tài khoản không có thông báo chưa đọc nên marked = 0)
+
+Sau kiểm thử: GET /api/notifications/unread-count trả {"count":0}; không thay đổi dữ liệu khác.
+Kết luận: máy chủ kiểm tra mã chống giả mạo đối với API-18 – Đạt. Cùng MC-KT-08, 09, 17, 24-20261026-vht_buyer01,
+L-02 đã xác nhận đủ 05/05 API (API-06, 07, 11, 17, 18).

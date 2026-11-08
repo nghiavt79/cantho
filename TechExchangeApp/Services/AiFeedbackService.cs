@@ -25,7 +25,7 @@ namespace TechExchangeApp.Services
         public async Task SaveAsync(AiChatFeedbackRequest request, CancellationToken cancellationToken = default)
         {
             var mainDomain = _configuration["AppSettings:MainDomain"] ?? "https://localhost:7232/";
-            var domain = Uri.TryCreate(mainDomain, UriKind.Absolute, out var uri) ? uri.Host : "techport.vn";
+            var domain = Uri.TryCreate(mainDomain, UriKind.Absolute, out var uri) ? uri.Host : "mekongx.vn";
 
             var feedback = new Feedback
             {

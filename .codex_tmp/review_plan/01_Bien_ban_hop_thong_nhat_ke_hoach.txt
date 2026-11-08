@@ -1,0 +1,42 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN HỌP
+Thống nhất kế hoạch triển khai, vận hành thử
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+I. Nội dung đã thống nhất
+1. Kế hoạch: thống nhất Kế hoạch triển khai, vận hành thử tháng 10/2026; mục tiêu hoàn thành 85% khối lượng trước ngày 30/10/2026 để thanh toán lần 1.
+2. Ngày bàn giao 02 máy chủ cloud và chứng từ bản quyền Windows Server Standard, SQL Server Standard: ……/10/2026 (chậm nhất 24/10/2026).
+3. Đầu mối các bên:
+Bên | Họ tên | Chức vụ | Điện thoại | Email
+Bên thuê |  |  |  | 
+Nhà thầu |  |  |  | 
+VTISC |  |  |  | 
+
+4. Việc các bên cần cung cấp, thực hiện:
+TT | Nội dung | Bên thực hiện | Thời hạn | Trạng thái
+1 | Quyền cấu hình tên miền | Bên thuê | 20/10 | Chưa hoàn tất
+2 | Hồ sơ pháp lý, giấy ủy quyền đăng ký thương hiệu SMS | Bên thuê | 20/10 | Chưa hoàn tất
+3 | Ký, gửi văn bản đề nghị Bộ KH&CN cấp tài khoản kết nối (Nhà thầu soạn dự thảo) | Bên thuê | 21/10 | Chưa hoàn tất
+4 | Bố trí người dẫn, mặt bằng chụp VR360 | Bên thuê | 20 – 22/10 | Chưa hoàn tất
+5 | Danh sách cán bộ tham gia vận hành thử, học viên đào tạo | Bên thuê | 22/10 | Chưa hoàn tất
+6 | Bàn giao 02 máy chủ cloud, chứng từ bản quyền | Nhà thầu | 24/10 | Chưa hoàn tất
+7 | Cấp tài khoản thư điện tử, SMS, ký số, hợp đồng điện tử | Nhà thầu | 21/10 | Chưa hoàn tất
+
+II. Ý kiến khác
+…………………………………………………………………………………………………………………
+Cuộc họp kết thúc lúc …… giờ …… cùng ngày.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

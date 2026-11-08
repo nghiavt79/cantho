@@ -36,11 +36,11 @@ namespace TechExchangeApp.Services
                 return;
             }
 
-            var subject = $"[TechPort] Mã OTP ký biên bản thương lượng - Dự án #{projectId}";
+            var subject = $"[Sàn giao dịch công nghệ Cần Thơ] Mã OTP ký biên bản thương lượng - Dự án #{projectId}";
             var body = $@"
 <div style='font-family:Arial,sans-serif;max-width:480px;margin:auto;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden'>
   <div style='background:#1a73e8;padding:20px;text-align:center'>
-    <h2 style='color:white;margin:0'>TechPort – Ký số biên bản</h2>
+    <h2 style='color:white;margin:0'>Sàn giao dịch công nghệ Cần Thơ – Ký số biên bản</h2>
   </div>
   <div style='padding:24px'>
     <p>Xin chào <strong>{fullName}</strong>,</p>

@@ -1,0 +1,21 @@
+Mã minh chứng: MC-KT-23-20261026-2
+Ca kiểm thử: KT-23 API-16 đếm thông báo chưa đọc khi chưa đăng nhập – kiểm tra lại L-03
+Thời điểm (UTC+7): 26/10/2026 09:27:14
+Công cụ: curl 8.11.0 trên máy tính kết nối Internet
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập); máy chủ đã cập nhật bản sửa L-02, L-03
+------------------------------------------------------------
+Yêu cầu: GET /api/notifications/unread-count
+
+HTTP/1.1 401 Unauthorized
+Transfer-Encoding: chunked
+Content-Type: application/json
+Server: Microsoft-IIS/10.0
+Strict-Transport-Security: max-age=2592000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+Date: Mon, 26 Oct 2026 09:22:52 GMT
+
+{"success":false,"message":"Unauthorized"}

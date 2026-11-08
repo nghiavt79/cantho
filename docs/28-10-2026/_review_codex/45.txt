@@ -1,0 +1,179 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_NCC\NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu\Tai lieu kem theo\TL05 - Kem theo\Quy trinh kiem thu noi bo.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P5: Độc lập - Tự do - Hạnh phúc
+P6: ───────────────
+P7: Cần Thơ, ngày 26 tháng 10 năm 2026
+P8: QUY TRÌNH KIỂM THỬ NỘI BỘ
+P9: (Quản lý chất lượng sản phẩm của nhà cung cấp dịch vụ)
+P10: Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P11: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone về việc thực hiện Gói thầu số 04: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ; Phụ lục 3 Hợp đồng; phần V Chương V Hồ sơ mời thầu; mục 1.6 Kế hoạch triển khai chi tiết Gói thầu số 04 của MobiFone Cần Thơ.
+P12: Quy trình gồm hai phần: Phần A – quy định áp dụng cho mọi lần kiểm thử; Phần B – lịch thực hiện đợt 1, ghi theo ngày thực tế.
+P13: PHẦN A. QUY ĐỊNH ÁP DỤNG CHUNG
+P14: A.1. Mục đích, phạm vi
+P15: - Bảo đảm người khác cầm hồ sơ có thể làm lại từng ca kiểm thử và đối chiếu được kết quả: mỗi ca có điều kiện trước, dữ liệu, thao tác theo thứ tự, kết quả mong đợi, kết quả quan sát được, mã minh chứng, ngày và người thực hiện.
+P16: - Áp dụng cho kiểm thử chức năng, quy trình giao dịch 14 bước, API, hạ tầng – bảo mật – hiệu năng trên hệ thống https://mekongx.vn. Kiểm thử nội bộ do nhà cung cấp tự thực hiện, độc lập với đơn vị vận hành thử và đơn vị giám sát; không thay thế kết quả vận hành thử và nghiệm thu.
+P17: A.2. Vai trò
+P18: Vai trò
+P19: Họ và tên
+P20: Trách nhiệm
+P21: Kiểm thử (QA/QC)
+P22: Lê Phước Trung
+P23: Lập kịch bản, chuẩn bị dữ liệu, thực hiện ca kiểm thử, ghi kết quả và minh chứng, ghi lỗi, kiểm tra lại
+P24: Trưởng nhóm kỹ thuật
+P25: Nguyễn Thị Dung
+P26: Duyệt kịch bản; phân loại mức độ lỗi; xác nhận kết quả từng phần; ký Biên bản
+P27: Kỹ sư triển khai
+P28: Nguyễn Nhĩ Thái
+P29: Khắc phục lỗi phần mềm; cập nhật bản sửa theo quy trình quản lý thay đổi (NCC-04)
+P30: Kỹ sư hạ tầng
+P31: Bùi Nguyễn Hoàng Thái
+P32: Khắc phục lỗi hạ tầng; cung cấp minh chứng phía máy chủ (log, cấu hình)
+P33: Đại diện nhà cung cấp
+P34: Lã Thành Trung
+P35: Ký Báo cáo tự kiểm tra; gửi hồ sơ cho Chủ trì thuê, đơn vị vận hành thử, đơn vị giám sát
+P37: Nguyên tắc: người sửa lỗi không tự xác nhận lỗi đã đóng; người kiểm thử kiểm tra lại và ghi minh chứng kiểm tra lại.
+P38: A.3. Các bước thực hiện
+P39: Bước
+P40: Việc phải làm
+P41: Người làm
+P42: Đầu vào
+P43: Đầu ra
+P44: Người xác nhận
+P45: 1
+P46: Xác định phạm vi, tiêu chí, môi trường, tài khoản
+P47: QA/QC
+P48: Hợp đồng, Phụ lục 3, Chương V HSMT, PL-03
+P49: Phần B quy trình (lịch đợt)
+P50: Trưởng nhóm
+P51: 2
+P52: Lập kịch bản: mỗi ca có mã, điều kiện trước, dữ liệu, thao tác 1–2–3 (màn hình, nút, dữ liệu nhập), kết quả mong đợi, mã minh chứng dự kiến
+P53: QA/QC
+P54: Bước 1; HDSD Mục 01a, 01b; Đặc tả API
+P55: Kịch bản kiểm thử chi tiết (bản lập)
+P56: Trưởng nhóm
+P57: 3
+P58: Chuẩn bị dữ liệu, tài khoản: tạo sản phẩm, hồ sơ kiểm thử; ghi mã thật vào mục II Kịch bản
+P59: QA/QC; Kỹ sư triển khai
+P60: Kịch bản mục II
+P61: Mã sản phẩm, mã hồ sơ, danh sách tài khoản
+P62: Trưởng nhóm
+P63: 4
+P64: Thực hiện từng ca; ghi kết quả quan sát được; chụp ảnh có thanh địa chỉ, giờ hệ thống hoặc lưu nhật ký; đặt tên tệp theo mã minh chứng
+P65: QA/QC
+P66: Kịch bản; môi trường
+P67: Cột Kết quả thực tế, Minh chứng, Trạng thái, Ngày – người
+P68: Trưởng nhóm (theo phần)
+P69: 5
+P70: Ghi lỗi khi kết quả khác mong đợi: mã L-xx, mô tả, mức độ, ca liên quan, minh chứng
+P71: QA/QC
+P72: Ca Không đạt
+P73: Sổ lỗi (Kịch bản mục VII)
+P74: Trưởng nhóm phân loại
+P75: 6
+P76: Khắc phục; cập nhật bản sửa, ghi sổ phiên bản
+P77: Kỹ sư triển khai / hạ tầng
+P78: Sổ lỗi
+P79: Bản cập nhật, ghi chú phiên bản
+P80: Trưởng nhóm
+P81: 7
+P82: Kiểm tra lại ca lỗi và ca liên quan; ghi minh chứng kiểm tra lại
+P83: QA/QC
+P84: Bản cập nhật
+P85: Cột Kiểm tra lại của Sổ lỗi
+P86: Trưởng nhóm
+P87: 8
+P88: Tổng hợp kết quả tính từ từng ca; lập Biên bản tự kiểm thử, Báo cáo tự kiểm tra
+P89: QA/QC; Trưởng nhóm
+P90: Kịch bản đã ghi kết quả
+P91: Biên bản; Báo cáo
+P92: Đại diện nhà cung cấp
+P93: 9
+P94: Gửi hồ sơ; theo dõi, khắc phục lỗi phát sinh trong vận hành thử
+P95: Trưởng nhóm
+P96: Biên bản, Báo cáo
+P97: Báo cáo khắc phục (NCC-05)
+P98: Đại diện nhà cung cấp
+P100: A.4. Mã hóa và liên kết hồ sơ
+P101: Chuỗi liên kết: Mã chức năng (ví dụ A.1.1) → Mã ca kiểm thử (TC-CN-01) → Mã minh chứng (MC-TC-CN-01-20261027-1.png) → Mã lỗi (L-xx, nếu có) → Kết quả kiểm tra lại (ngày, mã minh chứng kiểm tra lại).
+P102: Đối tượng
+P103: Quy tắc mã
+P104: Ví dụ
+P105: Ca kiểm thử chức năng
+P106: TC-CN-xx (xx = số thứ tự Phụ lục A Biên bản)
+P107: TC-CN-01 ↔ A.1.1
+P108: Ca quy trình 14 bước
+P109: TC-QT-bb + a (thành công), b (điều kiện chuyển bước), c (không có quyền)
+P110: TC-QT-02c
+P111: Ca API
+P112: KT-xx (trùng Đặc tả API PL-03; KT-31 trở đi là ca ghi thành công, không quyền)
+P113: KT-33
+P114: Ca hạ tầng
+P115: TC-HT-xx
+P116: TC-HT-05
+P117: Minh chứng
+P118: MC-<mã ca>-<yyyymmdd>[-<hồ sơ hoặc tài khoản>][-n].png/.txt, lưu thư mục "Minh chung"
+P119: MC-TC-QT-07a-NDA-20261027-1.png
+P120: Lỗi
+P121: L-xx, ghi tại Sổ lỗi (Kịch bản mục VII), Biên bản mục IV
+P122: L-03
+P124: A.5. Ghi kết quả và trạng thái
+P125: - Kết quả thực tế ghi điều quan sát được: mã hồ sơ, mã sản phẩm tạo ra; trạng thái chuyển thành gì; thông báo nhận ở đâu; tệp nào sinh ra; mã HTTP. Không ghi "đúng như mong đợi".
+P126: - Trạng thái: Đạt (kết quả đúng mong đợi, nêu nguồn ghi nhận và tình trạng ảnh/log); Đạt – phạm vi thử nghiệm; Đạt một phần; Không đạt (ghi mã lỗi); Đã kiểm thử – chưa ghi kết quả riêng; Chưa kiểm thử (chưa thực hiện); Không áp dụng (ghi lý do).
+P127: - Kết quả đã thực hiện được kế thừa từ Biên bản hoặc Báo cáo có ghi nhận kết quả; nêu rõ nguồn và việc chưa lưu ảnh/log. Ca chỉ được xác nhận đã thực hiện nhưng chưa có kết quả riêng thì ghi Đã kiểm thử – chưa ghi kết quả riêng. Không suy ra Chưa kiểm thử chỉ vì thiếu ảnh/log; không tự suy ra Đạt từ xác nhận đã thực hiện.
+P128: - Tổng hợp tính từ cột Trạng thái của từng ca; Biên bản và Báo cáo dẫn số liệu từ bảng tổng hợp của Kịch bản.
+P129: - Ngày lập, ngày kiểm thử, ngày kiểm tra lại ghi đúng ngày thực hiện; mỗi ca ghi người thực hiện; Trưởng nhóm ký xác nhận từng phần.
+P130: A.6. Mức độ lỗi và thời hạn
+P131: Mức độ
+P132: Tiêu chí
+P133: Thời hạn khắc phục
+P134: Cao
+P135: Chức năng không dùng được, lỗi hệ thống (HTTP 500), sai dữ liệu, lỗ hổng bảo mật
+P136: Trước khi bắt đầu vận hành thử hoặc trong ngày
+P137: Trung bình
+P138: Dùng được nhưng thiếu kiểm soát an toàn, thiếu một phần, chưa kiểm thử đủ luồng
+P139: Trước nghiệm thu đợt 1
+P140: Thấp
+P141: Hiển thị, thông báo, mã lỗi chưa thống nhất; không ảnh hưởng nghiệp vụ
+P142: Theo kế hoạch cập nhật
+P144: A.7. Lưu minh chứng
+P145: - Ảnh chụp toàn cửa sổ trình duyệt, thấy thanh địa chỉ và đồng hồ hệ thống; tệp nhật ký ghi thời điểm, yêu cầu, kết quả. Công cụ tự động: chay_kiem_thu_api.ps1 (API), curl/openssl (hạ tầng).
+P146: - Lưu tại thư mục "Minh chung" cùng hồ sơ; không chỉnh sửa tệp sau khi lưu; không ghi mật khẩu, mã OTP vào minh chứng.
+P147: PHẦN B. LỊCH THỰC HIỆN ĐỢT 1 (THEO NGÀY THỰC TẾ)
+P148: Ngày
+P149: Nội dung
+P150: Người thực hiện
+P151: Kết quả, hồ sơ
+P152: 25/10/2026
+P153: Kiểm thử 22 API ở mức từ chối dữ liệu sai, truy cập trái phép
+P154: Nhóm kỹ thuật
+P155: Bảng kiểm thử KT-01…KT-30 trong Đặc tả API PL-03; phát hiện L-01 … L-04
+P156: 26/10/2026
+P157: Sửa L-01 (API-05), cập nhật lên mekongx.vn
+P158: Nguyễn Nhĩ Thái
+P159: Gói cập nhật 26/10/2026
+P160: 26/10/2026
+P161: Lập Quy trình, Kịch bản kiểm thử chi tiết
+P162: Lê Phước Trung
+P163: Hai tài liệu này
+P164: 26/10/2026
+P165: Chạy ca hạ tầng (TC-HT) và ca API ẩn danh; kiểm tra lại L-01
+P166: Nhóm kỹ thuật MobiFone Cần Thơ
+P167: Minh chứng MC-HT-xx-20261026, MC-KT-xx-20261026; phát hiện L-06
+P168: 27 – 28/10/2026 (kế hoạch)
+P169: Đối chiếu kết quả kiểm thử đã thực hiện; kiểm tra lại các tồn tại; lưu bổ sung ảnh/log khi tái hiện, tiếp tục hoàn thiện hồ sơ
+P170: Lê Phước Trung
+P171: Kịch bản, Biên bản và Báo cáo cập nhật; minh chứng bổ sung ghi đúng ngày kiểm tra lại
+P173: NGƯỜI LẬP
+P174: (Ký, ghi rõ họ tên)
+P178: Lê Phước Trung
+P179: TRƯỞNG NHÓM KỸ THUẬT
+P180: (Ký, ghi rõ họ tên)
+P184: Nguyễn Thị Dung
+PART word/header1.xml
+PART word/footer1.xml
+PART word/header2.xml
+PART word/footer2.xml

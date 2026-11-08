@@ -1,0 +1,39 @@
+ | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BÁO CÁO
+Kết quả kiểm thử nội bộ và rà soát an toàn thông tin
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Đơn vị lập: Tổng Công ty Viễn thông MobiFone – VTISC
+I. Kiểm thử 12 nhóm chức năng
+TT | Nhóm chức năng | Số trường hợp kiểm thử | Số lỗi / đã sửa | Trạng thái
+1 | Quản trị hệ thống |  |  | Chưa hoàn tất
+2 | Quản lý tổ chức, doanh nghiệp và thành viên |  |  | Chưa hoàn tất
+3 | Quản lý công nghệ, thiết bị và sản phẩm KH&CN |  |  | Chưa hoàn tất
+4 | Quản lý kết nối cung – cầu công nghệ |  |  | Chưa hoàn tất
+5 | Quản lý sự kiện, hội thảo và triển lãm |  |  | Chưa hoàn tất
+6 | Cổng thông tin điện tử |  |  | Chưa hoàn tất
+7 | Không gian triển lãm số (VR360) |  |  | Chưa hoàn tất
+8 | Ứng dụng AI |  |  | Chưa hoàn tất
+9 | Tích hợp và chia sẻ dữ liệu |  |  | Chưa hoàn tất
+10 | Quản trị dữ liệu và an toàn thông tin |  |  | Chưa hoàn tất
+11 | Hạ tầng và vận hành dịch vụ |  |  | Chưa hoàn tất
+12 | Báo cáo và thống kê |  |  | Chưa hoàn tất
+
+II. Rà soát an toàn thông tin
+TT | Nội dung | Kết quả | Trạng thái
+1 | Kết quả kiểm tra an toàn thông tin của MobiFone (tháng 10/2026): số lỗ hổng phát hiện ……; đã khắc phục …… |  | Chưa hoàn tất
+2 | Kiểm tra lại sau khắc phục |  | Chưa hoàn tất
+3 | Cấu hình kết nối bảo mật (TLS) trên máy chủ chính thức |  | Chưa hoàn tất
+4 | Rà soát tài khoản, mật khẩu mặc định; khóa tạm khi đăng nhập sai nhiều lần |  | Chưa hoàn tất
+
+III. Phục hồi thử bản sao lưu
+TT | Nội dung | Kết quả | Trạng thái
+1 | Phục hồi bản sao lưu ngày ……/10/2026 sang môi trường thử; thời gian phục hồi: …… |  | Chưa hoàn tất
+2 | Đối chiếu dữ liệu sau phục hồi |  | Chưa hoàn tất
+
+IV. Đánh giá chung
+…………………………………………………………………………………………………………………
+ĐẠI DIỆN VTISC
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

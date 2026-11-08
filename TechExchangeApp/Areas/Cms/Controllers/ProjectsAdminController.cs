@@ -47,43 +47,19 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             // Base query — just projects
             var query = _context.Projects.AsNoTracking().AsQueryable();
 
-            // Pre-load all project steps (same approach as DashboardService)
-            var allSteps = await _context.ProjectSteps.AsNoTracking()
-                .OrderBy(ps => ps.ProjectId).ThenBy(ps => ps.StepNumber)
-                .Select(ps => new { ps.ProjectId, ps.StepNumber, ps.StepName, ps.StatusId })
-                .ToListAsync();
-            var stepsByProject = allSteps.GroupBy(s => s.ProjectId)
-                .ToDictionary(g => g.Key, g => g.ToList());
-
-            // Get all members for filtering + display (Buyer=1, Seller=2, Consultant=3)
-            var allMembers = await _context.ProjectMembers.AsNoTracking()
-                .Where(pm => pm.IsActive)
-                .Join(_context.Users.AsNoTracking(),
-                    pm => pm.UserId, u => u.Id,
-                    (pm, u) => new { pm.Id, pm.ProjectId, pm.Role, u.FullName, UserId = u.Id })
-                .ToListAsync();
-
-            // Bên bán được mời chưa là thành viên hồ sơ nhưng vẫn phải hiện ở cột Bên bán
-            var allInvited = await _context.RFQInvitations.AsNoTracking()
-                .Where(i => i.IsActive)
-                .Join(_context.Users.AsNoTracking(), i => i.SellerId, u => u.Id,
-                    (i, u) => new { i.ProjectId, u.FullName })
-                .ToListAsync();
-
             // Text search filter
             if (!string.IsNullOrWhiteSpace(search))
             {
                 var s = search.Trim().ToLower();
 
-                // Find project IDs that match via member names (buyer/seller/consultant)
-                var memberMatchIds = allMembers
-                    .Where(m => m.FullName != null && m.FullName.ToLower().Contains(s))
-                    .Select(m => m.ProjectId).Distinct().ToHashSet();
-
+                // Khớp mã, tên hồ sơ hoặc tên thành viên, bên bán được mời
                 query = query.Where(p =>
                     p.ProjectCode.ToLower().Contains(s) ||
                     p.ProjectName.ToLower().Contains(s) ||
-                    memberMatchIds.Contains(p.Id));
+                    _context.ProjectMembers.Any(m => m.ProjectId == p.Id && m.IsActive &&
+                        _context.Users.Any(u => u.Id == m.UserId && u.FullName != null && u.FullName.ToLower().Contains(s))) ||
+                    _context.RFQInvitations.Any(i => i.ProjectId == p.Id && i.IsActive &&
+                        _context.Users.Any(u => u.Id == i.SellerId && u.FullName != null && u.FullName.ToLower().Contains(s))));
             }
 
             var totalCount = await query.CountAsync();
@@ -102,6 +78,31 @@ namespace TechExchangeApp.Areas.Cms.Controllers
             var rawList = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .ToListAsync();
+
+            // Chỉ nạp bước, thành viên, lời mời của các hồ sơ trên trang
+            var pageIds = rawList.Select(p => p.Id).ToList();
+            var allSteps = await _context.ProjectSteps.AsNoTracking()
+                .Where(ps => pageIds.Contains(ps.ProjectId))
+                .OrderBy(ps => ps.ProjectId).ThenBy(ps => ps.StepNumber)
+                .Select(ps => new { ps.ProjectId, ps.StepNumber, ps.StepName, ps.StatusId })
+                .ToListAsync();
+            var stepsByProject = allSteps.GroupBy(s => s.ProjectId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            // Buyer=1, Seller=2, Consultant=3
+            var allMembers = await _context.ProjectMembers.AsNoTracking()
+                .Where(pm => pm.IsActive && pageIds.Contains(pm.ProjectId))
+                .Join(_context.Users.AsNoTracking(),
+                    pm => pm.UserId, u => u.Id,
+                    (pm, u) => new { pm.Id, pm.ProjectId, pm.Role, u.FullName, UserId = u.Id })
+                .ToListAsync();
+
+            // Bên bán được mời chưa là thành viên hồ sơ nhưng vẫn phải hiện ở cột Bên bán
+            var allInvited = await _context.RFQInvitations.AsNoTracking()
+                .Where(i => i.IsActive && pageIds.Contains(i.ProjectId))
+                .Join(_context.Users.AsNoTracking(), i => i.SellerId, u => u.Id,
+                    (i, u) => new { i.ProjectId, u.FullName })
                 .ToListAsync();
 
             // Build view models
@@ -231,6 +232,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                                      select new ProjectLogRow
                                      {
                                          Time = l.CreatedAt.ToLocalTime(), Kind = "Chuyển bước", Action = l.Action,
+                                         UserId = l.ActorUserId,
                                          UserName = u != null ? (u.FullName ?? u.UserName) : "#" + l.ActorUserId,
                                          Detail = l.Message, Ip = l.IpAddress
                                      }).ToListAsync();
@@ -244,12 +246,25 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 .Select(x => new ProjectLogRow
                 {
                     Time = x.l.Timestamp, Kind = x.l.Action == "DownloadFile" ? "Tải tệp" : "Truy cập", Action = x.l.Action,
+                    UserId = x.l.UserId,
                     UserName = x.u != null ? (x.u.FullName ?? x.u.UserName) : "#" + x.l.UserId,
                     Detail = x.l.AdditionalData, Ip = x.l.IpAddress
                 }).ToListAsync();
 
             var rows = (string.IsNullOrWhiteSpace(logAction) ? transitions : new List<ProjectLogRow>())
                 .Concat(access).OrderByDescending(r => r.Time).ToList();
+
+            // Vai trò theo hồ sơ: thành viên, bên được mời hoặc bên bán đã chọn; còn lại là cán bộ Sàn
+            var roles = await _context.ProjectMembers.AsNoTracking().Where(m => m.ProjectId == id)
+                .Select(m => new { m.UserId, m.Role }).ToListAsync();
+            var invitedSellers = await _context.RFQInvitations.AsNoTracking().Where(i => i.ProjectId == id)
+                .Select(i => i.SellerId).ToListAsync();
+            foreach (var r in rows)
+            {
+                var role = roles.FirstOrDefault(m => m.UserId == r.UserId)?.Role
+                    ?? (invitedSellers.Contains(r.UserId) || project.SelectedSellerId == r.UserId ? 2 : 0);
+                r.Role = role switch { 1 => "Bên mua", 2 => "Bên bán", 3 => "Nhà tư vấn", _ => "Cán bộ Sàn" };
+            }
             ViewBag.Project = project;
             ViewBag.ActionFilter = logAction;
             ViewBag.Actions = await _context.ProjectAccessLogs.AsNoTracking().Where(l => l.ProjectId == id)
@@ -498,7 +513,9 @@ namespace TechExchangeApp.Areas.Cms.Controllers
         public DateTime Time { get; set; }
         public string Kind { get; set; } = "";
         public string Action { get; set; } = "";
+        public int UserId { get; set; }
         public string? UserName { get; set; }
+        public string? Role { get; set; }
         public string? Detail { get; set; }
         public string? Ip { get; set; }
     }

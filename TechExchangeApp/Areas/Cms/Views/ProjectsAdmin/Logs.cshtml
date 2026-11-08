@@ -27,15 +27,16 @@
         </form>
         <div class="table-responsive">
             <table class="table table-sm table-hover table-bordered small mb-0">
-                <thead class="table-light"><tr><th style="width:140px">Thời điểm</th><th style="width:110px">Loại</th><th>Người thực hiện</th><th>Nội dung</th><th style="width:120px">Địa chỉ IP</th></tr></thead>
+                <thead class="table-light"><tr><th style="width:140px">Thời điểm</th><th style="width:110px">Loại</th><th>Người thực hiện</th><th style="width:100px">Vai trò</th><th>Nội dung</th><th style="width:120px">Địa chỉ IP</th></tr></thead>
                 <tbody>
-                    @if (Model.Count == 0) { <tr><td colspan="5" class="text-center text-muted">Chưa có nhật ký.</td></tr> }
+                    @if (Model.Count == 0) { <tr><td colspan="6" class="text-center text-muted">Chưa có nhật ký.</td></tr> }
                     @foreach (var r in Model)
                     {
                         <tr>
                             <td>@r.Time.ToString("dd/MM/yyyy HH:mm:ss")</td>
                             <td>@r.Kind</td>
                             <td>@r.UserName</td>
+                            <td>@r.Role</td>
                             <td>@(r.Detail ?? r.Action)</td>
                             <td>@r.Ip</td>
                         </tr>

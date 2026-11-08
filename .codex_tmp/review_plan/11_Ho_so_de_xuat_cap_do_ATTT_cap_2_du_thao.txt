@@ -1,0 +1,33 @@
+ | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+HỒ SƠ ĐỀ XUẤT CẤP ĐỘ AN TOÀN HỆ THỐNG THÔNG TIN
+Trang web Sàn giao dịch công nghệ Cần Thơ – Cấp độ 2 (dự thảo)
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+I. Thông tin chung
+TT | Nội dung | Thông tin | Trạng thái
+1 | Tên hệ thống: Trang web Sàn giao dịch công nghệ Cần Thơ |  | Chưa hoàn tất
+2 | Chủ quản hệ thống; đơn vị vận hành: Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ |  | Chưa hoàn tất
+3 | Đơn vị cung cấp dịch vụ: Tổng Công ty Viễn thông MobiFone |  | Chưa hoàn tất
+4 | Phạm vi, quy mô: người dùng, loại dữ liệu xử lý (có dữ liệu cá nhân) |  | Chưa hoàn tất
+5 | Mô hình triển khai: 02 máy chủ cloud đặt tại Việt Nam |  | Chưa hoàn tất
+
+II. Đề xuất cấp độ
+Đề xuất cấp độ 2, theo hồ sơ kế hoạch thuê đã được phê duyệt và quy định hiện hành. Lý do: …………………………………………
+III. Phương án bảo đảm an toàn thông tin
+TT | Nhóm biện pháp | Nội dung thực hiện | Trạng thái
+1 | Phân quyền, xác thực | Phân quyền theo vai trò; xác thực hai lớp cho quản trị; khóa tạm khi đăng nhập sai | Chưa hoàn tất
+2 | Nhật ký | Ghi nhật ký thao tác quản trị, giao dịch, ký số, truy cập hồ sơ; lưu theo thời hạn quy định | Chưa hoàn tất
+3 | Mã hóa | Kết nối bảo mật; mật khẩu lưu dạng mã hóa một chiều | Chưa hoàn tất
+4 | Sao lưu, phục hồi | Sao lưu hằng ngày, lưu tối thiểu 30 ngày, bản sao lưu tách biệt; phục hồi thử định kỳ | Chưa hoàn tất
+5 | Giám sát | Giám sát tài nguyên, tính sẵn sàng, sao lưu, hạn chứng thư; cảnh báo sự cố | Chưa hoàn tất
+6 | Ứng cứu sự cố | Đầu mối, quy trình, thời gian xử lý theo mức độ | Chưa hoàn tất
+7 | Rà soát lỗ hổng | Rà soát trước vận hành chính thức và định kỳ | Chưa hoàn tất
+
+IV. Tài liệu kèm theo
+- Sơ đồ hệ thống, sơ đồ kết nối;
+- Quy chế bảo đảm an toàn thông tin của hệ thống;
+- Báo cáo rà soát an toàn thông tin.
+ĐƠN VỊ VẬN HÀNH
+(Ký, ghi rõ họ tên, đóng dấu) | ĐƠN VỊ CUNG CẤP DỊCH VỤ
+(Ký, ghi rõ họ tên, đóng dấu)

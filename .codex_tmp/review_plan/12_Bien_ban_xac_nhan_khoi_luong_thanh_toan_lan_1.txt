@@ -1,0 +1,44 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN XÁC NHẬN
+Khối lượng công việc hoàn thành – Thanh toán lần 1
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Căn cứ các biên bản, báo cáo kèm theo;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+I. Khối lượng hoàn thành
+TT | Hạng mục | Tỷ trọng | Hồ sơ số | Trạng thái
+1 | Khởi động, kế hoạch chi tiết, khởi động thủ tục bên ngoài | 3% | 01, 02 | Chưa hoàn tất
+2 | Hạ tầng máy chủ, bản quyền phần mềm, bảo vệ mạng | 15% | 03 | Chưa hoàn tất
+3 | Cài đặt ứng dụng, dữ liệu khởi tạo | 15% | 05 | Chưa hoàn tất
+4 | Cấu hình nghiệp vụ, tài khoản, phân quyền, sao lưu, giám sát | 10% | 05 | Chưa hoàn tất
+5 | Kết nối thư điện tử, hợp đồng điện tử, AI, ký số USB Token, SMS (thương hiệu tạm) | 10% | 06 | Chưa hoàn tất
+6 | VR360 – 10 điểm cảnh quay dựng mới | 8% | 04 | Chưa hoàn tất
+7 | Kiểm thử nội bộ, rà soát an toàn thông tin, phục hồi thử | 7% | 07 | Chưa hoàn tất
+8 | Kiểm tra điều kiện sẵn sàng, đưa vào vận hành thử | 2% | 08 | Chưa hoàn tất
+9 | Vận hành thử, báo cáo kết quả | 8% | 09 | Chưa hoàn tất
+10 | Đào tạo, bàn giao tài liệu | 5% | 10 | Chưa hoàn tất
+11 | Dự thảo hồ sơ an toàn thông tin cấp độ 2 | 2% | 11 | Chưa hoàn tất
+ | Cộng khối lượng hoàn thành | ……% |  | 
+
+II. Phần còn lại (15%) – hoàn thành tháng 11/2026
+- SMS gửi bằng thương hiệu chính thức; ký số từ xa bằng chứng thư thật (4%);
+- Kết nối Sàn giao dịch KH&CN Việt Nam (4%);
+- Hoàn thiện hồ sơ an toàn thông tin theo ý kiến thẩm định (2%);
+- Nghiệm thu, đưa vào vận hành chính thức (5%).
+Kết luận
+Hai bên thống nhất khối lượng công việc hoàn thành đến ngày ……/10/2026 là ……% , làm căn cứ thanh toán lần 1 theo hợp đồng.
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

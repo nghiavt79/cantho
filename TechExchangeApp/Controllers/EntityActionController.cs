@@ -64,6 +64,10 @@ namespace TechExchangeApp.Controllers
             if (!EntityTypes.IsValid(entityType))
                 return BadRequest(new { error = "Loại entity không hợp lệ." });
 
+            // Sản phẩm đã xem trong phiên, để chatbot gợi ý cho cả người chưa đăng nhập (HSMT C.10)
+            if (string.Equals(entityType, EntityTypes.SanPhamCNTB, StringComparison.OrdinalIgnoreCase))
+                Services.AiViewedProducts.Remember(HttpContext.Session, entityId);
+
             // Anti-spam: cookie check
             var cookieKey = $"view_{entityType}_{entityId}";
             if (Request.Cookies.ContainsKey(cookieKey))

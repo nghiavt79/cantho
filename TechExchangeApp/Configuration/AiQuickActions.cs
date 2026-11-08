@@ -1,6 +1,6 @@
 namespace TechExchangeApp.Configuration
 {
-    public enum AiQuickActionKind { Browse, Action }
+    public enum AiQuickActionKind { Browse, Action, Personal }
 
     /// <summary>
     /// A chatbox quick-action button. Routing is keyed by <see cref="Id"/> (stable, never shown
@@ -40,6 +40,8 @@ namespace TechExchangeApp.Configuration
             new AiQuickAction("browse-nhacungung", "Nhà cung ứng", AiQuickActionKind.Browse,
                 TypeNames: new[] { "Nhà cung ứng" },
                 ResultsHeader: "Đây là một số nhà cung ứng mới nhất trên website:"),
+
+            new AiQuickAction("personal-goiy", "Gợi ý cho tôi", AiQuickActionKind.Personal),
 
             new AiQuickAction("action-hotro", "Gửi yêu cầu tư vấn", AiQuickActionKind.Action,
                 ReplyText: "Anh/chị vui lòng để lại họ tên, số điện thoại hoặc email bên dưới, trung tâm sẽ liên hệ hỗ trợ sớm nhất.",

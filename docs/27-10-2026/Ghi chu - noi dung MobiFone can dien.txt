@@ -1,0 +1,51 @@
+GHI CHÚ – NỘI DUNG MOBIFONE CẦN ĐIỀN, BỔ SUNG
+(Bộ hồ sơ giám sát hạ tầng, vận hành thử lần 1 – ngày 27/10/2026)
+
+Các ô dưới đây đang để "……" hoặc ghi "chưa có", vì cần số liệu, chứng từ của MobiFone.
+Điền số liệu thật, không ước lượng. Phần của đơn vị giám sát, đơn vị vận hành thử và chủ đầu tư để nguyên cho các bên tự ghi.
+
+I. BIÊN BẢN GS-02 (file 26.10.2026 - GS-02 ... - V4.docx)
+
+1. Thông tin chung
+   - Căn cứ và mục IV.1 dòng 1: số công văn cung cấp tài khoản quyền xem (NCC-06) ngày 26/10/2026.
+
+2. Lấy từ trang quản trị cloud và Uptime Kuma (tài khoản gs_theodoi do bộ phận hạ tầng cấp)
+   - 2.1 Số lượng máy chủ; thời hạn gói thuê.
+   - 2.2 Cấu hình từng máy chủ: CPU, số core, RAM, SSD, IP (chụp màn hình).
+   - 2.3 Phân bổ vai trò: máy chủ ứng dụng web, máy chủ SQL Server, kho sao lưu tách biệt.
+   - 2.4 Lịch sao lưu, snapshot; kết quả 03 ngày gần nhất; thời hạn lưu.
+   - 2.5 Chu kỳ thu thập CPU, RAM, ổ đĩa, băng thông; ngưỡng cảnh báo; lịch sử cảnh báo.
+   - 2.6 Uptime Kuma: chu kỳ kiểm tra trang chủ, trang đăng nhập, /health; lịch sử gián đoạn.
+   - 2.13 Phần "Công cụ giám sát, trang quản trị cloud": gs_theodoi chỉ xem, thử sửa bị từ chối.
+   - Mục 5 dòng 1 Tính sẵn sàng: tỷ lệ %, số lần gián đoạn (Uptime Kuma, từ 08 giờ 26/10/2026).
+   - Mục 5 dòng 4 Sao lưu, phục hồi: kết quả sao lưu, lần chạy thử phục hồi (nếu có).
+   - Mục 5 dòng 5 Giám sát tài nguyên: CPU cao nhất %, RAM cao nhất % (ổ đĩa đã ghi 914,7 GB còn trống).
+
+3. Chứng từ, văn bản (hiện ghi "Chưa có tại thời điểm kiểm tra" – sửa lại khi đã bàn giao)
+   - Mục IV.1 dòng 2, 3; mục 2.11; mục 3 dòng 3–6: chứng từ bản quyền Windows Server, SQL Server.
+   - Mục 2.8, mục IV.1 dòng 3: minh chứng cấu hình gia hạn tự động chứng thư SSL.
+   - Mục 2.12: văn bản xác nhận vị trí trung tâm dữ liệu (dữ liệu và bản sao lưu tại Việt Nam).
+   - Mục 3 dòng 8–12: chứng từ tin nhắn thương hiệu, Email Hosting, Token, eContract, gói SMS;
+     dòng 8: kết quả gửi tin thật.
+   - Mục 5 dòng 6: kết quả kiểm tra lại an toàn thông tin của Phòng An ninh mạng MobiFone.
+   - Mục 5 dòng 10: nhật ký hồ sơ giao dịch, ký số (tài khoản gs_theodoi không mở được
+     Giao dịch › Dự án; tra cứu bằng tài khoản quản trị nếu đơn vị giám sát yêu cầu).
+
+4. Quyết định của MobiFone
+   - Tồn tại 10: thuyết minh tỷ lệ nghiệm thu đợt 1 mục 1.1 (75%), 1.2 (80%).
+   - Tồn tại 11: có đánh số lại theo Phụ lục 4 hợp đồng, ghi khối lượng 0,75 / 0,80 hay giữ theo Phụ lục 5.
+   - Tồn tại 12: gói dịch vụ chưa có chứng từ trước ngày nghiệm thu thì chuyển đợt 2 hay không.
+
+II. CÁC VĂN BẢN KHÁC
+   - NCC-06: số công văn; điện thoại, thư điện tử người nhận (ông Nguyễn Minh Tuyển).
+   - NCC-06 mục 2, bảng Hạ tầng được giám sát (bộ phận hạ tầng điền): IP nội bộ, CPU, RAM, SSD thực tế
+     của MC-01; IP, CPU, RAM, SSD của MC-02.
+   - Sao lưu (dòng KSL): thực tế bản sao lưu lưu tại máy chủ, tải về định kỳ; chưa có kho lưu trữ
+     tách biệt, chưa có snapshot – chưa đúng hợp đồng (kho tách biệt) và NCC-14 (snapshot).
+     MobiFone quyết định: bổ sung kho tách biệt + snapshot trước nghiệm thu, hay ghi tồn tại;
+     ảnh hưởng GS-02 mục 2.3, 2.4, mục 5 dòng 4.
+   - Công văn đề nghị nghiệm thu đợt 1: số công văn, ngày ký, ngày đề nghị nghiệm thu.
+   - Biên bản ghi nhận lỗi, Biên bản kết quả khắc phục lỗi: chức vụ ông Ngô Nguyên Giản
+     (đơn vị vận hành thử).
+   - Lỗi VHT-03 (thư điện tử): sau khi bật kênh và gửi thử, cập nhật dòng VHT-03 trong
+     Biên bản kết quả khắc phục lỗi, mục 4 dòng 1 và 4 trong GS-02, tồn tại 6.

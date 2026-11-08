@@ -1,0 +1,46 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN XÁC NHẬN
+Cài đặt, cấu hình và dữ liệu khởi tạo
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+I. Cài đặt ứng dụng
+TT | Nội dung | Kết quả | Trạng thái
+1 | Ứng dụng cài đặt trên máy chủ cloud chính thức |  | Chưa hoàn tất
+2 | Địa chỉ truy cập chính thức (tên miền, kết nối bảo mật) |  | Chưa hoàn tất
+3 | Giao diện tiếng Việt và tiếng Anh hoạt động |  | Chưa hoàn tất
+4 | Trang quản trị hoạt động; bật xác thực hai lớp cho tài khoản quản trị |  | Chưa hoàn tất
+
+II. Dữ liệu khởi tạo
+TT | Loại dữ liệu | Số lượng nguồn | Số lượng sau chuyển | Trạng thái
+1 | Hồ sơ công nghệ, thiết bị | 4.353 |  | Chưa hoàn tất
+2 | Chuyên gia | 1.808 |  | Chưa hoàn tất
+3 | Nhà cung ứng | 84 |  | Chưa hoàn tất
+4 | Tin tức, sự kiện, tài liệu hướng dẫn |  |  | Chưa hoàn tất
+
+Số lượng nguồn lấy theo hệ thống tại mekongx.vn; được đối chiếu lại tại thời điểm chuyển dữ liệu.
+III. Cấu hình vận hành
+TT | Nội dung | Kết quả | Trạng thái
+1 | Danh mục dùng chung: lĩnh vực công nghệ, nhóm sản phẩm, phòng và vị trí trưng bày |  | Chưa hoàn tất
+2 | Tham số hệ thống; mẫu thư thông báo |  | Chưa hoàn tất
+3 | Tài khoản quản trị, vai trò và phân quyền cho cán bộ Bên thuê |  | Chưa hoàn tất
+4 | Sao lưu tự động hằng ngày, lưu tối thiểu 30 ngày, bản sao lưu tách biệt |  | Chưa hoàn tất
+5 | Giám sát: tài nguyên máy chủ, tình trạng website, kết quả sao lưu, hạn chứng thư bảo mật; cảnh báo khi có sự cố |  | Chưa hoàn tất
+
+Kết luận
+Môi trường dịch vụ được thiết lập hoàn chỉnh; tài khoản, phân quyền, cấu hình vận hành và dữ liệu khởi tạo đã được thiết lập.
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

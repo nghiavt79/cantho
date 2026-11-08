@@ -139,7 +139,7 @@
                                 <li>Kiểm tra tên hồ sơ, mã hồ sơ, người tạo và trạng thái xử lý.</li>
                                 <li>Mở chi tiết để đối chiếu tiến trình, thành viên và dữ liệu từng bước.</li>
                                 <li>Ưu tiên rà soát các hồ sơ có yêu cầu hỗ trợ hoặc đang dừng ở bước quan trọng.</li>
-                                <li>Nút đồng hồ ở cuối dòng mở <strong>Nhật ký hồ sơ</strong>: ai hoàn thành bước nào, lúc nào, từ địa chỉ IP nào; ai truy cập, ai tải tệp của hồ sơ. Lọc theo loại thao tác. Nhật ký chỉ ghi thêm, không sửa, xóa được.</li>
+                                <li>Nút đồng hồ ở cuối dòng mở <strong>Nhật ký hồ sơ</strong>: ai (kèm vai trò trong hồ sơ) hoàn thành bước nào, lúc nào, từ địa chỉ IP nào; ai truy cập, ai tải tệp của hồ sơ. Lọc theo loại thao tác. Nhật ký chỉ ghi thêm, không sửa, xóa được.</li>
                                 <li>Nút cửa hàng ở cuối dòng mở <strong>Gán bên bán</strong>: sau khi hồ sơ có yêu cầu báo giá (bước 3), chọn nhà cung ứng đã Xuất bản, đã Kích hoạt để gửi lời mời; bên bán chưa nộp hồ sơ đề xuất thì thu hồi được. Bên bán xem lời mời tại mục Lời mời tham gia.</li>
                             </ul>
                         </article>
@@ -296,7 +296,7 @@
                                 <li>Kiểm tra thông tin pháp nhân, người đại diện, lĩnh vực và liên hệ.</li>
                                 <li>Bổ sung thông tin nhận chuyển khoản nếu đơn vị có sản phẩm đặt mua trực tiếp.</li>
                                 <li>Duyệt hồ sơ trước khi cho hiển thị công khai hoặc gắn với sản phẩm.</li>
-                                <li>Khi chọn trạng thái Trả về phải nhập lý do; lý do được gửi tới người đăng. Áp dụng cho nhà cung ứng, sản phẩm và nhu cầu công khai.</li>
+                                <li>Khi chọn trạng thái Trả về phải nhập lý do; lý do được gửi tới người đăng. Áp dụng cho nhà cung ứng, sản phẩm và nhu cầu công khai; với nhu cầu tạo từ phiếu, lý do gửi tới tài khoản đăng phiếu, hoặc email trên phiếu nếu người gửi không đăng nhập.</li>
                                 <li>Nhà cung ứng phải ở trạng thái Xuất bản và bật Kích hoạt thì sản phẩm mới xuất bản được và bên mua mới mời được ở bước 3.</li>
                             </ul>
                         </article>
@@ -601,6 +601,14 @@
                                 <li>Thay đổi tham số có hiệu lực sau khoảng 1 phút.</li>
                                 <li>Các tham số <code>ECONTRACT_*</code> (nhóm CONTRACT) dùng kết nối eContract MobiFone: địa chỉ, tài khoản tích hợp, mã tổ chức, Loại tài liệu. Mật khẩu nhập ở dạng đã mã hóa. Giữ <code>ECONTRACT_ENABLED = 0</code> cho đến khi được thông báo bật.</li>
                                 <li>Email hệ thống: SMTP_HOST, SMTP_PORT (465 hoặc 587), SMTP_EMAIL, SMTP_PASSWORD; SMTP_SKIP_CERT_CHECK = 1 khi máy chủ mail dùng chứng chỉ tự ký. Gửi thử tại /Secure/TestEmail?to=địa chỉ nhận.</li>
+                            </ul>
+                        </article>
+                        <article>
+                            <h4>Trợ lý ảo: gợi ý theo người dùng</h4>
+                            <p>Nút "Gợi ý cho tôi" và các câu xin gợi ý trong khung trợ lý ảo dựa trên sản phẩm người dùng đã xem gần đây và lĩnh vực trong hồ sơ nhà cung ứng của tài khoản.</p>
+                            <ul>
+                                <li>Người đã đăng nhập: lấy lịch sử xem của tài khoản. Người chưa đăng nhập: chỉ lấy sản phẩm đã xem trong phiên làm việc.</li>
+                                <li>Trợ lý ảo chỉ gợi ý, không sửa hoặc duyệt dữ liệu nghiệp vụ.</li>
                             </ul>
                         </article>
                         <article>

@@ -1,0 +1,18 @@
+Mã minh chứng: MC-HT-10-20261027
+Nội dung: Nhật ký hệ thống và yêu cầu hỗ trợ, tra cứu bằng tài khoản quyền xem gs_theodoi trên https://mekongx.vn
+Thời điểm (UTC+7): 27/10/2026 09:45
+Máy thực hiện: máy tính kết nối Internet, trình duyệt, đăng nhập tài khoản gs_theodoi
+------------------------------------------------------------
+1. CMS > Nhật ký hệ thống, khoảng ngày 26/10/2026 – 27/10/2026, lọc theo Loại thao tác
+   Đăng nhập                    : 07 dòng (mới nhất #1177 27/10/2026 09:29:29, gs_theodoi)
+   Đăng nhập không thành công   : 02 dòng (mới nhất #1169 26/10/2026 16:26:26)
+   Tải tệp                      : 04 dòng (mới nhất #1175 26/10/2026 16:41:34)
+   Từ chối thao tác             : 10 dòng (mới nhất #1187 27/10/2026 09:30:36, gs_theodoi)
+   Thêm / Sửa / Xóa             : không có dòng nào
+   Mỗi dòng có: mã, thời điểm, loại thao tác, nội dung, tài khoản, IP.
+   Giao diện chỉ có ô tìm kiếm (từ khóa, tính năng, loại thao tác, tài khoản, IP, khoảng ngày);
+   không có nút sửa, xóa nhật ký.
+
+2. CMS > Yêu cầu hỗ trợ/tư vấn, khoảng ngày 26/10/2026 – 28/10/2026
+   Tổng yêu cầu: 0; Đã phản hồi: 0; Quá 02 giờ chưa phản hồi: 0
+   ("Chưa có yêu cầu hỗ trợ/tư vấn nào.")

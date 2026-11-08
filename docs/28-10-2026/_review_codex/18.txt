@@ -1,0 +1,122 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_muc_1.1_1.5_1.6\1.1 Khoi tao ha tang, cong cu giam sat\NCC-06 Van ban cung cap tai khoan xem cong cu giam sat.docx
+PART word/document.xml
+P1: TỔNG CÔNG TY VIỄN THÔNG MOBIFONE
+P2: MOBIFONE CẦN THƠ
+P3: ──────────
+P4: Số: ……/MBF-CT-GPS
+P5: V/v cung cấp tài khoản truy cập (quyền xem) công cụ giám sát, nhật ký hệ thống
+P6: CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+P7: Độc lập - Tự do - Hạnh phúc
+P8: ───────────────
+P9: Cần Thơ, ngày 26 tháng 10 năm 2026
+P11: Kính gửi:
+P12: - Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ;
+P13: - Công ty TNHH Chuyển Đổi Số 365 (đơn vị giám sát).
+P15: Căn cứ Hợp đồng số HD2600273782_2610221351 ngày 22/10/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone về việc thực hiện Gói thầu số 04: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ (Hợp đồng có hiệu lực từ ngày 22/10/2026); điểm a khoản 3 Điều 15 Thông tư số 41/2026/TT-BKHCN;
+P16: Tổng Công ty Viễn thông MobiFone cung cấp tài khoản truy cập với quyền xem để đơn vị giám sát theo dõi số liệu thực tế của dịch vụ như sau:
+P17: 1. Tài khoản và công cụ được cấp quyền xem
+P18: STT
+P19: Công cụ, chức năng
+P20: Địa chỉ truy cập
+P21: Tài khoản
+P22: Quyền
+P23: Nội dung theo dõi
+P24: Chu kỳ cập nhật, thời hạn lưu
+P25: 1
+P26: Công cụ giám sát tính sẵn sàng (Uptime Kuma)
+P27: Gửi kèm thông tin tài khoản (mục 4)
+P28: gs_theodoi
+P29: Chỉ xem
+P30: Trạng thái hoạt động của trang chủ, trang đăng nhập và trang /health; lịch sử gián đoạn; tỷ lệ sẵn sàng theo ngày, tháng; hạn chứng thư SSL
+P31: Kiểm tra 01 phút/lần; chứng thư SSL kiểm tra 01 lần/ngày; lưu lịch sử 90 ngày
+P32: 2
+P33: Trang quản trị hạ tầng cloud MobiFone (giám sát tài nguyên máy chủ)
+P34: Gửi kèm thông tin tài khoản (mục 4)
+P35: gs_theodoi
+P36: Chỉ xem
+P37: CPU, RAM, ổ đĩa, băng thông của 02 máy chủ; trạng thái snapshot, sao lưu
+P38: Thu thập 05 phút/lần; lưu 90 ngày
+P39: 3
+P40: Trang kiểm tra tình trạng hệ thống
+P41: https://mekongx.vn/health
+P42: Không cần tài khoản
+P43: Công khai, chỉ trạng thái tổng hợp
+P44: Trạng thái tổng hợp của hệ thống và mã phản hồi HTTP, dùng cho công cụ giám sát tại STT 1 (xem mục 3)
+P45: Được kiểm tra 01 phút/lần; không lưu trên trang
+P46: 4
+P47: CMS – Nhật ký hệ thống
+P48: https://mekongx.vn/cms/LogAdmin
+P49: gs_theodoi
+P50: Chỉ xem
+P51: Đăng nhập, đăng xuất, đăng nhập không thành công, thao tác quản trị, tải tệp
+P52: Ghi ngay khi phát sinh; thời hạn lưu theo NCC-12
+P53: 5
+P54: CMS – Thống kê
+P55: https://mekongx.vn/cms/AdminAnalytics
+P56: gs_theodoi
+P57: Chỉ xem
+P58: Lượt truy cập toàn Sàn theo ngày, tháng; số liệu hoạt động của Sàn
+P59: Tổng hợp hằng ngày; lưu suốt thời gian thuê dịch vụ
+P60: 6
+P61: CMS – Yêu cầu hỗ trợ
+P62: https://mekongx.vn/cms/SupportRequestsAdmin
+P63: gs_theodoi
+P64: Chỉ xem
+P65: Số yêu cầu, thời gian phản hồi, tỷ lệ phản hồi trong 02 giờ
+P66: Cập nhật ngay; lưu suốt thời gian thuê dịch vụ
+P67: 7
+P68: Tệp log hệ thống, nhật ký truy cập web
+P69: Thư mục logs trên máy chủ (không mở truy cập trực tiếp)
+P70: —
+P71: Cung cấp bản trích
+P72: Lỗi, cảnh báo, sự kiện ứng dụng; nhật ký truy cập web
+P73: Log ứng dụng lưu 180 ngày, nhật ký truy cập web lưu 90 ngày; bản trích gửi trong 01 ngày làm việc khi có yêu cầu
+P75: 2. Chu kỳ giám sát và ngưỡng cảnh báo
+P76: Chu kỳ giám sát được cấu hình thống nhất trên công cụ giám sát, đáp ứng yêu cầu tại hợp đồng: kiểm tra tính sẵn sàng của dịch vụ 01 phút/lần; thu thập số liệu tài nguyên máy chủ 05 phút/lần. Tỷ lệ sẵn sàng hằng tháng tính từ kết quả kiểm tra 01 phút/lần và đưa vào báo cáo kết quả cung cấp dịch vụ (Mẫu số 2).
+P77: STT
+P78: Nội dung giám sát
+P79: Chu kỳ
+P80: Ngưỡng cảnh báo
+P81: Người nhận cảnh báo
+P82: 1
+P83: Tính sẵn sàng: trang chủ, trang đăng nhập, trang /health
+P84: 01 phút/lần
+P85: Không phản hồi hoặc trả mã lỗi 02 lần liên tiếp
+P86: Quản trị hệ thống của nhà cung cấp (thư điện tử, tin nhắn)
+P87: 2
+P88: CPU, RAM của 02 máy chủ
+P89: 05 phút/lần
+P90: CPU trên 80% hoặc RAM trên 85% liên tục 15 phút
+P91: Quản trị hệ thống của nhà cung cấp
+P92: 3
+P93: Dung lượng ổ đĩa
+P94: 05 phút/lần
+P95: Sử dụng trên 80% dung lượng
+P96: Quản trị hệ thống của nhà cung cấp
+P97: 4
+P98: Chứng thư SSL
+P99: 01 lần/ngày
+P100: Còn dưới 30 ngày đến hạn
+P101: Quản trị hệ thống của nhà cung cấp
+P102: 5
+P103: Sao lưu tự động
+P104: Theo lịch sao lưu (NCC-14)
+P105: Không tạo được bản sao lưu hoặc sao lưu lỗi
+P106: Quản trị hệ thống của nhà cung cấp
+P108: Sự cố phát hiện qua cảnh báo được xử lý và báo cáo theo quy trình xử lý sự cố tại NCC-14; sự cố nghiêm trọng được thông báo ngay cho Chủ trì thuê và đơn vị giám sát.
+P109: 3. Bảo mật trang kiểm tra tình trạng /health
+P110: - Trang https://mekongx.vn/health chỉ trả về trạng thái tổng hợp (Healthy, Degraded hoặc Unhealthy) và mã phản hồi HTTP (200 hoặc 503) để công cụ giám sát kiểm tra;
+P111: - Trang không hiển thị tên máy chủ, địa chỉ IP nội bộ, phiên bản phần mềm, chuỗi kết nối cơ sở dữ liệu, đường dẫn thư mục, dung lượng ổ đĩa, nội dung lỗi hoặc thông tin cấu hình;
+P112: - Tình trạng chi tiết từng thành phần (cơ sở dữ liệu, ổ đĩa, hàng đợi thông báo) chỉ xem được trên công cụ giám sát bằng tài khoản tại mục 1;
+P113: - Minh chứng: ảnh chụp nội dung trả về khi truy cập https://mekongx.vn/health từ mạng bên ngoài, ngày ……/……/2026 (kèm theo văn bản).
+P114: 4. Quyền xem và trách nhiệm sử dụng tài khoản
+P115: - Tài khoản gs_theodoi chỉ có quyền xem: không thêm, sửa, xóa dữ liệu, không thay đổi cấu hình, không thao tác thay người dùng. Mọi lần đăng nhập và thao tác của tài khoản được ghi nhật ký hệ thống;
+P116: - Danh mục số liệu giám sát, nhật ký, thời hạn lưu và quyền xem thống nhất với Văn bản cung cấp log, nhật ký và số liệu giám sát (NCC-12);
+P117: - Địa chỉ truy cập công cụ giám sát (STT 1, 2) và mật khẩu được gửi riêng cho người nhận qua kênh bảo mật, không ghi trong văn bản này. Người nhận đổi mật khẩu ở lần đăng nhập đầu tiên, không chia sẻ tài khoản và thông báo cho nhà cung cấp khi không còn sử dụng để khóa tài khoản.
+P118: Người nhận tài khoản (đơn vị giám sát): Ông/Bà ………………………, chức vụ ………………………, điện thoại ………………, thư điện tử ………………………
+P119: Nơi nhận:
+P120: - Như trên;
+P121: - Lưu: VT, TTGPS.
+P122: ĐẠI DIỆN NHÀ CUNG CẤP DỊCH VỤ
+P123: (Ký, ghi rõ họ tên, đóng dấu)
+P127: Lã Thành Trung

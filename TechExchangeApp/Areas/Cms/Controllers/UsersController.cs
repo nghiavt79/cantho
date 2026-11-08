@@ -198,7 +198,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                 UserName = model.UserName,
                 Email = model.Email,
                 FullName = model.FullName,
-                Domain = "techport.vn",
+                Domain = "mekongx.vn",
                 Created = DateTime.Now,
                 IsActivated = model.IsActivated,
                 IsAdmin = model.SelectedAccountTypeId == "1",
@@ -224,7 +224,7 @@ namespace TechExchangeApp.Areas.Cms.Controllers
                     {
                         UserId = user.Id,
                         RoleId = roleId,
-                        Domain = "techport.vn",
+                        Domain = "mekongx.vn",
                         LanguageId = 1,
                         ParentId = 0,
                         SiteId = user.SiteId

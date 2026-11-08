@@ -1,0 +1,59 @@
+Số: ……/BB-SGDCN | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BIÊN BẢN ĐÀO TẠO
+Hướng dẫn sử dụng, quản trị hệ thống
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Căn cứ Hợp đồng số ……/……… ngày ……/……/2026 giữa Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ và Tổng Công ty Viễn thông MobiFone;
+Căn cứ Chương V – Yêu cầu về kỹ thuật của Hồ sơ mời thầu và Kế hoạch triển khai, vận hành thử tháng 10/2026;
+Hôm nay, ngày …… tháng …… năm 2026, tại ……………………………………, chúng tôi gồm:
+1. Bên thuê (Chủ trì thuê): Trung tâm Ứng dụng tiến bộ khoa học và công nghệ thành phố Cần Thơ
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+2. Nhà thầu: Tổng Công ty Viễn thông MobiFone
+- Ông/Bà: ………………………… Chức vụ: …………………………
+- Ông/Bà: ………………………… Chức vụ: …………………………
+3. Đơn vị phối hợp kỹ thuật: VTISC
+- Ông/Bà: ………………………… Chức vụ: …………………………
+I. Nội dung đào tạo
+TT | Lớp | Thời gian | Nội dung chính | Số học viên | Trạng thái
+1 | Nhóm quản trị | ……/10/2026 | Quản lý người dùng, phân quyền, tham số; duyệt hồ sơ, sản phẩm; theo dõi quy trình 14 bước; báo cáo; sao lưu, giám sát; tiếp nhận hỗ trợ |  | Chưa hoàn tất
+2 | Nhóm nghiệp vụ | ……/10/2026 | Đăng tin, sản phẩm, sự kiện; kết nối cung – cầu; báo giá, hợp đồng điện tử, ký số; tra cứu, trợ lý AI |  | Chưa hoàn tất
+
+II. Tài liệu, tài khoản bàn giao
+TT | Nội dung | Hình thức | Trạng thái
+1 | Tài liệu hướng dẫn sử dụng | Bản điện tử, bản in | Chưa hoàn tất
+2 | Tài liệu quản trị | Bản điện tử | Chưa hoàn tất
+3 | Tài khoản thực hành theo từng nhóm | Danh sách kèm theo | Chưa hoàn tất
+4 | Kênh hỗ trợ sau đào tạo (phiếu hỗ trợ, đường dây nóng, thư điện tử) |  | Chưa hoàn tất
+
+Kết luận
+Đã tổ chức …… lớp với …… học viên theo danh sách kèm theo.
+Biên bản được lập thành …… bản có giá trị như nhau, mỗi bên giữ …… bản.
+ĐẠI DIỆN BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)
+
+DANH SÁCH HỌC VIÊN
+Lớp: ………………………   Ngày: ……/10/2026
+TT | Họ và tên | Đơn vị | Chức vụ | Nhóm | Ký tên
+1 |  |  |  |  | 
+2 |  |  |  |  | 
+3 |  |  |  |  | 
+4 |  |  |  |  | 
+5 |  |  |  |  | 
+6 |  |  |  |  | 
+7 |  |  |  |  | 
+8 |  |  |  |  | 
+9 |  |  |  |  | 
+10 |  |  |  |  | 
+11 |  |  |  |  | 
+12 |  |  |  |  | 
+13 |  |  |  |  | 
+14 |  |  |  |  | 
+15 |  |  |  |  | 
+16 |  |  |  |  | 
+17 |  |  |  |  | 
+18 |  |  |  |  | 
+19 |  |  |  |  | 
+20 |  |  |  |  | 

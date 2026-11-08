@@ -9,11 +9,11 @@ SET QUOTED_IDENTIFIER ON;
 SET ANSI_NULLS ON;
 GO
 INSERT INTO dbo.SanPhamCNTBCategory (SanPhamCNTBId, CatId)
-SELECT s.ID, TRY_CAST(LTRIM(RTRIM(v.value)) AS INT)
+SELECT DISTINCT s.ID, k.CatId
 FROM dbo.SanPhamCNTB s
-CROSS APPLY STRING_SPLIT(ISNULL(s.CategoryId, ''), ';') v
-WHERE TRY_CAST(LTRIM(RTRIM(v.value)) AS INT) > 0
-  AND NOT EXISTS (SELECT 1 FROM dbo.SanPhamCNTBCategory c WHERE c.SanPhamCNTBId = s.ID);
+CROSS APPLY STRING_SPLIT(REPLACE(ISNULL(s.CategoryId, ''), ',', ';'), ';') v
+JOIN dbo.Category k ON k.CatId = TRY_CAST(LTRIM(RTRIM(v.value)) AS INT)
+WHERE NOT EXISTS (SELECT 1 FROM dbo.SanPhamCNTBCategory c WHERE c.SanPhamCNTBId = s.ID);
 PRINT N'Đã bổ sung lĩnh vực: ' + CAST(@@ROWCOUNT AS NVARCHAR(20));
 GO
 ALTER PROCEDURE [dbo].[uspReIndexSearchContents]

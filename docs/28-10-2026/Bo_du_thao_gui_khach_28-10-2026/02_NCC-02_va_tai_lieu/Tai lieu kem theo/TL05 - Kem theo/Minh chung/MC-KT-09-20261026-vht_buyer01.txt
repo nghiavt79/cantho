@@ -1,0 +1,23 @@
+Mã minh chứng: MC-KT-09-20261026-vht_buyer01
+Ca kiểm thử: KT-09 – kiểm tra lại L-02 (mã chống giả mạo phía máy chủ) sau bản cập nhật 26/10/2026
+Ngày: 26/10/2026
+Tài khoản: vht_buyer01 (đã đăng nhập; phiên xác nhận bằng GET /api/notifications/unread-count trả {"count":0})
+Môi trường: https://mekongx.vn, trình duyệt Chrome (Chromium), gọi từ trang https://mekongx.vn/Dashboard
+Người thực hiện: Nhóm kỹ thuật MobiFone Cần Thơ
+------------------------------------------------------------
+Yêu cầu: POST /api/chat/0/send
+Thân: {"message":"x"}
+
+Lần 1 – không gửi mã chống giả mạo (RequestVerificationToken)
+  Thời điểm: 16:31:21
+  Kết quả: HTTP 400
+  Nội dung: Trang lỗi HTML chung (yêu cầu bị chặn trước khi vào xử lý nghiệp vụ)
+  Mong đợi: 400 (thiếu mã chống giả mạo) → Khớp
+
+Lần 2 – có gửi mã chống giả mạo lấy từ thẻ meta của trang
+  Thời điểm: 16:31:22
+  Kết quả: HTTP 400
+  Nội dung: {"success":false,"error":"Không tìm thấy cuộc trò chuyện."}
+  Mong đợi: qua lớp kiểm tra mã, trả lỗi nghiệp vụ do dữ liệu không hợp lệ → Khớp
+
+Kết luận: máy chủ kiểm tra mã chống giả mạo – Đạt. Dữ liệu dùng là đối tượng không tồn tại / 0 sao, không làm thay đổi dữ liệu.

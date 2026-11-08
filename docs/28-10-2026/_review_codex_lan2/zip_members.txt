@@ -1,0 +1,41 @@
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL01 - Danh muc chuc nang, thong so hieu nang, phuong an mo rong.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL02 - Van ban cung cap log, nhat ky, so lieu giam sat.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL03 - NCC-04 Quy trinh van hanh, xu ly su co, ho tro, sao luu, thong tin phien ban.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL04 - Bao cao tu kiem tra noi bo, san sang van hanh thu lan 1.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Bien ban tu kiem thu chuc nang phan mem dot 1.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL06 - Muc 01a - HDSD nguoi su dung San.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL07 - Muc 01b - HDSD can bo quan tri CMS.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL08 - Muc 01c - Huong dan nhanh theo nhom nguoi dung.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL09 - Muc 02 - Tai lieu mo ta dich vu, giai phap ky thuat, phuong an ket noi.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL10 - Muc 02 - Dac ta API (ket noi, lien thong, chia se du lieu) - PL03.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL11 - Muc 02 - Dac ta co so du lieu - PL04.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Kich ban kiem thu chi tiet.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Quy trinh kiem thu noi bo.docx
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/chay_kiem_thu_api.ps1
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-01-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-02-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-03-20261026-2.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-03-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-04-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-05-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-06-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-HT-08-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-06-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-07-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-08-20261026-vht_buyer01.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-09-20261026-vht_buyer01.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-10-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-12-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-14-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-17-20261026-vht_buyer01.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-18-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-22-20261026-2.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-22-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-23-20261026-2.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-23-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-24-20261026-vht_buyer01.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-28-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-29-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-30-20261026.txt
+NCC-02 De xuat chi so, nguong chat luong; cung cap tai khoan giam sat va tai lieu/Tai lieu kem theo/TL05 - Kem theo/Minh chung/MC-KT-38-20261028-vht_buyer01.txt

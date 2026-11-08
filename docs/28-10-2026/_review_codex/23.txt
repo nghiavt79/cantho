@@ -1,0 +1,288 @@
+D:\2026\CanTho\docs\28-10-2026\Ho_so_muc_1.1_1.5_1.6\1.5 Tai lieu HDSD, ky thuat, dac ta API, quy trinh van hanh\Muc 01c - Huong dan nhanh theo nhom nguoi dung.docx
+PART word/document.xml
+P1: TRUNG TÂM ỨNG DỤNG TIẾN BỘ KHOA HỌC VÀ CÔNG NGHỆ THÀNH PHỐ CẦN THƠ
+P2: Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+P3: MỤC 01c – HƯỚNG DẪN NHANH THEO NHÓM NGƯỜI DÙNG
+P4: (Tài liệu phục vụ đào tạo; tóm tắt từ Mục 01a và Mục 01b)
+P5: Thông tin
+P6: Nội dung
+P7: Hệ thống
+P8: Sàn giao dịch công nghệ Cần Thơ – https://mekongx.vn
+P9: Phiên bản tài liệu
+P10: 1.0, ngày 26/10/2026 (áp dụng phiên bản phần mềm ngày 26/10/2026)
+P11: Tài liệu chi tiết
+P12: Mục 01a – Hướng dẫn người sử dụng Sàn (phiên bản 2.2); Mục 01b – Hướng dẫn cán bộ quản trị CMS (phiên bản 2.2)
+P13: Đơn vị lập
+P14: Tổng Công ty Viễn thông MobiFone (MobiFone Cần Thơ)
+P15: Người lập / Người kiểm tra
+P16: ……………………… / ………………………
+P18: Cách dùng tài liệu
+P19: Mỗi nhóm người dùng có một phần riêng, gồm các việc thường làm, đường đi trên phần mềm, thao tác chính và mục tham chiếu trong tài liệu chi tiết. Khi đào tạo, mỗi nhóm chỉ cần học phần của mình và phần quy trình giao dịch 14 bước (Phần 5).
+P20: Nhóm người dùng
+P21: Phần
+P22: Thời lượng đào tạo gợi ý
+P23: Người mua (bên có nhu cầu công nghệ)
+P24: 1, 5
+P25: 60 phút
+P26: Nhà cung cấp (bên bán)
+P27: 2, 5
+P28: 90 phút
+P29: Chuyên gia tư vấn
+P30: 3, 5
+P31: 45 phút
+P32: Cán bộ quản trị CMS (biên tập, kiểm duyệt, hỗ trợ, quản trị Sàn)
+P33: 4, 5
+P34: 120 phút
+P36: Quy ước: tên menu, nút ghi in đậm; đường đi ghi bằng dấu ›. Hỗ trợ: hotline +84 292 3907 037, email trungtamungdung@cantho.gov.vn (Thứ 2 – Thứ 6, 7:30 – 11:30, 13:30 – 17:00).
+P38: 1. Người mua
+P39: Việc cần làm
+P40: Đường đi
+P41: Thao tác chính
+P42: Xem chi tiết
+P43: Đăng ký, đăng nhập
+P44: Biểu tượng tài khoản (góc phải trên) › Đăng ký ngay
+P45: Nhập trường có dấu *, đồng ý điều khoản xử lý dữ liệu cá nhân, bấm đăng ký; đăng nhập bằng tên đăng nhập, mật khẩu
+P46: 01a Mục 2.3, 2.4
+P47: Hoàn thiện hồ sơ tài khoản
+P48: Ảnh đại diện › Dashboard › Hồ sơ tài khoản
+P49: Sửa họ tên, email; xác thực số điện thoại, email bằng mã OTP; tải CCCD hai mặt (JPG, PNG, PDF ≤ 5 MB)
+P50: 01a Mục 2.6
+P51: Tìm công nghệ
+P52: Trang chủ › khối tìm kiếm
+P53: Chọn nhóm, nhập từ khóa, chọn lĩnh vực, bấm Tìm kiếm; bấm tên sản phẩm để xem chi tiết
+P54: 01a Mục 2.1, 2.2
+P55: Gửi yêu cầu chuyển giao
+P56: Trang sản phẩm › Liên hệ báo giá
+P57: Kiểm tra thông tin liên hệ, nhập mô tả nhu cầu (≤ 2.000 ký tự), đánh dấu ô xác nhận, bấm Gửi yêu cầu; hệ thống tạo hồ sơ giao dịch mã PJ-…
+P58: 01a Mục 3.2
+P59: Theo dõi hồ sơ
+P60: Dashboard › Hồ sơ giao dịch của tôi › Xem
+P61: Xem bước hiện tại trên thanh tiến trình; xem ô Chờ tôi xử lý mỗi lần đăng nhập
+P62: 01a Mục 3.3, 4.1
+P63: Nhờ Trung tâm hỗ trợ
+P64: Chi tiết hồ sơ › Yêu cầu Trung tâm tư vấn
+P65: Chọn nội dung cần hỗ trợ, nhập tiêu đề, chọn bước, mô tả, bấm Gửi yêu cầu; nhận phản hồi trong Tin nhắn
+P66: 01a Mục 3.4
+P67: Đặt mua sản phẩm OCOP, thiết bị
+P68: Trang sản phẩm › Gửi yêu cầu đặt mua / quan tâm
+P69: Nhập số lượng, liên hệ, địa chỉ giao hàng; theo dõi tại Yêu cầu đặt mua của tôi
+P70: 01a Mục 3.5
+P71: Đăng nhu cầu tìm mua
+P72: Menu Tìm mua › Đăng nhu cầu tìm mua
+P73: Nhập trường có dấu *, trả lời phép tính xác thực, bấm Gửi yêu cầu; Sàn rà soát trước khi công bố
+P74: 01a Mục 3.7
+P75: Trao đổi, gọi video
+P76: Dashboard › Tin nhắn
+P77: Nhắn tin, đính kèm tệp (≤ 10 MB); bấm Gọi video để tạo phòng họp
+P78: 01a Mục 3.6
+P80: Lưu ý: không gửi mật khẩu, mã OTP qua tin nhắn; đăng xuất khi dùng máy chung.
+P81: 2. Nhà cung cấp
+P82: Việc cần làm
+P83: Đường đi
+P84: Thao tác chính
+P85: Xem chi tiết
+P86: Khai báo hồ sơ nhà cung cấp
+P87: Dashboard › Dịch vụ của tôi › Hồ sơ nhà cung ứng
+P88: Nhập 4 thẻ I – IV (tên đơn vị, loại hình, liên hệ, người đại diện, lĩnh vực tối đa 03, dịch vụ, giấy phép), bấm Cập nhật hồ sơ; chờ Ban quản trị duyệt
+P89: 01a Mục 5.1
+P90: Đăng sản phẩm
+P91: Dashboard › Công nghệ & thiết bị › Thêm mới
+P92: Chọn loại; nhập 7 thẻ (chủ sở hữu, định danh, mô tả, TRL, ứng dụng, chuyển giao, chứng nhận); đánh dấu yêu cầu NDA nếu cần bảo mật; bấm Gửi đăng ký
+P93: 01a Mục 5.2
+P94: Sửa sản phẩm bị trả về
+P95: Công nghệ & thiết bị, lọc Từ chối
+P96: Đọc lý do trong Tin nhắn, bấm Chỉnh sửa, sửa theo góp ý, bấm Gửi đăng ký
+P97: 01a Mục 5.3
+P98: Nhận lời mời báo giá
+P99: Menu tài khoản › Giao dịch › Lời mời tham gia
+P100: Bấm Ký NDA (nếu có), Chấp nhận & xem chi tiết; đọc RFQ và hạn chót
+P101: 01a Mục 5.4
+P102: Nộp hồ sơ đề xuất
+P103: Trang chi tiết dự án › Gửi báo giá
+P104: Tải giải pháp kỹ thuật, hồ sơ năng lực (PDF, DOC, DOCX ≤ 10 MB), nhập báo giá, thời gian triển khai, bấm Gửi báo giá trước hạn chót
+P105: 01a Mục 5.4
+P106: Xử lý yêu cầu đặt mua
+P107: Dashboard › Yêu cầu khách gửi
+P108: Liên hệ khách; cập nhật Xác nhận › Hoàn tất (nhập giá trị đơn) hoặc Hủy
+P109: 01a Mục 5.5
+P110: Đăng bài viết
+P111: Bài viết của tôi › Viết bài mới
+P112: Nhập tiêu đề, tóm tắt, nội dung; Lưu nháp hoặc Gửi duyệt
+P113: 01a Mục 5.6
+P114: Thực hiện các bước giao dịch
+P115: Hồ sơ giao dịch của tôi
+P116: Đàm phán, duyệt dự thảo, ký hợp đồng; nhập thử nghiệm, đào tạo, hồ sơ kỹ thuật; xác nhận nghiệm thu, thanh lý (Phần 5)
+P117: 01a Mục 4.3
+P119: 3. Chuyên gia tư vấn
+P120: Việc cần làm
+P121: Đường đi
+P122: Thao tác chính
+P123: Xem chi tiết
+P124: Đăng ký hồ sơ chuyên gia
+P125: Dashboard › Dịch vụ của tôi › Hồ sơ chuyên gia
+P126: Nhập 4 thẻ (thông tin cá nhân, đào tạo, nghiên cứu, dịch vụ), bấm Cập nhật hồ sơ; chờ duyệt
+P127: 01a Mục 6.1
+P128: Nhận phân công
+P129: Hồ sơ giao dịch của tôi (vai trò Consultant)
+P130: Mở hồ sơ được cán bộ Sàn hoặc bên mua thêm vào; xem bước đang xử lý
+P131: 01a Mục 6.2
+P132: Chấm hồ sơ đề xuất (bước 4)
+P133: Hồ sơ › nút Nộp hồ sơ đề xuất › Đánh giá báo giá
+P134: Tải tài liệu, chấm 4 tiêu chí (thang 10), nhập nhận xét, bấm Lưu đánh giá
+P135: 01a Mục 6.3
+P136: Duyệt pháp lý hợp đồng (bước 6)
+P137: Khối Kiểm tra pháp lý hợp đồng › Phê duyệt (3 bên)
+P138: Đọc dự thảo, góp ý; bấm ✓ để duyệt hoặc ✗ kèm lý do
+P139: 01a Mục 6.4
+P140: Theo dõi nghiệm thu (bước 13)
+P141: Hồ sơ › bước Nghiệm thu
+P142: Đối chiếu kết quả với tiêu chuẩn nghiệm thu trong RFQ; góp ý trước khi hai bên xác nhận bằng OTP
+P143: 01a Mục 6.4
+P145: 4. Cán bộ quản trị CMS
+P146: Đăng nhập Sàn bằng tài khoản được cấp quyền, mở CMS Admin hoặc truy cập https://mekongx.vn/cms; nhập mã xác thực 2 lớp gửi qua email nếu được yêu cầu (01b Mục 1.4).
+P147: 4.1. Biên tập viên, cán bộ kiểm duyệt
+P148: Việc cần làm
+P149: Đường đi
+P150: Thao tác chính
+P151: Xem chi tiết
+P152: Duyệt sản phẩm
+P153: Sản phẩm & Đối tác › Công nghệ (Thiết bị, Sản phẩm trí tuệ, OCOP)
+P154: Lọc Nháp, mở Sửa để kiểm tra; Cấu hình › Xuất bản hoặc Trả về (nhắn lý do cho nhà cung cấp), bấm Lưu
+P155: 01b Mục 3.1
+P156: Duyệt nhà cung ứng, chuyên gia
+P157: Sản phẩm & Đối tác › Nhà cung ứng, Nhà tư vấn
+P158: Kiểm tra pháp nhân, giấy phép, chuyên môn; Quick config › Xuất bản hoặc Trả về
+P159: 01b Mục 3.3, 3.4
+P160: Đăng tin bài, duyệt bài nhà cung cấp
+P161: Nội dung website › Tin bài
+P162: Thêm tin bài: thẻ Chung, Nội dung, Media, SEO, Đăng bài; Bài nhà cung cấp chờ duyệt › Xuất bản hoặc Trả về
+P163: 01b Mục 4.1, 4.2
+P164: Quản lý sự kiện
+P165: Nội dung website › Sự kiện
+P166: Thiết lập sự kiện từ tin bài; duyệt thuê gian hàng; điểm danh bằng mã QR; xuất danh sách
+P167: 01b Mục 4.3
+P168: Cảnh báo sản phẩm
+P169: Sản phẩm & Đối tác › Cảnh báo sản phẩm
+P170: Xử lý sản phẩm trùng, quá hạn; Đánh dấu đã xử lý kèm ghi chú
+P171: 01b Mục 3.2
+P173: 4.2. Cán bộ hỗ trợ
+P174: Việc cần làm
+P175: Đường đi
+P176: Thao tác chính
+P177: Xem chi tiết
+P178: Xử lý yêu cầu tư vấn
+P179: Giao dịch › Yêu cầu Trung tâm tư vấn
+P180: Lọc Mới › Xử lý › Gán; nhập phản hồi, bấm Gửi trong 02 giờ; cập nhật trạng thái, bấm Hoàn thành
+P181: 01b Mục 2.3
+P182: Theo dõi hồ sơ giao dịch
+P183: Giao dịch › Dự án
+P184: Tìm hồ sơ, xem Bước hiện tại, Thêm nhà tư vấn, xem Nhật ký hồ sơ; không thao tác thay các bên
+P185: 01b Mục 2.1
+P186: Phiếu yêu cầu, tin tìm mua
+P187: Giao dịch › Phiếu yêu cầu, Tìm mua công khai
+P188: Kiểm tra phiếu mới, liên hệ người gửi, chuẩn hóa và xuất bản tin tìm mua
+P189: 01b Mục 2.2
+P190: Báo cáo tháng
+P191: Giao dịch › Báo cáo giao dịch; Yêu cầu Trung tâm tư vấn › Xuất Excel
+P192: Chọn khoảng ngày theo tháng, Xem, Xuất PDF/Excel; đối chiếu trước khi đưa vào báo cáo
+P193: 01b Mục 2.5, 5.5
+P195: 4.3. Quản trị Sàn
+P196: Việc cần làm
+P197: Đường đi
+P198: Thao tác chính
+P199: Xem chi tiết
+P200: Quản lý người dùng
+P201: Quản trị hệ thống › Người dùng
+P202: Khóa tài khoản có căn cứ (nhập lý do); đặt lại mật khẩu sau khi xác minh chủ tài khoản; không xóa tài khoản đã có giao dịch
+P203: 01b Mục 5.1
+P204: Phân quyền
+P205: Quản trị hệ thống › Nhóm quyền, Phân quyền
+P206: Cấp quyền theo đề nghị đã duyệt, vừa đủ cho nhiệm vụ; rà soát 03 tháng/lần
+P207: 01b Mục 1.3, 5.2
+P208: Tham số nghiệp vụ
+P209: Quản trị hệ thống › Tham số hệ thống
+P210: Ghi lý do trước khi sửa; tham số kỹ thuật do bộ phận kỹ thuật thay đổi
+P211: 01b Mục 5.3
+P212: Tra cứu nhật ký
+P213: Quản trị hệ thống › Nhật ký
+P214: Lọc theo tính năng, loại thao tác, tài khoản, IP, khoảng ngày; theo dõi đăng nhập không thành công
+P215: 01b Mục 5.4
+P217: Thao tác cần thận trọng: xóa dữ liệu, khóa tài khoản, phân quyền, thay đổi tham số chỉ thực hiện theo Bảng 2 tài liệu 01b; mọi thao tác được ghi nhật ký.
+P219: 5. Quy trình giao dịch 14 bước – ai làm gì
+P220: Thanh tiến trình trên màn hình có 13 nút: bước 5 và bước 6 nằm chung một nút; khi sản phẩm không yêu cầu NDA, nút NDA ghi (Không áp dụng) và bộ đếm còn 12 bước (01a Bảng 3).
+P221: Bước
+P222: Nội dung
+P223: Người thực hiện
+P224: Hoàn thành khi
+P225: 1
+P226: Yêu cầu chuyển giao công nghệ
+P227: Bên mua
+P228: Gửi yêu cầu thành công
+P229: 2
+P230: Thỏa thuận bảo mật (NDA)
+P231: Bên mua, bên bán
+P232: Các bên xác nhận đồng ý NDA, hoặc bước không áp dụng
+P233: 3
+P234: Yêu cầu báo giá (RFQ)
+P235: Bên mua
+P236: Đã tạo RFQ, mời ít nhất 01 nhà cung cấp
+P237: 4
+P238: Nộp, đánh giá hồ sơ đề xuất
+P239: Bên bán nộp; chuyên gia chấm; bên mua chọn
+P240: Có hồ sơ Đã chọn
+P241: 5
+P242: Đàm phán thương mại
+P243: Bên mua, bên bán
+P244: Hai bên xác nhận bằng OTP hoặc tải biên bản đã ký
+P245: 6
+P246: Kiểm tra pháp lý hợp đồng
+P247: Bên mua, bên bán, chuyên gia
+P248: Cả 3 bên Đã duyệt
+P249: 7
+P250: Ký hợp đồng điện tử
+P251: Bên mua, bên bán
+P252: Đủ chữ ký số; hợp đồng khóa phiên bản
+P253: 8
+P254: Xác nhận tạm ứng
+P255: Bên mua nhập; bên bán xác nhận
+P256: Bên bán bật Bên bán đã nhận tiền tạm ứng
+P257: 9
+P258: Thử nghiệm (pilot)
+P259: Bên bán nhập; bên mua xác nhận
+P260: Bên mua bật Thử nghiệm đạt yêu cầu
+P261: 10
+P262: Bàn giao, triển khai thiết bị
+P263: Bên bán bàn giao; bên mua xác nhận
+P264: Bên mua bật ô xác nhận đã nhận bàn giao
+P265: 11
+P266: Đào tạo, chuyển giao vận hành
+P267: Bên bán
+P268: Bật Đã hoàn thành đào tạo
+P269: 12
+P270: Bàn giao hồ sơ kỹ thuật
+P271: Bên bán nhập; bên mua xác nhận
+P272: Bật Đã bàn giao đầy đủ hồ sơ
+P273: 13
+P274: Nghiệm thu
+P275: Bên mua, bên bán; chuyên gia theo dõi
+P276: Hai bên xác nhận biên bản bằng OTP
+P277: 14
+P278: Thanh lý hợp đồng
+P279: Bên mua, bên bán
+P280: Bật Đã chuyển tiền và Hợp đồng đã đóng
+P282: Ký số và xác nhận OTP: bước 7 dùng chữ ký số (chứng thư số qua USB Token hoặc ký số từ xa); bước 5 và bước 13 là xác nhận bằng mã OTP do Sàn gửi, không phải chữ ký số. Ở phiên bản đợt 1, ký số vận hành ở chế độ thử nghiệm; ký bằng chứng thư số của tổ chức chứng thực áp dụng từ đợt 2.
+P284: Khi gặp sự cố
+P285: Hiện tượng
+P286: Cách xử lý nhanh
+P287: Không đăng nhập được
+P288: Kiểm tra Caps Lock; dùng Quên mật khẩu? (liên kết có hiệu lực 30 phút); chờ hết thời gian tạm khóa
+P289: Không nhận OTP
+P290: Kiểm tra số điện thoại, email trong Hồ sơ tài khoản, thư mục Spam; chờ 1 – 2 phút rồi gửi lại
+P291: Không chuyển được bước
+P292: Đối chiếu điều kiện hoàn thành ở bảng trên; gửi Yêu cầu Trung tâm tư vấn
+P293: Không tải được tệp
+P294: Dùng PDF, JPG, PNG, Word, Excel; giấy tờ ≤ 5 MB, tệp trao đổi ≤ 10 MB
+PART word/header1.xml
+P1: Hướng dẫn nhanh theo nhóm người dùng – Sàn giao dịch công nghệ Cần Thơ – Phiên bản 1.0
+PART word/footer1.xml
+P1: Trang 

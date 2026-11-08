@@ -1,0 +1,37 @@
+Mã minh chứng: MC-KT-14-20261026
+Ca kiểm thử: KT-14 API-09 đọc tin nhắn khi chưa đăng nhập
+Thời điểm (UTC+7): 26/10/2026 08:40:14
+Công cụ: curl 8.11.0 trên máy tính kết nối Internet
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+Yêu cầu: GET /api/chat/1/messages
+
+HTTP/1.1 401 Unauthorized
+Cache-Control: no-cache, no-store
+Pragma: no-cache
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=utf-8
+Server: Microsoft-IIS/10.0
+Strict-Transport-Security: max-age=2592000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), geolocation=(), payment=(), microphone=(self)
+Content-Security-Policy: frame-ancestors 'self'; object-src 'none'; base-uri 'self'
+Date: Mon, 26 Oct 2026 08:35:52 GMT
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        404 - S&#xE0;n Giao d&#x1ECB;ch C&#xF4;ng ngh&#x1EC7; Th&#xE0;nh ph&#x1ED1; C&#x1EA7;n Th&#x1A1;
+    </title>
+    <meta name="description" content="S&#xE0;n Giao d&#x1ECB;ch C&#xF4;ng ngh&#x1EC7; Th&#xE0;nh ph&#x1ED1; C&#x1EA7;n Th&#x1A1;." />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site.css?v=UdcGDA3VUSodFJFBIaVxLuvjxca5bPVen-YEFDfKWpo" />
+    <link rel="stylesheet" href="/css/layout-base.css?v=wDrfQvtx8dvTEIX_2IuHuwAHnM8CXpnga7fGPiuqCWA" />
+    <link rel="stylesheet" href="/css/home-redesign.css?v=P-MSRdwZWbg7gIFO3OqUli1meXQqaToykNY_oC5cO3k" />
+    <link rel="stylesheet" href="/css/auth-modals.css?v=gW2TxZK-o682q_uRPkPI9397JJTw90YWfMFWQSzz5_s" />
+    <link rel="stylesheet" href="/css/partner-networ

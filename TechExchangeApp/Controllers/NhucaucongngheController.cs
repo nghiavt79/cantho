@@ -362,7 +362,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
                     UserId = userId,
                     IPAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
                     IsActivated = true,
-                    Domain = string.IsNullOrWhiteSpace(_mainDomain) ? "techport.vn" : new Uri(_mainDomain).Host,
+                    Domain = string.IsNullOrWhiteSpace(_mainDomain) ? "mekongx.vn" : new Uri(_mainDomain).Host,
                     StatusId = 1,
                     LanguageId = 1,
                     ParentId = 0,
@@ -380,8 +380,8 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 {
                     try
                     {
-                        var adminEmail = _configuration["AppSettings:AdminEmail"] ?? "admin@techport.vn";
-                        var subject = $"[TechPort] Nhu cầu tìm mua công nghệ mới #{p.PhieuYeuCauId}";
+                        var adminEmail = _configuration["AppSettings:AdminEmail"] ?? "no-reply@mekongx.vn";
+                        var subject = $"[Sàn giao dịch công nghệ Cần Thơ] Nhu cầu tìm mua công nghệ mới #{p.PhieuYeuCauId}";
                         var body = $@"
 <h3>Nhu cầu tìm mua công nghệ mới</h3>
 <table style='border-collapse:collapse;width:100%;max-width:600px;'>
@@ -392,7 +392,7 @@ namespace TechExchangeApp.Controllers.FrontEnd
   <tr><td style='padding:8px;border:1px solid #ddd;font-weight:bold;'>Ngày gửi</td><td style='padding:8px;border:1px solid #ddd;'>{p.Created:dd/MM/yyyy HH:mm}</td></tr>
   <tr><td style='padding:8px;border:1px solid #ddd;font-weight:bold;'>IP</td><td style='padding:8px;border:1px solid #ddd;'>{p.IPAddress}</td></tr>
 </table>
-<p style='margin-top:16px;color:#888;font-size:12px;'>Email này được gửi tự động từ hệ thống TechPort.</p>";
+<p style='margin-top:16px;color:#888;font-size:12px;'>Email này được gửi tự động từ hệ thống Sàn giao dịch công nghệ Cần Thơ.</p>";
 
                         await _emailSender.SendAsync(adminEmail, subject, body, isHtml: true);
                         _logger.LogInformation("[PhieuYeuCau] Email sent to {Admin} for PhieuYeuCauId={Id}", adminEmail, p.PhieuYeuCauId);

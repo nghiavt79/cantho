@@ -1,0 +1,35 @@
+ | CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM
+Độc lập - Tự do - Hạnh phúc
+Cần Thơ, ngày …… tháng …… năm 2026
+BÁO CÁO
+Kết quả vận hành thử
+Gói thầu số 4: Thuê dịch vụ thiết lập, vận hành trang web Sàn giao dịch công nghệ Cần Thơ
+Thời gian vận hành thử: từ ngày ……/10/2026 đến ngày ……/10/2026. Địa chỉ: ………………………
+I. Kết quả chạy kịch bản nghiệm thu (phần V Chương V)
+Bước | Nội dung | Người thực hiện | Kết quả | Trạng thái
+1 | Đăng ký nhà cung cấp |  |  | Chưa hoàn tất
+2 | Duyệt hồ sơ nhà cung cấp |  |  | Chưa hoàn tất
+3 | Đăng sản phẩm |  |  | Chưa hoàn tất
+4 | Đăng nhu cầu công nghệ |  |  | Chưa hoàn tất
+5 | Mời báo giá, nộp đề xuất |  |  | Chưa hoàn tất
+6 | Trao đổi trực tuyến |  |  | Chưa hoàn tất
+7 | Lập hợp đồng điện tử |  |  | Chưa hoàn tất
+8 | Ký số |  |  | Chưa hoàn tất
+9 | Thông báo qua email, SMS |  |  | Chưa hoàn tất
+10 | Tra cứu nhật ký |  |  | Chưa hoàn tất
+
+II. Lỗi phát sinh và khắc phục
+TT | Mô tả | Mức độ | Ngày phát hiện | Ngày khắc phục | Trạng thái
+1 |  |  |  |  | 
+2 |  |  |  |  | 
+3 |  |  |  |  | 
+4 |  |  |  |  | 
+5 |  |  |  |  | 
+
+III. Ý kiến người sử dụng
+…………………………………………………………………………………………………………………
+IV. Đánh giá, kiến nghị
+Hệ thống vận hành ổn định / chưa ổn định; còn / không còn lỗi ảnh hưởng đến hoạt động. Kiến nghị: ……………………………
+XÁC NHẬN CỦA BÊN THUÊ
+(Ký, ghi rõ họ tên, đóng dấu) | ĐẠI DIỆN NHÀ THẦU
+(Ký, ghi rõ họ tên, đóng dấu)

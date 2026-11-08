@@ -1,0 +1,9 @@
+Mã minh chứng: MC-HT-03-20261026
+Ca kiểm thử: TC-HT-03 Trang tình trạng hệ thống
+Thời điểm (UTC+7): 26/10/2026 08:39:02
+Máy thực hiện: máy tính kết nối Internet, công cụ curl 8.11.0, openssl
+Điều kiện: truy cập ẩn danh (không gửi cookie đăng nhập)
+------------------------------------------------------------
+GET /health
+{"status":"Healthy","durationMs":10,"checks":{"database":{"status":"Healthy","description":null,"data":null},"disk":{"status":"Healthy","description":null,"data":{"freeGB":914.7}},"notification-queue":{"status":"Healthy","description":null,"data":{"pendingOver30Min":0}}}}
+HTTP 200
