@@ -2,7 +2,7 @@
    TẠO BỘ TÀI KHOẢN VẬN HÀNH THỬ – 10 TÀI KHOẢN
    Sàn Giao dịch Công nghệ thành phố Cần Thơ – Gói thầu số 4
    ----------------------------------------------------------------------------
-   Mật khẩu mặc định : Hello@2026  (người dùng đổi mật khẩu ở lần đăng nhập đầu tiên)
+   Mật khẩu mặc định : (bàn giao riêng, không ghi trong mã nguồn; người dùng đổi mật khẩu ở lần đăng nhập đầu tiên)
    Cơ cấu            : Chủ trì thuê 2 · Đơn vị vận hành thử 6 · Đơn vị giám sát 1 · Nhà cung cấp 1
 
    CÁCH CHẠY (BẮT BUỘC có -f 65001 để không lỗi font tiếng Việt):

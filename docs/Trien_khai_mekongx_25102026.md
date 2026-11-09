@@ -7,7 +7,7 @@ Trạng thái: **đã cập nhật lên mekongx.vn ngày 25/10/2026** (kiểm tr
 
 - SMS Brandname South Telecom (commit `ca732ec`) – xem `Trien_khai_mekongx_24102026.md`.
 - Nhật ký đăng nhập, log hệ thống ra file `logs/app-yyyyMMdd.log`, thống kê lượt truy cập (bảng `SiteVisitDaily`), thống kê phản hồi hỗ trợ ≤ 02 giờ (commit `e3050de`).
-- Script 10 tài khoản vận hành thử, mật khẩu `Hello@2026` (commit `9032f2b`) – tùy chọn.
+- Script 10 tài khoản vận hành thử, mật khẩu mặc định bàn giao riêng (commit `9032f2b`) – tùy chọn.
 
 ## 2. Gói triển khai
 
