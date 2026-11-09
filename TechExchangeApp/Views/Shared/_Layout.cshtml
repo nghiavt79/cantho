@@ -186,7 +186,8 @@
             const userId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
             if (!userId) return;
 
-            const TP_LOCALE    = @(isEnLayout ? "'en-US'" : "'vi-VN'");
+            // Dấu nháy phải nằm ngoài biểu thức Razor: Razor mã hóa ' thành &#x27; làm hỏng cả đoạn script
+            const TP_LOCALE    = '@(isEnLayout ? "en-US" : "vi-VN")';
             const TP_MSG_TITLE = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("header.notify.title")));
             const TP_MSG_EMPTY = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("header.notify.empty")));
 
