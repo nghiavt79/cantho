@@ -91,13 +91,39 @@ namespace TechExchangeApp.Services
                     nextStep.StatusId = 1; // InProgress
                 }
 
-                AddTransitionLog(projectId, stepNumber, nextStep?.StepNumber ?? stepNumber, "Complete",
-                    nextStep != null
-                        ? $"Hoàn thành bước {stepNumber} – {currentStep.StepName}; mở bước {nextStep.StepNumber} – {nextStep.StepName}"
-                        : $"Hoàn thành bước {stepNumber} – {currentStep.StepName}");
+                // L2-04: hồ sơ không áp dụng NDA thì bước 1 chuyển thẳng sang bước 3 (RFQ), ghi nhật ký đúng như vậy
+                var message = nextStep != null
+                    ? $"Hoàn thành bước {stepNumber} – {currentStep.StepName}; mở bước {nextStep.StepNumber} – {nextStep.StepName}"
+                    : $"Hoàn thành bước {stepNumber} – {currentStep.StepName}";
+                var toStep = nextStep?.StepNumber ?? stepNumber;
+                if (stepNumber == 1 && nextStep != null && !await ProjectRequiresNda(projectId))
+                {
+                    var rfqStep = await _context.ProjectSteps.AsNoTracking()
+                        .FirstOrDefaultAsync(s => s.ProjectId == projectId && s.StepNumber == 3);
+                    message = $"Hoàn thành bước 1 – {currentStep.StepName}; bước 2 – {nextStep.StepName}: không áp dụng; "
+                        + $"mở bước 3 – {rfqStep?.StepName ?? "Yêu cầu báo giá (RFQ)"}";
+                    toStep = 3;
+                }
+
+                AddTransitionLog(projectId, stepNumber, toStep, "Complete", message);
 
                 await _context.SaveChangesAsync();
             }
+        }
+
+        // Cùng quy tắc với ProjectController.GetProjectRequiresNda / ESignGateway.ProjectRequiresNda
+        private async Task<bool> ProjectRequiresNda(int projectId)
+        {
+            var tech = await _context.TechTransferRequests.AsNoTracking()
+                .Where(t => t.ProjectId == projectId)
+                .Select(t => new { t.FromId, t.TypeData })
+                .FirstOrDefaultAsync();
+            if (tech?.FromId == null || (tech.TypeData ?? 1) != 1) return false;
+
+            return await _context.SanPhamCNTBs.AsNoTracking()
+                .Where(p => p.ID == tech.FromId.Value)
+                .Select(p => p.RequiresNDA)
+                .FirstOrDefaultAsync() == true;
         }
 
         public async Task<bool> CanAccessStep(int projectId, int stepNumber)

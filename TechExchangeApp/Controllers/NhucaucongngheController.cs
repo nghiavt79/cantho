@@ -558,11 +558,18 @@ namespace TechExchangeApp.Controllers.FrontEnd
                 .Select(x => int.TryParse(x.Trim(), out var c) ? c : 0).Where(c => c > 0).ToList();
             if (catIds.Count > 0)
             {
+                // L2-09: chỉ gợi ý sản phẩm khớp ĐỦ mọi lĩnh vực của nhu cầu; không lấy sản phẩm khác để bù đủ số lượng
+                catIds = catIds.Distinct().ToList();
+                var soLinhVuc = catIds.Count;
+                var khopDu = _context.SanPhamCNTBCategories.AsNoTracking()
+                    .Where(c => catIds.Contains(c.CatId))
+                    .GroupBy(c => c.SanPhamCNTBId)
+                    .Where(g => g.Select(x => x.CatId).Distinct().Count() == soLinhVuc)
+                    .Select(g => g.Key);
                 var goiY = (from sp in _context.SanPhamCNTBs.AsNoTracking()
-                            join c in _context.SanPhamCNTBCategories.AsNoTracking() on sp.ID equals c.SanPhamCNTBId
                             join n in _context.NhaCungUngs.AsNoTracking() on sp.NCUId equals n.CungUngId into nj
                             from n in nj.DefaultIfEmpty()
-                            where catIds.Contains(c.CatId) && sp.StatusId == 3 && sp.LanguageId == lang && sp.ProductType != 4
+                            where khopDu.Contains(sp.ID) && sp.StatusId == 3 && sp.LanguageId == lang && sp.ProductType != 4
                             orderby sp.PublishedDate descending
                             select new { sp.ID, sp.Name, sp.QueryString, sp.QuyTrinhHinhAnh, NccName = n != null ? n.FullName : null })
                            .Take(12).ToList();

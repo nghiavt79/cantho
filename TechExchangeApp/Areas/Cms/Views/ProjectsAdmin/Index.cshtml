@@ -163,12 +163,15 @@ $(function(){
     }
 
     function initSelect2InModal() {
-        $('#modalBody .select2-consultant').select2({
-            theme: 'bootstrap-5',
-            placeholder: '-- Chọn nhà tư vấn --',
-            allowClear: true,
-            width: '100%',
-            dropdownParent: $('#modalForm')
+        // Nhãn lấy từ option rỗng của từng ô (ô bên bán: "-- Chọn nhà cung ứng --")
+        $('#modalBody .select2-consultant').each(function() {
+            $(this).select2({
+                theme: 'bootstrap-5',
+                placeholder: $(this).find('option[value=""]').first().text() || '-- Chọn nhà tư vấn --',
+                allowClear: true,
+                width: '100%',
+                dropdownParent: $('#modalForm')
+            });
         });
     }
 

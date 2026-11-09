@@ -1134,7 +1134,7 @@ MaTruyXuat = p.MaTruyXuat
         public bool IsHot { get; set; }
     }
 
-    public class SanPhamCNTBFormVm
+    public class SanPhamCNTBFormVm : System.ComponentModel.DataAnnotations.IValidatableObject
     {
         public int ID { get; set; }
 
@@ -1147,7 +1147,9 @@ MaTruyXuat = p.MaTruyXuat
         public string? MoTaNgan { get; set; }
         public string? ThongSo { get; set; }
         public string? UuDiem { get; set; }
+        [System.ComponentModel.DataAnnotations.Range(0, double.MaxValue, ErrorMessage = "Giá không được là số âm.")]
         public double? OriginalPrice { get; set; }
+        [System.ComponentModel.DataAnnotations.Range(0, double.MaxValue, ErrorMessage = "Giá không được là số âm.")]
         public double? SellPrice { get; set; }
         public string? Currency { get; set; }
         public string? CategoryId { get; set; }
@@ -1231,5 +1233,19 @@ MaTruyXuat = p.MaTruyXuat
         // ── OCOP dedicated fields ──
         public int? SoSaoOCOP { get; set; }
         public string? MaTruyXuat { get; set; }
+
+        // L2-15: giá bán dự kiến / giá tham khảo (CKEditor, lưu HTML) không được là số âm
+        public IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(
+            System.ComponentModel.DataAnnotations.ValidationContext validationContext)
+        {
+            if (!string.IsNullOrWhiteSpace(GiaBanDuKien))
+            {
+                var text = System.Text.RegularExpressions.Regex.Replace(GiaBanDuKien, "<.*?>", " ");
+                text = System.Net.WebUtility.HtmlDecode(text).Replace('\u00A0', ' ').Trim();
+                if (System.Text.RegularExpressions.Regex.IsMatch(text, @"^[-\u2212\u2013]\s*\d"))
+                    yield return new System.ComponentModel.DataAnnotations.ValidationResult(
+                        "Giá bán dự kiến / giá tham khảo không được là số âm.", new[] { nameof(GiaBanDuKien) });
+            }
+        }
     }
 }
