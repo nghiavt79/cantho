@@ -3,7 +3,7 @@
 Hai gói trong ngày:
 
 1. `deploy-mekongx-2026-11-10.zip`: khắc phục lỗi L2 lần 2 theo Báo cáo kiểm tra lại ngày 09/11/2026 của Bình Định. **Đã chép lên máy chủ**, đã kiểm tra trên mekongx.vn.
-2. `deploy-mekongx-2026-11-10-2.zip`: sửa chuông thông báo trên đầu trang. Chưa chép lên máy chủ.
+2. `deploy-mekongx-2026-11-10-2.zip`: sửa chuông thông báo trên đầu trang. **Đã chép lên máy chủ**, người dùng kiểm tra chuông hiện đúng.
 
 ## Gói 1: khắc phục lỗi L2 lần 2
 
@@ -72,6 +72,6 @@ Kiểm tra sau khi chép: đăng nhập tài khoản có thông báo, bấm chu�
 
 - Cả hai gói chỉ gồm `app\TechExchangeApp.dll` và `HUONG_DAN.txt`; không có SQL, không đổi `appsettings.json`, `wwwroot`.
 - Build từ nhánh chính (master), đã gộp nhánh eContract / ký số USB Token (`ad02491`, bản chạy trên máy chủ từ 08/11). So với bản publish trước chỉ khác `TechExchangeApp.dll`.
-- Gói 1: master `66afdf9` (đã push GitHub). Gói 2: master `187a85f`.
+- Gói 1: master `66afdf9`. Gói 2: master `187a85f`. Đã push GitHub (master `4d0e7a8`).
 - Thư mục publish: `D:\2026\CanThoPublish_20261110` (gói 1), `D:\2026\CanThoPublish_20261110_2` (gói 2).
 - Lưu ý: từ nay build gói từ master. Trước 10/11 máy chủ chạy bản build từ nhánh eContract, không phải master; build từ master cũ sẽ làm mất phần ký số.
