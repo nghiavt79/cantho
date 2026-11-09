@@ -10,11 +10,13 @@ namespace TechExchangeApp.Services
         private readonly AppDbContext _context;
         private const int MergedNegotiationStep = 5;
         private const int LegalReviewStep = 6;
-        private const int MyProjectsTotalDisplaySteps = 6;
+        private readonly TechExchangeApp.Configuration.WorkflowOptions _workflowOptions;
 
-        public ProjectService(AppDbContext context)
+        public ProjectService(AppDbContext context,
+            Microsoft.Extensions.Options.IOptions<TechExchangeApp.Configuration.WorkflowOptions> workflowOptions)
         {
             _context = context;
+            _workflowOptions = workflowOptions.Value;
         }
 
         public async Task<List<MyProjectVm>> GetMyProjectsAsync(int userId)
@@ -43,8 +45,9 @@ namespace TechExchangeApp.Services
                     .Select(ps => new { ps.StepNumber, ps.StatusId })
                     .ToListAsync();
 
+                // Theo Workflow:VisibleStepCount như trang chi tiết hồ sơ; bước 5–6 gộp một dòng, đánh số theo bước quy trình
                 var displaySteps = allSteps
-                    .Where(s => s.StepNumber != LegalReviewStep)
+                    .Where(s => s.StepNumber != LegalReviewStep && _workflowOptions.IsStepVisible(s.StepNumber))
                     .Select(s =>
                     {
                         var statusId = s.StatusId;
@@ -59,14 +62,15 @@ namespace TechExchangeApp.Services
                         return new
                         {
                             InternalStepNumber = s.StepNumber,
-                            DisplayStepNumber = s.StepNumber > LegalReviewStep ? s.StepNumber - 1 : s.StepNumber,
+                            DisplayStepNumber = s.StepNumber,
                             StatusId = statusId
                         };
                     })
                     .ToList();
 
-                int totalDisplaySteps = MyProjectsTotalDisplaySteps;
-                int completedSteps = Math.Min(displaySteps.Count(s => s.StatusId == 2), totalDisplaySteps);
+                int totalDisplaySteps = _workflowOptions.EffectiveVisibleStepCount;
+                int completedSteps = Math.Min(
+                    allSteps.Count(s => _workflowOptions.IsStepVisible(s.StepNumber) && s.StatusId == 2), totalDisplaySteps);
 
                 int currentStep;
                 int currentStepStatus;

@@ -140,7 +140,7 @@
                                     <td data-label="@Html.Text("dash.col.currentStep")">
                                         <small class="text-muted">@Html.Text("dash.stepPrefix") @project.CurrentStepNumber:</small><br />
                                         @* Tên bước lưu trong DB là tiếng Việt — tra theo SỐ bước hiển thị (1..6) thay vì dùng chuỗi đó. *@
-                                        <strong>@Html.Text($"dash.step.{project.CurrentStepNumber}")</strong>
+                                        <strong>@Html.Text(project.CurrentStepNumber == 5 ? "dash.step.5" : $"workflow.step.{project.CurrentStepNumber}")</strong>
                                     </td>
                                     <td data-label="@Html.Text("dash.col.status")">
                                         @{
