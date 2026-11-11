@@ -342,6 +342,7 @@ namespace TechExchangeApp.Controllers
             vm.SupplierUrl = isEn
                 ? $"{_mainDomain}en/suppliers/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}"
                 : $"{_mainDomain}nha-cung-ung/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
+            vm.ExhibitionBoothUrl = ExhibitionHelper.BoothUrl(supplier, _mainDomain);
         }
         
         private List<VSImage> GetImages(int contentId) => _context.VSImages.Where(x => x.ContentId == contentId && x.StatusId == 1).OrderBy(x => x.Id).ToList();

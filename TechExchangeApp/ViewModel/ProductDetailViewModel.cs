@@ -44,6 +44,7 @@ namespace TechExchangeApp.ViewModel
 
         // Vị trí trưng bày tại Sàn (HSMT A.3.4), vd "Phòng trưng bày 1 – A-03"
         public string? ShowroomLocation { get; set; }
+        public string? ExhibitionBoothUrl { get; set; }   // gian hàng Triển lãm 3D của NCC
     }
 
     public class KeywordVm

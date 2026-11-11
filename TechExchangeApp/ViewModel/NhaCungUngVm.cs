@@ -82,6 +82,7 @@ namespace TechExchangeApp.ViewModel
         public string? LogoUrl           { get; set; }
         public string? VideoUrl          { get; set; }
         public string? ChungNhan         { get; set; }
+        public string? ExhibitionBoothUrl { get; set; }   // gian hàng Triển lãm 3D
 
         // Stats
         public int Rating      { get; set; }
