@@ -1,6 +1,6 @@
 # Cập nhật mekongx.vn 11/11/2026: nút sang gian hàng Triển lãm 3D
 
-Gói `deploy-mekongx-2026-11-11.zip` (tại `D:\2026\CanTho`). Chưa chép lên máy chủ.
+Gói `deploy-mekongx-2026-11-11.zip` (tại `D:\2026\CanTho`). **Đã chép lên máy chủ**, kiểm tra trên mekongx.vn 12/11: 28 NCC có nút, cả 28 mở được gian hàng. Ngày 12/11 giới hạn còn 9 NCC, xem `Trien_khai_mekongx_12112026.md`.
 
 ## Nội dung
 
