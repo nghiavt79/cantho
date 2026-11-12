@@ -1,4 +1,4 @@
-# Cập nhật mekongx.vn 12/11/2026: nút gian hàng Triển lãm 3D theo số gian hàng
+# Cập nhật mekongx.vn 12/11/2026: nút gian hàng Triển lãm 3D theo số gian hàng, nhập NCC 3D Smart Solutions
 
 Gói `deploy-mekongx-2026-11-12.zip` (tại `D:\2026\CanTho`). Chưa chép lên máy chủ.
 
@@ -30,9 +30,12 @@ Trước 12/11 máy chủ chỉ có A01–A03. Script `TechExchangeApp/Scripts/g
 | A08 | 8891 | Công ty CP XNK Hóa chất và Thiết bị Kim Ngưu |
 | A09 | 8892 | Công ty TNHH Phúc Trường Hải |
 
-## Còn thiếu
+## NCC thứ 10: 3D Smart Solutions
 
-- NCC thứ 10 là Công ty TNHH 3D Smart Solutions (mã số thuế 0313566379): có phiếu nhưng chưa nhập vào hệ thống (không có trong `sgdcnCanTho`, `TechExchangeNew`, không có trên mekongx.vn). Phiếu ghi website `katec.vn` (trùng KATEC), cần hỏi lại khách trước khi nhập. Nhập xong thì gán số A10 trên trang quản trị triển lãm.
+- Công ty TNHH 3D Smart Solutions (mã số thuế 0313566379) có phiếu nhưng bị sót ở đợt nhập 11/07 (không có trong `sgdcnCanTho`, `TechExchangeNew`, mekongx.vn).
+- Script `TechExchangeApp/Scripts/nhap-ncc-3d-smart-solutions.sql` tạo NCC từ phiếu (nguyên văn), gán gian hàng A10. Lĩnh vực: Khoa học máy tính (1078), Cơ khí (5); loại hình: Khác; `CreatedBy = 'phieu-mau-import'`. Kiểm tra theo mã số thuế, chạy lại được.
+- Còn để trống, chờ khách: website (phiếu ghi `katec.vn`, trùng KATEC; email là `info@3ds.vn`), dịch vụ KH&CN (phiếu chọn "Khác", không khớp danh mục; mở sửa trên CMS sẽ phải chọn trước khi lưu), logo, ảnh đại diện. Chưa có sản phẩm của 3DS trên Sàn.
+- Local: NCC 9959, trang `/nha-cung-ung/cong-ty-tnhh-3d-smart-solutions-9959` hiện đủ thông tin và nút gian hàng.
 
 ## Kiểm tra local
 
@@ -40,6 +43,6 @@ Trước 12/11 máy chủ chỉ có A01–A03. Script `TechExchangeApp/Scripts/g
 
 ## Gói, mã nguồn
 
-- Gói gồm `app/TechExchangeApp.dll`, `sql/gan-so-gian-hang-trien-lam-9-ncc.sql`, `HUONG_DAN.txt`. Không đổi `appsettings.json`, `wwwroot`.
+- Gói gồm `app/TechExchangeApp.dll`, `sql/gan-so-gian-hang-trien-lam-9-ncc.sql`, `sql/nhap-ncc-3d-smart-solutions.sql`, `HUONG_DAN.txt`. Không đổi `appsettings.json`, `wwwroot`.
 - Phải chạy script trước hoặc cùng lúc chép dll; nếu chỉ chép dll thì chỉ A01–A03 có nút.
 - Thư mục publish: `D:\2026\CanThoPublish_20261112`.
