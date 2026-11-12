@@ -133,7 +133,6 @@ builder.Services.Configure<TechExchangeApp.Configuration.FeatureFlags>(builder.C
 builder.Services.Configure<TechExchangeApp.Configuration.DashboardJobOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.DashboardJobOptions.SectionName));
 builder.Services.Configure<TechExchangeApp.Configuration.OtpSettings>(builder.Configuration.GetSection(TechExchangeApp.Configuration.OtpSettings.SectionName));
 builder.Services.Configure<TechExchangeApp.Configuration.AiChatOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.AiChatOptions.SectionName));
-TechExchangeApp.Helpers.ExhibitionHelper.Configure(builder.Configuration.GetSection("Exhibition:BoothSupplierIds").Get<int[]>());
 builder.Services.Configure<TechExchangeApp.Configuration.WorkflowOptions>(builder.Configuration.GetSection(TechExchangeApp.Configuration.WorkflowOptions.SectionName));
 
 // In-process memory cache (used by HomeAnalyticsService)

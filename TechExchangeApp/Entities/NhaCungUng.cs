@@ -123,5 +123,9 @@ namespace TechExchangeApp.Entities
         public DateTime? TierAssignedAt { get; set; }
         [MaxLength(256)]
         public string? TierAssignedBy { get; set; }
+
+        // ── Triển lãm 3D (/trienlam): số gian hàng, do trang quản trị triển lãm gán trên bản VI ──
+        [MaxLength(20)]
+        public string? BoothNumber { get; set; }
     }
 }

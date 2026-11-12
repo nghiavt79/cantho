@@ -203,7 +203,9 @@ namespace TechExchangeApp.Controllers
                     ? ImageHtmlHelper.ResolveImageUrl(entity.Logo, _mainDomain, "image/logoT.png") : null,
                 VideoUrl           = entity.VideoUrl,
                 ChungNhan          = entity.ChungNhan,
-                ExhibitionBoothUrl = ExhibitionHelper.BoothUrl(entity, _mainDomain),
+                ExhibitionBoothUrl = ExhibitionHelper.BoothUrl(
+                    entity.OriginalId.HasValue ? _context.NhaCungUngs.AsNoTracking().FirstOrDefault(x => x.CungUngId == entity.OriginalId.Value) : entity,
+                    _mainDomain),
                 Rating        = entity.Rating ?? 0,
                 LuotXem       = entity.Viewed  ?? 0,
                 LuotDanhGia   = luotDanhGia,

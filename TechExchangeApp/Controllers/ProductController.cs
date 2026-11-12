@@ -342,7 +342,9 @@ namespace TechExchangeApp.Controllers
             vm.SupplierUrl = isEn
                 ? $"{_mainDomain}en/suppliers/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}"
                 : $"{_mainDomain}nha-cung-ung/{MakeURLFriendly(supplier.FullName)}-{supplier.CungUngId}";
-            vm.ExhibitionBoothUrl = ExhibitionHelper.BoothUrl(supplier, _mainDomain);
+            // Số gian hàng nằm trên bản VI (p.NCUId)
+            var boothSupplier = supplier.CungUngId == p.NCUId ? supplier : _context.NhaCungUngs.AsNoTracking().FirstOrDefault(x => x.CungUngId == p.NCUId);
+            vm.ExhibitionBoothUrl = ExhibitionHelper.BoothUrl(boothSupplier, _mainDomain);
         }
         
         private List<VSImage> GetImages(int contentId) => _context.VSImages.Where(x => x.ContentId == contentId && x.StatusId == 1).OrderBy(x => x.Id).ToList();
