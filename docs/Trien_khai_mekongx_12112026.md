@@ -1,6 +1,6 @@
 # Cập nhật mekongx.vn 12/11/2026: nút gian hàng Triển lãm 3D theo số gian hàng, nhập NCC 3D Smart Solutions
 
-Gói `deploy-mekongx-2026-11-12.zip` (tại `D:\2026\CanTho`). Chưa chép lên máy chủ.
+Gói `deploy-mekongx-2026-11-12.zip` (tại `D:\2026\CanTho`). **Đã chép dll và chạy script trên máy chủ** (script chạy bằng file gộp `D:\2026\CanTho\cap-nhat-trien-lam-10-ncc.sql`). Kiểm tra mekongx.vn 13/11: 10 gian hàng A01–A10 trong triển lãm, rà 81 trang NCC chỉ đúng 10 NCC có nút; 3D Smart Solutions trên máy chủ có mã 17927.
 
 ## Lý do
 
