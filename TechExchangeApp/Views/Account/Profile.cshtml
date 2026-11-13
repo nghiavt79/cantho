@@ -198,7 +198,7 @@
                                                 onclick="pv_sendPhoneOtp()" @(!string.IsNullOrEmpty(Model.PhoneNumber) ? "" : "disabled")>
                                             <i class="fas fa-paper-plane"></i> @Html.Text("profile.sendSmsOtp")
                                         </button>
-                                        <div id="phoneOtpBox" class="mt-2 d-none">
+                                        <div id="phoneOtpBox" class="mt-2">
                                             <div class="input-group">
                                                 <input type="text" id="phoneOtpInput" class="form-control" placeholder="@Html.Text("profile.otpPh")" maxlength="6">
                                                 <button class="btn btn-success" onclick="pv_verifyPhoneOtp()">@Html.Text("profile.confirm")</button>
@@ -233,7 +233,7 @@
                                                 onclick="pv_sendEmailOtp()">
                                             <i class="fas fa-paper-plane"></i> @Html.Text("profile.sendEmailOtpBtn")
                                         </button>
-                                        <div id="emailOtpBox" class="mt-2 d-none">
+                                        <div id="emailOtpBox" class="mt-2">
                                             <div class="input-group">
                                                 <input type="text" id="emailOtpInput" class="form-control" placeholder="@Html.Text("profile.otpPh")" maxlength="6">
                                                 <button class="btn btn-success" onclick="pv_verifyEmailOtp()">@Html.Text("profile.confirm")</button>
@@ -300,7 +300,8 @@
         enterPhoneFirst: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.enterPhoneFirst"))),
         sending: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.sending"))),
         resendInPrefix: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.resendInPrefix"))),
-        resendOtp: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.resendOtp")))
+        resendOtp: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("profile.js.resendOtp"))),
+        phoneOtpSendFailed: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Html.Text("verify.phoneOtpSendFailed")))
     };
 
     // Avatar preview
@@ -345,14 +346,20 @@
 
     async function pv_sendPhoneOtp() {
         const btn = document.getElementById('btnSendPhoneOtp');
+        const originalHtml = btn.innerHTML;
         btn.disabled = true; btn.textContent = PV_MSG.sending;
-        const r = await fetch('/Account/SendPhoneOtp', { method:'POST' });
-        const d = await r.json();
+        let d;
+        try {
+            const r = await fetch('/Account/SendPhoneOtp', { method:'POST' });
+            d = await r.json();
+        } catch (e) {
+            d = { success: false, message: PV_MSG.phoneOtpSendFailed };
+        }
         pv_toast(d.message, d.success ? 'info' : 'danger');
         if (d.success) {
             document.getElementById('phoneOtpBox').classList.remove('d-none');
             pv_startCountdown(btn, PV_MSG.resendOtp, 60);
-        } else btn.disabled = false;
+        } else { btn.disabled = false; btn.innerHTML = originalHtml; }
     }
 
     async function pv_verifyPhoneOtp() {

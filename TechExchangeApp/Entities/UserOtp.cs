@@ -24,6 +24,15 @@ namespace TechExchangeApp.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        /// <summary>Kết quả gửi mã: null = chưa gửi, 1 = thành công, 2 = lỗi (Scripts/add-userotps-send-result.sql)</summary>
+        public int? SendStatus { get; set; }
+
+        [MaxLength(1000)]
+        public string? SendError { get; set; }
+
+        [MaxLength(1000)]
+        public string? ProviderResponse { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser? User { get; set; }
     }

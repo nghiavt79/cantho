@@ -54,11 +54,26 @@ namespace TechExchangeApp.Services
             if (user == null || string.IsNullOrEmpty(user.PhoneNumber)) return false;
 
             var otp = GenerateOtp();
-            await SaveOtpAsync(userId, 2, otp);
+            var record = await SaveOtpAsync(userId, 2, otp);
 
-            await _sms.SendAsync(user.PhoneNumber, $"[Sàn GDCN Cần Thơ] Mã OTP xác thực SĐT của bạn: {otp}. Có hiệu lực {_otp.PhoneOtpExpiryMinutes} phút.");
-            _logger.LogInformation("[VerifyPhone] OTP {Otp} sent to {Phone}", otp, user.PhoneNumber);
-            return true;
+            try
+            {
+                var response = await _sms.SendAsync(user.PhoneNumber, $"[Sàn GDCN Cần Thơ] Mã OTP xác thực SĐT của bạn: {otp}. Có hiệu lực {_otp.PhoneOtpExpiryMinutes} phút.");
+                record.SendStatus       = 1;
+                record.ProviderResponse = Trunc(response, 1000);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("[VerifyPhone] OTP {Otp} sent to {Phone}", otp, user.PhoneNumber);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                // Ghi lỗi gửi SMS vào UserOtps để tra cứu, trả false để trang báo lỗi thay vì treo nút
+                record.SendStatus = 2;
+                record.SendError  = Trunc(ex.Message, 1000);
+                await _context.SaveChangesAsync();
+                _logger.LogWarning(ex, "[VerifyPhone] Send OTP to {Phone} failed: {Error}", user.PhoneNumber, ex.Message);
+                return false;
+            }
         }
 
         // ─── Verify Email OTP ────────────────────────────────────────────────
@@ -179,7 +194,10 @@ namespace TechExchangeApp.Services
         private static string GenerateOtp() =>
             new Random().Next(100000, 999999).ToString();
 
-        private async Task SaveOtpAsync(int userId, int otpType, string code)
+        private static string? Trunc(string? s, int max) =>
+            s == null || s.Length <= max ? s : s[..max];
+
+        private async Task<UserOtp> SaveOtpAsync(int userId, int otpType, string code)
         {
             // Invalidate old unused OTPs of same type
             var old = await _context.UserOtps
@@ -187,7 +205,7 @@ namespace TechExchangeApp.Services
                 .ToListAsync();
             old.ForEach(o => o.IsUsed = true);
 
-            _context.UserOtps.Add(new UserOtp
+            var record = new UserOtp
             {
                 UserId    = userId,
                 OtpType   = otpType,
@@ -195,8 +213,10 @@ namespace TechExchangeApp.Services
                 ExpiresAt = DateTime.UtcNow.Add(otpType == 1 ? _otp.EmailOtpExpiry : _otp.PhoneOtpExpiry),
                 IsUsed    = false,
                 CreatedAt = DateTime.UtcNow
-            });
+            };
+            _context.UserOtps.Add(record);
             await _context.SaveChangesAsync();
+            return record;
         }
 
         private async Task<bool> ConsumeOtpAsync(int userId, int otpType, string code)
