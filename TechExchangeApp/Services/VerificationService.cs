@@ -58,7 +58,7 @@ namespace TechExchangeApp.Services
 
             try
             {
-                var response = await _sms.SendAsync(user.PhoneNumber, $"[Sàn GDCN Cần Thơ] Mã OTP xác thực SĐT của bạn: {otp}. Có hiệu lực {_otp.PhoneOtpExpiryMinutes} phút.");
+                var response = await _sms.SendAsync(user.PhoneNumber, $"[MEKONGX.VN] Mã OTP của bạn trên web mekongx.vn là {otp}");
                 record.SendStatus       = 1;
                 record.ProviderResponse = Trunc(response, 1000);
                 await _context.SaveChangesAsync();
