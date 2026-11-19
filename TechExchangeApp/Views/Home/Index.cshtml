@@ -356,6 +356,22 @@
         });
 
         (function () {
+            var form = document.querySelector('.home-v2-search-form');
+            if (!form) return;
+            var input = form.querySelector('input[name="q"]');
+            var msg = @Json.Serialize(Html.Text("search.emptyPromptTitle"));
+            input.addEventListener('input', function () { input.setCustomValidity(''); });
+            form.addEventListener('submit', function (e) {
+                if (input.value.trim() === '') {
+                    e.preventDefault();
+                    input.setCustomValidity(msg);
+                    input.reportValidity();
+                    input.focus();
+                }
+            });
+        })();
+
+        (function () {
             var statWrap = document.querySelector('.home-v2-stats-wrap');
             var statNumbers = document.querySelectorAll('.js-home-stat-number[data-count-target]');
             if (!statWrap || !statNumbers.length) return;

@@ -9,8 +9,8 @@ namespace TechExchangeApp.Interfaces
         Task<List<SanPhamCNTB>> GetProductsByCategoryAsync(int catId, int languageId, int take);
         Task<SanPhamCNTB?> GetProductByIdAsync(int id, int languageId = 1);
         Task<List<SanPhamCNTB>> GetRelatedProductsAsync(int productId, int languageId, int take);
-        Task<int> GetProductCountByCategoryAsync(int catId, int languageId = 1, string? keyword = null);
-        Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int languageId = 1, int page = 1, int pageSize = 12, string? keyword = null, string? sort = null);
+        Task<int> GetProductCountByCategoryAsync(int catId, int languageId = 1, string? keyword = null, IReadOnlyCollection<string>? price = null, IReadOnlyCollection<string>? status = null);
+        Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int languageId = 1, int page = 1, int pageSize = 12, string? keyword = null, string? sort = null, IReadOnlyCollection<string>? price = null, IReadOnlyCollection<string>? status = null);
 
         // --- ProductType-scoped queries (CongNghe / ThietBi / SanPhamTriTue pages) ---
         Task<List<SanPhamCNTB>> GetNewProductsByProductTypeAsync(int productType, int take, int languageId = 1);

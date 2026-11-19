@@ -11,6 +11,8 @@
     // Giữ trạng thái lọc/sắp xếp khi phân trang & đổi tuỳ chọn
     string kw = Uri.EscapeDataString(Model.Keyword ?? "");
     string sortParam = Model.Sort ?? "newest";
+    string fq = string.Concat(Model.PriceFilters.Select(v => "&price=" + Uri.EscapeDataString(v)))
+              + string.Concat(Model.StatusFilters.Select(v => "&status=" + Uri.EscapeDataString(v)));
     string ProductsUrl() => isEn ? $"{mainDomain}en/products" : $"{mainDomain}san-pham";
     string TechnologyUrl() => isEn ? $"{mainDomain}en/technologies" : $"{mainDomain}cong-nghe";
     string CategoryUrl(TechExchangeApp.Entities.Category cat) => isEn
@@ -54,17 +56,19 @@
                     <form method="get" class="category-search input-group input-group-sm" role="search">
                         <input type="hidden" name="sort" value="@sortParam" />
                         <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                        @foreach (var v in Model.PriceFilters) { <input type="hidden" name="price" value="@v" /> }
+                        @foreach (var v in Model.StatusFilters) { <input type="hidden" name="status" value="@v" /> }
                         <input type="search" class="form-control" name="keyword" value="@Model.Keyword" placeholder="@Html.Text("product.cate.searchPlaceholder")" aria-label="@Html.Text("common.search")" />
                         <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
                     </form>
-                    <select class="form-select form-select-sm category-sort" onchange="location.href='?sort=' + this.value + '&pageSize=@Model.PageSize&keyword=@kw'" aria-label="@Html.Text("product.cate.sort")">
+                    <select class="form-select form-select-sm category-sort" onchange="location.href='?sort=' + this.value + '&pageSize=@Model.PageSize&keyword=@kw@fq'" aria-label="@Html.Text("product.cate.sort")">
                         <option value="newest" selected="@(sortParam == "newest")">@Html.Text("product.cate.sortNewest")</option>
                         <option value="name-asc" selected="@(sortParam == "name-asc")">@Html.Text("product.cate.sortNameAsc")</option>
                         <option value="name-desc" selected="@(sortParam == "name-desc")">@Html.Text("product.cate.sortNameDesc")</option>
                         <option value="price-asc" selected="@(sortParam == "price-asc")">@Html.Text("product.cate.sortPriceAsc")</option>
                         <option value="price-desc" selected="@(sortParam == "price-desc")">@Html.Text("product.cate.sortPriceDesc")</option>
                     </select>
-                    <select class="form-select form-select-sm category-page-size" onchange="location.href='?page=1&pageSize=' + this.value + '&sort=@sortParam&keyword=@kw'" aria-label="@Html.Text("product.cate.perPageAria")">
+                    <select class="form-select form-select-sm category-page-size" onchange="location.href='?page=1&pageSize=' + this.value + '&sort=@sortParam&keyword=@kw@fq'" aria-label="@Html.Text("product.cate.perPageAria")">
                         @foreach (var size in new[] { 12, 24, 36 })
                         {
                             if (size == Model.PageSize)
@@ -144,16 +148,16 @@
                     <nav class="catalog-pagination" aria-label="@Html.Text("common.pagination")">
                         <ul>
                             <li class="@(curPage == 1 ? "disabled" : "")">
-                                <a href="?page=@(curPage - 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="@Html.Text("common.prevPage")"><i class="bi bi-chevron-left"></i></a>
+                                <a href="?page=@(curPage - 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw@fq" aria-label="@Html.Text("common.prevPage")"><i class="bi bi-chevron-left"></i></a>
                             </li>
                             @foreach (var pg in Model.Pages)
                             {
                                 <li class="@(pg.IsActive ? "active" : "")">
-                                    <a href="?page=@pg.Page&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw">@pg.Page</a>
+                                    <a href="?page=@pg.Page&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw@fq">@pg.Page</a>
                                 </li>
                             }
                             <li class="@(curPage == totalPages ? "disabled" : "")">
-                                <a href="?page=@(curPage + 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw" aria-label="@Html.Text("common.nextPage")"><i class="bi bi-chevron-right"></i></a>
+                                <a href="?page=@(curPage + 1)&pageSize=@Model.PageSize&sort=@sortParam&keyword=@kw@fq" aria-label="@Html.Text("common.nextPage")"><i class="bi bi-chevron-right"></i></a>
                             </li>
                         </ul>
                     </nav>
@@ -208,22 +212,22 @@
                     <!-- Khoảng giá -->
                     <div class="filter-sidebar__group filter-section">
                         <h4 class="filter-title">@Html.Text("product.cate.priceRange")</h4>
-                        <label class="filter-check"><input type="checkbox" name="price" value="contact" /> @Html.Text("product.detail.priceContact")</label>
-                        <label class="filter-check"><input type="checkbox" name="price" value="0-5" /> @Html.Text("product.cate.priceUnder5")</label>
-                        <label class="filter-check"><input type="checkbox" name="price" value="5-20" /> @Html.Text("product.cate.price5to20")</label>
-                        <label class="filter-check"><input type="checkbox" name="price" value="20+" /> @Html.Text("product.cate.priceOver20")</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="contact" checked="@Model.PriceFilters.Contains("contact")" /> @Html.Text("product.detail.priceContact")</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="0-5" checked="@Model.PriceFilters.Contains("0-5")" /> @Html.Text("product.cate.priceUnder5")</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="5-20" checked="@Model.PriceFilters.Contains("5-20")" /> @Html.Text("product.cate.price5to20")</label>
+                        <label class="filter-check"><input type="checkbox" name="price" value="20+" checked="@Model.PriceFilters.Contains("20+")" /> @Html.Text("product.cate.priceOver20")</label>
                     </div>
 
                     <!-- Trạng thái -->
                     <div class="filter-sidebar__group filter-section">
                         <h4 class="filter-title">@Html.Text("common.status")</h4>
-                        <label class="filter-check"><input type="checkbox" name="status" value="ready" /> @Html.Text("product.cate.statusReady")</label>
-                        <label class="filter-check"><input type="checkbox" name="status" value="intro" /> @Html.Text("product.detail.statusIntroducing")</label>
-                        <label class="filter-check"><input type="checkbox" name="status" value="consult" /> @Html.Text("product.cate.statusConsult")</label>
+                        <label class="filter-check"><input type="checkbox" name="status" value="ready" checked="@Model.StatusFilters.Contains("ready")" /> @Html.Text("product.cate.statusReady")</label>
+                        <label class="filter-check"><input type="checkbox" name="status" value="intro" checked="@Model.StatusFilters.Contains("intro")" /> @Html.Text("product.detail.statusIntroducing")</label>
+                        <label class="filter-check"><input type="checkbox" name="status" value="consult" checked="@Model.StatusFilters.Contains("consult")" /> @Html.Text("product.cate.statusConsult")</label>
                     </div>
 
                     <div class="filter-sidebar__actions">
-                        <button type="button" class="btn-filter-apply">@Html.Text("product.cate.apply")</button>
+                        <button type="button" class="btn-filter-apply" onclick="applyCateFilter()">@Html.Text("product.cate.apply")</button>
                         <button type="button" class="btn-filter-clear" onclick="location.href=location.pathname">@Html.Text("product.cate.clearFilter")</button>
                     </div>
                 </aside>
@@ -233,3 +237,17 @@
 
     </div>
 </div>
+
+<script>
+    function applyCateFilter() {
+        var qs = new URLSearchParams();
+        qs.set('page', '1');
+        qs.set('pageSize', '@Model.PageSize');
+        qs.set('sort', @Json.Serialize(sortParam));
+        var kw = @Json.Serialize(Model.Keyword ?? "");
+        if (kw) qs.set('keyword', kw);
+        document.querySelectorAll('.filter-sidebar input[name="price"]:checked, .filter-sidebar input[name="status"]:checked')
+            .forEach(function (cb) { qs.append(cb.name, cb.value); });
+        location.href = location.pathname + '?' + qs.toString();
+    }
+</script>

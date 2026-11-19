@@ -362,7 +362,7 @@ namespace TechExchangeApp.Controllers
         // View counter is now handled by _EntityRating widget JS via /api/entity/.../view/increase
 
 
-        public async Task<IActionResult> ProductByCate(int cateId, int page = 1, int pageSize = 12, string? keyword = null, string sort = "newest")
+        public async Task<IActionResult> ProductByCate(int cateId, int page = 1, int pageSize = 12, string? keyword = null, string sort = "newest", string[]? price = null, string[]? status = null)
         {
             var model = new ProductByCateViewModel
             {
@@ -371,6 +371,8 @@ namespace TechExchangeApp.Controllers
                 PageSize = pageSize,
                 Keyword = string.IsNullOrWhiteSpace(keyword) ? null : keyword.Trim(),
                 Sort = string.IsNullOrWhiteSpace(sort) ? "newest" : sort,
+                PriceFilters = (price ?? Array.Empty<string>()).Where(v => v is "contact" or "0-5" or "5-20" or "20+").Distinct().ToList(),
+                StatusFilters = (status ?? Array.Empty<string>()).Where(v => v is "ready" or "intro" or "consult").Distinct().ToList(),
                 MainDomain = _mainDomain
             };
 
@@ -390,8 +392,8 @@ namespace TechExchangeApp.Controllers
         {
             var langId = LangHelper.CurrentLangId(HttpContext);
             var isEn = LangHelper.IsEnglish(HttpContext);
-            vm.Total = await _productService.GetProductCountByCategoryAsync(vm.CateId, langId, vm.Keyword);
-            var list = await _productService.GetPagedProductsByCategoryAsync(vm.CateId, langId, vm.CurPage, vm.PageSize, vm.Keyword, vm.Sort);
+            vm.Total = await _productService.GetProductCountByCategoryAsync(vm.CateId, langId, vm.Keyword, vm.PriceFilters, vm.StatusFilters);
+            var list = await _productService.GetPagedProductsByCategoryAsync(vm.CateId, langId, vm.CurPage, vm.PageSize, vm.Keyword, vm.Sort, vm.PriceFilters, vm.StatusFilters);
 
             // Nạp trước supplier & category theo mẻ (1 query mỗi loại) — tránh N+1 trong vòng lặp.
             var ncuIds = list.Where(r => r.NCUId != null).Select(r => r.NCUId!.Value).Distinct().ToList();

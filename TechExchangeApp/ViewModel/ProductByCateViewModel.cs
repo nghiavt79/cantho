@@ -24,6 +24,8 @@ namespace TechExchangeApp.ViewModel
         // Lọc & sắp xếp (server-side)
         public string? Keyword { get; set; }
         public string Sort { get; set; } = "newest";
+        public List<string> PriceFilters { get; set; } = new();   // contact | 0-5 | 5-20 | 20+
+        public List<string> StatusFilters { get; set; } = new();  // ready | intro | consult
     }
     public class CategoryItemVm
     {

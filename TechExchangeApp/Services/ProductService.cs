@@ -84,7 +84,7 @@ namespace TechExchangeApp.Services
                           .ToListAsync();
         }
 
-        public async Task<int> GetProductCountByCategoryAsync(int catId, int languageId = 1, string? keyword = null)
+        public async Task<int> GetProductCountByCategoryAsync(int catId, int languageId = 1, string? keyword = null, IReadOnlyCollection<string>? price = null, IReadOnlyCollection<string>? status = null)
         {
             var q = from p in _context.SanPhamCNTBs
                     join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
@@ -96,11 +96,37 @@ namespace TechExchangeApp.Services
 
             if (!string.IsNullOrWhiteSpace(keyword))
                 q = q.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{keyword}%"));
+
+            q = ApplyPriceStatusFilter(q, price, status);
 
             return await q.Select(p => p.ID).Distinct().CountAsync();
         }
 
-        public async Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int languageId = 1, int page = 1, int pageSize = 12, string? keyword = null, string? sort = null)
+        // Bộ lọc Khoảng giá / Trạng thái ở trang sản phẩm theo lĩnh vực.
+        // Giá tính theo OriginalPrice (VND); không có giá = "Liên hệ báo giá".
+        // Trạng thái: hệ thống chưa có trường dữ liệu riêng, mọi sản phẩm đang hiển thị
+        // được coi là "Đang giới thiệu" (khớp trang chi tiết); "Sẵn sàng chuyển giao" và
+        // "Có tư vấn triển khai" chưa có sản phẩm nào.
+        private static IQueryable<SanPhamCNTB> ApplyPriceStatusFilter(IQueryable<SanPhamCNTB> q, IReadOnlyCollection<string>? price, IReadOnlyCollection<string>? status)
+        {
+            if (price != null && price.Count > 0)
+            {
+                bool contact = price.Contains("contact"), under5 = price.Contains("0-5"),
+                     from5to20 = price.Contains("5-20"), over20 = price.Contains("20+");
+                q = q.Where(p =>
+                    (contact && (p.OriginalPrice == null || p.OriginalPrice <= 0))
+                    || (under5 && p.OriginalPrice > 0 && p.OriginalPrice < 5_000_000)
+                    || (from5to20 && p.OriginalPrice >= 5_000_000 && p.OriginalPrice <= 20_000_000)
+                    || (over20 && p.OriginalPrice > 20_000_000));
+            }
+
+            if (status != null && status.Count > 0 && !status.Contains("intro"))
+                q = q.Where(p => false);
+
+            return q;
+        }
+
+        public async Task<List<SanPhamCNTB>> GetPagedProductsByCategoryAsync(int catId, int languageId = 1, int page = 1, int pageSize = 12, string? keyword = null, string? sort = null, IReadOnlyCollection<string>? price = null, IReadOnlyCollection<string>? status = null)
         {
             var q = from p in _context.SanPhamCNTBs
                     join c in _context.SanPhamCNTBCategories on p.ID equals c.SanPhamCNTBId
@@ -112,6 +138,8 @@ namespace TechExchangeApp.Services
 
             if (!string.IsNullOrWhiteSpace(keyword))
                 q = q.Where(p => p.Name != null && EF.Functions.Like(p.Name, $"%{keyword}%"));
+
+            q = ApplyPriceStatusFilter(q, price, status);
 
             // Chá»‰ láº¥y Ä‘Ãºng cÃ¡c cá»™t listing cáº§n â€” KHÃ”NG kÃ©o cá»™t LOB (MoTa/ThongSo/Keywords).
             var proj = q.Select(p => new SanPhamCNTB
